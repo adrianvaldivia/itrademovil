@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 	    button_Ingresar.setOnClickListener(new OnClickListener() {
 	    	@Override
 			public void onClick(View v) {
-	    		
+	    		//On click
 				String user = textView_Usuario.getText().toString();
 				String password = textView_Password.getText().toString();				
 				Log.d("Button", "Login");
