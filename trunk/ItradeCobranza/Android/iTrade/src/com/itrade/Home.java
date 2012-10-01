@@ -1,28 +1,14 @@
 package com.itrade;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.itrade.jsonParser.WBhelper;
 import com.itrade.models.Access;
-import com.itrade.models.Contact;
 import com.itrade.models.Login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class Home extends Activity {
