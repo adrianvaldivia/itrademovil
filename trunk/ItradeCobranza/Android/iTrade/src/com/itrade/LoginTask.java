@@ -44,9 +44,10 @@ public class LoginTask extends Activity {
 	    task.execute(new String[] { user,password });// le digo que se ejecute y le paso los parámetros user y pass
 
 	}
+	/*CLASE ASINCRONA*/
 	private class LoginBackGroundTask extends AsyncTask<String, Void, String>{
-
 		@Override
+		/*PRIMERO SE METE AKI*/
 		protected String doInBackground(String... parameters) {//primero se ejecutará esto y en parameters están user y password
 			// TODO Auto-generated method stub
 			String response="";
@@ -56,15 +57,15 @@ public class LoginTask extends Activity {
 			params.add(new BasicNameValuePair("username", parameters[0]));// Declaro un parámetro "username" que tiene el valor user que le pasé como atributo
 			params.add(new BasicNameValuePair("password", parameters[1]));// mismo caso para el password
 			//Obteniendo el response
-			String responseBody=helper.obtainResponse("itrade/Login/get_user_by_username_password/",params);// hago la llamada al webservice
-			Log.d("response login task=",responseBody);//Escribo en el logcat para saber que cosa es lo que esta llegando
+			String responseBody=helper.obtainResponse("itrade/Login/get_user_by_username_password/",params);// hago la llamada al webservice			
+			Log.d("response login task=",responseBody);//Escribo en el logcat para saber que cosa es lo que esta llegando							
 			return responseBody;//retorno todo el string de respuesta
-		}
-				
-		
+		}				
 		@Override
+		/*SEGUNDO SE METE AKI*/
 		protected void onPostExecute(String result) {
 			Log.d("POST!!!!!!=",result); //lo que yo retorne del bakground lo obtengo en la variable result, por siacaso lo escribo en logcat con esta linea						
+			
 			Gson gson = new Gson();//un helper para el parseo del texto a objeto 		
 			//Esta linea automaticamente le das el texto y te convierte a objeto, lo regresa en una lista de objetos
 			loginList = gson.fromJson(result, new TypeToken<List<Login>>(){}.getType());//Es necesario que la clase login tenga los mismos campos del webservice un ejemplo es el siguiente
@@ -77,7 +78,7 @@ public class LoginTask extends Activity {
 			}else{
 				//loginErrorMsg.setText("Incorrect username/password");
 				textView.setText("No existe usuario con ese nombre");// No existe o hubo un error.
-				//Aca es donde pondremos la alerta de que no existe usuario o algo similar. Código de henry
+				//Aca es donde pondremos la alerta de que no existe usuario o algo similar. Código de henry				
 			}
 			
 		}
