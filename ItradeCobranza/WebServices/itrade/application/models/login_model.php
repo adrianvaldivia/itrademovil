@@ -17,11 +17,14 @@ class Login_model extends CI_Model {
         return $query->result();				
 	}	
 	function get_by_username($username,$password){				
+		/*Relacion entre las tablas*/
 		$this->db->select($this->table_usuario.".Nombre as Username, ".$this->table_persona.".Nombre , ".$this->table_persona.".ApePaterno, ".$this->table_persona.".ApeMaterno");
 		$this->db->from($this->table_persona);
 		$this->db->join($this->table_usuario,$this->table_usuario.".IdPersona =".$this->table_persona.".IdPersona");
+		/*hace el match con los parametros*/
 		$this->db->where($this->table_usuario.".Nombre", $username);		
 		$this->db->where($this->table_usuario.".Password", $password);
+		
 		$query = $this->db->get();
 		//echo $this->db->last_query();
         return $query->result();			
