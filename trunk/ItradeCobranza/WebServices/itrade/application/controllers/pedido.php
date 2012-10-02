@@ -26,7 +26,7 @@ class Pedido extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}		
 	}
-	public function consultar_pedido($idpedido_w)
+	public function consultar_pedido($idpedido_w='')
 	{
 		$idpedido=$this->input->post('idpedido');				
 		if (isset($idpedido_w)&& $idpedido_w!= "" ){			
