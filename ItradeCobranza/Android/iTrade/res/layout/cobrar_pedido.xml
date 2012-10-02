@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="149dp"
         android:orientation="vertical" >
-
+
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/txtVwPedido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -32,9 +32,9 @@
                 android:layout_marginTop="30dip"
                 android:text="Cliente:"
                 android:textColor="#2D8D37" />
-
+
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtVwCliente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dip"
@@ -61,9 +61,9 @@
                     android:layout_marginTop="30dip"
                     android:text="Medio de pago:"
                     android:textColor="#2D8D37" />
-
+
                 <Spinner
-                    android:id="@+id/spinner1"
+                    android:id="@+id/spin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dip"
@@ -124,9 +124,9 @@
                                 android:layout_marginTop="30dip"
                                 android:text="Monto a pagar:"
                                 android:textColor="#2D8D37" />
-
+
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtVwMonto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dip"
@@ -142,9 +142,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/btnPagar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
