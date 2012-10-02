@@ -16,6 +16,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class LoginTask extends Activity {
@@ -24,6 +27,8 @@ public class LoginTask extends Activity {
 	 */
 	//Declarando elementos
 	private TextView textView;//El textview que se va mostrar
+	private TextView textPedido;//El textview del pedido que se va solicitar
+	private Button button_Aceptar;//boton de aceptar
 	private String direccion="http://10.0.2.2/";//la direccion de localhost para el consumo de webservices 
 	private ArrayList<Login> loginList = new ArrayList<Login>();//Lista de ayuda para contener los elementos consultados
 	@Override
@@ -34,10 +39,30 @@ public class LoginTask extends Activity {
         Intent i = getIntent(); //Se obtiene el intent
         // se obtienen los parametros que se pasaron como extras en el intent anterior
         String userStr = (String)i.getSerializableExtra("username"); //Se obtiene el nombre de usuario
-        String passStr = (String)i.getSerializableExtra("password"); //Se obtiene el password       	
-        textView = (TextView) findViewById(R.id.textView1);// Se obtiene el textview de home        
+        String passStr = (String)i.getSerializableExtra("password"); //Se obtiene el password    
+        
+        textView = (TextView) findViewById(R.id.textView1);// Se obtiene el textview de home
+        textPedido = (TextView) findViewById(R.id.textView2);// textview de pedido
+        button_Aceptar= (Button)findViewById(R.id.Aceptar);//boton Aceptar
+        
       //Se llama a un método que a su vez ejecutará el hilo asyncrono
         executeLoginTask(userStr, passStr);//le paso los parámetros user y password
+        
+        button_Aceptar.setOnClickListener(new OnClickListener() {
+	    	@Override
+			public void onClick(View v) {
+	    		//Definido en el evento onlick    		
+				String pedido = textPedido.getText().toString(); //Con esto se obtiene lo que se escriba en el input de nombre usuario
+				Log.d("Button", "Pedido"); //Este es un mensaje que sale en el logcat, cuanto es log.d sale un mensaje de color AZUL				
+				//Declaro un nueo intent. Como primer parametro tiene este activity y como segundo el que yo quiero iniciar
+				Intent intent = new Intent(LoginTask.this, PaymentTask.class); 													
+				intent.putExtra("pedido", pedido); //Estoy agregando como parámetro a "pedido" en el intent 
+				
+				startActivity(intent); //Comienza el intent
+				finish(); //Cierra esta actividad														
+			}
+	 	});
+        
 	}
 	public void executeLoginTask(String user, String password) {
 		LoginBackGroundTask task = new LoginBackGroundTask();//declaro una tarea como una nueva clase
