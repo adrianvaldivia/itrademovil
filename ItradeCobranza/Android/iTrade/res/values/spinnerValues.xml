@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="comidas">
-        <item>Salchichas</item>
-        <item>Huevos</item>
-        <item>Tomates</item>
+    <string-array name="tipoPago">
+        <item>Efectivo</item>
+        <item>Crédito</item>
     </string-array>
 </resources>
