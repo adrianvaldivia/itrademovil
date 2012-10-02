@@ -26,5 +26,18 @@ class Pedido extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}		
 	}
+	public function consultar_pedido($idpedido_w)
+	{
+		$idpedido=$this->input->post('idpedido');				
+		if (isset($idpedido_w)&& $idpedido_w!= "" ){			
+			$result=$this->Payment_model->get_by_id($idpedido_w);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
+		}
+		
+		if (isset($idpedido)&& $idpedido!=""  ){
+			$result=$this->Payment_model->get_by_id($idpedido);
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}		
+	}
 }
 
