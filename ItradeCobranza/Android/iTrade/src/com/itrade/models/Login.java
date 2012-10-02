@@ -2,11 +2,12 @@ package com.itrade.models;
 
 import java.io.Serializable;
 
-public class Login implements Serializable {
+public class Login implements Serializable { //IMPORTANTE QUE SEA SERIALIZABLE para poder pasarlo a traves del intent
 	private String Username;
 	private String Nombre;
 	private String ApePaterno;
 	private String ApeMaterno;
+	
 	public String getUsername() {
 		return Username;
 	}
