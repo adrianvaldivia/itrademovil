@@ -12,7 +12,7 @@ class Pedido extends CI_Controller {
 	{					
 		echo "Controlador Pedido";			
 	}	
-	public function pagar_pedido($idpedido_w)
+	public function pagar_pedido($idpedido_w='')
 	{
 		$idpedido=$this->input->post('idpedido');		
 		
