@@ -17,6 +17,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class PaymentTask extends Activity {
@@ -27,6 +29,7 @@ public class PaymentTask extends Activity {
 	private TextView txtVwPedido;
 	private TextView txtVwCliente;
 	private TextView txtVwMonto;
+	private Spinner spinTipo;
 	private String direccion="http://10.0.2.2/"; 
 	private ArrayList<Pedido> requestList = new ArrayList<Pedido>();
 	
@@ -43,6 +46,15 @@ public class PaymentTask extends Activity {
         txtVwPedido = (TextView) findViewById(R.id.txtVwPedido);//Pedido
         txtVwCliente = (TextView) findViewById(R.id.txtVwCliente);//CLIENTE
         txtVwMonto = (TextView) findViewById(R.id.txtVwMonto);//monto
+        spinTipo = (Spinner)findViewById(R.id.spin);
+        
+        //Creamos el adaptador
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.comidas,android.R.layout.simple_spinner_item);
+        //Añadimos el layout para el menú
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        //Le indicamos al spinner el adaptador a usar
+        spinTipo.setAdapter(adapter);
+        
         //Se llama a un método que a su vez ejecutará el hilo asyncrono
         executePaymentTask(pedido);//le paso los parámetros user y password
 	}
