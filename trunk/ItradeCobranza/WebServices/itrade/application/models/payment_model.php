@@ -4,6 +4,8 @@ class Payment_model extends CI_Model {
     function __construct()
     {        
         parent::__construct();		
+		$this->table_cliente = 'Cliente';
+		$this->table_persona = 'Persona';
 		$this->table_pedido = 'Pedido';
 		$this->table_estado_pedido = 'EstadoPedido';
     }	
@@ -11,8 +13,8 @@ class Payment_model extends CI_Model {
 	public function pay_by_id($idpedido){
 		//obtain pedido
 		//si es que ya esta pagado, no se puede cambiar de estado y se devuelve un array vacio
-		if ($this->pendiente($idpedido)){			
-			//Es necesario updatear el estado del pedido
+		/*
+		if ($this->pendiente($idpedido)){						
 			$data = array(
                'IdEstadoPedido' => 1
 			   'FechaCobranza'=>'CURDATE()'
@@ -22,15 +24,22 @@ class Payment_model extends CI_Model {
 			return $this->get_by_id($idpedido);
 		}
 		return array();
+		*/
 	}
 	
 	public function get_by_id($idpedido){
-		$this->db->select($this->table_pedido.".IdPedido, ".$this->table_pedido.".FechaPedido, ".$this->table_pedido."");		
+		//IDPEDIDO, IDCLIENTE, NOMBRECLIENTE, MONTOTOTAL
+		$this->db->select($this->table_pedido.".IdPedido, ".
+							$this->table_pedido.".IdCliente, ".
+							$this->table_persona.".Nombre, ".
+							$this->table_persona.".ApePaterno, ".
+							$this->table_persona.".ApeMaterno, ".
+							$this->table_pedido.".FechaPedido, ".
+							$this->table_pedido.".MontoTotal ");		
 		$this->db->from($this->table_pedido);
-		$this->db->join($this->table_estado_pedido,$this->table_pedido.".IdEstadoPedido =".$this->table_estado_pedido.".IdEstadoPedido");				
-		$this->db->where($this->table_pedido.".IdPedido", $idpedido);
-		// 0 -> PENDIENTE, 1 -> PAGADO, 2 ->CANCELADO
-		$this->db->where($this->table_estado_pedido.".IdEstadoPedido", 0);// 0 indica que no esta pagado
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
+		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
+		$this->db->where($this->table_pedido.".IdPedido", $idpedido);			
 		$query = $this->db->get();
 		return $query->result();	
 	}
