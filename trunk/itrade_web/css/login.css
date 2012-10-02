@@ -1,0 +1,89 @@
+body{
+    margin:0; 
+    font-family: Arial; 
+    font-size: 14px;
+}
+#header{
+    border-bottom: 1px solid grey;
+    box-shadow: 0 0 20px black;
+    height: 100px;
+    padding: 20px;
+    position: relative;
+}
+#header div {
+
+}
+#header .bienvenido{
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#header .nombre{
+    font-style: italic;
+}
+#header .user{
+
+}
+#header #title{
+    height:200px; 
+    background-color:skyblue; 
+    color: white;
+}
+#header .header_left{
+    height: 100px;
+    left: 25%;
+    line-height: 30px;
+    margin-left: 0;
+    margin-top: -50px;
+    padding-top: 1em;
+    position: absolute;
+    top: 50%;
+    width: 400px;
+}
+#header .header_right{
+    height: 100px;
+    margin-top: -5px;
+    padding-top: 10px;
+    position: absolute;
+    right: 1em;
+    text-align: center;
+    top: 15%;
+    width: 70px;
+    cursor:pointer;
+}
+#header .header_right a{
+    color: #009B2E;
+    font-weight: bold;
+    line-height: 50px;
+}
+#logo{
+    float: left;
+    left: 5em;
+    position: absolute;
+    top: 2em;
+}
+#logo img{
+    height: 70px;
+}
+#content{
+    height: 100%;
+    max-height: 420px;
+    min-height: 420px;
+    padding: 20px;
+    position: relative;
+}
+
+#footer div {
+    color: white;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 50px;
+    text-align: center;
+}
+#footer{
+
+    height:50px;
+    background-color: #009B2E;
+}
