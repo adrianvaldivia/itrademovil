@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.jsonParser.WBhelper;
 import com.itrade.models.Login;
+import com.itrade.models.Pedido;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,9 +24,11 @@ public class PaymentTask extends Activity {
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */	
 	
-	private TextView textView;
+	private TextView txtVwPedido;
+	private TextView txtVwCliente;
+	private TextView txtVwMonto;
 	private String direccion="http://10.0.2.2/"; 
-	private ArrayList<Login> loginList = new ArrayList<Login>();
+	private ArrayList<Pedido> requestList = new ArrayList<Pedido>();
 	
 	
 	@Override
@@ -35,15 +38,17 @@ public class PaymentTask extends Activity {
 		setContentView(R.layout.cobrar_pedido);//utiliza el layout home   
         Intent i = getIntent(); //Se obtiene el intent
         // se obtienen los parametros que se pasaron como extras en el intent anterior
-        String userStr = (String)i.getSerializableExtra("username"); //Se obtiene el nombre de usuario
-        String passStr = (String)i.getSerializableExtra("password"); //Se obtiene el password       	
-        textView = (TextView) findViewById(R.id.textView1);// Se obtiene el textview de home        
-      //Se llama a un método que a su vez ejecutará el hilo asyncrono
-        executeLoginTask(userStr, passStr);//le paso los parámetros user y password
+        String pedido = (String)i.getSerializableExtra("pedido"); //Se obtiene el nombre de usuario      
+        //Elementos del XML DE COBRANZA       
+        txtVwPedido = (TextView) findViewById(R.id.txtVwPedido);//Pedido
+        txtVwCliente = (TextView) findViewById(R.id.txtVwCliente);//CLIENTE
+        txtVwMonto = (TextView) findViewById(R.id.txtVwMonto);//monto
+        //Se llama a un método que a su vez ejecutará el hilo asyncrono
+        executePaymentTask(pedido);//le paso los parámetros user y password
 	}
-	public void executeLoginTask(String user, String password) {
+	public void executePaymentTask(String idpedido) {
 		PaymentBackGroundTask task = new PaymentBackGroundTask();//declaro una tarea como una nueva clase
-	    task.execute(new String[] { user,password });// le digo que se ejecute y le paso los parámetros user y pass
+	    task.execute(new String[] { idpedido });// le digo que se ejecute y le paso los parámetros user y pass
 
 	}
 	/*CLASE ASINCRONA*/
@@ -56,30 +61,32 @@ public class PaymentTask extends Activity {
 			//Llamada al webservice
 			WBhelper helper = new WBhelper(direccion);//Esta es una clase que yo cree que me ayuda con los webservices				
 			List<NameValuePair> params = new ArrayList<NameValuePair>();// declaro un arreglo para pasarle parámetros a mi webservice			
-			params.add(new BasicNameValuePair("username", parameters[0]));// Declaro un parámetro "username" que tiene el valor user que le pasé como atributo
-			params.add(new BasicNameValuePair("password", parameters[1]));// mismo caso para el password
+			Log.d("idpedido=",parameters[0]);
+			params.add(new BasicNameValuePair("idpedido", parameters[0]));// Declaro un parámetro "username" que tiene el valor user que le pasé como atributo
 			//Obteniendo el response
-			String responseBody=helper.obtainResponse("itrade/Login/get_user_by_username_password/",params);// hago la llamada al webservice			
-			Log.d("response login task=",responseBody);//Escribo en el logcat para saber que cosa es lo que esta llegando							
+			String responseBody=helper.obtainResponse("itrade/Pedido/consultar_pedido/",params);// hago la llamada al webservice			
+			Log.d("response pAYMENT Task=",responseBody);//Escribo en el logcat para saber que cosa es lo que esta llegando							
 			return responseBody;//retorno todo el string de respuesta
 		}				
 		@Override
 		/*SEGUNDO SE METE AKI*/
 		protected void onPostExecute(String result) {
-			Log.d("POST!!!!!!=",result); //lo que yo retorne del bakground lo obtengo en la variable result, por siacaso lo escribo en logcat con esta linea						
+			Log.d("POST payment=",result); //lo que yo retorne del bakground lo obtengo en la variable result, por siacaso lo escribo en logcat con esta linea						
 			
 			Gson gson = new Gson();//un helper para el parseo del texto a objeto 		
 			//Esta linea automaticamente le das el texto y te convierte a objeto, lo regresa en una lista de objetos
-			loginList = gson.fromJson(result, new TypeToken<List<Login>>(){}.getType());//Es necesario que la clase login tenga los mismos campos del webservice un ejemplo es el siguiente
+			requestList = gson.fromJson(result, new TypeToken<List<Pedido>>(){}.getType());//Es necesario que la clase login tenga los mismos campos del webservice un ejemplo es el siguiente
 			//[{"Username":"adg","Nombre":"Joel","ApePaterno":"Prada","ApeMaterno":"Licla"}]			
-			Integer inte=loginList.size();//Si es que el parseo lo hizo bien y hubo algun resultado el tamaño de la lista será mayor que 0
-			Log.d("Cantidad de contactos!!!!!!!=",inte.toString());// por siacaso escribo el resultado en el logcat
+			Integer inte=requestList.size();//Si es que el parseo lo hizo bien y hubo algun resultado el tamaño de la lista será mayor que 0
+			Log.d("Cantidad de pedidos!!!!!!!=",inte.toString());// por siacaso escribo el resultado en el logcat
 			if (inte>0){//hago la validación		
-				String cont = loginList.get(0).toString();// obtengo el elemento de la lista y lo transformo a string
-				textView.setText(cont);// seteo el valor en la vista
+				Pedido pedido = requestList.get(0);// obtengo el elemento de la lista y lo transformo a string
+				txtVwPedido.setText("Pedido#"+pedido.getIdPedido());// seteo el valor en la vista				
+		        txtVwCliente.setText(pedido.getApePaterno()+" "+pedido.getApeMaterno()+" "+pedido.getNombre());// seteo el valor en la vista
+		        txtVwMonto.setText("S/."+pedido.getMontoTotal().toString());
 			}else{
 				//loginErrorMsg.setText("Incorrect username/password");
-				textView.setText("No existe usuario con ese nombre");// No existe o hubo un error.
+				txtVwPedido.setText("No existe usuario con ese nombre");// No existe o hubo un error.
 				//Aca es donde pondremos la alerta de que no existe usuario o algo similar. Código de henry				
 			}
 			
