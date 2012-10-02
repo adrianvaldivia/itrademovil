@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-//$config['base_url']	= 'http://localhost/sitios_web/itrade/itrade_web';
-$config['base_url']	= 'http://localhost/itrade_web';
+$config['base_url']	= 'http://localhost/sitios_web/itrade_web';
+//$config['base_url']	= 'http://localhost/itrade_web';
 
 /*
 |--------------------------------------------------------------------------
