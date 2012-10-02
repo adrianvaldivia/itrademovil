@@ -63,7 +63,7 @@ public class LoginTask extends Activity {
 				intent.putExtra("pedido", pedido); //Estoy agregando como parámetro a "pedido" en el intent 
 				Log.d("codigo de pedido !!=",pedido); 
 				startActivity(intent); //Comienza el intent
-				finish(); //Cierra esta actividad														
+				//finish(); //Cierra esta actividad														
 			}
 	 	});
         
@@ -133,5 +133,7 @@ public class LoginTask extends Activity {
 		}
 			
 	}
-			
+		
+	
+
 }
