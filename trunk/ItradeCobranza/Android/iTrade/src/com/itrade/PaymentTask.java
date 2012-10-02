@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.jsonParser.WBhelper;
 import com.itrade.models.Login;
-import com.itrade.models.Notificacion;
 import com.itrade.models.Pedido;
 
 import android.app.Activity;
