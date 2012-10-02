@@ -12,6 +12,9 @@ import com.itrade.jsonParser.WBhelper;
 import com.itrade.models.Login;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ public class LoginTask extends Activity {
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
+	final Context context = this;
 	//Declarando elementos
 	private TextView textView;//El textview que se va mostrar
 	private TextView textPedido;//El textview del pedido que se va solicitar
@@ -103,11 +107,31 @@ public class LoginTask extends Activity {
 			}else{
 				//loginErrorMsg.setText("Incorrect username/password");
 				textView.setText("No existe usuario con ese nombre");// No existe o hubo un error.
-				//Aca es donde pondremos la alerta de que no existe usuario o algo similar. Código de henry				
+				//Aca es donde pondremos la alerta de que no existe usuario o algo similar. Código de henry
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 
+					// set title
+				alertDialogBuilder.setTitle("Usuario incorrecto");		 
+					// set dialog message
+				alertDialogBuilder
+						.setMessage("El usuario no es válido!")
+						.setCancelable(false)						
+						.setNegativeButton("Aceptar",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								// if this button is clicked, just close
+								// the dialog box and do nothing								
+								dialog.cancel();
+								finish();
+							}
+						});
+		 
+						// create alert dialog
+				AlertDialog alertDialog = alertDialogBuilder.create();		 
+						// show it
+				alertDialog.show();
 			}
-			
-		}
-		
-	}
 
+		}
+			
+	}
+			
 }

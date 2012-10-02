@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 				intent.putExtra("username", user); //Estoy agregando como parámetro a "username" al intent 
 				intent.putExtra("password", password); //Estoy agregando como parámetro a "password" al intent
 				startActivity(intent); //Comienza el intent
-				finish(); //Cierra esta actividad														
+				//finish(); //Cierra esta actividad														
 			}
 	 	}); 
 	    
