@@ -42,7 +42,7 @@ public class LoginTask extends Activity {
         String passStr = (String)i.getSerializableExtra("password"); //Se obtiene el password    
         
         textView = (TextView) findViewById(R.id.textView1);// Se obtiene el textview de home
-        textPedido = (TextView) findViewById(R.id.textView2);// textview de pedido
+        textPedido = (TextView) findViewById(R.id.txtVwPedido);// textview de pedido
         button_Aceptar= (Button)findViewById(R.id.Aceptar);//boton Aceptar
         
       //Se llama a un método que a su vez ejecutará el hilo asyncrono
@@ -57,7 +57,7 @@ public class LoginTask extends Activity {
 				//Declaro un nueo intent. Como primer parametro tiene este activity y como segundo el que yo quiero iniciar
 				Intent intent = new Intent(LoginTask.this, PaymentTask.class); 													
 				intent.putExtra("pedido", pedido); //Estoy agregando como parámetro a "pedido" en el intent 
-				
+				Log.d("codigo de pedido !!=",pedido); 
 				startActivity(intent); //Comienza el intent
 				finish(); //Cierra esta actividad														
 			}
