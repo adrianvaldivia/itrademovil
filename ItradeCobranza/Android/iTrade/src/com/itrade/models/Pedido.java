@@ -11,7 +11,11 @@ public class Pedido implements Serializable {
 	private String ApeMaterno;
 	private String FechaPedido;//Falta convertir a Date!!!
 	private Double MontoTotal;
+	private String FechaCobranza;		
+	private String IdEstadoPedido;
 		
+	
+	
 	@Override
 	public String toString() {
 		return "Pedido [IdPedido=" + IdPedido + ", IdCliente=" + IdCliente
@@ -19,6 +23,9 @@ public class Pedido implements Serializable {
 				+ ", ApeMaterno=" + ApeMaterno + ", FechaPedido=" + FechaPedido
 				+ ", MontoTotal=" + MontoTotal + "]";
 	}
+	
+	
+
 	public Pedido(Integer idPedido, Integer idCliente, String nombre,
 			String apePaterno, String apeMaterno, String fechaPedido,
 			Double montoTotal) {
@@ -31,6 +38,49 @@ public class Pedido implements Serializable {
 		FechaPedido = fechaPedido;
 		MontoTotal = montoTotal;
 	}
+	
+	
+	public Pedido(Integer idPedido, Integer idCliente, String nombre,
+			String apePaterno, String apeMaterno, String fechaPedido,
+			Double montoTotal, String fechaCobranza, String idEstadoPedido) {
+		super();
+		IdPedido = idPedido;
+		IdCliente = idCliente;
+		Nombre = nombre;
+		ApePaterno = apePaterno;
+		ApeMaterno = apeMaterno;
+		FechaPedido = fechaPedido;
+		MontoTotal = montoTotal;
+		FechaCobranza = fechaCobranza;
+		IdEstadoPedido = idEstadoPedido;
+	}
+
+
+
+	public String getFechaCobranza() {
+		return FechaCobranza;
+	}
+
+
+
+	public void setFechaCobranza(String fechaCobranza) {
+		FechaCobranza = fechaCobranza;
+	}
+
+
+
+	public String getIdEstadoPedido() {
+		return IdEstadoPedido;
+	}
+
+
+
+	public void setIdEstadoPedido(String idEstadoPedido) {
+		IdEstadoPedido = idEstadoPedido;
+	}
+
+
+
 	public Integer getIdPedido() {
 		return IdPedido;
 	}
