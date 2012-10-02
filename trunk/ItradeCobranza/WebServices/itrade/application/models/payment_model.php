@@ -33,6 +33,8 @@ class Payment_model extends CI_Model {
 							$this->table_persona.".ApePaterno, ".
 							$this->table_persona.".ApeMaterno, ".
 							$this->table_pedido.".FechaPedido, ".
+							$this->table_pedido.".IdEstadoPedido, ".							
+							$this->table_pedido.".FechaCobranza, ".
 							$this->table_pedido.".MontoTotal ");		
 		$this->db->from($this->table_pedido);
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
