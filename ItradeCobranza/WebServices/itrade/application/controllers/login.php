@@ -23,7 +23,10 @@ class Login extends CI_Controller {
 		if (isset($username)&& $username!="" && isset($password)&& $password!="" ){
 			$result=$this->Login_model->get_by_username($username,$password);
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
-		}		
+		}
+		else{
+			$this->output->set_content_type('application/json')->set_output(json_encode(array()));					
+		}
 	}
 	
 	public	function encrypt($string, $key) {
