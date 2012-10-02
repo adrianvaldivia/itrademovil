@@ -49,7 +49,7 @@ public class PaymentTask extends Activity {
         spinTipo = (Spinner)findViewById(R.id.spin);
         
         //Creamos el adaptador
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.comidas,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.tipoPago,android.R.layout.simple_spinner_item);
         //Añadimos el layout para el menú
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         //Le indicamos al spinner el adaptador a usar
