@@ -13,18 +13,16 @@ class Payment_model extends CI_Model {
 	public function pay_by_id($idpedido){
 		//obtain pedido
 		//si es que ya esta pagado, no se puede cambiar de estado y se devuelve un array vacio
-		/*
-		if ($this->pendiente($idpedido)){						
-			$data = array(
-               'IdEstadoPedido' => 1
-			   'FechaCobranza'=>'CURDATE()'
-            );
+		
+		if ($this->pendiente($idpedido)){									
+			$this->db->set('IdEstadoPedido', 1);
+			$this->db->set('FechaCobranza', 'CURDATE()', FALSE);							
 			$this->db->where('IdPedido', $idpedido);
-			$this->db->update($this->table_pedido, $data);
+			$this->db->update($this->table_pedido);
 			return $this->get_by_id($idpedido);
 		}
 		return array();
-		*/
+		
 	}
 	
 	public function get_by_id($idpedido){
@@ -46,11 +44,10 @@ class Payment_model extends CI_Model {
 	
 	public function pendiente($idpedido){
 		$this->db->select($this->table_pedido.".IdPedido");		
-		$this->db->from($this->table_pedido);
-		$this->db->join($this->table_estado_pedido,$this->table_pedido.".IdEstadoPedido =".$this->table_estado_pedido.".IdEstadoPedido");				
+		$this->db->from($this->table_pedido);		
 		$this->db->where($this->table_pedido.".IdPedido", $idpedido);
 		// 0 -> PENDIENTE, 1 -> PAGADO, 2 ->CANCELADO
-		$this->db->where($this->table_estado_pedido.".IdEstadoPedido", 0);// 0 indica que no esta pagado
+		$this->db->where($this->table_pedido.".IdEstadoPedido", 0);// 0 indica que no esta pagado
 		$query = $this->db->get();			
         if ($query->num_rows()>0){
 			//QUIERE DECIR QUE se puede pagar
