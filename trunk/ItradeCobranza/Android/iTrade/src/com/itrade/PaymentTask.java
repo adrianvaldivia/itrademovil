@@ -108,7 +108,7 @@ public class PaymentTask extends Activity {
 				Pedido pedido = payReqtList.get(0);// obtengo el elemento de la lista y lo transformo a string
 				titulo="Pago exitoso"; 
 				mensaje="Se registro el pago del pedido Nro: "+pedido.getIdPedido().toString()+
-						"La fecha del registro fue: "+pedido.getFechaCobranza(); 
+						" La fecha del registro fue: "+pedido.getFechaCobranza(); 
 			}else{
 				//loginErrorMsg.setText("Incorrect username/password");
 				titulo="No se registro el pago";
