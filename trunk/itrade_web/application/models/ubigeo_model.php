@@ -8,7 +8,7 @@ class Ubigeo_model extends CI_Model {
     }
 	
 	function get_all_ubigeos(){		
-		$query = $this->db->get('ubigeo');		
+        $query = $this->db->get($this->tablename);
         return $query->result();				
 	}
 	
