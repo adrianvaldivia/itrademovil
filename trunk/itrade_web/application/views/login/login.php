@@ -52,6 +52,7 @@
             <? } ?>
         </div>
         <div id="content">
+            <? //print($main);?>
             <?php $this->load->view($main); ?>
         </div>
         <div id="footer">
