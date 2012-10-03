@@ -38,15 +38,13 @@ class Validate extends CI_Controller {
               }
              */
             $data = array(
-                'username' => $user['user'],
-                'id_contact' => $user['id_contact'],
-                'password' => $user['password'],
+                'username' => $user['Nombre'],
+                'id_contact' => $user['IdUsuario'],
+                'password' => $user['Password'],
                 'logged_in' => TRUE,
-                'name' => $user['name'],
-                'acceso' => 0,
-                'number' => $user['number'],
-                'description' => $user['description'],
-                'email' => $user['email']
+                'acceso' => $user['IdPerfil'],
+                'number' => $user['IdPersona'],
+                
             );
             //Encapsula variables de una sesion
             $this->session->set_userdata($data);
