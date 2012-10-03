@@ -18,7 +18,7 @@ class Home extends CI_Controller {
         $data['title'] = "Itrade Mantenimientos!!!";
         $data['username'] = $this->session->userdata('username');
         $data['name'] = $this->session->userdata('name');
-        $data['main'] = "pages/resultado.php"; //Ruta del contenido del home			           			
+        $data['main'] = "pages/dashboard_view.php"; //Ruta del contenido del home			           			
         $this->load->vars($data);
         $this->load->view('login/login');
         //echo "<script languaje='javascript'>alert('Index')</script>";
