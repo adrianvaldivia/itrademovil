@@ -8,7 +8,7 @@ class Distrito_model extends CI_Model {
     }
 	
 	function get_all_districts(){		
-		$query = $this->db->get('distrito');		
+        $query = $this->db->get($this->tablename);
         return $query->result();				
 	}
 }

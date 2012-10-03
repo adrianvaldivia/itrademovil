@@ -8,7 +8,7 @@ class Cliente_model extends CI_Model {
     }
 	
 	function get_all_clients(){		
-		$query = $this->db->get('cliente');		
+		$query = $this->db->get($this->tablename);
         return $query->result();				
 	}
 

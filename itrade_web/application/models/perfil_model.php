@@ -8,7 +8,7 @@ class Perfil_model extends CI_Model {
     }
 	
 	function get_all_profile(){		
-		$query = $this->db->get('perfil');		
+        $query = $this->db->get($this->tablename);
         return $query->result();				
 	}
 

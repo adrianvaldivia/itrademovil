@@ -8,7 +8,7 @@ class Jerarquia_model extends CI_Model {
     }
 	
 	function get_all_hierarchies(){		
-		$query = $this->db->get('jerarquia');		
+	        $query = $this->db->get($this->tablename);
         return $query->result();				
 	}
 

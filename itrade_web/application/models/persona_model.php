@@ -8,7 +8,7 @@ class Persona_model extends CI_Model {
     }
 	
 	function get_all_people(){		
-		$query = $this->db->get('persona');		
+        $query = $this->db->get($this->tablename);
         return $query->result();				
 	}
 	
