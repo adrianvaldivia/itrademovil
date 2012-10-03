@@ -15,7 +15,7 @@ class Home extends CI_Controller {
 
     public function index() {
         //cargar las noticias              
-        $data['title'] = "Itrade Mantenimientos!!!";
+        $data['title'] = "Itrade Mantenimientos - home";
         $data['username'] = $this->session->userdata('username');
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');

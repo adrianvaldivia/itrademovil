@@ -1,0 +1,32 @@
+/* 
+    Document   : user_edit
+    Created on : 03-oct-2012, 13:00:41
+    Author     : andrea
+    Description:
+        Purpose of the stylesheet follows.
+*/
+fieldset {
+	padding:20px;
+	margin-bottom:15px;
+}
+
+fieldset.left {
+	float:left;
+	width:40%;
+	margin-right:5%;
+}
+fieldset legend {
+	font-size:13px;
+	padding:5px 10px 0;
+}
+
+fieldset p {
+	margin-bottom:20px;
+}
+
+.mandatory{
+ color:red;
+ font-size: 10px;
+ vertical-align: text-top;
+ font-weight: bold;
+}
