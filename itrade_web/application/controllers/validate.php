@@ -5,7 +5,7 @@ class Validate extends CI_Controller {
     function Validate() {
         parent::__construct();
         //Cargar los modelos para la base de datos
-        $this->load->model('Contacts_model');
+        $this->load->model('Usuario_model');
     }
 
     public function index() {
@@ -26,12 +26,12 @@ class Validate extends CI_Controller {
             $u = $this->input->post('username');
             $pw = $this->input->post('password');
             //Verificacion de un unico usuario
-            if (!$this->Contacts_model->verify_user($u, $pw)) {
-                $this->session->set_flashdata('error', "Verificacion de password");
-                redirect('principal', 'refresh');
+            if (!$this->Usuario_model->verify_user($u, $pw)) {
+                $this->session->set_flashdata('error', "Por favor verifique sus datos");
+                redirect('login', 'refresh');
             }
             //
-            $user = $this->Contacts_model->get_by_username($u);
+            $user = $this->Usuario_model->get_by_username($u);
             /* En caso se devuelva un objecto en $query->result();
               foreach($user as $u){
               echo "campo".$u->user;
