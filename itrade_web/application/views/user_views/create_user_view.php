@@ -83,7 +83,7 @@
                     <?= form_input($lastname2) ?>
                 </p>
                 <p>
-                    <label>Teléfono: </label>
+                    <label>Tel&eacute;fono: </label>
                     <?php $phone = array('name' => 'phone', 'id' => 'phone', 'size' => 15, 'class' => 'number', 'title' => 'Por favor ingrese un telefono válido', 'maxlength' => '10', 'value' => set_value('phone')); ?>
                     <?= form_input($phone) ?>
                 </p>
