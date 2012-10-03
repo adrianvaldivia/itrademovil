@@ -20,7 +20,7 @@ class Perfil_model extends CI_Model {
     }
 
     function edit($idPerfil, $data) {
-        $this->db->where('IdPerrfil', $idPerfil);
+        $this->db->where('IdPerfil', $idPerfil);
         return $this->db->update($this->tablename, $data);
     }
 
