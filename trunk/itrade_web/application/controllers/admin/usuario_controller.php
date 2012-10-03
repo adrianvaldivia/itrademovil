@@ -24,13 +24,12 @@ class Usuario_controller extends CI_Controller {
     }
 
     public function index() {
-        //cargar las noticias                
+        //cargar las noticias               
         $data['title'] = "Itrade Mantenimientos!!!";
         $data['main'] = "login/login_box.php"; //RUTA		
         //OBTENIENDO DATA PARA PERFILES
         $data['perfiles'] = $this->get_all_profile();
-        $this->load->vars($data);
-        
+        $this->load->vars($data);        
         $this->load->view('user_views/create_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
     }
