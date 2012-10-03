@@ -25,13 +25,13 @@ class Usuario_model extends CI_Model {
     }
 
     function get_by_username($username) {
-        $this->db->where('IdUsuario', $username);
+        $this->db->where('Nombre', $username);
         $query = $this->db->get($this->tablename);
         return $query->row_array();
     }
 
     public function verify_user($username, $password) {
-        $this->db->where('IdUsuario', $username);
+        $this->db->where('Nombre', $username);
         $this->db->where('Password', do_hash(xss_clean($password)));
         $query = $this->db->get($this->tablename);
 
