@@ -18,6 +18,14 @@ class Persona_model extends CI_Model {
         $rows = $query->result();
         return $rows[0];
     }
+	
+	function create($data)
+	{
+		$this->db->insert($this->tablename, $data);
+		$query = $this->db->query('select last_insert_id()');
+		$row = $query->row_array();
+		return $row['last_insert_id()'];
+	}
 
     function edit($idPersona, $data) {
         $this->db->where('IdPersona', $idPersona);
@@ -46,7 +54,7 @@ class Persona_model extends CI_Model {
         $this->db->where('DNI', $dni);
         $query = $this->db->get($this->tablename);
         return $query->row_array();
-    }    
-	
+    }
+    
 }
 ?>

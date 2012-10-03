@@ -18,6 +18,14 @@ class Usuario_model extends CI_Model {
         $rows = $query->result();
         return $rows[0];
     }
+	
+	function create($data)
+	{
+		$this->db->insert($this->tablename, $data);
+		$query = $this->db->query('select last_insert_id()');
+		$row = $query->row_array();
+		return $row['last_insert_id()'];
+	}
 
     function edit($idUsuario, $data) {
         $this->db->where('IdUsuario', $idUsuario);
