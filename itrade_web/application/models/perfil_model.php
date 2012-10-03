@@ -10,7 +10,8 @@ class Perfil_model extends CI_Model {
     function get_all_profile() {
         $this->db->where('Activo', 1);
         $query = $this->db->get($this->tablename);
-        return $query->result()->rows[0];
+        $rows = $query->result();
+        return $rows[0];
     }
 
     function get($idPerfil) {
