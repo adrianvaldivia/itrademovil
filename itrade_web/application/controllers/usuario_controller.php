@@ -62,7 +62,7 @@ class Usuario_controller extends CI_Controller {
 		if ($this->form_validation->run()){
 			$data = array(
 			   'IdPerfil' => xss_clean($this->input->post('perfil')),
-			   'Activo' => xss_clean($this->input->post('activo')) )
+			   'Activo' => xss_clean($this->input->post('activo')) 
 			);
 
 		    $this->usuario_model->edit($this->input->post('IdUsuario'), $data);
