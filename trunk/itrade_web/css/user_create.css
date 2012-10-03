@@ -24,3 +24,9 @@ fieldset p {
 	margin-bottom:20px;
 }
 
+.mandatory{
+ color:red;
+ font-size: 10px;
+ vertical-align: text-top;
+ font-weight: bold;
+}
