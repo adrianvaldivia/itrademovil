@@ -1,0 +1,26 @@
+/* 
+    Document   : user_create
+    Created on : 02-oct-2012, 20:42:41
+    Author     : leila
+    Description:
+        Purpose of the stylesheet follows.
+*/
+fieldset {
+	padding:20px;
+	margin-bottom:15px;
+}
+
+fieldset.left {
+	float:left;
+	width:40%;
+	margin-right:5%;
+}
+fieldset legend {
+	font-size:13px;
+	padding:5px 10px 0;
+}
+
+fieldset p {
+	margin-bottom:20px;
+}
+
