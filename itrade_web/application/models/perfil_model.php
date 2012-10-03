@@ -1,18 +1,19 @@
 <?
+
 class Perfil_model extends CI_Model {
 
-    function __construct()
-    {        
+    function __construct() {
         parent::__construct();
-		$this->tablename = 'perfil';	
+        $this->tablename = 'perfil';
     }
-	
-	function get_all_profile(){		
-        $query = $this->db->get($this->tablename);
-        return $query->result();				
-	}
 
-	function get($idPerfil) {
+    function get_all_profile() {
+        $this->db->where('Activo', 1);
+        $query = $this->db->get($this->tablename);
+        return $query->result()->rows[0];
+    }
+
+    function get($idPerfil) {
         $this->db->where('IdPerfil', $idPerfil);
         $query = $this->db->get($this->tablename);
         $rows = $query->result();
@@ -31,4 +32,5 @@ class Perfil_model extends CI_Model {
     }
 
 }
+
 ?>
