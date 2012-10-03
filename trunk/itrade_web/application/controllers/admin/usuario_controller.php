@@ -25,16 +25,29 @@ class Usuario_controller extends CI_Controller {
 
     public function index() {
         //cargar las noticias               
-        $data['title'] = "Itrade Mantenimientos!!!";
+        $data['title'] = "Itrade Mantenimientos - Registrar";
         $data['main'] = "login/login_box.php"; //RUTA		
         //OBTENIENDO DATA PARA PERFILES
         $data['perfiles'] = $this->get_all_profile();
-		print_r($data);
+		//print_r($data);
         $this->load->vars($data);        
         $this->load->view('user_views/create_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
     }
-
+	
+	public function modificar() {
+        //cargar las noticias               
+        $data['title'] = "Itrade Mantenimientos - Modificar";
+        $data['main'] = "login/login_box.php"; //RUTA		
+        //OBTENIENDO DATA PARA PERFILES
+        $data['perfiles'] = $this->get_all_profile();
+		$data['usuario'] = $this->Usuario_model->get(1);
+		$data['persona'] = $this->Persona_model->get(1);
+		//print_r($data);
+        $this->load->vars($data);        
+        $this->load->view('user_views/edit_user_view');
+        //echo "<script languaje='javascript'>alert('Index')</script>";
+    }
     public function set_validation_rules($rules) {
         if ($rules == 0) { //Rules para create
 			$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required|callback__check_username');//**
