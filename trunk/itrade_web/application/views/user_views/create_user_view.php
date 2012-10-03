@@ -64,7 +64,7 @@
     </p>-->
             <?php // endif; ?>
 
-            <?= form_open("admin/admin_seguridad/users/create", array('id' => 'userForm')); ?>
+            <?= form_open("admin/usuario_controller/create", array('id' => 'userForm')); ?>
             <fieldset class="left">
                 <legend>Datos Generales</legend>
                 <p>
