@@ -19,7 +19,9 @@ class Home extends CI_Controller {
         $data['username'] = $this->session->userdata('username');
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');
-        $data['main'] = "pages/dashboard_view.php"; //Ruta del contenido del home			           			
+        $data['main'] = "pages/dashboard_view.php"; //Ruta del contenido del home
+		$data['main2'] = "pages/dashboard_content.php"; //RUTA2
+
         $this->load->vars($data);
         $this->load->view('login/login');
         //echo "<script languaje='javascript'>alert('Index')</script>";

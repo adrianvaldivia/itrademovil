@@ -27,10 +27,11 @@ class Usuario_controller extends CI_Controller {
         //cargar las noticias               
         $data['title'] = "Itrade Mantenimientos - Registrar";
         $data['main'] = "login/login_box.php"; //RUTA		
+		
         //OBTENIENDO DATA PARA PERFILES
         $data['perfiles'] = $this->get_all_profile();
-		//print_r($data);
-        $this->load->vars($data);        
+
+		$this->load->vars($data);        
         $this->load->view('user_views/create_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
     }
@@ -41,9 +42,11 @@ class Usuario_controller extends CI_Controller {
         $data['main'] = "login/login_box.php"; //RUTA		
         //OBTENIENDO DATA PARA PERFILES
         $data['perfiles'] = $this->get_all_profile();
-		$data['usuario'] = $this->Usuario_model->get(1);
-		$data['persona'] = $this->Persona_model->get(1);
-		//print_r($data);
+		
+		$userdata=$this->session->all_userdata();//obtengo data del session para usarlo en las 2 datas de abajo:
+		$data['usuario'] = $this->Usuario_model->get($userdata['id_contact']);
+		$data['persona'] = $this->Persona_model->get($userdata['number']);
+		
         $this->load->vars($data);        
         $this->load->view('user_views/edit_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
@@ -84,7 +87,7 @@ class Usuario_controller extends CI_Controller {
 
 		if (/*$this->form_validation->run()*/true){
 			//TABLA PERSONA
-			$data = array(
+			$data['Persona'] = array(
 			   'Nombre' => xss_clean($this->input->post('firstname')),
 			   'ApePaterno' => xss_clean($this->input->post('lastname1')),
 			   'ApeMaterno' => xss_clean($this->input->post('lastname2')),
@@ -95,11 +98,11 @@ class Usuario_controller extends CI_Controller {
 			   'Activo' => 1      
 			);
 			//crea la persona
-			$idPersona = $this->Persona_model->create($data);			
-			print_r($idPersona);
+			$idPersona = $this->Persona_model->create($data['Persona']);
+			// print_r($idPersona);
 			
-			//TABLA USUARIO			
-			$data2 = array(
+			//TABLA USUARIO
+			$data['Usuario']= array(
 				'Nombre' => xss_clean($this->input->post('username')),
 			   'Password' => substr(do_hash(xss_clean($_POST['password'])),0,50),
 			   'IdPerfil' => xss_clean($this->input->post('perfil_id')) ,  
@@ -108,23 +111,21 @@ class Usuario_controller extends CI_Controller {
 			);
 
 			//crea el usuario
-			$this->Usuario_model->create($data2);
+			$this->Usuario_model->create($data['Usuario']);
 			
 		    //mensaje de verificacion
 		    $this->session->set_flashdata('message','El usuario ha sido creado correctamente.');
 		    
 		    //redirect('admin/admin_seguridad/users','refresh');
 		}else{
-		
-		    $data['error_message'] = validation_errors();		    	
-			$data2['error_message'] = validation_errors();
+		    $data['Persona']['error_message'] = validation_errors();		    	
+			$data['Usuario']['error_message'] = validation_errors();
 		}
 
 		$data['title'] = "Nuevo Usuario";		
-		$data2['title'] = "Nuevo Usuario";		
-		//$data['main'] = 'admin/admin_seguridad/users/create';
+		$data['main'] = 'user_views/create_user_views';
 		$this->load->vars($data);
-		$this->load->vars($data2); //REVISAR CON LEILA
+		// $this->load->vars($data2); //REVISAR CON LEILA
 		//$this->load->view('template');
 	}
 
