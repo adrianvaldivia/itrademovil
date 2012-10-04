@@ -17,6 +17,7 @@ class Usuario_model extends CI_Model {
         $query = $this->db->get($this->tablename);
         $rows = $query->result();
         return $rows[0];
+		
     }
 	
 	function create($data)

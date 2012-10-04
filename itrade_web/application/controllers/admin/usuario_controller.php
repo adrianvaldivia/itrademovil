@@ -132,13 +132,14 @@ class Usuario_controller extends CI_Controller {
         //Parametro para setear reglas del edit
         $rules_edit = 1;
         $this->set_validation_rules($rules_edit);
-
-        if ($this->form_validation->run()) {
+		
+		
+        if (/*$this->form_validation->run()*/true) {
             $data = array(
                 'IdPerfil' => xss_clean($this->input->post('perfil')),
                 'Activo' => xss_clean($this->input->post('activo'))
             );
-
+	
             $this->usuario_model->edit($this->input->post('IdUsuario'), $data);
             $this->session->set_flashdata('message', 'Los datos del usuarios han sido modificados correctamente.');
             //redirect('admin/admin_seguridad/users','refresh'); FATLTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -146,10 +147,14 @@ class Usuario_controller extends CI_Controller {
             $data['error_message'] = validation_errors();
         }
         $data['title'] = "Editar Usuario";
-        $data['user'] = $this->usuario_model->get($idUsuario);
+		
+        $data['user'] = $this->Usuario_model->get($idUsuario);
+				// echo'<pre>';
+print_r($data);
+// echo'</pre>';
         //$data['main'] = 'admin/admin_seguridad/users/edit'; FALTAAAAAA
-        $this->load->vars($data);
-        $this->load->view('template'); //LEILA REVISA ESTO
+        // $this->load->vars($data);
+        // $this->load->view('template'); //LEILA REVISA ESTO
     }
 
     function get_all_profile() {
