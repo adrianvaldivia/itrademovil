@@ -52,9 +52,11 @@
             <? } ?>
         </div>
         <div id="content">
-            <? //print($main);?>
-            <?php $this->load->view($main); ?>
-        </div>
+			<div id="contenido_principal" style="width:100%; height:100%;" >	
+				<?php $this->load->view($main); ?>
+				<?php //$this->load->view($main2); ?>
+			</div>
+		</div>
         <div id="footer">
             <div>2012 - i-Trade</div>
         </div>
