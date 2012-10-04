@@ -62,44 +62,50 @@
         <p><? //= $error_message   ?></p>
     </div>
     </p>-->
-            <?php // endif; ?>
+            <?php // endif; 
+			// print_r($persona);
+			?>
 
-            <?= form_open("admin/usuario_controller/edit", array('id' => 'userForm')); ?>
+            <?= form_open("admin/usuario_controller/edit/".$usuario->IdUsuario, array('id' => 'userForm')); ?>
+			
             <fieldset class="left">
                 <legend>Datos Generales</legend>
-                <p>
+				<?php 
+				$idPersona=array('name'=>'idPersona','value'=>$persona->IdPersona);?>
+				<?=form_hidden($idPersona); ?>
+				<p>
                     <label>Nombres: <span class="mandatory">(*)</span> </label>
-                    <?php $firstname = array('name' => 'firstname', 'id' => 'firstname', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el nombre', 'value' => $usuario->Nombre); ?>
+                    <?php $firstname = array('name' => 'firstname', 'id' => 'firstname', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el nombre', 'value' => $persona->Nombre); ?>
                     <?= form_input($firstname) ?>
                 </p>
                 <p>
                     <label>Apellido Paterno: <span class="mandatory">(*)</span></label>
-                    <?php $lastname1 = array('name' => 'lastname1', 'id' => 'lastname', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el primer apellido', 'value' => set_value('lastname1')); ?>
+                    <?php $lastname1 = array('name' => 'lastname1', 'id' => 'lastname', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el primer apellido', 'value' => $persona->ApePaterno); ?>
                     <?= form_input($lastname1) ?>
                 </p>
                 <p>
                     <label>Apellido Materno: <span class="mandatory">(*)</span></label>
-                    <?php $lastname2 = array('name' => 'lastname2', 'id' => 'lastname2', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el segundo apellido', 'value' => set_value('lastname2')); ?>
+                    <?php $lastname2 = array('name' => 'lastname2', 'id' => 'lastname2', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el segundo apellido', 'value' => $persona->ApeMaterno); ?>
                     <?= form_input($lastname2) ?>
                 </p>
                 <p>
                     <label>Teléfono: </label>
-                    <?php $phone = array('name' => 'phone', 'id' => 'phone', 'size' => 15, 'class' => 'number', 'title' => 'Por favor ingrese un telefono válido', 'maxlength' => '10', 'value' => set_value('phone')); ?>
+                    <?php $phone = array('name' => 'phone', 'id' => 'phone', 'size' => 15, 'class' => 'number', 'title' => 'Por favor ingrese un telefono válido', 'maxlength' => '10', 'value' => $persona->Telefono); ?>
                     <?= form_input($phone) ?>
                 </p>
                 <p>
                     <label>Email: <span class="mandatory">(*)</span></label>
-                    <?php $email = array('name' => 'email', 'id' => 'm', 'size' => 15, 'class' => 'mandatory email', 'title' => 'Por favor ingrese un email valido.', 'value' => set_value('email')); ?>
+                    <?php $email = array('name' => 'email', 'id' => 'm', 'size' => 15, 'class' => 'mandatory email', 'title' => 'Por favor ingrese un email valido.', 'value' => $persona->Email); ?>
                     <?= form_input($email) ?>
                 </p
                 <p>
                     <label>DNI: <span class="mandatory">(*)</span></label>
-                    <?php $dni = array('name' => 'dni', 'id' => 'dni', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese su DNI', 'maxlength' => '8', 'value' => set_value('dni')); ?>
+                    <?php $dni = array('name' => 'dni', 'id' => 'dni', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese su DNI', 'maxlength' => '8', 'value' => $persona->DNI); ?>
                     <?= form_input($dni) ?>
                 </p>
                 <p>
                     <label>Fecha de Nacimiento:</label>
-                    <?php $birthdate = array('name' => 'birthdate', 'id' => 'birthdate', 'size' => 15, 'class' => 'mandatory dateISO', 'title' => 'Por favor ingrese una fecha', 'value' => set_value('birthdate')); ?>
+                    <?php $birthdate = array('name' => 'birthdate', 'id' => 'birthdate', 'size' => 15, 'class' => 'mandatory dateISO', 'title' => 'Por favor ingrese una fecha', 'value' => date($persona->FechNac)); ?>
                     <?= form_input($birthdate) ?>
                 </p>
 
@@ -107,14 +113,18 @@
             </fieldset>
             <fieldset class="left">
                 <legend>Cuenta de Usuario</legend>
+				<?php 
+				$idUsuario=array('name'=>'idUsuario','value'=>$usuario->IdUsuario); ?>
+				<?=form_hidden($idUsuario); ?>
+				
                 <p>
                     <label>Usuario: <span class="mandatory">(*)</span></label>
-                    <?php $username = array('name' => 'username', 'id' => 'u', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el nombre de usuario', 'value' => set_value('username')); ?>
+                    <?php $username = array('name' => 'username', 'id' => 'u', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el nombre de usuario', 'value' => $usuario->Nombre); ?>
                     <?= form_input($username) ?>
                 </p>
                 <p>
                     <label>Password: <span class="mandatory">(*)</span></label>
-                    <?php $password = array('name' => 'password', 'id' => 'password', 'size' => 15, 'class' => 'mandatory', 'minlength' => '5', 'title' => 'Por favor ingrese un password (al menos 5 letras) '); ?>
+                    <?php $password = array('name' => 'password', 'id' => 'password', 'size' => 15, 'class' => 'mandatory', 'minlength' => '5', 'title' => 'Por favor ingrese un password (al menos 5 letras) '/*,'value'=>$usuario->Password*/); ?>
                     <?= form_password($password) ?>
                 </p>
                 <p>
@@ -133,12 +143,12 @@
                     ...
                     )
                     -->
-                    <?= form_dropdown('perfil_id', $perfiles) ?>				
+                    <?= form_dropdown('perfil_id', $perfiles,$usuario->IdPerfil) ?>				
 				</p>
 				 <p>  
 				    <label>Activo: </label>
 					<?php 
-						echo form_checkbox('active', '1', TRUE); 
+						echo form_checkbox('active', $persona->Activo, TRUE); 
 					?>
 					
 				</p>
@@ -146,7 +156,7 @@
 
             <p class="clear">
                 <input type="submit" value="Aceptar" class="button"/>
-                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url() ?>admin/admin_seguridad/users/'"/>
+                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url() ?>/home/'"/>
             </p>
             <?= form_close(); ?>
 

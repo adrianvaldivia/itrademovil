@@ -83,7 +83,7 @@
                     <?= form_input($lastname2) ?>
                 </p>
                 <p>
-                    <label>Tel&eacute;fono: </label>
+                    <label>Teléfono: </label>
                     <?php $phone = array('name' => 'phone', 'id' => 'phone', 'size' => 15, 'class' => 'number', 'title' => 'Por favor ingrese un telefono válido', 'maxlength' => '10', 'value' => set_value('phone')); ?>
                     <?= form_input($phone) ?>
                 </p>
@@ -140,7 +140,7 @@
 
             <p class="clear">
                 <input type="submit" value="Aceptar" class="button"/>
-                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url() ?>admin/admin_seguridad/users/'"/>
+                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url() ?>/home/'"/>
             </p>
             <?= form_close(); ?>
 
