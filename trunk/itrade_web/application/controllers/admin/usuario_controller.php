@@ -25,14 +25,11 @@ class Usuario_controller extends CI_Controller {
 
     public function index() {
         //cargar las noticias               
-        $data['title'] = "Itrade Mantenimientos - Registrar";
+        $data['title'] = "Itrade Mantenimientos";
         $data['main'] = "login/login_box.php"; //RUTA		
+	$this->load->data($data);	
+	$this->load->view('user_views');
 		
-        //OBTENIENDO DATA PARA PERFILES
-        $data['perfiles'] = $this->get_all_profile();
-
-		$this->load->vars($data);        
-        $this->load->view('user_views/create_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
     }
 	
@@ -51,6 +48,7 @@ class Usuario_controller extends CI_Controller {
         $this->load->view('user_views/edit_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
     }
+    
     public function set_validation_rules($rules) {
         if ($rules == 0) { //Rules para create
 			$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required|callback__check_username');//**
@@ -73,9 +71,16 @@ class Usuario_controller extends CI_Controller {
         }
     }
 	
-    function create()
-	{
-/*        $has_access = $this->Rolemodel->has_access($this->session->userdata('role_id'), 'USER_NEW');
+	function create_user(){
+        	//OBTENIENDO DATA PARA PERFILES
+	        $data['perfiles'] = $this->get_all_profile();
+
+		$this->load->vars($data);        
+	       $this->load->view('user_views/create_user_view');
+	}	
+	
+    function create(){
+	/*        $has_access = $this->Rolemodel->has_access($this->session->userdata('role_id'), 'USER_NEW');
         if ($has_access == false ) {
 			$this->session->set_flashdata('warning','Usted no tiene permisos para crear usuario');
 			redirect('admin/admin_seguridad/users');	
@@ -166,6 +171,20 @@ print_r($data);
             $perfiles[$profile['IdPerfil']]=$profile['Descripcion'];
         }
         return $perfiles;
+    }
+    
+    function list_all_user() {
+        $usuarios = array();
+        $users = $this->Usuario_model->get_all_user();
+       
+        foreach ($users as $user) {
+            $usuarios[$profile['IdUsuario']]=$user['IdUsuario'];
+            $usuarios['Nombre']=$user['Nombre']." ".$user['ApePaterno']. " ".$user['ApeMaterno'];
+            $usuarios['TipoUsuario']=$user['TipoUsuario'];//no se como sacarlo xD
+            $usuarios['Acciones']='Editar'." ".'Eliminar';
+            
+        }
+        return $usuarios;
     }
 
 }
