@@ -1,0 +1,49 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Reportes extends CI_Controller {
+	function __construct()
+    {        
+        parent::__construct();
+		$this->load->model('Reporte_model');		
+    }	
+	public function index()
+	{					
+		echo "Controlador REPORTES";			
+	}	
+	/*WEBSERVICE UPDATE PASSWORD*/
+	public function zonas_resumido($month_w="",$idjerarquia_w="",$idubigeo_w=""){		
+		//2012-05-10
+		$month=$this->input->post('month');
+		$idjerarquia=$this->input->post('idjerarquia');
+		$idubigeo=$this->input->post('idubigeo');			
+		/*SOLO PARA WEB*/		
+		if (isset($month_w)&& $month_w!= "" && isset($idjerarquia_w)&& $idjerarquia_w!="" && isset($idubigeo_w)&& $idubigeo_w!=""){	
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia_w,$idubigeo_w);			
+			foreach($result as $res){
+				$id=$res->id;
+			}	
+			$result=$this->Reporte_model->zonas_resumido($month_w,$idjerarquia_w,$idubigeo_w,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($month)&& $month!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!=""){	
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia,$idubigeo);			
+			foreach($result as $res){
+				$id=$res->id;
+			}	
+			$result=$this->Reporte_model->zonas_resumido($month,$idjerarquia,$idubigeo,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}			
+	}
+	public function objetoubigeo(){		
+		//2012-05-10
+		/*SOLO PARA WEB*/		
+				
+		$result=$this->Reporte_model->objetoUbigeo(1,1);			
+		foreach($result as $res){
+			echo $res->id;
+		}			
+				
+	}
+}
+
