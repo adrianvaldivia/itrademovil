@@ -23,8 +23,7 @@ class Login_model extends CI_Model {
 		$this->db->join($this->table_usuario,$this->table_usuario.".IdPersona =".$this->table_persona.".IdPersona");
 		/*hace el match con los parametros*/
 		$this->db->where($this->table_usuario.".Nombre", $username);		
-		$this->db->where($this->table_usuario.".Password", $password);
-		
+		$this->db->where($this->table_usuario.".Password", $password);		
 		$query = $this->db->get();
 		//echo $this->db->last_query();
         return $query->result();			
@@ -47,7 +46,28 @@ class Login_model extends CI_Model {
 		return TRUE;
 	}
 	
+	function change_password($username,$oldpass,$newpass){						
+		//verificar el usuario
+		if ($this->verificaUsuario($username,$oldpass)){
+			//cambiar password			
+			$this->db->set('Password', $newpass);							
+			$this->db->where('Nombre', $username);
+			$this->db->update($this->table_usuario);					
+			//retornar usuario
+			return $this->get_by_username($username,$newpass);
+		}else{
+			return array();
+		}							
+	}
 	
+	function verificaUsuario($username,$oldpass){
+		$usuario=$this->get_by_username($username,$oldpass);
+		if (count($usuario)>0){
+			return true;
+		}
+		return false;		
+	}	
+
     /*
     function get_last_ten_entries()
     {
