@@ -12,29 +12,33 @@
         <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
         <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />	
         <link href="<?php echo base_url() ?>css/user_create.css" rel="stylesheet" />	
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 
         <!--scripts js-->
         <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.2.3.pack.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
 
         <script type="text/javascript">
             //<![CDATA[
             base_url = '<?php echo base_url(); ?>';
             //]]>
         </script>
+
     </head>
     <body>
-        <script type="text/javascript">
-            $().ready(function() {
-                $("#userForm").validate();
-                $("#birthdate").datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true, yearRange: '1950:2010' });
+        <script type="text/javascript">            
+            $(function() {
+                $( "#birthdate" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
             });
+    
         </script>
         <div id="header">
             <!--            <div id="title">iTRADE</div>-->
             <div id="logo">
-                <img src="<?php echo base_url() ?>images/logo-transparente.png"/></a>
+                <a href="<?echo base_url()?>home"> <img src="<?php echo base_url() ?>images/logo-transparente.png"/></a>
             </div>
             <? if ($this->session->userdata('logged_in') && (isset($username) && isset($name))) { ?>
                 <div class="header_left"  >
@@ -43,8 +47,8 @@
                     </span>
                 </div>
                 <div class="header_right" >
-                    <a href="home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
-                    <? echo anchor('home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?>
+                    <a href="<?echo base_url()?>home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
+                    <? echo anchor(base_url().'home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?>
                 </div>
             <? } else { ?>
                 <? //si entra un usuario logueado al home ?>
@@ -59,7 +63,7 @@
 <!--    <p class="space">
     <div class="message error close">		
         <h2>Error!</h2>		
-        <p><? //= $error_message   ?></p>
+        <p><? //= $error_message         ?></p>
     </div>
     </p>-->
             <?php // endif; ?>
@@ -124,23 +128,17 @@
                 </p>
                 <p>
                     <label>Perfil <span class="mandatory">(*)</span></label>
-                    <!--El arreglo de $perfiles tener esta forma:
-                    array(
-                    '1'=>'perfil1',
-                    '2'=>'perfil2',
-                    '3'=>'perfil3',
-                    '4'=>'perfil4',
-                    ...
-                    )
-                    -->
                     <?= form_dropdown('perfil_id', $perfiles) ?>
-
+                </p>	
+                <p>
+                    <label>Ubigeo <span class="mandatory">(*)</span></label>
+                    <?= form_dropdown('ubigeo_id', $ubigeo) ?>
                 </p>	
             </fieldset>
 
             <p class="clear">
                 <input type="submit" value="Aceptar" class="button"/>
-                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url() ?>/home/'"/>
+                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url()?>home/'"/>
             </p>
             <?= form_close(); ?>
 

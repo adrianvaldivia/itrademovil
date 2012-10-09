@@ -28,7 +28,7 @@
         <div id="header">
             <!--            <div id="title">iTRADE</div>-->
             <div id="logo">
-                <img src="<?php echo base_url() ?>images/logo-transparente.png"/></a>
+                <a href="<?echo base_url()?>home"> <img src="<?php echo base_url() ?>images/logo-transparente.png"/></a>
             </div>
             <? if ($this->session->userdata('logged_in') && (isset($username) && isset($name))) { ?>
                 <div class="header_left"  >
@@ -37,8 +37,8 @@
                     </span>
                 </div>
                 <div class="header_right" >
-                    <a href="home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
-                    <? echo anchor('home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?>
+                    <a href="<?echo base_url()?>home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
+                    <? echo anchor(base_url().'home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?>
                 </div>
     <!--                <script type="text/javascript">
                     $('#header .header_right').click(function (){
@@ -52,11 +52,15 @@
             <? } ?>
         </div>
         <div id="content">
-			<div id="contenido_principal" style="width:100%; height:100%;" >	
-				<?php $this->load->view($main); ?>
-				<?php //$this->load->view($main2); ?>
-			</div>
-		</div>
+            <div id="contenido_principal" style="width:100%; height:100%;" >
+
+                <?php
+
+                 $this->load->view($main); 
+                ?>
+
+            </div>
+        </div>
         <div id="footer">
             <div>2012 - i-Trade</div>
         </div>
