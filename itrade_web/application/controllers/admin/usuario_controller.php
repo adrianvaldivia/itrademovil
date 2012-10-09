@@ -8,7 +8,7 @@ class Usuario_controller extends CI_Controller {
         $this->load->model('Usuario_model');
         $this->load->model('Persona_model');
         $this->load->model('Perfil_model');
-
+        $this->load->model('Ubigeo_model');
         /*
           $logged_in = $this->session->userdata('logged_in');
 
@@ -24,34 +24,40 @@ class Usuario_controller extends CI_Controller {
     }
 
     public function index() {
+
         //cargar las noticias               
         $data['title'] = "Itrade Mantenimientos";
-        $data['main'] = "login/login_box.php"; //RUTA		
-	$this->load->data($data);	
-	$this->load->view('user_views');
-		
-        //echo "<script languaje='javascript'>alert('Index')</script>";
+        $data['main'] = "pages/dashboard_content.php"; //RUTA		
+        $data['usuarios'] = $this->list_all_users();
+//        print_r($data['usuarios']);
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
+        $this->load->vars($data);
+        $this->load->view('user_views/dashboard_user_view');
     }
-	
-	public function modificar() {
+
+    public function modificar($idcontact, $number) {
         //cargar las noticias               
         $data['title'] = "Itrade Mantenimientos - Modificar";
         $data['main'] = "login/login_box.php"; //RUTA		
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
         //OBTENIENDO DATA PARA PERFILES
         $data['perfiles'] = $this->get_all_profile();
-		
-		$userdata=$this->session->all_userdata();//obtengo data del session para usarlo en las 2 datas de abajo:
-		$data['usuario'] = $this->Usuario_model->get($userdata['id_contact']);
-		$data['persona'] = $this->Persona_model->get($userdata['number']);
-		
-        $this->load->vars($data);        
+        $data['ubigeo'] = $this->get_all_ubigeos();
+        $data['usuario'] = $this->Usuario_model->get($idcontact);
+        $data['persona'] = $this->Persona_model->get($number);
+//print_r($data['persona']);
+        $this->load->vars($data);
         $this->load->view('user_views/edit_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
     }
-    
+
     public function set_validation_rules($rules) {
         if ($rules == 0) { //Rules para create
-			$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required|callback__check_username');//**
+            $this->form_validation->set_rules('username', 'Nombre de Usuario', 'required|callback__check_username'); //**
             $this->form_validation->set_rules('firstname', 'Nombre', 'required');
             $this->form_validation->set_rules('lastname1', 'Apellido Paterno', 'required');
             $this->form_validation->set_rules('lastname2', 'Apellido Materno', 'required');
@@ -70,93 +76,124 @@ class Usuario_controller extends CI_Controller {
         if ($rules == 3) { //Rules para Change
         }
     }
-	
-	function create_user(){
-        	//OBTENIENDO DATA PARA PERFILES
-	        $data['perfiles'] = $this->get_all_profile();
 
-		$this->load->vars($data);        
-	       $this->load->view('user_views/create_user_view');
-	}	
-	
-    function create(){
-	/*        $has_access = $this->Rolemodel->has_access($this->session->userdata('role_id'), 'USER_NEW');
-        if ($has_access == false ) {
-			$this->session->set_flashdata('warning','Usted no tiene permisos para crear usuario');
-			redirect('admin/admin_seguridad/users');	
-		}
-		*/
+    function create_user() {
+        //OBTENIENDO DATA PARA PERFILES
+        $data['title'] = "Nuevo Usuario";
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
+        $data['perfiles'] = $this->get_all_profile();
+        $data['ubigeo'] = $this->get_all_ubigeos();
+//        print_r($data['ubigeo']);
+        $this->load->vars($data);
+        $this->load->view('user_views/create_user_view');
+    }
+
+    function create() {
+        /*        $has_access = $this->Rolemodel->has_access($this->session->userdata('role_id'), 'USER_NEW');
+          if ($has_access == false ) {
+          $this->session->set_flashdata('warning','Usted no tiene permisos para crear usuario');
+          redirect('admin/admin_seguridad/users');
+          }
+         */
         //Parametro para setear reglas del create
-        $rules_create=0;
+        $rules_create = 0;
         $this->set_validation_rules($rules_create);
 
-		if (/*$this->form_validation->run()*/true){
-			//TABLA PERSONA
-			$data['Persona'] = array(
-			   'Nombre' => xss_clean($this->input->post('firstname')),
-			   'ApePaterno' => xss_clean($this->input->post('lastname1')),
-			   'ApeMaterno' => xss_clean($this->input->post('lastname2')),
-			   'DNI' => xss_clean($this->input->post('dni')),
-			   'FechNac' => xss_clean($this->input->post('birthdate')),
-			   'Telefono' => xss_clean($this->input->post('phone')),
-			   'Email' => xss_clean($this->input->post('email')),   
-			   'Activo' => 1      
-			);
-			//crea la persona
-			$idPersona = $this->Persona_model->create($data['Persona']);
-			// print_r($idPersona);
-			
-			//TABLA USUARIO
-			$data['Usuario']= array(
-				'Nombre' => xss_clean($this->input->post('username')),
-			   'Password' => substr(do_hash(xss_clean($_POST['password'])),0,50),
-			   'IdPerfil' => xss_clean($this->input->post('perfil_id')) ,  
-			   'IdPersona' => $idPersona,
-			   'Activo' => 1
-			);
+//        if ($this->form_validation->run()) {
+        //TABLA PERSONA
+        $idPersona = $this->Persona_model->get_last_idPersona() + 1;
+        $data['Persona'] = array(
+            'IdPersona' => $idPersona,
+            'Nombre' => xss_clean($this->input->post('firstname')),
+            'ApePaterno' => xss_clean($this->input->post('lastname1')),
+            'ApeMaterno' => xss_clean($this->input->post('lastname2')),
+            'DNI' => xss_clean($this->input->post('dni')),
+            'FechNac' => xss_clean($this->input->post('birthdate')),
+            'Telefono' => xss_clean($this->input->post('phone')),
+            'Email' => xss_clean($this->input->post('email')),
+            'Activo' => 1
+        );
+        //crea la persona
 
-			//crea el usuario
-			$this->Usuario_model->create($data['Usuario']);
-			
-		    //mensaje de verificacion
-		    $this->session->set_flashdata('message','El usuario ha sido creado correctamente.');
-		    
-		    //redirect('admin/admin_seguridad/users','refresh');
-		}else{
-		    $data['Persona']['error_message'] = validation_errors();		    	
-			$data['Usuario']['error_message'] = validation_errors();
-		}
+        $this->Persona_model->create($data['Persona']);
+        // print_r($idPersona);
+        //TABLA USUARIO
+        $data['Usuario'] = array(
+            'IdUsuario' => $this->Usuario_model->get_last_idUsuario() + 1,
+            'Nombre' => xss_clean($this->input->post('username')),
+            'Password' => substr(do_hash(xss_clean($_POST['password'])), 0, 50),
+            'IdPerfil' => xss_clean($this->input->post('perfil_id')),
+            'IdPersona' => $idPersona,
+            'Activo' => 1,
+            'IdJerarquia' => 1,
+            'IdUbigeo' => $this->input->post('ubigeo_id')
+        );
 
-		$data['title'] = "Nuevo Usuario";		
-		$data['main'] = 'user_views/create_user_views';
-		$this->load->vars($data);
-		// $this->load->vars($data2); //REVISAR CON LEILA
-		//$this->load->view('template');
-	}
+        //crea el usuario
+        $this->Usuario_model->create($data['Usuario']);
+
+        //mensaje de verificacion
+        $this->session->set_flashdata('message', 'El usuario ha sido creado correctamente.');
+
+        redirect('admin/usuario_controller', 'refresh');
+//        } else {
+//            $data['Persona']['error_message'] = validation_errors();
+//            $data['Usuario']['error_message'] = validation_errors();
+//        }
+//        $data['title'] = "Nuevo Usuario";
+//        $data['main'] = 'user_views/create_user_views';
+//        $this->load->vars($data);
+        //$this->load->view('template');
+    }
 
     public function edit($idUsuario = '') {
         //Parametro para setear reglas del edit
         $rules_edit = 1;
         $this->set_validation_rules($rules_edit);
-		
-		
-        if (/*$this->form_validation->run()*/true) {
-            $data = array(
-                'IdPerfil' => xss_clean($this->input->post('perfil')),
-                'Activo' => xss_clean($this->input->post('activo'))
-            );
-	
-            $this->usuario_model->edit($this->input->post('IdUsuario'), $data);
-            $this->session->set_flashdata('message', 'Los datos del usuarios han sido modificados correctamente.');
-            //redirect('admin/admin_seguridad/users','refresh'); FATLTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        } else {
-            $data['error_message'] = validation_errors();
-        }
-        $data['title'] = "Editar Usuario";
-		
-        $data['user'] = $this->Usuario_model->get($idUsuario);
-				// echo'<pre>';
-print_r($data);
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
+
+//        if (/* $this->form_validation->run() */true) {
+
+        $data['Persona'] = array(
+            'Nombre' => xss_clean($this->input->post('firstname')),
+            'ApePaterno' => xss_clean($this->input->post('lastname1')),
+            'ApeMaterno' => xss_clean($this->input->post('lastname2')),
+            'DNI' => xss_clean($this->input->post('dni')),
+            'FechNac' => xss_clean($this->input->post('birthdate')),
+            'Telefono' => xss_clean($this->input->post('phone')),
+            'Email' => xss_clean($this->input->post('email')),
+            'Activo' => 1
+        );
+
+        //TABLA USUARIO
+        $data['Usuario'] = array(
+            'Nombre' => xss_clean($this->input->post('username')),
+            'IdPerfil' => xss_clean($this->input->post('perfil_id')),
+            'Activo' => $this->input->post('activo'),
+            'IdJerarquia' => 1,
+            'IdUbigeo' => $this->input->post('ubigeo_id')
+        );
+        echo '<pre>';
+        print_r ($this->input->post());
+  
+        $this->Persona_model->edit($this->input->post('IdPersona'), $data['Persona']);
+        $this->Usuario_model->edit($this->input->post('IdUsuario'), $data['Usuario']);
+
+        $this->session->set_flashdata('message', 'Los datos del usuarios han sido modificados correctamente.');
+        redirect('admin/usuario_controller', 'refresh');
+
+//        } else {
+//            $data['error_message'] = validation_errors();
+//        }
+//        $data['title'] = "Editar Usuario";
+//
+//        $data['user'] = $this->Usuario_model->get($idUsuario);
+        // echo'<pre>';
+//        print_r($data);
 // echo'</pre>';
         //$data['main'] = 'admin/admin_seguridad/users/edit'; FALTAAAAAA
         // $this->load->vars($data);
@@ -166,25 +203,34 @@ print_r($data);
     function get_all_profile() {
         $perfiles = array();
         $profiles = $this->Perfil_model->get_all_profile();
-       
+
         foreach ($profiles as $profile) {
-            $perfiles[$profile['IdPerfil']]=$profile['Descripcion'];
+            $perfiles[$profile['IdPerfil']] = $profile['Descripcion'];
         }
         return $perfiles;
     }
-    
-    function list_all_user() {
+
+    function list_all_users() {
         $usuarios = array();
-        $users = $this->Usuario_model->get_all_user();
-       
+        $users = $this->Usuario_model->get_all_users();
+
         foreach ($users as $user) {
-            $usuarios[$profile['IdUsuario']]=$user['IdUsuario'];
-            $usuarios['Nombre']=$user['Nombre']." ".$user['ApePaterno']. " ".$user['ApeMaterno'];
-            $usuarios['TipoUsuario']=$user['TipoUsuario'];//no se como sacarlo xD
-            $usuarios['Acciones']='Editar'." ".'Eliminar';
-            
+            $usuarios[$user['IdUsuario']]['IdUsuario'] = $user['IdUsuario'];
+            $usuarios[$user['IdUsuario']]['IdPersona'] = $user['IdPersona'];
+            $usuarios[$user['IdUsuario']]['Perfil'] = $this->Usuario_model->get_tipo_usuario($user['IdPerfil']);
+            $usuarios[$user['IdUsuario']]['Nombre'] = $user['NombrePersona'] . " " . $user['ApePaterno'] . " " . $user['ApeMaterno'];
+            $usuarios[$user['IdUsuario']]['Activo'] = ($user['Activo'] == 1) ? 'Activo' : 'Inactivo';
         }
         return $usuarios;
+    }
+
+    function get_all_ubigeos() {
+        $ubigeos = array();
+        $allubigeos = $this->Ubigeo_model->get_all_ubigeos();
+        foreach ($allubigeos as $ubigeo) {
+            $ubigeos[$ubigeo['IdUbigeo']] = $ubigeo['Pais'] . "-" . $ubigeo['Departamento'] . "-" . $ubigeo['Distrito'];
+        }
+        return $ubigeos;
     }
 
 }
