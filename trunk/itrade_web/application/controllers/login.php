@@ -10,9 +10,10 @@ class Login extends CI_Controller {
         //cargar las noticias                
         $data['title']="Itrade Mantenimientos - login";             
         $data['main']="login/login_box.php";//RUTA			           			
+        
         $this->load->vars($data);
         $this->load->view('login/login');
-//        $this->load->view('user_views/create_user_view');
+//        $this->load->view('user_views/dashboard_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
 	}
 }
