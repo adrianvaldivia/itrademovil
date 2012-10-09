@@ -1,17 +1,17 @@
 <?
+
 class Ubigeo_model extends CI_Model {
 
-    function __construct()
-    {        
+    function __construct() {
         parent::__construct();
-		$this->tablename = 'ubigeo';	
+        $this->tablename = 'Ubigeo';
     }
-	
-	function get_all_ubigeos(){		
+
+    function get_all_ubigeos() {
         $query = $this->db->get($this->tablename);
-        return $query->result();				
-	}
-	
+        return $query->result_array();
+    }
+
     function get($idUbigeo) {
         $this->db->where('IdUbigeo', $idUbigeo);
         $query = $this->db->get($this->tablename);
@@ -25,32 +25,33 @@ class Ubigeo_model extends CI_Model {
     }
 
     function get_by_zone($zone) {
-		$this->db->distinct();
+        $this->db->distinct();
         $this->db->where('Zona', $zone);
         $query = $this->db->get($this->tablename);
         return $query->row_array();
     }
-	
-	function get_by_district($district) {
-		$this->db->distinct();
+
+    function get_by_district($district) {
+        $this->db->distinct();
         $this->db->where('Distrito', $district);
         $query = $this->db->get($this->tablename);
         return $query->row_array();
     }
-	
-	function get_by_department($department) {
-		$this->db->distinct();
+
+    function get_by_department($department) {
+        $this->db->distinct();
         $this->db->where('Departamento', $department);
         $query = $this->db->get($this->tablename);
         return $query->row_array();
     }
-	
-	function get_by_country($country) {
-		$this->db->distinct();
+
+    function get_by_country($country) {
+        $this->db->distinct();
         $this->db->where('Pais', $country);
         $query = $this->db->get($this->tablename);
         return $query->row_array();
     }
-	
+
 }
+
 ?>

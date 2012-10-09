@@ -4,7 +4,7 @@ class Perfil_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
-        $this->tablename = 'perfil';
+        $this->tablename = 'Perfil';
     }
 
     function get_all_profile() {
