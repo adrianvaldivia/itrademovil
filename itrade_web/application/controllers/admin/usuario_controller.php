@@ -178,7 +178,7 @@ class Usuario_controller extends CI_Controller {
             'IdUbigeo' => $this->input->post('ubigeo_id')
         );
         echo '<pre>';
-        print_r ($this->input->post());
+        // print_r ($this->input->post());
   
         $this->Persona_model->edit($this->input->post('IdPersona'), $data['Persona']);
         $this->Usuario_model->edit($this->input->post('IdUsuario'), $data['Usuario']);
