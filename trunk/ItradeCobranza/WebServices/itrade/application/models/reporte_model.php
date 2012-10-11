@@ -13,6 +13,7 @@ class Reporte_model extends CI_Model {
 		$this->table_departamento = 'Departamento';
 		$this->table_pais = 'Pais';
 		$this->table_jerarquia = 'Jerarquia';
+		$this->table_meta = 'Meta';
 		
     }	
 
@@ -177,6 +178,50 @@ class Reporte_model extends CI_Model {
 				$this->db->group_by($this->table_zona.".Descripcion");	
 				break;
 		}				
+		$query = $this->db->get();	
+		//echo $this->db->last_query();
+		return $query->result();
+		
+	}	
+	
+	//Reporte de Circulo de Excelencia
+	
+	public function circulo_resumido($month,$iddistrito,$iddepartamento,$idpais){				
+		
+		//SELECTS
+		
+		$this->db->select($this->table_zona.".Descripcion");				
+		$this->db->select_sum($this->table_pedido.".MontoTotal");						
+		$this->db->select_sum($this->table_meta.".Monto");
+						
+		//RELACIONES
+		$this->db->from($this->table_pedido);
+						//TABLA JOIN, RELACION//
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
+		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
+		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");	
+		$this->db->join($this->table_departamento,$this->table_ubigeo.".IdDepartamento =".$this->table_departamento.".IdDepartamento");
+		$this->db->join($this->table_distrito,$this->table_ubigeo.".IdDistrito =".$this->table_distrito.".IdDistrito");
+		$this->db->join($this->table_zona,$this->table_ubigeo.".IdZona =".$this->table_zona.".IdZona");
+		$this->db->join($this->table_meta,$this->table_usuario.".IdUsuario =".$this->table_meta.".IdUsuario");
+												
+				
+		//$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		//$this->db->where($str);
+		
+		//prueba
+		$str="month(".$this->table_pedido.".FechaPedido) >= MONTH( DATE_SUB( CURDATE( ) , INTERVAL 7 MONTH ) )";
+		//$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		$this->db->where($str);
+		
+		
+		
+		//GROUP BY
+		$this->db->group_by($this->table_zona.".Descripcion");				
+		$this->db->where($this->table_ubigeo.".IdPais", $idpais);
+		$this->db->where($this->table_ubigeo.".IdDepartamento", $iddepartamento);
+		$this->db->where($this->table_ubigeo.".IdDistrito", $iddistrito);
+						
 		$query = $this->db->get();	
 		//echo $this->db->last_query();
 		return $query->result();
