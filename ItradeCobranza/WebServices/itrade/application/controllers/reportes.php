@@ -73,5 +73,26 @@ class Reportes extends CI_Controller {
 		}			
 	}
 	
+	public function circulo_resumido($month_w="",$iddistrito_w="",$iddepartamento_w="",$idpais_w=""){		
+		//2012-05-10
+		$month=$this->input->post('month');
+		$iddistrito=$this->input->post('iddistrito');
+		$iddepartamento=$this->input->post('iddepartamento');	
+		$idpais=$this->input->post('idpais');			
+		/*SOLO PARA WEB*/		
+		if (isset($month_w)&& $month_w!= "" && isset($iddistrito_w)&& $iddistrito_w!="" && isset($iddepartamento_w)&& $iddepartamento_w!="" && isset($idpais_w)&& $idpais_w!=""){	
+			//$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia_w,$idubigeo_w);			
+			
+			$result=$this->Reporte_model->circulo_resumido($month_w,$iddistrito_w,$iddepartamento_w,$idpais_w);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($month)&& $month!= "" && isset($iddistrito)&& $iddistrito!="" && isset($iddepartamento)&& $iddepartamento!="" && isset($idpais)&& $idpais!=""){	
+			$result=$this->Reporte_model->circulo_resumido($month,$iddistrito,$iddepartamento,$idpais);	
+			//$result=$this->Reporte_model->zonas_detallado($month,$idjerarquia,$idubigeo,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}					
+	}
+	
 }
 
