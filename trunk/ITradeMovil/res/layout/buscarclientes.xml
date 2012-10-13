@@ -6,19 +6,19 @@
 		android:layout_height="wrap_content" android:id="@+id/top_control_bar">
 
 		<EditText
-		    android:id="@+id/editText1"
+		    android:id="@+id/editTextCliente"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
-		    android:layout_toLeftOf="@+id/button2"
-		    android:inputType="textNoSuggestions"
-		    android:ems="10" >
-
-		    <requestFocus />
+		    android:layout_toLeftOf="@+id/buttonbuscar"
+		    android:inputType="text"
+		    android:imeOptions="actionDone"
+		    android:ems="10" 
+		    android:hint="Ingrese Razon Social">
 		</EditText>
 
 		<Button
-		    android:id="@+id/button2"
+		    android:id="@+id/buttonbuscar"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentRight="true"
