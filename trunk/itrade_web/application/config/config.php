@@ -15,7 +15,8 @@
 |
 */
 // $config['base_url']	= 'http://localhost/sitios_web/itrade_web';
-$config['base_url']	= 'http://localhost/itrade_web';
+// $config['base_url']	= 'http://localhost/dp2/itrade';
+$config['base_url']	= 'http://200.16.7.111/dp2/itrade';
 
 /*
 |--------------------------------------------------------------------------
@@ -246,7 +247,7 @@ $config['encryption_key'] = '12345678912345678912345678912345';
 |
 */
 $config['sess_cookie_name']		= 'ci_session';
-$config['sess_expiration']		= 7200;
+$config['sess_expiration']		= 3600;
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= FALSE;
 $config['sess_use_database']	= FALSE;
