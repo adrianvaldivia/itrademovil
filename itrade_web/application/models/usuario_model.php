@@ -14,6 +14,7 @@ class Usuario_model extends CI_Model {
         $this->db->from($this->tablename);
         $this->db->join($this->tablename2, $this->tablename2 . '.IdPersona=' . $this->tablename . '.IdPersona');
         $query = $this->db->get();
+$this->db->close();
         return $query->result_array();
     }
 
@@ -21,12 +22,14 @@ class Usuario_model extends CI_Model {
         $this->db->where('IdUsuario', $idUsuario);
         $query = $this->db->get($this->tablename);
         $rows = $query->result();
+$this->db->close();
         return $rows[0];
     }
 
     function get_last_idUsuario() {
         $this->db->select_max('IdUsuario');
         $query = $this->db->get($this->tablename);
+$this->db->close();
         return $query->row(0)->IdUsuario;
     }
 
@@ -36,20 +39,22 @@ class Usuario_model extends CI_Model {
 
     function edit($idUsuario, $data) {
         $this->db->where('IdUsuario', $idUsuario);
-        return $this->db->update($this->tablename, $data);
+	return $this->db->update($this->tablename, $data);
     }
 
     function get_by_username($username) {
         $this->db->where('Nombre', $username);
         $query = $this->db->get($this->tablename);
+	$this->db->close();
         return $query->row_array();
     }
 
     public function verify_user($username, $password) {
+
         $this->db->where('Nombre', $username);
         $this->db->where('Password', do_hash(xss_clean($password)));
         $query = $this->db->get($this->tablename);
-
+	$this->db->close();
         if ($query->num_rows != 1) {
             return FALSE;
         }
@@ -62,6 +67,7 @@ class Usuario_model extends CI_Model {
         $this->db->from($this->tablename);
         $this->db->join($this->table_perfil, $this->table_perfil . '.IdPerfil=' . $this->tablename . '.IdPerfil');
         $query = $this->db->get();
+$this->db->close();
         return $query->row(0)->Descripcion;
     }
 

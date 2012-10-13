@@ -8,7 +8,7 @@ class Home extends CI_Controller {
         //$this->load->model('Noticias_model');
         session_start();
         if (!$this->session->userdata('logged_in')) {
-            $this->session->set_flashdata('error', "DEBE HABERSE LOGGEADO.");
+            $this->session->set_flashdata('error', 'Debe haberse logueado');
             redirect('login', 'refresh');
         }
     }

@@ -20,6 +20,7 @@
                 <th>
                     Acciones
                 </th>
+
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,8 @@
                     </td>
                     <td>
                         <div class="accion"><? echo anchor("admin/usuario_controller/modificar/$idusuario/$idpersona", 'Editar', array('title' => 'Editar')); ?></div>
+                        <?if ($usuario['Perfil']=='Vendedor'):?><div class="accion"><? echo anchor("admin/usuario_controller/metas/$idusuario/$idpersona", 'Metas', array('title' => 'Metas')); ?></div>
+<?endif;?>
                     </td>
                 </tr>
                 <?
