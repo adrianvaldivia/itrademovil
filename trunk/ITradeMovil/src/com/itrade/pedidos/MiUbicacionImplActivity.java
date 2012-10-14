@@ -199,7 +199,7 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 //            	posicionActualOverlay.setLocation(gPt0);
             ///////////////////////////////////////////////////////////////////////timer
             mHandler.removeCallbacks(Timer_Tick);
-		    mHandler.postDelayed(Timer_Tick, 60000); //cada 30 segundos connsulta a la BD
+		    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
     		//////////////////////////////////////////////////////////// fin timer
             
             //listeners para el GPS
@@ -327,7 +327,10 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
                 if (latitude!=0){
                 	GeoPoint p = new GeoPoint((int) (latitude * 1000000), (int) (longitude * 1000000));
                 	posicionActualOverlay.setLocation(p);
-        			mapController.setCenter(p);
+                	if(primeraVez){
+                		mapController.setCenter(p);
+                		primeraVez=false;
+                	}        			
                     //Toast.makeText(MiUbicacionImplActivity.this,"Longitude is  "+longitude + "   Latitude is   "+latitude, Toast.LENGTH_LONG).show();
                 }                
             }
