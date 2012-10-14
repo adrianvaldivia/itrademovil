@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.itrade"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="8" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />    
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />    
+	<uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES" />   	
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:icon="@drawable/mapa"
+        android:label="@string/app_name"
+        android:background="@android:color/transparent" >
+        <activity
+            android:name=".pedidos.Login"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity             
+            android:name=".pedidos.VerMapaActivity"
+            android:label="@string/ventanamapa" >
+        </activity>
+        
+         <activity
+            android:name=".pedidos.EnviarMensaje"
+            android:label="@string/app_name" >
+        </activity>
+        
+         <activity
+            android:name=".pedidos.RecibirMensaje"
+            android:label="@string/app_name" >
+        </activity>
+         
+         <activity
+            android:name=".pedidos.BuscarPedidos"
+            android:label="@string/app_name" >
+        </activity>
+        
+         <activity
+            android:name=".pedidos.Incidencias"
+            android:label="@string/app_name" >
+        </activity>
+         
+         <activity
+            android:name=".pedidos.Menu"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name=".pedidos.BuscarProductos"
+            android:label="@string/app_name" >
+        </activity>
+		<activity
+            android:name=".pedidos.BuscarClientes"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.DetalleCliente"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.CrearPedido"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.MenuLista"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.BuscarClientesGreenDao"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.BuscarProspectosGreenDao"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.MiMeta"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.SimpleCalendarViewActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.MiUbicacionActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.MiUbicacionImplActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".pedidos.RegistrarProspecto"
+            android:label="@string/app_name" >
+        </activity>
+        
+    </application>
+
+</manifest>
