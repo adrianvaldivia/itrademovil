@@ -5,7 +5,7 @@ class Login extends CI_Controller {
 	function __construct()
     {        
         parent::__construct();
-		$this->load->model('Login_model');		
+		$this->load->model('ws/Login_model');		
     }	
 
 	public function index()
@@ -18,13 +18,13 @@ class Login extends CI_Controller {
 		$oldpassword=$this->input->post('oldpassword');
 		$newpassword=$this->input->post('newpassword');	
 		/*SOLO PARA WEB*/		
-		if (isset($username_w)&& $username_w!= "" && isset($oldpass_w)&& $oldpass_w!="" && isset($newpass_w)&& $newpass_w!=""){						
+		if (isset($username_w)&& $username_w!= "" && isset($oldpass_w)&& $oldpass_w!="" && isset($newpass_w)&& $newpass_w!=""){				
 			$result=$this->Login_model->change_password($username_w,$oldpass_w,$newpass_w);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}
 		/*SOLO PARA ANDROID*/		
 		if (isset($username)&& $username!= "" && isset($oldpassword)&& $oldpassword!="" && isset($newpassword)&& $newpassword!=""){						
-			$result=$this->Login_model->change_password($username,$oldpassword,$newpassword);				
+			$result=$this->Login_model->change_password($username,$oldpassword,$newpassword);
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}
 	}
@@ -38,8 +38,8 @@ class Login extends CI_Controller {
 		$username=$this->input->post('username');
 		$password=$this->input->post('password');		
 		/*ESTO ES PARA VER EL RESULTADO EN LA WEB*/
-		if (isset($username_w)&& $username_w!= "" && isset($password_w)&& $password_w!="" ){			
-			$result=$this->Login_model->get_by_username($username_w,$password_w);	
+		if (isset($username_w)&& $username_w!= "" && isset($password_w)&& $password_w!="" ){						
+			$result=$this->Login_model->get_by_username($username_w,$password_w);							
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
 		}		
 		/*ESTO ES PARA EL RESULTADO EN ANDROID*/
@@ -69,6 +69,10 @@ class Login extends CI_Controller {
 		  $result.=$char;
 	   }
 	   return $result;
+	}
+	public function wb5($cadena)
+	{	
+		echo "cadena//".$cadena."//encriptada//".do_hash($cadena)."//";
 	}
 }
 

@@ -5,7 +5,7 @@ class Pedido extends CI_Controller {
 	function __construct()
     {        
         parent::__construct();
-		$this->load->model('Payment_model');
+		$this->load->model('ws/Payment_model');
     }	
 
 	public function index()
