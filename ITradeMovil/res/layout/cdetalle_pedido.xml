@@ -170,28 +170,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="60dip" >
-
-
+
                 <Button
-                    android:id="@+id/btnDetalle"
+                    android:id="@+id/btnCobrar"
                     style="@drawable/estilo_botones"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.08"
+                    android:layout_weight="0.10"
                     android:background="@drawable/estilo_botones"
-                    android:text="Detalle"
+                    android:text="Cobrar"
                     android:textColor="@color/grisClaro" />
-
-                <Button
-                    android:id="@+id/btnPagar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.11"
-                    android:background="@drawable/estilo_botones"
-                    android:text="Pagar"
-                    android:textColor="@color/grisClaro" />
-
-
+
                 <Button
                     android:id="@+id/btnRuta"
                     android:layout_width="wrap_content"
