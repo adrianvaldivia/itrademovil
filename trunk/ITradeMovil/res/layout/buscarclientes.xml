@@ -1,57 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
-	android:orientation="vertical">
-	<RelativeLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:id="@+id/top_control_bar">
-
-		<EditText
-		    android:id="@+id/editTextCliente"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_toLeftOf="@+id/buttonbuscar"
-		    android:inputType="text"
-		    android:imeOptions="actionDone"
-		    android:ems="10" 
-		    android:hint="Ingrese Razon Social">
-		</EditText>
-
-		<Button
-		    android:id="@+id/buttonbuscar"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentRight="true"
-		    android:layout_alignParentTop="true"
-		    android:text="Buscar" />
-
-	</RelativeLayout>
-
-	<LinearLayout
-	    android:id="@+id/bottom_control_bar"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="426dp"
+        android:background="@color/blanco"
+        android:orientation="vertical" >
 
-	    <Button
-	        android:id="@+id/buttonvermapa"
-	        android:layout_width="140dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.10"
-	        android:text="@string/vermapa" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/azul_2" >
 
-	    <Button
-	        android:id="@+id/button1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.58"
-	        android:text="Regresar" />
-	</LinearLayout>
+                <TextView
+                    android:id="@+id/txtItrade"
+                    android:layout_width="246dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dip"
+                    android:background="@color/azul_2"
+                    android:text="iTrade"
+                    android:textColor="@color/grisClaro"
+                    android:textSize="20dip" />
 
-	<ListView android:id="@android:id/list" android:layout_width="fill_parent"
-		android:layout_height="0dip" android:choiceMode="multipleChoice"
-		android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar"></ListView>
-	<TextView android:id="@android:id/empty" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="@string/listavacia"
-		android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar" />
-</RelativeLayout>
+                <ImageButton
+                    android:id="@+id/btnExplorar"
+                    android:layout_width="58dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@color/azul_2"
+                    android:src="@drawable/04_maps" />
+            </LinearLayout>
+            
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="2dp"
+                android:layout_height="2dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/azul_2" >
+
+            <ImageButton
+                android:id="@+id/btnCrearPedido"
+                style="@drawable/estilo_botones"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/add_to_cart" />
+
+            <ImageButton
+                android:id="@+id/btnBuscarPedido"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/buscar_pedido" />
+
+            <ImageButton
+                android:id="@+id/btnProspectos"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/user_customer" />
+
+            <ImageButton
+                android:id="@+id/btnDirectorio"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/directorio" />
+
+            <ImageButton
+                android:id="@+id/btnMeta"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/excelencia" />
+
+            <ImageButton
+                android:id="@+id/btnCalendario"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/02_calendar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/editTextCliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.11"
+                    android:ems="10"
+                    android:hint="Ingrese Razon Social"
+                    android:imeOptions="actionDone"
+                    android:inputType="text" >
+
+                    <requestFocus />
+                </EditText>
+
+                <Button
+                    android:id="@+id/buttonbuscar"
+                    style="@drawable/estilo_botones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.10"
+                    android:background="@drawable/buscar" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="294dp"
+                android:choiceMode="multipleChoice" >
+
+            </ListView>
+
+            <TextView
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/listavacia" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.10" >
+
+                <Button
+                    android:id="@+id/buttonvermapa"
+                    style="@drawable/estilo_botones"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/estilo_botones"
+                    android:text="@string/vermapa" />
+
+                <Button
+                    android:id="@+id/button1"
+                    style="@drawable/estilo_botones"
+                    android:layout_width="159dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/estilo_botones"
+                    android:text="Regresar" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
