@@ -104,13 +104,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip" >
-
+
                 <EditText
                     android:id="@+id/editTextCliente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_weight="0.11"
+                    android:layout_weight="0.05"
                     android:ems="10"
                     android:hint="Ingrese Razon Social"
                     android:imeOptions="actionDone"
@@ -118,14 +118,14 @@
 
                     <requestFocus />
                 </EditText>
-
+
                 <Button
                     android:id="@+id/buttonbuscar"
                     style="@drawable/estilo_botones"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="0.10"
+                    android:layout_weight="0.04"
                     android:background="@drawable/buscar" />
 
             </LinearLayout>
@@ -157,27 +157,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
                 android:layout_weight="0.10" >
-
+
                 <Button
                     android:id="@+id/buttonvermapa"
                     style="@drawable/estilo_botones"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/estilo_botones"
-                    android:text="@string/vermapa" />
-
+                    android:text="@string/vermapa"
+                    android:textColor="@color/blanco" />
+
                 <Button
                     android:id="@+id/button1"
                     style="@drawable/estilo_botones"
                     android:layout_width="159dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/estilo_botones"
-                    android:text="Regresar" />
+                    android:text="Regresar"
+                    android:textColor="@color/blanco" />
 
             </LinearLayout>
 

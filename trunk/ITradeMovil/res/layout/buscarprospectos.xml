@@ -100,10 +100,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
 
                 <EditText
                     android:id="@+id/editTextCliente"
@@ -152,10 +153,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp" >
 
                 <Button
                     android:id="@+id/buttonvermapa"
@@ -165,14 +167,15 @@
                     android:background="@drawable/estilo_botones"
                     android:text="Agregar"
                     android:textColor="@color/blanco" />
-
+
                 <Button
                     android:id="@+id/button1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.58"
                     android:background="@drawable/estilo_botones"
-                    android:text="Eliminar este boton?" />
+                    android:text="Eliminar este boton?"
+                    android:textColor="@color/blanco" />
 
             </LinearLayout>
         </LinearLayout>
