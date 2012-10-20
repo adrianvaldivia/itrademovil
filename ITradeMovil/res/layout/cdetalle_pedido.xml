@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanco" >
+    android:layout_gravity="right"
+    android:background="#FFFFFF" >
 
-
-
- <LinearLayout
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="149dp"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,13 +19,14 @@
 
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp" >
 
+
+
                 <TextView
-                    android:id="@+id/textTitulo"
+                    android:id="@+id/txtItrade"
                     android:layout_width="246dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -69,44 +70,61 @@
                 android:layout_height="48dp"
                 android:background="@color/azul_2" >
 
+
+
                 <ImageButton
-                    android:id="@+id/imageButton1"
+                    android:id="@+id/btnPedidos"
                     style="@drawable/estilo_botones"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/user_customer" />
 
+
+
                 <ImageButton
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/btnNotificar"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/e_mail" />
 
+
+
+
                 <ImageButton
-                    android:id="@+id/imageButton6"
+                    android:id="@+id/btnBuscarClientes"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/users_search" />
 
+
+
+
                 <ImageButton
-                    android:id="@+id/imageButton5"
+                    android:id="@+id/btnCalcularMonto"
                     android:layout_width="53dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/emblem_money" />
 
+
+
+
                 <ImageButton
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/btnDirectorio"
                     android:layout_width="53dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/directorio" />
-
+
+
+
+
+
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/btnCalendario"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
@@ -115,6 +133,38 @@
             </LinearLayout>
         </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!--
+                  <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/log3" />
+
+
+
+            -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+
+
+
+
+
+
+
+
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -122,10 +172,8 @@
                 android:layout_marginTop="60dip" >
 
 
-
-
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/btnDetalle"
                     style="@drawable/estilo_botones"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,7 +181,6 @@
                     android:background="@drawable/estilo_botones"
                     android:text="Detalle"
                     android:textColor="@color/grisClaro" />
-
 
                 <Button
                     android:id="@+id/btnPagar"
@@ -144,16 +191,19 @@
                     android:text="Pagar"
                     android:textColor="@color/grisClaro" />
 
+
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnRuta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.11"
                     android:background="@drawable/estilo_botones"
                     android:text="Ruta"
                     android:textColor="@color/grisClaro" />
+
             </LinearLayout>
-      </LinearLayout>
-    
+        </LinearLayout>
+
+    </LinearLayout>
 
 </ScrollView>
