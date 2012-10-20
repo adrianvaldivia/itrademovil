@@ -22,9 +22,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp" >
-
+
                 <TextView
-                    android:id="@+id/textTitulo"
+                    android:id="@+id/txtItrade"
                     android:layout_width="246dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -67,45 +67,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@color/azul_2" >
-
+
                 <ImageButton
-                    android:id="@+id/imageButton1"
+                    android:id="@+id/btnPedidos"
                     style="@drawable/estilo_botones"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/user_customer" />
-
+
                 <ImageButton
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/btnNotificar"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/e_mail" />
-
+
                 <ImageButton
-                    android:id="@+id/imageButton6"
+                    android:id="@+id/btnBuscarClientes"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/users_search" />
-
+
                 <ImageButton
-                    android:id="@+id/imageButton5"
+                    android:id="@+id/btnCalcularMonto"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/emblem_money" />
-
+
                 <ImageButton
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/btnDirectorio"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/directorio" />
-
+
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/btnCalendario"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
@@ -129,9 +129,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
+
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textVwCli"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
@@ -157,9 +157,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
+
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textVwMedioPago"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
@@ -185,18 +185,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
+
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textVwTransaccion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
                     android:layout_marginTop="30dip"
                     android:text="ID transaccion:"
                     android:textColor="@color/azul_2" />
-
+
                 <EditText
-                    android:id="@+id/editText1"
+                    android:id="@+id/editTxtTransaccion"
                     android:layout_width="148dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dip"
@@ -217,9 +217,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
+
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textVwMont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
@@ -275,12 +275,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="60dip" >
-
-
-
-
+
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/btnDetalle"
                     style="@drawable/estilo_botones"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -288,7 +285,6 @@
                     android:background="@drawable/estilo_botones"
                     android:text="Detalle"
                     android:textColor="@color/grisClaro" />
-
 
                 <Button
                     android:id="@+id/btnPagar"
@@ -298,15 +294,16 @@
                     android:background="@drawable/estilo_botones"
                     android:text="Pagar"
                     android:textColor="@color/grisClaro" />
-
+
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnRuta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.11"
                     android:background="@drawable/estilo_botones"
                     android:text="Ruta"
                     android:textColor="@color/grisClaro" />
+
             </LinearLayout>
         </LinearLayout>
 
