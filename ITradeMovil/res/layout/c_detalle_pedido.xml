@@ -132,8 +132,7 @@
 
             </LinearLayout>
         </LinearLayout>
-
-
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,33 +143,94 @@
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/log3" />
-
-
-
+                android:src="@drawable/log3" />
             -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:layout_weight="0.55"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textVwCliente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="0.48"
+                        android:text="Cliente : Cliente 1"
+                        android:textColor="@color/azul_2" />
+
+                    <TextView
+                        android:id="@+id/textVwTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dip"
+                        android:text="Total : S/. 1000 soles"
+                        android:textColor="@color/azul_2" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.55"
                 android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip" >
+
+                    <TextView
+                        android:id="@+id/TextVwDetalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="0.32"
+                        android:text="Detalle"
+                        android:textColor="@color/azul_2" />
+
+                    <TextView
+                        android:id="@+id/TextVwEstado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dip"
+                        android:text="POR PAGAR"
+                        android:textColor="@color/azul_2" />
+
+                </LinearLayout>
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dip"
+                android:background="@color/azul_2" />
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="282dp"
+                android:choiceMode="multipleChoice" >
 
-
-
-
-
-
-
-
-
+            </ListView>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="60dip" >
-
+
                 <Button
                     android:id="@+id/btnCobrar"
                     style="@drawable/estilo_botones"
@@ -180,7 +240,7 @@
                     android:background="@drawable/estilo_botones"
                     android:text="Cobrar"
                     android:textColor="@color/grisClaro" />
-
+
                 <Button
                     android:id="@+id/btnRuta"
                     android:layout_width="wrap_content"
@@ -189,7 +249,6 @@
                     android:background="@drawable/estilo_botones"
                     android:text="Ruta"
                     android:textColor="@color/grisClaro" />
-
             </LinearLayout>
         </LinearLayout>
 
