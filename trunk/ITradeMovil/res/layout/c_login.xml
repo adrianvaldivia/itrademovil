@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/azul_2" >
- 
+ 
   <LinearLayout
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
@@ -15,15 +15,15 @@
 
 
       <!-- User Label -->
-
+
       <ImageView
           android:id="@+id/imageView1"
-          android:layout_width="168dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:layout_weight="0.02"
+          android:layout_gravity="fill_vertical|fill_horizontal"
+          android:layout_marginTop="30dip"
           android:src="@drawable/loguito" />
-
+
       <TextView
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
@@ -56,13 +56,15 @@
           android:password="true" />
 
       <!-- Error message -->
-
+
       <Button
           android:id="@+id/btnLogin"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_marginTop="30dip"
-          android:text="Ingresar" />
+          android:text="Ingresar"
+          android:textColor="@color/azul_2"
+          android:textStyle="bold" />
 
       <TextView
           android:id="@+id/login_error"

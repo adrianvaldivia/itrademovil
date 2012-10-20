@@ -63,40 +63,33 @@
             android:layout_height="wrap_content"
             android:background="@color/azul_2"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@color/azul_2" >
 
                 <ImageButton
-                    android:id="@+id/btnPedidos"
+                    android:id="@+id/btnCrearPedido"
                     style="@drawable/estilo_botones"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
+                    android:src="@drawable/add_to_cart" />
+
+                <ImageButton
+                    android:id="@+id/btnBuscarPedido"
+                    android:layout_width="53dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/estilo_botones"
+                    android:src="@drawable/buscar_pedido" />
+
+                <ImageButton
+                    android:id="@+id/btnProspectos"
+                    android:layout_width="53dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/estilo_botones"
                     android:src="@drawable/user_customer" />
-
-                <ImageButton
-                    android:id="@+id/btnNotificar"
-                    android:layout_width="53dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/estilo_botones"
-                    android:src="@drawable/e_mail" />
-
-                <ImageButton
-                    android:id="@+id/btnBuscarClientes"
-                    android:layout_width="53dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/estilo_botones"
-                    android:src="@drawable/users_search" />
-
-                <ImageButton
-                    android:id="@+id/btnCalcularMonto"
-                    android:layout_width="53dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/estilo_botones"
-                    android:src="@drawable/emblem_money" />
 
                 <ImageButton
                     android:id="@+id/btnDirectorio"
@@ -106,12 +99,20 @@
                     android:src="@drawable/directorio" />
 
                 <ImageButton
+                    android:id="@+id/btnMeta"
+                    android:layout_width="53dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/estilo_botones"
+                    android:src="@drawable/excelencia" />
+
+                <ImageButton
                     android:id="@+id/btnCalendario"
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
                     android:src="@drawable/02_calendar" />
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -125,11 +126,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip" >
-
+
                 <Spinner
                     android:id="@+id/spinnercategoria"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
 
             </LinearLayout>
 
