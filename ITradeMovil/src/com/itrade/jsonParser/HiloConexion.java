@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itrade.controller.cobranza.Syncronizar;
 
 
 import android.app.ProgressDialog;
