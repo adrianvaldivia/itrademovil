@@ -9,6 +9,7 @@ class Usuario_controller extends CI_Controller {
         $this->load->model('Persona_model');
         $this->load->model('Perfil_model');
         $this->load->model('Ubigeo_model');
+        $this->load->model('Meta_model');
         /*
           $logged_in = $this->session->userdata('logged_in');
 
@@ -39,7 +40,7 @@ class Usuario_controller extends CI_Controller {
 
     public function modificar($idcontact, $number) {
         //cargar las noticias               
-        $data['title'] = "Itrade Mantenimientos - Modificar";
+        $data['title'] = "Modificar Usuario";
         $data['main'] = "login/login_box.php"; //RUTA		
         $data['username'] = $this->session->userdata('username');
         $data['name'] = $this->session->userdata('name');
@@ -88,6 +89,47 @@ class Usuario_controller extends CI_Controller {
 //        print_r($data['ubigeo']);
         $this->load->vars($data);
         $this->load->view('user_views/create_user_view');
+    }
+
+    function create_meta($idusuario) {
+        //OBTENIENDO DATA PARA PERFILES
+        $data['title'] = "Nueva Meta";
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
+        $data['idusuario'] = $idusuario;
+//        print_r($data['ubigeo']);
+        $this->load->vars($data);
+        $this->load->view('user_views/create_meta_user_view');
+    }
+
+    function metas_user($idusuario = "") {
+        //OBTENIENDO DATA PARA PERFILES
+        $data['title'] = "Metas";
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
+        $data['metas'] = $this->get_metas_usuario($idusuario);
+        $data['idusuario'] = $idusuario;
+//        print_r($data['metas']);
+
+        $this->load->vars($data);
+        $this->load->view('user_views/metas_user_view');
+    }
+
+    public function modificar_meta($idmeta) {
+        //cargar las noticias               
+        $data['title'] = "Modificar Meta";
+        $data['main'] = "login/login_box.php"; //RUTA		
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
+        //OBTENIENDO DATA PARA PERFILES
+        $data['meta'] = $this->Meta_model->get($idmeta);
+
+        $this->load->vars($data);
+        $this->load->view('user_views/edit_meta_user_view');
+        
     }
 
     function create() {
@@ -179,12 +221,92 @@ class Usuario_controller extends CI_Controller {
         );
         echo '<pre>';
         // print_r ($this->input->post());
-  
+
         $this->Persona_model->edit($this->input->post('IdPersona'), $data['Persona']);
         $this->Usuario_model->edit($this->input->post('IdUsuario'), $data['Usuario']);
 
         $this->session->set_flashdata('message', 'Los datos del usuarios han sido modificados correctamente.');
         redirect('admin/usuario_controller', 'refresh');
+
+//        } else {
+//            $data['error_message'] = validation_errors();
+//        }
+//        $data['title'] = "Editar Usuario";
+//
+//        $data['user'] = $this->Usuario_model->get($idUsuario);
+        // echo'<pre>';
+//        print_r($data);
+// echo'</pre>';
+        //$data['main'] = 'admin/admin_seguridad/users/edit'; FALTAAAAAA
+        // $this->load->vars($data);
+        // $this->load->view('template'); //LEILA REVISA ESTO
+    }
+
+    function new_meta($idusuario) {
+        /*        $has_access = $this->Rolemodel->has_access($this->session->userdata('role_id'), 'USER_NEW');
+          if ($has_access == false ) {
+          $this->session->set_flashdata('warning','Usted no tiene permisos para crear usuario');
+          redirect('admin/admin_seguridad/users');
+          }
+         */
+        //Parametro para setear reglas del create
+        $rules_create = 0;
+        $this->set_validation_rules($rules_create);
+
+//        if ($this->form_validation->run()) {
+        // print_r($idPersona);
+        //TABLA USUARIO
+        $data['Meta'] = array(
+            'IdMeta' => $this->Meta_model->get_last_idMeta() + 1,
+            'IdUsuario' => $idusuario,
+            'Monto' => xss_clean($this->input->post('monto')),
+            'FechaIni' => xss_clean($this->input->post('fechaini')),
+            'FechaFin' => xss_clean($this->input->post('fechafin')),
+        );
+
+        //crea el usuario
+        $this->Meta_model->create($data['Meta']);
+
+        //mensaje de verificacion
+        $this->session->set_flashdata('message', 'La meta ha sido creada correctamente.');
+
+        redirect('admin/usuario_controller/metas_user/' . $idusuario, 'refresh');
+//        } else {
+//            $data['Persona']['error_message'] = validation_errors();
+//            $data['Usuario']['error_message'] = validation_errors();
+//        }
+//        $data['title'] = "Nuevo Usuario";
+//        $data['main'] = 'user_views/create_user_views';
+//        $this->load->vars($data);
+        //$this->load->view('template');
+    }
+
+    public function edit_meta($idmeta = '') {
+        //Parametro para setear reglas del edit
+        $rules_edit = 1;
+        $this->set_validation_rules($rules_edit);
+        $data['username'] = $this->session->userdata('username');
+        $data['name'] = $this->session->userdata('name');
+        $data['acceso'] = $this->session->userdata('acceso');
+        $idusuario = $this->Meta_model->get_meta_idUsuario($idmeta);
+//        if (/* $this->form_validation->run() */true) {
+        //TABLA USUARIO
+        $data['Meta'] = array(
+            'IdMeta' => $idmeta,
+            'IdUsuario' => $idusuario,
+            'Monto' => xss_clean($this->input->post('monto')),
+            'FechaIni' => xss_clean($this->input->post('fechaini')),
+            'FechaFin' => xss_clean($this->input->post('fechafin')),
+        );
+
+        echo '<pre>';
+//        print_r($this->input->post());
+
+
+        $this->Meta_model->edit($idmeta, $data['Meta']);
+
+        $this->session->set_flashdata('message', 'Los datos del usuarios han sido modificados correctamente.');
+        redirect('admin/usuario_controller/metas_user/' . $idusuario, 'refresh');
 
 //        } else {
 //            $data['error_message'] = validation_errors();
@@ -208,6 +330,20 @@ class Usuario_controller extends CI_Controller {
             $perfiles[$profile['IdPerfil']] = $profile['Descripcion'];
         }
         return $perfiles;
+    }
+
+    function get_metas_usuario($idusuario) {
+        $metas = array();
+        $goals = $this->Meta_model->get_metas_usuario($idusuario);
+
+        foreach ($goals as $goal) {
+            $metas[$goal['IdMeta']]['IdMeta'] = $goal['IdMeta'];
+            $metas[$goal['IdMeta']]['IdUsuario'] = $goal['IdUsuario'];
+            $metas[$goal['IdMeta']]['FechaIni'] = $goal['FechaIni'];
+            $metas[$goal['IdMeta']]['FechaFin'] = $goal['FechaFin'];
+            $metas[$goal['IdMeta']]['Monto'] = $goal['Monto'];
+        }
+        return $metas;
     }
 
     function list_all_users() {
