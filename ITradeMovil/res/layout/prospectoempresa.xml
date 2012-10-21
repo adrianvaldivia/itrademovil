@@ -25,14 +25,15 @@
                 android:text="iTrade"
                 android:textColor="@color/grisClaro"
                 android:textSize="20dip" />
-
+
             <ImageButton
                 android:id="@+id/btnExplorar"
                 android:layout_width="58dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:background="@color/azul_2"
-                android:src="@drawable/04_maps" />
+                android:src="@drawable/04maps" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -51,14 +52,14 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/azul_2" >
-
+
             <ImageButton
                 android:id="@+id/btnCrearPedido"
                 style="@drawable/estilo_botones"
                 android:layout_width="53dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/estilo_botones"
-                android:src="@drawable/carrito" />
+                android:src="@drawable/add_to_cart" />
 
             <ImageButton
                 android:id="@+id/btnBuscarPedido"
@@ -80,13 +81,13 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/estilo_botones"
                 android:src="@drawable/directorio" />
-
+
             <ImageButton
                 android:id="@+id/btnCalendario"
                 android:layout_width="53dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/estilo_botones"
-                android:src="@drawable/02_calendar" />
+                android:src="@drawable/02calendar" />
 
             <ImageButton
                 android:id="@+id/btnMeta"
@@ -94,6 +95,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/estilo_botones"
                 android:src="@drawable/excelencia" />
+
         </LinearLayout>
 
         <LinearLayout
