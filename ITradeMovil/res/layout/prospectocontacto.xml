@@ -1,137 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blanco"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/TextView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_x="16dp"
-        android:layout_y="67dp"
-        android:text="DNI"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/azul_2" >
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TextView2"
-        android:layout_marginTop="5dp"
-        android:layout_x="16dp"
-        android:layout_y="92dp"
-        android:ems="10" />
+            <TextView
+                android:id="@+id/txtItrade"
+                android:layout_width="246dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dip"
+                android:background="@color/azul_2"
+                android:text="iTrade"
+                android:textColor="@color/grisClaro"
+                android:textSize="20dip" />
 
-    <TextView
-        android:id="@+id/TextView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText1"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_x="18dp"
-        android:layout_y="143dp"
-        android:text="Nombre"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ImageButton
+                android:id="@+id/btnExplorar"
+                android:layout_width="58dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/azul_2"
+                android:src="@drawable/04_maps" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/TextView3"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="5dp"
-        android:layout_x="19dp"
-        android:layout_y="168dp"
-        android:ems="10" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.51"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/TextView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText2"
-        android:layout_marginLeft="2dp"
-        android:layout_x="20dp"
-        android:layout_y="216dp"
-        android:text="Apellido"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView3"
-        android:layout_below="@+id/TextView5"
-        android:layout_marginTop="1dp"
-        android:layout_x="18dp"
-        android:layout_y="239dp"
-        android:ems="10" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/azul_2" >
 
-        <requestFocus />
-    </EditText>
+            <ImageButton
+                android:id="@+id/btnCrearPedido"
+                style="@drawable/estilo_botones"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/carrito" />
 
-    <TextView
-        android:id="@+id/TextView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView3"
-        android:layout_below="@+id/TextView5"
-        android:layout_marginTop="71dp"
-        android:layout_x="18dp"
-        android:layout_y="286dp"
-        android:text="Telefono"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ImageButton
+                android:id="@+id/btnBuscarPedido"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/buscar_pedido" />
 
-    <EditText
-        android:id="@+id/editText4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/TextView4"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="3dp"
-        android:layout_x="17dp"
-        android:layout_y="310dp"
-        android:ems="10" />
+            <ImageButton
+                android:id="@+id/btnProspectos"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/user_customer" />
 
-    <TextView
-        android:id="@+id/TextView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText4"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="6dp"
-        android:layout_x="23dp"
-        android:layout_y="362dp"
-        android:text="Cumpleanios"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ImageButton
+                android:id="@+id/btnDirectorio"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/directorio" />
 
-    <EditText
-        android:id="@+id/editText5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_below="@+id/editText4"
-        android:layout_marginTop="30dp"
-        android:layout_x="19dp"
-        android:layout_y="382dp"
-        android:ems="10"
-        android:inputType="date" />
+            <ImageButton
+                android:id="@+id/btnCalendario"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/02_calendar" />
 
-    <TextView
-        android:id="@+id/TextView1"
-        android:layout_width="132dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_marginTop="14dp"
-        android:text="Contacto"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <ImageButton
+                android:id="@+id/btnMeta"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/excelencia" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-</RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/TextView1"
+                    android:layout_width="222dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Contacto"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/azul_2" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:src="@drawable/contacts" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/TextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="DNI"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/azul_2" />
+
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ems="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/TextView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:text="Nombre"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/azul_2" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="5dp"
+                android:ems="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/TextView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:text="Apellido"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/azul_2" />
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:ems="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/TextView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="71dp"
+                android:text="Telefono"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/azul_2" />
+
+            <EditText
+                android:id="@+id/editText4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="3dp"
+                android:ems="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:text="Cumpleaños"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/azul_2" />
+
+            <EditText
+                android:id="@+id/EditText02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:ems="10" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
