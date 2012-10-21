@@ -97,16 +97,19 @@ class Reporte_model extends CI_Model {
 		public function zonas_detallado($month,$idjerarquia,$idubigeo,$id){				
 		switch($idjerarquia){
 			case 1://pais
-				$this->db->select($this->table_departamento.".Descripcion");				
-				$this->db->select_sum($this->table_pedido.".MontoTotal");
+				$this->db->select($this->table_ubigeo.".Departamento");					
+				$this->db->select_sum($this->table_pedido.".MontoTotalPedido");
+				$this->db->select_sum($this->table_pedido.".MontoTotalCobrado");
 				break;
 			case 2://departamento							
-				$this->db->select($this->table_distrito.".Descripcion");				
-				$this->db->select_sum($this->table_pedido.".MontoTotal");
+				$this->db->select($this->table_ubigeo.".Distrito");			
+				$this->db->select_sum($this->table_pedido.".MontoTotalPedido");
+				$this->db->select_sum($this->table_pedido.".MontoTotalCobrado");
 				break;
 			case 3://distrito		
-				$this->db->select($this->table_zona.".Descripcion");				
-				$this->db->select_sum($this->table_pedido.".MontoTotal");						
+				$this->db->select($this->table_ubigeo.".Zona");					
+				$this->db->select_sum($this->table_pedido.".MontoTotalPedido");
+				$this->db->select_sum($this->table_pedido.".MontoTotalCobrado");						
 				break;
 		}				
 		//RELACIONES
@@ -115,26 +118,16 @@ class Reporte_model extends CI_Model {
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
 		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
 		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");				
-		switch($idjerarquia){			
-			case 1://pais
-				$this->db->join($this->table_departamento,$this->table_ubigeo.".IdDepartamento =".$this->table_departamento.".IdDepartamento");
-				break;
-			case 2://pais
-				$this->db->join($this->table_distrito,$this->table_ubigeo.".IdDistrito =".$this->table_distrito.".IdDistrito");
-				break;
-			case 3://pais
-				$this->db->join($this->table_zona,$this->table_ubigeo.".IdZona =".$this->table_zona.".IdZona");
-				break;
-		}												
+										
 		switch($idjerarquia){
 			case 1:				
-				$this->db->where($this->table_ubigeo.".IdPais", $id);
+				$this->db->where($this->table_ubigeo.".Pais", $id);
 				break;
 			case 2:				
-				$this->db->where($this->table_ubigeo.".IdDepartamento", $id);
+				$this->db->where($this->table_ubigeo.".Departamento", $id);
 				break;
 			case 3:				
-				$this->db->where($this->table_ubigeo.".IdDistrito", $id);
+				$this->db->where($this->table_ubigeo.".Distrito", $id);
 				break;
 		}			
 		//$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
@@ -153,18 +146,18 @@ class Reporte_model extends CI_Model {
 		//$this->//FECHA			
 		switch($idjerarquia){
 			case 1://pais
-				$this->db->group_by($this->table_departamento.".Descripcion");				
+				$this->db->group_by($this->table_ubigeo.".Departamento");				
 				break;
 			case 2://departamento
 							
-				$this->db->group_by($this->table_distrito.".Descripcion");	
+				$this->db->group_by($this->table_ubigeo.".Distrito");	
 				break;
 			case 3://distrito							
-				$this->db->group_by($this->table_zona.".Descripcion");	
+				$this->db->group_by($this->table_ubigeo.".Zona");	
 				break;
-		}				
+		}			
 		$query = $this->db->get();	
-		//echo $this->db->last_query();
+		echo $this->db->last_query();
 		return $query->result();
 		
 	}	
@@ -175,8 +168,8 @@ class Reporte_model extends CI_Model {
 		
 		//SELECTS
 		
-		$this->db->select($this->table_zona.".Descripcion");				
-		$this->db->select_sum($this->table_pedido.".MontoTotal");						
+		$this->db->select($this->table_ubigeo.".Zona");				
+		$this->db->select_sum($this->table_pedido.".MontoTotalPedido");						
 		$this->db->select_sum($this->table_meta.".Monto");
 						
 		//RELACIONES
@@ -185,9 +178,9 @@ class Reporte_model extends CI_Model {
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
 		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
 		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");	
-		$this->db->join($this->table_departamento,$this->table_ubigeo.".IdDepartamento =".$this->table_departamento.".IdDepartamento");
+		/*$this->db->join($this->table_departamento,$this->table_ubigeo.".IdDepartamento =".$this->table_departamento.".IdDepartamento");
 		$this->db->join($this->table_distrito,$this->table_ubigeo.".IdDistrito =".$this->table_distrito.".IdDistrito");
-		$this->db->join($this->table_zona,$this->table_ubigeo.".IdZona =".$this->table_zona.".IdZona");
+		$this->db->join($this->table_zona,$this->table_ubigeo.".IdZona =".$this->table_zona.".IdZona");*/
 		$this->db->join($this->table_meta,$this->table_usuario.".IdUsuario =".$this->table_meta.".IdUsuario");
 												
 				
@@ -200,18 +193,80 @@ class Reporte_model extends CI_Model {
 		$this->db->where($str);
 		
 		
+		//WHERE
+		$this->db->where($this->table_ubigeo.".Pais", $idpais);
+		$this->db->where($this->table_ubigeo.".Departamento", $iddepartamento);
+		$this->db->where($this->table_ubigeo.".Distrito", $iddistrito);
+		
 		
 		//GROUP BY
-		$this->db->group_by($this->table_zona.".Descripcion");				
-		$this->db->where($this->table_ubigeo.".IdPais", $idpais);
-		$this->db->where($this->table_ubigeo.".IdDepartamento", $iddepartamento);
-		$this->db->where($this->table_ubigeo.".IdDistrito", $iddistrito);
+		$this->db->group_by($this->table_ubigeo.".Zona");				
+		
 						
 		$query = $this->db->get();	
 		//echo $this->db->last_query();
 		return $query->result();
 		
 	}	
+	
+	
+	public function marca_resumido($month,$idcategoria){				
+		
+				$this->db->select($this->table_marca.".Descripcion");				
+				$this->db->select_sum($this->table_linea_pedido.".MontoLinea");
+				$this->db->select_sum($this->table_linea_pedido.".Cantidad");
+		
+		//RELACIONES
+		$this->db->from($this->table_linea_pedido);
+						//TABLA JOIN, RELACION//
+		$this->db->join($this->table_pedido,$this->table_linea_pedido.".IdPedido =".$this->table_pedido.".IdPedido");				
+		$this->db->join($this->table_producto,$this->table_linea_pedido.".IdProducto =".$this->table_producto.".IdProducto");				
+		$this->db->join($this->table_marca,$this->table_producto.".IdMarca =".$this->table_marca.".IdMarca");
+		$this->db->join($this->table_categoria,$this->table_producto.".IdCategoria =".$this->table_categoria.".IdCategoria");			
+											
+				
+		$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		$this->db->where($str);//UBIGEO
+		
+		$this->db->where($this->table_categoria.".IdCategoria", $idcategoria);
+		
+		$this->db->group_by($this->table_marca.".Descripcion");	
+
+			
+		$query = $this->db->get();	
+		echo $this->db->last_query();
+		return $query->result();
+		
+	}	
+	
+	public function pedido_resumido_e1($month,$idcategoria){				
+		
+				$this->db->select($this->table_marca.".Descripcion");				
+				$this->db->select_sum($this->table_linea_pedido.".MontoLinea");
+				$this->db->select_sum($this->table_linea_pedido.".Cantidad");
+		
+		//RELACIONES
+		$this->db->from($this->table_linea_pedido);
+						//TABLA JOIN, RELACION//
+		$this->db->join($this->table_pedido,$this->table_linea_pedido.".IdPedido =".$this->table_pedido.".IdPedido");				
+		$this->db->join($this->table_producto,$this->table_linea_pedido.".IdProducto =".$this->table_producto.".IdProducto");				
+		$this->db->join($this->table_marca,$this->table_producto.".IdMarca =".$this->table_marca.".IdMarca");
+		$this->db->join($this->table_categoria,$this->table_producto.".IdCategoria =".$this->table_categoria.".IdCategoria");			
+											
+				
+		$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		$this->db->where($str);//UBIGEO
+		
+		$this->db->where($this->table_categoria.".IdCategoria", $idcategoria);
+		
+		$this->db->group_by($this->table_marca.".Descripcion");	
+
+			
+		$query = $this->db->get();	
+		echo $this->db->last_query();
+		return $query->result();
+		
+	}
 	
 	
 }
