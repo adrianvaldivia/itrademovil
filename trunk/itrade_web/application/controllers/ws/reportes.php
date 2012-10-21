@@ -46,8 +46,6 @@ class Reportes extends CI_Controller {
 				
 	}
 	
-	//REPORTE ZONAS DETALLADO
-	
 	public function zonas_detallado($month_w="",$idjerarquia_w="",$idubigeo_w=""){		
 		//2012-05-10
 		$month=$this->input->post('month');
@@ -57,7 +55,7 @@ class Reportes extends CI_Controller {
 		if (isset($month_w)&& $month_w!= "" && isset($idjerarquia_w)&& $idjerarquia_w!="" && isset($idubigeo_w)&& $idubigeo_w!=""){	
 			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia_w,$idubigeo_w);			
 			foreach($result as $res){
-				$id=$res->id;
+				$id=$res->nombre;
 			}	
 			$result=$this->Reporte_model->zonas_detallado($month_w,$idjerarquia_w,$idubigeo_w,$id);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
@@ -66,12 +64,16 @@ class Reportes extends CI_Controller {
 		if (isset($month)&& $month!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!=""){	
 			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia,$idubigeo);			
 			foreach($result as $res){
-				$id=$res->id;
+				$id=$res->nombre;
 			}	
 			$result=$this->Reporte_model->zonas_detallado($month,$idjerarquia,$idubigeo,$id);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}			
 	}
+	
+	//REPORTE DE CIRCULO DE EXCELENCIA
+	
+	//Resumido
 	
 	public function circulo_resumido($month_w="",$iddistrito_w="",$iddepartamento_w="",$idpais_w=""){		
 		//2012-05-10
@@ -89,6 +91,55 @@ class Reportes extends CI_Controller {
 		/*SOLO PARA ANDROID*/		
 		if (isset($month)&& $month!= "" && isset($iddistrito)&& $iddistrito!="" && isset($iddepartamento)&& $iddepartamento!="" && isset($idpais)&& $idpais!=""){	
 			$result=$this->Reporte_model->circulo_resumido($month,$iddistrito,$iddepartamento,$idpais);	
+			//$result=$this->Reporte_model->zonas_detallado($month,$idjerarquia,$idubigeo,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}					
+	}
+	
+	//REPORTE DE MARCAS
+	
+	//Resumido
+	
+		public function marca_resumido($month_w="",$idcategoria_w=""){		
+		//2012-05-10
+		$month=$this->input->post('month');
+		//$iddistrito=$this->input->post('iddistrito');
+		//$iddepartamento=$this->input->post('iddepartamento');	
+		$idcategoria=$this->input->post('idcategoria');			
+		/*SOLO PARA WEB*/		
+		if (isset($month_w)&& $month_w!= "" && isset($idcategoria_w)&& $idcategoria_w!="" ){	
+			//$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia_w,$idubigeo_w);			
+			
+			$result=$this->Reporte_model->marca_resumido($month_w,$idcategoria_w);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($month)&& $month!= "" && isset($idcategoria)&& $idcategoria!="" ){	
+			$result=$this->Reporte_model->marca_resumido($month,$idcategoria);	
+			//$result=$this->Reporte_model->zonas_detallado($month,$idjerarquia,$idubigeo,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}					
+	}
+	
+	
+	//REPORTE DE PEDIDOS
+	
+		public function pedido_resumido_e1($month_w="",$idcategoria_w=""){		
+		//2012-05-10
+		$month=$this->input->post('month');
+		//$iddistrito=$this->input->post('iddistrito');
+		//$iddepartamento=$this->input->post('iddepartamento');	
+		$idcategoria=$this->input->post('idcategoria');			
+		/*SOLO PARA WEB*/		
+		if (isset($month_w)&& $month_w!= "" && isset($idcategoria_w)&& $idcategoria_w!="" ){	
+			//$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia_w,$idubigeo_w);			
+			
+			$result=$this->Reporte_model->marca_resumido($month_w,$idcategoria_w);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($month)&& $month!= "" && isset($idcategoria)&& $idcategoria!="" ){	
+			$result=$this->Reporte_model->marca_resumido($month,$idcategoria);	
 			//$result=$this->Reporte_model->zonas_detallado($month,$idjerarquia,$idubigeo,$id);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}					
