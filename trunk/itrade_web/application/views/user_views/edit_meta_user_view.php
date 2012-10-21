@@ -30,7 +30,9 @@
     <body>
         <script type="text/javascript">
             $(function() {
-                $( "#birthdate" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
+                $( "#fechaini" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
+                $( "#fechafin" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
+                
             });
         </script>
         <div id="header">
