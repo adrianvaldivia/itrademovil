@@ -43,12 +43,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:background="@color/azul_2"
-<<<<<<< .mine
-                    android:src="@drawable/04maps" />
-
-=======
                     android:src="@drawable/maps4" />
->>>>>>> .r137
             </LinearLayout>
         </LinearLayout>
 
@@ -115,11 +110,8 @@
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
-<<<<<<< .mine
-                    android:src="@drawable/excelencia" />
-=======
                     android:src="@drawable/calendar2" />
->>>>>>> .r137
+
             </LinearLayout>
 
         </LinearLayout>
