@@ -43,7 +43,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:background="@color/azul_2"
-                    android:src="@drawable/04_maps" />
+                    android:src="@drawable/04maps" />
 
             </LinearLayout>
 
@@ -129,7 +129,7 @@
                     android:layout_width="53dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/estilo_botones"
-                    android:src="@drawable/02_calendar" />
+                    android:src="@drawable/02calendar" />
 
             </LinearLayout>
         </LinearLayout>
