@@ -26,7 +26,7 @@
     <body>
 
         <div id="header">
-            <!--            <div id="title">iTRADE</div>-->
+<!--                        <div id="title"><?echo $title?></div>-->
             <div id="logo">
                <a href="<?echo base_url()?>home"> <img src="<?php echo base_url() ?>images/loguito.png"/></a>
             </div>
