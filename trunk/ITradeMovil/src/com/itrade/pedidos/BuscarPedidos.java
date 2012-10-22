@@ -95,7 +95,7 @@ public class BuscarPedidos extends ListActivity{
         setTitle("iTrade - Pedidos");
         
         button_cearpedido = (Button) findViewById(R.id.buttoncrearpedido);
-        button_regresar = (Button) findViewById(R.id.buttonregresar);
+//        button_regresar = (Button) findViewById(R.id.buttonregresar);
         
      
         
@@ -111,12 +111,12 @@ public class BuscarPedidos extends ListActivity{
 				startActivity(intent);
 			}
 	 	});
-        button_regresar.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();
-				BuscarPedidos.this.finish();
-			}
-	 	});
+//        button_regresar.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();
+//				BuscarPedidos.this.finish();
+//			}
+//	 	});
  
 	}
 
