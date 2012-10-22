@@ -38,5 +38,18 @@ class Pedido extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}		
 	}
+	
+	public function get_pedidos_by_idvendedor($idcobrador_w=''){
+		$idcobrador=$this->input->post('idvendedor');				
+		if (isset($idcobrador)&& $idcobrador!= "" ){			
+			$result=$this->Payment_model->get_pedidos_by_idvendedor($idcobrador);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
+		}
+		
+		if (isset($idcobrador_w)&& $idcobrador_w!=""  ){
+			$result=$this->Payment_model->get_pedidos_by_idvendedor($idcobrador_w);
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}	
+	}
 }
 
