@@ -1,12 +1,18 @@
 package com.itrade.pedidos;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +24,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.Persona;
@@ -27,6 +35,8 @@ import com.itrade.model.Usuario;
 import com.itrade.model.UsuarioDao;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.UsuarioDao.Properties;
+import com.itrade.cobranzas.ClientesListTask;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.db.DAOUsuario;
 import com.itrade.db.DAOPersona;
 
@@ -57,12 +67,13 @@ public class Login extends Activity {
     public Persona datEmpleado = null;
     public Boolean boolBaseLocalUsuariosVacia=false;
     public Boolean boolBaseLocalPersonasVacia=false;
+    public ProgressDialog pd;
 
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-	    setContentView(R.layout.login2);
+	    setContentView(R.layout.c_login);
 	    //inicio green DAO 
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
         db = helper.getWritableDatabase();
@@ -78,14 +89,15 @@ public class Login extends Activity {
 	    daoPerso = new DAOPersona();
     
 	    
-	    textView_Usuario  = (EditText) findViewById(R.id.autoCompleteTextView1);
-	    textView_Password  = (EditText) findViewById(R.id.editText1);
-	    button_Ingresar = (Button) findViewById(R.id.button1);
+	    textView_Usuario  = (EditText) findViewById(R.id.loginUser);
+	    textView_Password  = (EditText) findViewById(R.id.loginPassword);
+	    button_Ingresar = (Button) findViewById(R.id.btnLogin);
 	        
 	    //M�todo click etn Boton Ingresar
 
 	    button_Ingresar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				
 				boolBaseLocalUsuariosVacia=false;
 				boolBaseLocalPersonasVacia=false;
 		        if (usuarioDao.count()==0){
@@ -95,43 +107,82 @@ public class Login extends Activity {
 		        	boolBaseLocalPersonasVacia=true;
 		        }	
 				String nombreUsuario = textView_Usuario.getText().toString();
-				
 				String password = textView_Password.getText().toString();
-				int resul=-1;
+				
+				int resul=1;
+				/*
 				if (boolBaseLocalUsuariosVacia){
 					resul= daoUsu.confirmarLogin(nombreUsuario, password);
 				}
 				else{
 					resul=confirmarLoginLocal(nombreUsuario, password);
 				}
+				*/
+				
 				
 				
 				if (resul!=-1) {
-			    	
+			    	/*
 					if(boolBaseLocalPersonasVacia){
 						datEmpleado = daoPerso.buscarDatosPersona(resul);
 					}
 					else{
 						datEmpleado = buscarDatosPersonaLocal(resul);
 					}
+					*/
+					
 //				    datEmpleado = daoPerso.buscarDatosPersona(resul);
-				    
-					Intent intent = new Intent(Login.this, MenuLista.class);
 					
-					String nombre= datEmpleado.getNombre();
-					String apellidos=datEmpleado.getApePaterno();
-
+					/**************************WEBSERVICE BEGIN******************************/
 					
-//					Toast.makeText(getBaseContext(), "Ruta: "+idruta, Toast.LENGTH_SHORT).show();
-//					Toast.makeText(getBaseContext(), "Unidad: "+idunidad, Toast.LENGTH_SHORT).show();
-					
-					intent.putExtra("idempleado", resul);
-					intent.putExtra("nombre", nombre);
-					intent.putExtra("apellidos", apellidos);
-					
-					startActivity(intent);
-					
-					textView_Password.setText("");
+					Syncronizar sync = new Syncronizar(Login.this);
+					List<NameValuePair> param = new ArrayList<NameValuePair>();								
+					param.add(new BasicNameValuePair("username", nombreUsuario));
+					param.add(new BasicNameValuePair("password", password));
+					//String route="dp2/itrade/ws/login/get_user_by_username_password/";
+					String route="itrade_web/ws/login/get_user_by_username_password/";
+				    sync.conexion(param,route);
+				    try {
+						sync.getHilo().join();
+						Log.d("TAG","LLEGA PRIMERO AKI");
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				    Log.d("TAG","LLEGA SEGUNDO AKI");
+				    Gson gson = new Gson();
+					ArrayList<Usuario> logList = new ArrayList<Usuario>();					
+					Log.e("log_tag", "se cayo5" );
+					logList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Usuario>>(){}.getType());				    
+					if (logList.size()>0){
+						Usuario usuario = logList.get(0);					    					   
+					    /*****************************WEBSERVICE END**********************************/
+					    
+						if (usuario.getIdPerfil()==2){//PEDIDOS
+							Intent intent = new Intent(Login.this, MenuLista.class);					
+						    String nombre= usuario.getNombre();
+							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
+							intent.putExtra("idempleado", resul);
+							intent.putExtra("nombre", nombre);
+							intent.putExtra("apellidos", apellidos);
+							//intent.putExtra("usuario", usuario);					
+							startActivity(intent);					
+							textView_Password.setText("");
+						}
+						if (usuario.getIdPerfil()==3){//Cobranza
+							Intent intent = new Intent(Login.this, ClientesListTask.class);					
+						    String nombre= usuario.getNombre();
+							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
+							intent.putExtra("idempleado", usuario.getIdUsuario());
+							intent.putExtra("nombre", nombre);
+							intent.putExtra("apellidos", apellidos);
+							//intent.putExtra("usuario", usuario);					
+							startActivity(intent);					
+							textView_Password.setText("");
+						}
+					}else{
+						Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
+					}														    				   
 				}
 				else{
 					Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
@@ -197,8 +248,8 @@ public class Login extends Activity {
         personaDao.deleteAll();
         
 		for(int i=0;i<listaUsuario.size();i++){
-			Usuario cliente = new Usuario(null,listaUsuario.get(i).getNombre(),listaUsuario.get(i).getPassword(),listaUsuario.get(i).getIdPerfil(),listaUsuario.get(i).getIdPersona(),listaUsuario.get(i).getActivo(),listaUsuario.get(i).getIdJerarquia(),listaUsuario.get(i).getIdZona(),listaUsuario.get(i).getIdDistrito(),listaUsuario.get(i).getIdCiudad(),listaUsuario.get(i).getIdPais());
-			usuarioDao.insert(cliente);
+			//Usuario cliente = new Usuario(null,listaUsuario.get(i).getNombre(),listaUsuario.get(i).getPassword(),listaUsuario.get(i).getIdPerfil(),listaUsuario.get(i).getIdPersona(),listaUsuario.get(i).getActivo(),listaUsuario.get(i).getIdJerarquia(),listaUsuario.get(i).getIdZona(),listaUsuario.get(i).getIdDistrito(),listaUsuario.get(i).getIdCiudad(),listaUsuario.get(i).getIdPais());
+			//usuarioDao.insert(cliente);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}	
 		for(int i=0;i<listaPersona.size();i++){
