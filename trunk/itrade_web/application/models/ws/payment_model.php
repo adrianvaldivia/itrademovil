@@ -58,5 +58,16 @@ class Payment_model extends CI_Model {
 			return false;
 		}					
 	}
+	
+	public function get_pedidos_by_idvendedor($idcobrador){		
+		$this->db->from($this->table_pedido);
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");											
+		$this->db->where($this->table_cliente.".IdCobrador", $idcobrador);	
+		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
+		$this->db->where($dates);
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		return $query->result();	
+	}
 }
 ?>
