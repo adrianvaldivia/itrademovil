@@ -107,7 +107,8 @@
             android:name=".pedidos.RegistrarProspecto"
             android:label="@string/app_name" >
         </activity>
-        
+        <activity android:name=".ListaClientes"/>
+        <activity android:name=".cobranzas.ClientesListTask"/>
     </application>
 
 </manifest>
