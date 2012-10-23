@@ -191,16 +191,19 @@ class Credito_controller extends CI_Controller {
 
         $creditos = array();
         $credits = $this->Credito_model->get_all_creditos();
-
+// if(count($credits)>0)
+/* ($this->Credito_model->get_cliente_idCredito($credit['IdLinea'])==false)?array():$this->Credito_model->get_cliente_idCredito($credit['IdLinea']); */
         foreach ($credits as $credit) {
+		// print('a'.$credit['IdLinea']);
             $creditos[$credit['IdLinea']]['IdLinea'] = $credit['IdLinea'];
-            $creditos[$credit['IdLinea']]['Cliente'] = $this->Credito_model->get_cliente_idCredito($credit['IdLinea']);
+            $creditos[$credit['IdLinea']]['Cliente'] =$this->Credito_model->get_cliente_idCredito($credit['IdLinea']);// array();
             $creditos[$credit['IdLinea']]['MontoSolicitado'] = $credit['MontoSolicitado'];
             $creditos[$credit['IdLinea']]['MontoActual'] = $credit['MontoActual'];
             $creditos[$credit['IdLinea']]['MontoAprobado'] = $credit['MontoAprobado'];
             $creditos[$credit['IdLinea']]['IdCliente'] = $credit['IdCliente'];
             $creditos[$credit['IdLinea']]['Activo'] = $credit['Activo'];
         }
+		// exit;
         return $creditos;
     }
 
