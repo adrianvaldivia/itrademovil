@@ -26,6 +26,20 @@ class Clientes extends CI_Controller {
 		}		
 	}	
 	
+	public function get_prospecto_by_vendedor($idvendedor_w='',$razon_social_w='')
+	{
+		$idvendedor=$this->input->post('idvendedor');				
+		$razon_social=$this->input->post('razon_social');
+		if (isset($idvendedor_w)&& $idvendedor_w!= "" ){			
+			$result=$this->Cliente_model->get_prospecto_by_vendedor($idvendedor_w,$razon_social_w);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));		
+		}		
+		if (isset($idvendedor)&& $idvendedor!=""  ){
+			$result=$this->Cliente_model->get_prospecto_by_vendedor($idvendedor,$razon_social);
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}		
+	}
+	
 	public function get_pedidos_by_idvendedor($idvendedor_w='')
 	{
 		$idvendedor=$this->input->post('idvendedor');				
