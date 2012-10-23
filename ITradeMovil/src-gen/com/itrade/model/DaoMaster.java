@@ -8,9 +8,9 @@ import android.util.Log;
 import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.IdentityScopeType;
 
+import com.itrade.model.UsuarioDao;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.ProspectoDao;
-import com.itrade.model.UsuarioDao;
 import com.itrade.model.ProductoDao;
 import com.itrade.model.PersonaDao;
 import com.itrade.model.PedidoDao;
@@ -27,9 +27,9 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
+        UsuarioDao.createTable(db, ifNotExists);
         ClienteDao.createTable(db, ifNotExists);
         ProspectoDao.createTable(db, ifNotExists);
-        UsuarioDao.createTable(db, ifNotExists);
         ProductoDao.createTable(db, ifNotExists);
         PersonaDao.createTable(db, ifNotExists);
         PedidoDao.createTable(db, ifNotExists);
@@ -40,9 +40,9 @@ public class DaoMaster extends AbstractDaoMaster {
     
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
+        UsuarioDao.dropTable(db, ifExists);
         ClienteDao.dropTable(db, ifExists);
         ProspectoDao.dropTable(db, ifExists);
-        UsuarioDao.dropTable(db, ifExists);
         ProductoDao.dropTable(db, ifExists);
         PersonaDao.dropTable(db, ifExists);
         PedidoDao.dropTable(db, ifExists);
@@ -80,9 +80,9 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
+        registerDaoClass(UsuarioDao.class);
         registerDaoClass(ClienteDao.class);
         registerDaoClass(ProspectoDao.class);
-        registerDaoClass(UsuarioDao.class);
         registerDaoClass(ProductoDao.class);
         registerDaoClass(PersonaDao.class);
         registerDaoClass(PedidoDao.class);
