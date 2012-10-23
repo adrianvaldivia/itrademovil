@@ -218,11 +218,16 @@
                 android:choiceMode="multipleChoice" >
 
             </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_control_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_marginTop="60dip" >
 
                 <Button
@@ -244,6 +249,7 @@
                     android:text="Ruta"
                     android:textColor="@color/grisClaro" />
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
