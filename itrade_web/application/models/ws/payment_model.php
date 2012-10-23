@@ -6,8 +6,13 @@ class Payment_model extends CI_Model {
         parent::__construct();		
 		$this->table_cliente = 'Cliente';
 		$this->table_persona = 'Persona';
-		$this->table_pedido = 'Pedido';
+		$this->table_pedido = 'Pedido';		
 		$this->table_estado_pedido = 'EstadoPedido';
+		$this->table_pedido_linea = 'Linea_Pedido';
+		$this->table_producto = 'Producto';
+		$this->table_marca = 'Marca';
+		$this->table_categoria = 'Categoria';
+		
     }	
 	
 	public function pay_by_id($idpedido){
@@ -35,12 +40,13 @@ class Payment_model extends CI_Model {
 							$this->table_pedido.".FechaPedido, ".
 							$this->table_pedido.".IdEstadoPedido, ".							
 							$this->table_pedido.".FechaCobranza, ".
-							$this->table_pedido.".MontoTotal ");		
+							$this->table_pedido.".MontoTotalPedido ");		
 		$this->db->from($this->table_pedido);
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
 		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
 		$this->db->where($this->table_pedido.".IdPedido", $idpedido);			
 		$query = $this->db->get();
+		//echo $this->db->last_query();
 		return $query->result();	
 	}
 	
@@ -69,5 +75,23 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();	
 	}
+	public function get_detail_by_idpedido($idpedido){
+		$this->db->select($this->table_pedido_linea.".IdPedido, ".
+							$this->table_pedido_linea.".IdProducto, ".
+							$this->table_pedido_linea.".MontoLinea, ".
+							$this->table_pedido_linea.".Cantidad, ".
+							$this->table_producto.".Descripcion as NombreProducto , ".
+							$this->table_marca.".Descripcion as Marca , ".
+							$this->table_categoria.".Descripcion as Categoria  "							
+							);
+		$this->db->from($this->table_pedido_linea);
+		$this->db->join($this->table_producto,$this->table_pedido_linea.".IdProducto =".$this->table_producto.".IdProducto");
+		$this->db->join($this->table_marca,$this->table_producto.".IdMarca =".$this->table_marca.".IdMarca");
+		$this->db->join($this->table_categoria,$this->table_producto.".IdCategoria =".$this->table_categoria.".IdCategoria");
+		$this->db->where($this->table_pedido_linea.".IdPedido", $idpedido);	
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		return $query->result();
+	}	
 }
 ?>
