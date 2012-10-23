@@ -140,7 +140,7 @@ public class Login extends Activity {
 					param.add(new BasicNameValuePair("username", nombreUsuario));
 					param.add(new BasicNameValuePair("password", password));
 					//String route="dp2/itrade/ws/login/get_user_by_username_password/";
-					String route="itrade_web/ws/login/get_user_by_username_password/";
+					String route="/ws/login/get_user_by_username_password/";
 				    sync.conexion(param,route);
 				    try {
 						sync.getHilo().join();
@@ -172,8 +172,8 @@ public class Login extends Activity {
 						if (usuario.getIdPerfil()==3){//Cobranza
 							Intent intent = new Intent(Login.this, ClientesListTask.class);					
 						    String nombre= usuario.getNombre();
-							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
-							intent.putExtra("idempleado", usuario.getIdUsuario());
+							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();							
+							intent.putExtra("idempleado", usuario.getIdUsuario().toString());
 							intent.putExtra("nombre", nombre);
 							intent.putExtra("apellidos", apellidos);
 							//intent.putExtra("usuario", usuario);					
