@@ -242,31 +242,43 @@ class Reporte_model extends CI_Model {
 		
 	}	
 	
-	public function pedido_resumido_e1($month,$idcategoria){				
+	public function pedido_resumido_e1($month){				
 		
-				$this->db->select($this->table_marca.".Descripcion");				
-				$this->db->select_sum($this->table_linea_pedido.".MontoLinea");
-				$this->db->select_sum($this->table_linea_pedido.".Cantidad");
+				$this->db->select($this->table_ubigeo.".Zona");		
+				$this->db->select($this->table_estado_pedido.".Descripcion");					
+				$this->db->select_sum($this->table_pedido.".MontoTotalPedido");	
+	
 		
 		//RELACIONES
-		$this->db->from($this->table_linea_pedido);
+		$this->db->from($this->table_pedido);
 						//TABLA JOIN, RELACION//
-		$this->db->join($this->table_pedido,$this->table_linea_pedido.".IdPedido =".$this->table_pedido.".IdPedido");				
-		$this->db->join($this->table_producto,$this->table_linea_pedido.".IdProducto =".$this->table_producto.".IdProducto");				
-		$this->db->join($this->table_marca,$this->table_producto.".IdMarca =".$this->table_marca.".IdMarca");
-		$this->db->join($this->table_categoria,$this->table_producto.".IdCategoria =".$this->table_categoria.".IdCategoria");			
-											
-				
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
+		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
+		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");			
+		$this->db->join($this->table_estado_pedido,$this->table_pedido.".IdEstadoPedido =".$this->table_estado_pedido.".IdEstadoPedido");									
+		//WHERES
+		
 		$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
 		$this->db->where($str);//UBIGEO
 		
-		$this->db->where($this->table_categoria.".IdCategoria", $idcategoria);
+		$str="(".$this->table_estado_pedido.".IdEstadoPedido) = 1";		
+		$this->db->where($str);
+		//ESTADO PEDIDO
 		
-		$this->db->group_by($this->table_marca.".Descripcion");	
+		
+		//GROUP BY
+		
+		$this->db->group_by($this->table_ubigeo.".Zona");
+		$this->db->group_by($this->table_estado_pedido.".Descripcion");
+		
+		
+		//$this->db->where($this->table_categoria.".IdCategoria", $idcategoria);
+		
+		//$this->db->group_by($this->table_marca.".Descripcion");	
 
 			
 		$query = $this->db->get();	
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();
 		
 	}
