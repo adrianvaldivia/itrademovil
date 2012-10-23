@@ -1,10 +1,10 @@
 <div class="contenido_principal" style="width:70%; height:100%;  min-width:650px; max-width:650px;">
 
     <?
-    //print_r($creditos);
+    // print_r($creditos);
     if (count($creditos) == 0) {
         ?>
-        <? echo "Por el momento no hay solicitudes de credito dispionibles."; ?>
+        <? echo "Por el momento no hay solicitudes de credito disponibles."; ?>
 
     <? } else {
         ?>

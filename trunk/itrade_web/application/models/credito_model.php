@@ -12,10 +12,12 @@ class Credito_model extends CI_Model {
     function get_all_creditos() {
         $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename.Activo");
         $this->db->from($this->tablename);
-        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente', 'right');
-        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona', 'left');
+        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
+        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona');
         $query = $this->db->get();
         $this->db->close();
+		// print_r($this->db);
+		// exit;
         return $query->result_array();
     }
 
@@ -68,7 +70,16 @@ class Credito_model extends CI_Model {
 
         $query = $this->db->get();
         $this->db->close();
+		
+		// if($query!=null){
         return $query->row(0);
+		/* echo 'si';
+		exit */;
+		// }else {
+		// return false;
+		/* echo 'no';
+		exit */;
+		// }
     }
 
 }
