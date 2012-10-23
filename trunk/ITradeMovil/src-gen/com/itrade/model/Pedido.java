@@ -7,7 +7,7 @@ package com.itrade.model;
 public class Pedido {
 
     private Long id;
-    private Long IdPedido;
+    private Integer IdPedido;
     private Integer IdCliente;
     private Integer IdEstadoPedido;
     private Integer CheckIn;
@@ -15,6 +15,9 @@ public class Pedido {
     private java.util.Date FechaCobranza;
     private Double MontoSinIGV;
     private Double IGV;
+    private Double MontoTotalPedido;
+    private Double MontoTotalCobrado;
+    private String NumVoucher;
     private Double MontoTotal;
 
     public Pedido() {
@@ -24,7 +27,7 @@ public class Pedido {
         this.id = id;
     }
 
-    public Pedido(Long id, Long IdPedido, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, java.util.Date FechaPedido, java.util.Date FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotal) {
+    public Pedido(Long id, Integer IdPedido, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, java.util.Date FechaPedido, java.util.Date FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotalPedido, Double MontoTotalCobrado, String NumVoucher, Double MontoTotal) {
         this.id = id;
         this.IdPedido = IdPedido;
         this.IdCliente = IdCliente;
@@ -34,6 +37,9 @@ public class Pedido {
         this.FechaCobranza = FechaCobranza;
         this.MontoSinIGV = MontoSinIGV;
         this.IGV = IGV;
+        this.MontoTotalPedido = MontoTotalPedido;
+        this.MontoTotalCobrado = MontoTotalCobrado;
+        this.NumVoucher = NumVoucher;
         this.MontoTotal = MontoTotal;
     }
 
@@ -45,11 +51,11 @@ public class Pedido {
         this.id = id;
     }
 
-    public Long getIdPedido() {
+    public Integer getIdPedido() {
         return IdPedido;
     }
 
-    public void setIdPedido(Long IdPedido) {
+    public void setIdPedido(Integer IdPedido) {
         this.IdPedido = IdPedido;
     }
 
@@ -107,6 +113,30 @@ public class Pedido {
 
     public void setIGV(Double IGV) {
         this.IGV = IGV;
+    }
+
+    public Double getMontoTotalPedido() {
+        return MontoTotalPedido;
+    }
+
+    public void setMontoTotalPedido(Double MontoTotalPedido) {
+        this.MontoTotalPedido = MontoTotalPedido;
+    }
+
+    public Double getMontoTotalCobrado() {
+        return MontoTotalCobrado;
+    }
+
+    public void setMontoTotalCobrado(Double MontoTotalCobrado) {
+        this.MontoTotalCobrado = MontoTotalCobrado;
+    }
+
+    public String getNumVoucher() {
+        return NumVoucher;
+    }
+
+    public void setNumVoucher(String NumVoucher) {
+        this.NumVoucher = NumVoucher;
     }
 
     public Double getMontoTotal() {

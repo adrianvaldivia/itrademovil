@@ -7,11 +7,15 @@ package com.itrade.model;
 public class PedidoLinea {
 
     private Long id;
-    private Long IdPedidoLinea;
     private Integer IdPedido;
+    private Integer IdPedidoLinea;
     private Integer IdProducto;
     private Double MontoLinea;
+    private Double Precio;
     private Integer Cantidad;
+    private String NombreProducto;
+    private String Marca;
+    private String Categoria;
 
     public PedidoLinea() {
     }
@@ -20,13 +24,17 @@ public class PedidoLinea {
         this.id = id;
     }
 
-    public PedidoLinea(Long id, Long IdPedidoLinea, Integer IdPedido, Integer IdProducto, Double MontoLinea, Integer Cantidad) {
+    public PedidoLinea(Long id, Integer IdPedido, Integer IdPedidoLinea, Integer IdProducto, Double MontoLinea, Double Precio, Integer Cantidad, String NombreProducto, String Marca, String Categoria) {
         this.id = id;
-        this.IdPedidoLinea = IdPedidoLinea;
         this.IdPedido = IdPedido;
+        this.IdPedidoLinea = IdPedidoLinea;
         this.IdProducto = IdProducto;
         this.MontoLinea = MontoLinea;
+        this.Precio = Precio;
         this.Cantidad = Cantidad;
+        this.NombreProducto = NombreProducto;
+        this.Marca = Marca;
+        this.Categoria = Categoria;
     }
 
     public Long getId() {
@@ -37,20 +45,20 @@ public class PedidoLinea {
         this.id = id;
     }
 
-    public Long getIdPedidoLinea() {
-        return IdPedidoLinea;
-    }
-
-    public void setIdPedidoLinea(Long IdPedidoLinea) {
-        this.IdPedidoLinea = IdPedidoLinea;
-    }
-
     public Integer getIdPedido() {
         return IdPedido;
     }
 
     public void setIdPedido(Integer IdPedido) {
         this.IdPedido = IdPedido;
+    }
+
+    public Integer getIdPedidoLinea() {
+        return IdPedidoLinea;
+    }
+
+    public void setIdPedidoLinea(Integer IdPedidoLinea) {
+        this.IdPedidoLinea = IdPedidoLinea;
     }
 
     public Integer getIdProducto() {
@@ -69,12 +77,44 @@ public class PedidoLinea {
         this.MontoLinea = MontoLinea;
     }
 
+    public Double getPrecio() {
+        return Precio;
+    }
+
+    public void setPrecio(Double Precio) {
+        this.Precio = Precio;
+    }
+
     public Integer getCantidad() {
         return Cantidad;
     }
 
     public void setCantidad(Integer Cantidad) {
         this.Cantidad = Cantidad;
+    }
+
+    public String getNombreProducto() {
+        return NombreProducto;
+    }
+
+    public void setNombreProducto(String NombreProducto) {
+        this.NombreProducto = NombreProducto;
+    }
+
+    public String getMarca() {
+        return Marca;
+    }
+
+    public void setMarca(String Marca) {
+        this.Marca = Marca;
+    }
+
+    public String getCategoria() {
+        return Categoria;
+    }
+
+    public void setCategoria(String Categoria) {
+        this.Categoria = Categoria;
     }
 
 }

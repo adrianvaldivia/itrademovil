@@ -24,7 +24,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdPedido = new Property(1, Long.class, "IdPedido", false, "ID_PEDIDO");
+        public final static Property IdPedido = new Property(1, Integer.class, "IdPedido", false, "ID_PEDIDO");
         public final static Property IdCliente = new Property(2, Integer.class, "IdCliente", false, "ID_CLIENTE");
         public final static Property IdEstadoPedido = new Property(3, Integer.class, "IdEstadoPedido", false, "ID_ESTADO_PEDIDO");
         public final static Property CheckIn = new Property(4, Integer.class, "CheckIn", false, "CHECK_IN");
@@ -32,7 +32,10 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
         public final static Property FechaCobranza = new Property(6, java.util.Date.class, "FechaCobranza", false, "FECHA_COBRANZA");
         public final static Property MontoSinIGV = new Property(7, Double.class, "MontoSinIGV", false, "MONTO_SIN_IGV");
         public final static Property IGV = new Property(8, Double.class, "IGV", false, "IGV");
-        public final static Property MontoTotal = new Property(9, Double.class, "MontoTotal", false, "MONTO_TOTAL");
+        public final static Property MontoTotalPedido = new Property(9, Double.class, "MontoTotalPedido", false, "MONTO_TOTAL_PEDIDO");
+        public final static Property MontoTotalCobrado = new Property(10, Double.class, "MontoTotalCobrado", false, "MONTO_TOTAL_COBRADO");
+        public final static Property NumVoucher = new Property(11, String.class, "NumVoucher", false, "NUM_VOUCHER");
+        public final static Property MontoTotal = new Property(12, Double.class, "MontoTotal", false, "MONTO_TOTAL");
     };
 
 
@@ -57,7 +60,10 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
                 "'FECHA_COBRANZA' INTEGER," + // 6: FechaCobranza
                 "'MONTO_SIN_IGV' REAL," + // 7: MontoSinIGV
                 "'IGV' REAL," + // 8: IGV
-                "'MONTO_TOTAL' REAL);"); // 9: MontoTotal
+                "'MONTO_TOTAL_PEDIDO' REAL," + // 9: MontoTotalPedido
+                "'MONTO_TOTAL_COBRADO' REAL," + // 10: MontoTotalCobrado
+                "'NUM_VOUCHER' TEXT," + // 11: NumVoucher
+                "'MONTO_TOTAL' REAL);"); // 12: MontoTotal
     }
 
     /** Drops the underlying database table. */
@@ -76,7 +82,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
             stmt.bindLong(1, id);
         }
  
-        Long IdPedido = entity.getIdPedido();
+        Integer IdPedido = entity.getIdPedido();
         if (IdPedido != null) {
             stmt.bindLong(2, IdPedido);
         }
@@ -116,9 +122,24 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
             stmt.bindDouble(9, IGV);
         }
  
+        Double MontoTotalPedido = entity.getMontoTotalPedido();
+        if (MontoTotalPedido != null) {
+            stmt.bindDouble(10, MontoTotalPedido);
+        }
+ 
+        Double MontoTotalCobrado = entity.getMontoTotalCobrado();
+        if (MontoTotalCobrado != null) {
+            stmt.bindDouble(11, MontoTotalCobrado);
+        }
+ 
+        String NumVoucher = entity.getNumVoucher();
+        if (NumVoucher != null) {
+            stmt.bindString(12, NumVoucher);
+        }
+ 
         Double MontoTotal = entity.getMontoTotal();
         if (MontoTotal != null) {
-            stmt.bindDouble(10, MontoTotal);
+            stmt.bindDouble(13, MontoTotal);
         }
     }
 
@@ -133,7 +154,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     public Pedido readEntity(Cursor cursor, int offset) {
         Pedido entity = new Pedido( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPedido
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPedido
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdCliente
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // IdEstadoPedido
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // CheckIn
@@ -141,7 +162,10 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
             cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)), // FechaCobranza
             cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7), // MontoSinIGV
             cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8), // IGV
-            cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9) // MontoTotal
+            cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9), // MontoTotalPedido
+            cursor.isNull(offset + 10) ? null : cursor.getDouble(offset + 10), // MontoTotalCobrado
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // NumVoucher
+            cursor.isNull(offset + 12) ? null : cursor.getDouble(offset + 12) // MontoTotal
         );
         return entity;
     }
@@ -150,7 +174,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     @Override
     public void readEntity(Cursor cursor, Pedido entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setIdCliente(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setIdEstadoPedido(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setCheckIn(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
@@ -158,7 +182,10 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
         entity.setFechaCobranza(cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)));
         entity.setMontoSinIGV(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
         entity.setIGV(cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8));
-        entity.setMontoTotal(cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9));
+        entity.setMontoTotalPedido(cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9));
+        entity.setMontoTotalCobrado(cursor.isNull(offset + 10) ? null : cursor.getDouble(offset + 10));
+        entity.setNumVoucher(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setMontoTotal(cursor.isNull(offset + 12) ? null : cursor.getDouble(offset + 12));
      }
     
     /** @inheritdoc */
