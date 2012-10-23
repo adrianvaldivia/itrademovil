@@ -129,7 +129,7 @@ class Reportes extends CI_Controller {
 		$month=$this->input->post('month');
 		//$iddistrito=$this->input->post('iddistrito');
 		//$iddepartamento=$this->input->post('iddepartamento');	
-		$idcategoria=$this->input->post('idcategoria');			
+		//$idcategoria=$this->input->post('idcategoria');			
 		/*SOLO PARA WEB*/		
 		if (isset($month_w)&& $month_w!= "" ){	
 			//$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia_w,$idubigeo_w);			
