@@ -10,7 +10,10 @@ class Reporte_model extends CI_Model {
 		$this->table_ubigeo = 'Ubigeo';
 		$this->table_jerarquia = 'Jerarquia';
 		$this->table_meta = 'Meta';
-		
+		$this->table_marca = 'Marca';
+		$this->table_categoria = 'Categoria';
+		$this->table_linea_pedido = 'Linea_Pedido';
+		$this->table_producto = 'Producto';
     }	
 	
 	
