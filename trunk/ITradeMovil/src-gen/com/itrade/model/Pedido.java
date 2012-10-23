@@ -7,6 +7,7 @@ package com.itrade.model;
 public class Pedido {
 
     private Long id;
+    private Long IdPedido;
     private Integer IdCliente;
     private Integer IdEstadoPedido;
     private Integer CheckIn;
@@ -23,8 +24,9 @@ public class Pedido {
         this.id = id;
     }
 
-    public Pedido(Long id, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, java.util.Date FechaPedido, java.util.Date FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotal) {
+    public Pedido(Long id, Long IdPedido, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, java.util.Date FechaPedido, java.util.Date FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotal) {
         this.id = id;
+        this.IdPedido = IdPedido;
         this.IdCliente = IdCliente;
         this.IdEstadoPedido = IdEstadoPedido;
         this.CheckIn = CheckIn;
@@ -41,6 +43,14 @@ public class Pedido {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIdPedido() {
+        return IdPedido;
+    }
+
+    public void setIdPedido(Long IdPedido) {
+        this.IdPedido = IdPedido;
     }
 
     public Integer getIdCliente() {

@@ -24,14 +24,15 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Nombre = new Property(1, String.class, "Nombre", false, "NOMBRE");
-        public final static Property ApePaterno = new Property(2, String.class, "ApePaterno", false, "APE_PATERNO");
-        public final static Property ApeMaterno = new Property(3, String.class, "ApeMaterno", false, "APE_MATERNO");
-        public final static Property DNI = new Property(4, String.class, "DNI", false, "DNI");
-        public final static Property FechNac = new Property(5, java.util.Date.class, "FechNac", false, "FECH_NAC");
-        public final static Property Telefono = new Property(6, String.class, "Telefono", false, "TELEFONO");
-        public final static Property Email = new Property(7, String.class, "Email", false, "EMAIL");
-        public final static Property Activo = new Property(8, String.class, "Activo", false, "ACTIVO");
+        public final static Property IdPersona = new Property(1, Long.class, "IdPersona", false, "ID_PERSONA");
+        public final static Property Nombre = new Property(2, String.class, "Nombre", false, "NOMBRE");
+        public final static Property ApePaterno = new Property(3, String.class, "ApePaterno", false, "APE_PATERNO");
+        public final static Property ApeMaterno = new Property(4, String.class, "ApeMaterno", false, "APE_MATERNO");
+        public final static Property DNI = new Property(5, String.class, "DNI", false, "DNI");
+        public final static Property FechNac = new Property(6, java.util.Date.class, "FechNac", false, "FECH_NAC");
+        public final static Property Telefono = new Property(7, String.class, "Telefono", false, "TELEFONO");
+        public final static Property Email = new Property(8, String.class, "Email", false, "EMAIL");
+        public final static Property Activo = new Property(9, String.class, "Activo", false, "ACTIVO");
     };
 
 
@@ -48,14 +49,15 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'PERSONA' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'NOMBRE' TEXT NOT NULL ," + // 1: Nombre
-                "'APE_PATERNO' TEXT," + // 2: ApePaterno
-                "'APE_MATERNO' TEXT," + // 3: ApeMaterno
-                "'DNI' TEXT," + // 4: DNI
-                "'FECH_NAC' INTEGER," + // 5: FechNac
-                "'TELEFONO' TEXT," + // 6: Telefono
-                "'EMAIL' TEXT," + // 7: Email
-                "'ACTIVO' TEXT);"); // 8: Activo
+                "'ID_PERSONA' INTEGER," + // 1: IdPersona
+                "'NOMBRE' TEXT NOT NULL ," + // 2: Nombre
+                "'APE_PATERNO' TEXT," + // 3: ApePaterno
+                "'APE_MATERNO' TEXT," + // 4: ApeMaterno
+                "'DNI' TEXT," + // 5: DNI
+                "'FECH_NAC' INTEGER," + // 6: FechNac
+                "'TELEFONO' TEXT," + // 7: Telefono
+                "'EMAIL' TEXT," + // 8: Email
+                "'ACTIVO' TEXT);"); // 9: Activo
     }
 
     /** Drops the underlying database table. */
@@ -73,41 +75,46 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindString(2, entity.getNombre());
+ 
+        Long IdPersona = entity.getIdPersona();
+        if (IdPersona != null) {
+            stmt.bindLong(2, IdPersona);
+        }
+        stmt.bindString(3, entity.getNombre());
  
         String ApePaterno = entity.getApePaterno();
         if (ApePaterno != null) {
-            stmt.bindString(3, ApePaterno);
+            stmt.bindString(4, ApePaterno);
         }
  
         String ApeMaterno = entity.getApeMaterno();
         if (ApeMaterno != null) {
-            stmt.bindString(4, ApeMaterno);
+            stmt.bindString(5, ApeMaterno);
         }
  
         String DNI = entity.getDNI();
         if (DNI != null) {
-            stmt.bindString(5, DNI);
+            stmt.bindString(6, DNI);
         }
  
         java.util.Date FechNac = entity.getFechNac();
         if (FechNac != null) {
-            stmt.bindLong(6, FechNac.getTime());
+            stmt.bindLong(7, FechNac.getTime());
         }
  
         String Telefono = entity.getTelefono();
         if (Telefono != null) {
-            stmt.bindString(7, Telefono);
+            stmt.bindString(8, Telefono);
         }
  
         String Email = entity.getEmail();
         if (Email != null) {
-            stmt.bindString(8, Email);
+            stmt.bindString(9, Email);
         }
  
         String Activo = entity.getActivo();
         if (Activo != null) {
-            stmt.bindString(9, Activo);
+            stmt.bindString(10, Activo);
         }
     }
 
@@ -122,14 +129,15 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
     public Persona readEntity(Cursor cursor, int offset) {
         Persona entity = new Persona( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // Nombre
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // ApePaterno
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // ApeMaterno
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // DNI
-            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // FechNac
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Telefono
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // Email
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // Activo
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPersona
+            cursor.getString(offset + 2), // Nombre
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // ApePaterno
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // ApeMaterno
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // DNI
+            cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)), // FechNac
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // Telefono
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // Email
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // Activo
         );
         return entity;
     }
@@ -138,14 +146,15 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
     @Override
     public void readEntity(Cursor cursor, Persona entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setNombre(cursor.getString(offset + 1));
-        entity.setApePaterno(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setApeMaterno(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setDNI(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setFechNac(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
-        entity.setTelefono(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setEmail(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setActivo(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setIdPersona(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setNombre(cursor.getString(offset + 2));
+        entity.setApePaterno(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setApeMaterno(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setDNI(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setFechNac(cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)));
+        entity.setTelefono(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setEmail(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setActivo(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     /** @inheritdoc */

@@ -7,6 +7,7 @@ package com.itrade.model;
 public class Producto {
 
     private Long id;
+    private Long IdProducto;
     /** Not-null value. */
     private String Descripcion;
     private Double Precio;
@@ -22,8 +23,9 @@ public class Producto {
         this.id = id;
     }
 
-    public Producto(Long id, String Descripcion, Double Precio, Integer Stock, String Activo, Integer IdCategoria, Integer IdMarca) {
+    public Producto(Long id, Long IdProducto, String Descripcion, Double Precio, Integer Stock, String Activo, Integer IdCategoria, Integer IdMarca) {
         this.id = id;
+        this.IdProducto = IdProducto;
         this.Descripcion = Descripcion;
         this.Precio = Precio;
         this.Stock = Stock;
@@ -38,6 +40,14 @@ public class Producto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIdProducto() {
+        return IdProducto;
+    }
+
+    public void setIdProducto(Long IdProducto) {
+        this.IdProducto = IdProducto;
     }
 
     /** Not-null value. */

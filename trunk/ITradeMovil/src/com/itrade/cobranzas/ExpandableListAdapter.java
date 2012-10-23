@@ -72,7 +72,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	            convertView = infalInflater.inflate(R.layout.c_clientes_child, null);
 	        }
 	        TextView tv = (TextView) convertView.findViewById(R.id.tvChild);	        
-	        tv.setText("Pedido Nro: " +pedido.getIdPedido().toString()+"    S/. "+pedido.getMontoTotalPedido().toString());	      
+	        tv.setText("Pedido Nro: " +pedido.getIdPedido().toString()+"    S/. "+pedido.getMontoTotal().toString());	      
 	        tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);	        
 	        return convertView;
 	    }

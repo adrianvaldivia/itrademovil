@@ -7,6 +7,7 @@ package com.itrade.model;
 public class Cliente {
 
     private Long id;
+    private Long IdCliente;
     private Integer IdPersona;
     /** Not-null value. */
     private String Razon_Social;
@@ -25,8 +26,9 @@ public class Cliente {
         this.id = id;
     }
 
-    public Cliente(Long id, Integer IdPersona, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
+    public Cliente(Long id, Long IdCliente, Integer IdPersona, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
         this.id = id;
+        this.IdCliente = IdCliente;
         this.IdPersona = IdPersona;
         this.Razon_Social = Razon_Social;
         this.RUC = RUC;
@@ -44,6 +46,14 @@ public class Cliente {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIdCliente() {
+        return IdCliente;
+    }
+
+    public void setIdCliente(Long IdCliente) {
+        this.IdCliente = IdCliente;
     }
 
     public Integer getIdPersona() {

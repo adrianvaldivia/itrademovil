@@ -24,15 +24,16 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdPersona = new Property(1, Integer.class, "IdPersona", false, "ID_PERSONA");
-        public final static Property Razon_Social = new Property(2, String.class, "Razon_Social", false, "RAZON__SOCIAL");
-        public final static Property RUC = new Property(3, String.class, "RUC", false, "RUC");
-        public final static Property Latitud = new Property(4, Double.class, "Latitud", false, "LATITUD");
-        public final static Property Longitud = new Property(5, Double.class, "Longitud", false, "LONGITUD");
-        public final static Property Direccion = new Property(6, String.class, "Direccion", false, "DIRECCION");
-        public final static Property IdCobrador = new Property(7, Integer.class, "IdCobrador", false, "ID_COBRADOR");
-        public final static Property IdUsuario = new Property(8, Integer.class, "IdUsuario", false, "ID_USUARIO");
-        public final static Property Activo = new Property(9, String.class, "Activo", false, "ACTIVO");
+        public final static Property IdProspecto = new Property(1, Long.class, "IdProspecto", false, "ID_PROSPECTO");
+        public final static Property IdPersona = new Property(2, Integer.class, "IdPersona", false, "ID_PERSONA");
+        public final static Property Razon_Social = new Property(3, String.class, "Razon_Social", false, "RAZON__SOCIAL");
+        public final static Property RUC = new Property(4, String.class, "RUC", false, "RUC");
+        public final static Property Latitud = new Property(5, Double.class, "Latitud", false, "LATITUD");
+        public final static Property Longitud = new Property(6, Double.class, "Longitud", false, "LONGITUD");
+        public final static Property Direccion = new Property(7, String.class, "Direccion", false, "DIRECCION");
+        public final static Property IdCobrador = new Property(8, Integer.class, "IdCobrador", false, "ID_COBRADOR");
+        public final static Property IdUsuario = new Property(9, Integer.class, "IdUsuario", false, "ID_USUARIO");
+        public final static Property Activo = new Property(10, String.class, "Activo", false, "ACTIVO");
     };
 
 
@@ -49,15 +50,16 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'PROSPECTO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'ID_PERSONA' INTEGER," + // 1: IdPersona
-                "'RAZON__SOCIAL' TEXT NOT NULL ," + // 2: Razon_Social
-                "'RUC' TEXT," + // 3: RUC
-                "'LATITUD' REAL," + // 4: Latitud
-                "'LONGITUD' REAL," + // 5: Longitud
-                "'DIRECCION' TEXT," + // 6: Direccion
-                "'ID_COBRADOR' INTEGER," + // 7: IdCobrador
-                "'ID_USUARIO' INTEGER," + // 8: IdUsuario
-                "'ACTIVO' TEXT);"); // 9: Activo
+                "'ID_PROSPECTO' INTEGER," + // 1: IdProspecto
+                "'ID_PERSONA' INTEGER," + // 2: IdPersona
+                "'RAZON__SOCIAL' TEXT NOT NULL ," + // 3: Razon_Social
+                "'RUC' TEXT," + // 4: RUC
+                "'LATITUD' REAL," + // 5: Latitud
+                "'LONGITUD' REAL," + // 6: Longitud
+                "'DIRECCION' TEXT," + // 7: Direccion
+                "'ID_COBRADOR' INTEGER," + // 8: IdCobrador
+                "'ID_USUARIO' INTEGER," + // 9: IdUsuario
+                "'ACTIVO' TEXT);"); // 10: Activo
     }
 
     /** Drops the underlying database table. */
@@ -76,45 +78,50 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
             stmt.bindLong(1, id);
         }
  
+        Long IdProspecto = entity.getIdProspecto();
+        if (IdProspecto != null) {
+            stmt.bindLong(2, IdProspecto);
+        }
+ 
         Integer IdPersona = entity.getIdPersona();
         if (IdPersona != null) {
-            stmt.bindLong(2, IdPersona);
+            stmt.bindLong(3, IdPersona);
         }
-        stmt.bindString(3, entity.getRazon_Social());
+        stmt.bindString(4, entity.getRazon_Social());
  
         String RUC = entity.getRUC();
         if (RUC != null) {
-            stmt.bindString(4, RUC);
+            stmt.bindString(5, RUC);
         }
  
         Double Latitud = entity.getLatitud();
         if (Latitud != null) {
-            stmt.bindDouble(5, Latitud);
+            stmt.bindDouble(6, Latitud);
         }
  
         Double Longitud = entity.getLongitud();
         if (Longitud != null) {
-            stmt.bindDouble(6, Longitud);
+            stmt.bindDouble(7, Longitud);
         }
  
         String Direccion = entity.getDireccion();
         if (Direccion != null) {
-            stmt.bindString(7, Direccion);
+            stmt.bindString(8, Direccion);
         }
  
         Integer IdCobrador = entity.getIdCobrador();
         if (IdCobrador != null) {
-            stmt.bindLong(8, IdCobrador);
+            stmt.bindLong(9, IdCobrador);
         }
  
         Integer IdUsuario = entity.getIdUsuario();
         if (IdUsuario != null) {
-            stmt.bindLong(9, IdUsuario);
+            stmt.bindLong(10, IdUsuario);
         }
  
         String Activo = entity.getActivo();
         if (Activo != null) {
-            stmt.bindString(10, Activo);
+            stmt.bindString(11, Activo);
         }
     }
 
@@ -129,15 +136,16 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
     public Prospecto readEntity(Cursor cursor, int offset) {
         Prospecto entity = new Prospecto( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPersona
-            cursor.getString(offset + 2), // Razon_Social
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // RUC
-            cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4), // Latitud
-            cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // Longitud
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Direccion
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // IdCobrador
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // IdUsuario
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // Activo
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdProspecto
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdPersona
+            cursor.getString(offset + 3), // Razon_Social
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // RUC
+            cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // Latitud
+            cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6), // Longitud
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // Direccion
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // IdCobrador
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // IdUsuario
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // Activo
         );
         return entity;
     }
@@ -146,15 +154,16 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
     @Override
     public void readEntity(Cursor cursor, Prospecto entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdPersona(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setRazon_Social(cursor.getString(offset + 2));
-        entity.setRUC(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setLatitud(cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4));
-        entity.setLongitud(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));
-        entity.setDireccion(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setIdCobrador(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setIdUsuario(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setActivo(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setIdProspecto(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setIdPersona(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setRazon_Social(cursor.getString(offset + 3));
+        entity.setRUC(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setLatitud(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));
+        entity.setLongitud(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));
+        entity.setDireccion(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setIdCobrador(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setIdUsuario(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setActivo(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     /** @inheritdoc */

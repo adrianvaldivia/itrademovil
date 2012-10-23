@@ -24,12 +24,13 @@ public class ProductoDao extends AbstractDao<Producto, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Descripcion = new Property(1, String.class, "Descripcion", false, "DESCRIPCION");
-        public final static Property Precio = new Property(2, Double.class, "Precio", false, "PRECIO");
-        public final static Property Stock = new Property(3, Integer.class, "Stock", false, "STOCK");
-        public final static Property Activo = new Property(4, String.class, "Activo", false, "ACTIVO");
-        public final static Property IdCategoria = new Property(5, Integer.class, "IdCategoria", false, "ID_CATEGORIA");
-        public final static Property IdMarca = new Property(6, Integer.class, "IdMarca", false, "ID_MARCA");
+        public final static Property IdProducto = new Property(1, Long.class, "IdProducto", false, "ID_PRODUCTO");
+        public final static Property Descripcion = new Property(2, String.class, "Descripcion", false, "DESCRIPCION");
+        public final static Property Precio = new Property(3, Double.class, "Precio", false, "PRECIO");
+        public final static Property Stock = new Property(4, Integer.class, "Stock", false, "STOCK");
+        public final static Property Activo = new Property(5, String.class, "Activo", false, "ACTIVO");
+        public final static Property IdCategoria = new Property(6, Integer.class, "IdCategoria", false, "ID_CATEGORIA");
+        public final static Property IdMarca = new Property(7, Integer.class, "IdMarca", false, "ID_MARCA");
     };
 
 
@@ -46,12 +47,13 @@ public class ProductoDao extends AbstractDao<Producto, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'PRODUCTO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'DESCRIPCION' TEXT NOT NULL ," + // 1: Descripcion
-                "'PRECIO' REAL," + // 2: Precio
-                "'STOCK' INTEGER," + // 3: Stock
-                "'ACTIVO' TEXT," + // 4: Activo
-                "'ID_CATEGORIA' INTEGER," + // 5: IdCategoria
-                "'ID_MARCA' INTEGER);"); // 6: IdMarca
+                "'ID_PRODUCTO' INTEGER," + // 1: IdProducto
+                "'DESCRIPCION' TEXT NOT NULL ," + // 2: Descripcion
+                "'PRECIO' REAL," + // 3: Precio
+                "'STOCK' INTEGER," + // 4: Stock
+                "'ACTIVO' TEXT," + // 5: Activo
+                "'ID_CATEGORIA' INTEGER," + // 6: IdCategoria
+                "'ID_MARCA' INTEGER);"); // 7: IdMarca
     }
 
     /** Drops the underlying database table. */
@@ -69,31 +71,36 @@ public class ProductoDao extends AbstractDao<Producto, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindString(2, entity.getDescripcion());
+ 
+        Long IdProducto = entity.getIdProducto();
+        if (IdProducto != null) {
+            stmt.bindLong(2, IdProducto);
+        }
+        stmt.bindString(3, entity.getDescripcion());
  
         Double Precio = entity.getPrecio();
         if (Precio != null) {
-            stmt.bindDouble(3, Precio);
+            stmt.bindDouble(4, Precio);
         }
  
         Integer Stock = entity.getStock();
         if (Stock != null) {
-            stmt.bindLong(4, Stock);
+            stmt.bindLong(5, Stock);
         }
  
         String Activo = entity.getActivo();
         if (Activo != null) {
-            stmt.bindString(5, Activo);
+            stmt.bindString(6, Activo);
         }
  
         Integer IdCategoria = entity.getIdCategoria();
         if (IdCategoria != null) {
-            stmt.bindLong(6, IdCategoria);
+            stmt.bindLong(7, IdCategoria);
         }
  
         Integer IdMarca = entity.getIdMarca();
         if (IdMarca != null) {
-            stmt.bindLong(7, IdMarca);
+            stmt.bindLong(8, IdMarca);
         }
     }
 
@@ -108,12 +115,13 @@ public class ProductoDao extends AbstractDao<Producto, Long> {
     public Producto readEntity(Cursor cursor, int offset) {
         Producto entity = new Producto( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // Descripcion
-            cursor.isNull(offset + 2) ? null : cursor.getDouble(offset + 2), // Precio
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // Stock
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // Activo
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // IdCategoria
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6) // IdMarca
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdProducto
+            cursor.getString(offset + 2), // Descripcion
+            cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3), // Precio
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // Stock
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // Activo
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // IdCategoria
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7) // IdMarca
         );
         return entity;
     }
@@ -122,12 +130,13 @@ public class ProductoDao extends AbstractDao<Producto, Long> {
     @Override
     public void readEntity(Cursor cursor, Producto entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setDescripcion(cursor.getString(offset + 1));
-        entity.setPrecio(cursor.isNull(offset + 2) ? null : cursor.getDouble(offset + 2));
-        entity.setStock(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setActivo(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setIdCategoria(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setIdMarca(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setIdProducto(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setDescripcion(cursor.getString(offset + 2));
+        entity.setPrecio(cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3));
+        entity.setStock(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setActivo(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setIdCategoria(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setIdMarca(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
      }
     
     /** @inheritdoc */

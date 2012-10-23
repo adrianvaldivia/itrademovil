@@ -24,14 +24,15 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdCliente = new Property(1, Integer.class, "IdCliente", false, "ID_CLIENTE");
-        public final static Property IdEstadoPedido = new Property(2, Integer.class, "IdEstadoPedido", false, "ID_ESTADO_PEDIDO");
-        public final static Property CheckIn = new Property(3, Integer.class, "CheckIn", false, "CHECK_IN");
-        public final static Property FechaPedido = new Property(4, java.util.Date.class, "FechaPedido", false, "FECHA_PEDIDO");
-        public final static Property FechaCobranza = new Property(5, java.util.Date.class, "FechaCobranza", false, "FECHA_COBRANZA");
-        public final static Property MontoSinIGV = new Property(6, Double.class, "MontoSinIGV", false, "MONTO_SIN_IGV");
-        public final static Property IGV = new Property(7, Double.class, "IGV", false, "IGV");
-        public final static Property MontoTotal = new Property(8, Double.class, "MontoTotal", false, "MONTO_TOTAL");
+        public final static Property IdPedido = new Property(1, Long.class, "IdPedido", false, "ID_PEDIDO");
+        public final static Property IdCliente = new Property(2, Integer.class, "IdCliente", false, "ID_CLIENTE");
+        public final static Property IdEstadoPedido = new Property(3, Integer.class, "IdEstadoPedido", false, "ID_ESTADO_PEDIDO");
+        public final static Property CheckIn = new Property(4, Integer.class, "CheckIn", false, "CHECK_IN");
+        public final static Property FechaPedido = new Property(5, java.util.Date.class, "FechaPedido", false, "FECHA_PEDIDO");
+        public final static Property FechaCobranza = new Property(6, java.util.Date.class, "FechaCobranza", false, "FECHA_COBRANZA");
+        public final static Property MontoSinIGV = new Property(7, Double.class, "MontoSinIGV", false, "MONTO_SIN_IGV");
+        public final static Property IGV = new Property(8, Double.class, "IGV", false, "IGV");
+        public final static Property MontoTotal = new Property(9, Double.class, "MontoTotal", false, "MONTO_TOTAL");
     };
 
 
@@ -48,14 +49,15 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'PEDIDO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'ID_CLIENTE' INTEGER," + // 1: IdCliente
-                "'ID_ESTADO_PEDIDO' INTEGER," + // 2: IdEstadoPedido
-                "'CHECK_IN' INTEGER," + // 3: CheckIn
-                "'FECHA_PEDIDO' INTEGER," + // 4: FechaPedido
-                "'FECHA_COBRANZA' INTEGER," + // 5: FechaCobranza
-                "'MONTO_SIN_IGV' REAL," + // 6: MontoSinIGV
-                "'IGV' REAL," + // 7: IGV
-                "'MONTO_TOTAL' REAL);"); // 8: MontoTotal
+                "'ID_PEDIDO' INTEGER," + // 1: IdPedido
+                "'ID_CLIENTE' INTEGER," + // 2: IdCliente
+                "'ID_ESTADO_PEDIDO' INTEGER," + // 3: IdEstadoPedido
+                "'CHECK_IN' INTEGER," + // 4: CheckIn
+                "'FECHA_PEDIDO' INTEGER," + // 5: FechaPedido
+                "'FECHA_COBRANZA' INTEGER," + // 6: FechaCobranza
+                "'MONTO_SIN_IGV' REAL," + // 7: MontoSinIGV
+                "'IGV' REAL," + // 8: IGV
+                "'MONTO_TOTAL' REAL);"); // 9: MontoTotal
     }
 
     /** Drops the underlying database table. */
@@ -74,44 +76,49 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
             stmt.bindLong(1, id);
         }
  
+        Long IdPedido = entity.getIdPedido();
+        if (IdPedido != null) {
+            stmt.bindLong(2, IdPedido);
+        }
+ 
         Integer IdCliente = entity.getIdCliente();
         if (IdCliente != null) {
-            stmt.bindLong(2, IdCliente);
+            stmt.bindLong(3, IdCliente);
         }
  
         Integer IdEstadoPedido = entity.getIdEstadoPedido();
         if (IdEstadoPedido != null) {
-            stmt.bindLong(3, IdEstadoPedido);
+            stmt.bindLong(4, IdEstadoPedido);
         }
  
         Integer CheckIn = entity.getCheckIn();
         if (CheckIn != null) {
-            stmt.bindLong(4, CheckIn);
+            stmt.bindLong(5, CheckIn);
         }
  
         java.util.Date FechaPedido = entity.getFechaPedido();
         if (FechaPedido != null) {
-            stmt.bindLong(5, FechaPedido.getTime());
+            stmt.bindLong(6, FechaPedido.getTime());
         }
  
         java.util.Date FechaCobranza = entity.getFechaCobranza();
         if (FechaCobranza != null) {
-            stmt.bindLong(6, FechaCobranza.getTime());
+            stmt.bindLong(7, FechaCobranza.getTime());
         }
  
         Double MontoSinIGV = entity.getMontoSinIGV();
         if (MontoSinIGV != null) {
-            stmt.bindDouble(7, MontoSinIGV);
+            stmt.bindDouble(8, MontoSinIGV);
         }
  
         Double IGV = entity.getIGV();
         if (IGV != null) {
-            stmt.bindDouble(8, IGV);
+            stmt.bindDouble(9, IGV);
         }
  
         Double MontoTotal = entity.getMontoTotal();
         if (MontoTotal != null) {
-            stmt.bindDouble(9, MontoTotal);
+            stmt.bindDouble(10, MontoTotal);
         }
     }
 
@@ -126,14 +133,15 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     public Pedido readEntity(Cursor cursor, int offset) {
         Pedido entity = new Pedido( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdCliente
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdEstadoPedido
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // CheckIn
-            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // FechaPedido
-            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // FechaCobranza
-            cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6), // MontoSinIGV
-            cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7), // IGV
-            cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8) // MontoTotal
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPedido
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdCliente
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // IdEstadoPedido
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // CheckIn
+            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // FechaPedido
+            cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)), // FechaCobranza
+            cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7), // MontoSinIGV
+            cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8), // IGV
+            cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9) // MontoTotal
         );
         return entity;
     }
@@ -142,14 +150,15 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     @Override
     public void readEntity(Cursor cursor, Pedido entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdCliente(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setIdEstadoPedido(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setCheckIn(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setFechaPedido(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
-        entity.setFechaCobranza(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
-        entity.setMontoSinIGV(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));
-        entity.setIGV(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
-        entity.setMontoTotal(cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8));
+        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setIdCliente(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setIdEstadoPedido(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setCheckIn(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setFechaPedido(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setFechaCobranza(cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)));
+        entity.setMontoSinIGV(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
+        entity.setIGV(cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8));
+        entity.setMontoTotal(cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9));
      }
     
     /** @inheritdoc */

@@ -228,7 +228,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 		for(int i=0;i<listaCliente.size();i++){
 			x=listaCliente.get(i).getLatitud();
 			y=listaCliente.get(i).getLongitud();
-			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),listaCliente.get(i).getActivo());
+			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdCliente(),listaCliente.get(i).getIdPersona(),listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),listaCliente.get(i).getActivo());
 	        clienteDao.insert(cliente2);
 			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),listaCliente.get(i).getId());
 			elementoListaDao.insert(elemento);
