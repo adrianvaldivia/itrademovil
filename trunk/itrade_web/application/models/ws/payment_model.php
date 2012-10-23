@@ -80,6 +80,7 @@ class Payment_model extends CI_Model {
 							$this->table_pedido_linea.".IdProducto, ".
 							$this->table_pedido_linea.".MontoLinea, ".
 							$this->table_pedido_linea.".Cantidad, ".
+							$this->table_producto.".Precio, ".
 							$this->table_producto.".Descripcion as NombreProducto , ".
 							$this->table_marca.".Descripcion as Marca , ".
 							$this->table_categoria.".Descripcion as Categoria  "							
