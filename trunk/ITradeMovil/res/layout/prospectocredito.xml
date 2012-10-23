@@ -11,92 +11,119 @@
         android:layout_height="490dp"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:background="@color/azul_2" >
+        <RelativeLayout
+            android:id="@+id/top_control_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/txtItrade"
-                android:layout_width="246dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dip"
-                android:background="@color/azul_2"
-                android:text="iTrade"
-                android:textColor="@color/grisClaro"
-                android:textSize="20dip" />
-
-            <ImageButton
-                android:id="@+id/btnExplorar"
-                android:layout_width="58dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:background="@color/azul_2"
-                android:src="@drawable/maps" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/TextView01"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="2dp" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/blanco"
+                android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/azul_2" >
-
-            <ImageButton
-                android:id="@+id/btnCrearPedido"
-                style="@drawable/estilo_botones"
-                android:layout_width="53dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/estilo_botones"
-                android:src="@drawable/add_to_cart" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/azul_2"
+                    android:orientation="vertical" >
 
-            <ImageButton
-                android:id="@+id/btnBuscarPedido"
-                android:layout_width="53dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/estilo_botones"
-                android:src="@drawable/buscar_pedido" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp" >
 
-            <ImageButton
-                android:id="@+id/btnProspectos"
-                android:layout_width="53dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/estilo_botones"
-                android:src="@drawable/user_customer" />
+                        <TextView
+                            android:id="@+id/TextView02"
+                            android:layout_width="246dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dip"
+                            android:background="@color/azul_2"
+                            android:text="iTrade"
+                            android:textColor="@color/grisClaro"
+                            android:textSize="20dip" />
 
-            <ImageButton
-                android:id="@+id/btnDirectorio"
-                android:layout_width="53dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/estilo_botones"
-                android:src="@drawable/directorio" />
-
-            <ImageButton
-                android:id="@+id/btnCalendario"
-                android:layout_width="53dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/estilo_botones"
-                android:src="@drawable/calendar" />
+                        <ImageButton
+                            android:id="@+id/ImageButton06"
+                            android:layout_width="58dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:background="@color/azul_2"
+                            android:src="@drawable/maps" />
+                    </LinearLayout>
+                </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/btnMeta"
-                android:layout_width="53dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/estilo_botones"
-                android:src="@drawable/excelencia" />
+                <LinearLayout
+                    android:layout_width="2dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/TextView02"
+                        android:layout_width="2dp"
+                        android:layout_height="2dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/azul_2"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/azul_2" >
+
+                        <ImageButton
+                            android:id="@+id/ImageButton04"
+                            style="@drawable/estilo_botones"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/user_customer" />
+
+                        <ImageButton
+                            android:id="@+id/ImageButton07"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/e_mail" />
+
+                        <ImageButton
+                            android:id="@+id/ImageButton05"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/users_search" />
+
+                        <ImageButton
+                            android:id="@+id/ImageButton02"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/emblem_money" />
+
+                        <ImageButton
+                            android:id="@+id/ImageButton01"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/directorio" />
+
+                        <ImageButton
+                            android:id="@+id/ImageButton03"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/calendar" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -148,18 +175,17 @@
                 <requestFocus />
             </EditText>
         </LinearLayout>
-
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
+            android:id="@+id/bottom_control_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
             <Button
                 android:id="@+id/button1"
                 style="@drawable/estilo_botones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_marginTop="195dp"
                 android:background="@drawable/estilo_botones"
                 android:text="Registrar"
