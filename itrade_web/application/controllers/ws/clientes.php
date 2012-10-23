@@ -38,5 +38,17 @@ class Clientes extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}		
 	}
+	
+	public function get_cliente_by_id($idcliente_w=''){
+		$idcliente=$this->input->post('idcliente');				
+		if (isset($idcliente_w)&& $idcliente_w!= "" ){			
+			$result=$this->Cliente_model->get_cliente_by_id($idcliente_w);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));		
+		}		
+		if (isset($idcliente)&& $idcliente!=""  ){
+			$result=$this->Cliente_model->get_cliente_by_id($idcliente);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}	
+	}
 }
 
