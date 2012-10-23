@@ -72,7 +72,7 @@ class Reporte_model extends CI_Model {
 				break;
 		}				
 		$query = $this->db->get();	
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();
 		
 	}	
@@ -91,7 +91,7 @@ class Reporte_model extends CI_Model {
 		}
 		$this->db->where('idUbigeo', $idubigeo);
 		$query = $this->db->get($this->table_ubigeo);
-		echo $this->db->last_query();		
+		//echo $this->db->last_query();		
         return $query->result();		
 	}
 	
@@ -160,7 +160,7 @@ class Reporte_model extends CI_Model {
 				break;
 		}			
 		$query = $this->db->get();	
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();
 		
 	}	
@@ -237,7 +237,7 @@ class Reporte_model extends CI_Model {
 
 			
 		$query = $this->db->get();	
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();
 		
 	}	
