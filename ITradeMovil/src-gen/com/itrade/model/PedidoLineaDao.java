@@ -24,11 +24,15 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdPedidoLinea = new Property(1, Long.class, "IdPedidoLinea", false, "ID_PEDIDO_LINEA");
-        public final static Property IdPedido = new Property(2, Integer.class, "IdPedido", false, "ID_PEDIDO");
+        public final static Property IdPedido = new Property(1, Integer.class, "IdPedido", false, "ID_PEDIDO");
+        public final static Property IdPedidoLinea = new Property(2, Integer.class, "IdPedidoLinea", false, "ID_PEDIDO_LINEA");
         public final static Property IdProducto = new Property(3, Integer.class, "IdProducto", false, "ID_PRODUCTO");
         public final static Property MontoLinea = new Property(4, Double.class, "MontoLinea", false, "MONTO_LINEA");
-        public final static Property Cantidad = new Property(5, Integer.class, "Cantidad", false, "CANTIDAD");
+        public final static Property Precio = new Property(5, Double.class, "Precio", false, "PRECIO");
+        public final static Property Cantidad = new Property(6, Integer.class, "Cantidad", false, "CANTIDAD");
+        public final static Property NombreProducto = new Property(7, String.class, "NombreProducto", false, "NOMBRE_PRODUCTO");
+        public final static Property Marca = new Property(8, String.class, "Marca", false, "MARCA");
+        public final static Property Categoria = new Property(9, String.class, "Categoria", false, "CATEGORIA");
     };
 
 
@@ -45,11 +49,15 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'PEDIDO_LINEA' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'ID_PEDIDO_LINEA' INTEGER," + // 1: IdPedidoLinea
-                "'ID_PEDIDO' INTEGER," + // 2: IdPedido
+                "'ID_PEDIDO' INTEGER," + // 1: IdPedido
+                "'ID_PEDIDO_LINEA' INTEGER," + // 2: IdPedidoLinea
                 "'ID_PRODUCTO' INTEGER," + // 3: IdProducto
                 "'MONTO_LINEA' REAL," + // 4: MontoLinea
-                "'CANTIDAD' INTEGER);"); // 5: Cantidad
+                "'PRECIO' REAL," + // 5: Precio
+                "'CANTIDAD' INTEGER," + // 6: Cantidad
+                "'NOMBRE_PRODUCTO' TEXT," + // 7: NombreProducto
+                "'MARCA' TEXT," + // 8: Marca
+                "'CATEGORIA' TEXT);"); // 9: Categoria
     }
 
     /** Drops the underlying database table. */
@@ -68,14 +76,14 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
             stmt.bindLong(1, id);
         }
  
-        Long IdPedidoLinea = entity.getIdPedidoLinea();
-        if (IdPedidoLinea != null) {
-            stmt.bindLong(2, IdPedidoLinea);
-        }
- 
         Integer IdPedido = entity.getIdPedido();
         if (IdPedido != null) {
-            stmt.bindLong(3, IdPedido);
+            stmt.bindLong(2, IdPedido);
+        }
+ 
+        Integer IdPedidoLinea = entity.getIdPedidoLinea();
+        if (IdPedidoLinea != null) {
+            stmt.bindLong(3, IdPedidoLinea);
         }
  
         Integer IdProducto = entity.getIdProducto();
@@ -88,9 +96,29 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
             stmt.bindDouble(5, MontoLinea);
         }
  
+        Double Precio = entity.getPrecio();
+        if (Precio != null) {
+            stmt.bindDouble(6, Precio);
+        }
+ 
         Integer Cantidad = entity.getCantidad();
         if (Cantidad != null) {
-            stmt.bindLong(6, Cantidad);
+            stmt.bindLong(7, Cantidad);
+        }
+ 
+        String NombreProducto = entity.getNombreProducto();
+        if (NombreProducto != null) {
+            stmt.bindString(8, NombreProducto);
+        }
+ 
+        String Marca = entity.getMarca();
+        if (Marca != null) {
+            stmt.bindString(9, Marca);
+        }
+ 
+        String Categoria = entity.getCategoria();
+        if (Categoria != null) {
+            stmt.bindString(10, Categoria);
         }
     }
 
@@ -105,11 +133,15 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     public PedidoLinea readEntity(Cursor cursor, int offset) {
         PedidoLinea entity = new PedidoLinea( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPedidoLinea
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdPedido
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPedido
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdPedidoLinea
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // IdProducto
             cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4), // MontoLinea
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5) // Cantidad
+            cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // Precio
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // Cantidad
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // NombreProducto
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // Marca
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // Categoria
         );
         return entity;
     }
@@ -118,11 +150,15 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     @Override
     public void readEntity(Cursor cursor, PedidoLinea entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdPedidoLinea(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setIdPedido(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setIdPedidoLinea(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setIdProducto(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setMontoLinea(cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4));
-        entity.setCantidad(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setPrecio(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));
+        entity.setCantidad(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setNombreProducto(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setMarca(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setCategoria(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     /** @inheritdoc */

@@ -24,12 +24,12 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdUsuario = new Property(1, Long.class, "IdUsuario", false, "ID_USUARIO");
-        public final static Property Nombre = new Property(2, String.class, "Nombre", false, "NOMBRE");
-        public final static Property Password = new Property(3, String.class, "Password", false, "PASSWORD");
-        public final static Property NombreReal = new Property(4, String.class, "NombreReal", false, "NOMBRE_REAL");
-        public final static Property ApePaterno = new Property(5, String.class, "ApePaterno", false, "APE_PATERNO");
-        public final static Property ApeMaterno = new Property(6, String.class, "ApeMaterno", false, "APE_MATERNO");
+        public final static Property IdUsuario = new Property(1, Integer.class, "IdUsuario", false, "ID_USUARIO");
+        public final static Property Username = new Property(2, String.class, "Username", false, "USERNAME");
+        public final static Property Nombre = new Property(3, String.class, "Nombre", false, "NOMBRE");
+        public final static Property ApePaterno = new Property(4, String.class, "ApePaterno", false, "APE_PATERNO");
+        public final static Property ApeMaterno = new Property(5, String.class, "ApeMaterno", false, "APE_MATERNO");
+        public final static Property Password = new Property(6, String.class, "Password", false, "PASSWORD");
         public final static Property IdPerfil = new Property(7, Integer.class, "IdPerfil", false, "ID_PERFIL");
         public final static Property IdPersona = new Property(8, Integer.class, "IdPersona", false, "ID_PERSONA");
         public final static Property Activo = new Property(9, String.class, "Activo", false, "ACTIVO");
@@ -55,11 +55,11 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'USUARIO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'ID_USUARIO' INTEGER," + // 1: IdUsuario
-                "'NOMBRE' TEXT NOT NULL ," + // 2: Nombre
-                "'PASSWORD' TEXT," + // 3: Password
-                "'NOMBRE_REAL' TEXT NOT NULL ," + // 4: NombreReal
-                "'APE_PATERNO' TEXT," + // 5: ApePaterno
-                "'APE_MATERNO' TEXT," + // 6: ApeMaterno
+                "'USERNAME' TEXT," + // 2: Username
+                "'NOMBRE' TEXT," + // 3: Nombre
+                "'APE_PATERNO' TEXT," + // 4: ApePaterno
+                "'APE_MATERNO' TEXT," + // 5: ApeMaterno
+                "'PASSWORD' TEXT," + // 6: Password
                 "'ID_PERFIL' INTEGER," + // 7: IdPerfil
                 "'ID_PERSONA' INTEGER," + // 8: IdPersona
                 "'ACTIVO' TEXT," + // 9: Activo
@@ -86,26 +86,34 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
             stmt.bindLong(1, id);
         }
  
-        Long IdUsuario = entity.getIdUsuario();
+        Integer IdUsuario = entity.getIdUsuario();
         if (IdUsuario != null) {
             stmt.bindLong(2, IdUsuario);
         }
-        stmt.bindString(3, entity.getNombre());
  
-        String Password = entity.getPassword();
-        if (Password != null) {
-            stmt.bindString(4, Password);
+        String Username = entity.getUsername();
+        if (Username != null) {
+            stmt.bindString(3, Username);
         }
-        stmt.bindString(5, entity.getNombreReal());
+ 
+        String Nombre = entity.getNombre();
+        if (Nombre != null) {
+            stmt.bindString(4, Nombre);
+        }
  
         String ApePaterno = entity.getApePaterno();
         if (ApePaterno != null) {
-            stmt.bindString(6, ApePaterno);
+            stmt.bindString(5, ApePaterno);
         }
  
         String ApeMaterno = entity.getApeMaterno();
         if (ApeMaterno != null) {
-            stmt.bindString(7, ApeMaterno);
+            stmt.bindString(6, ApeMaterno);
+        }
+ 
+        String Password = entity.getPassword();
+        if (Password != null) {
+            stmt.bindString(7, Password);
         }
  
         Integer IdPerfil = entity.getIdPerfil();
@@ -160,12 +168,12 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
     public Usuario readEntity(Cursor cursor, int offset) {
         Usuario entity = new Usuario( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdUsuario
-            cursor.getString(offset + 2), // Nombre
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Password
-            cursor.getString(offset + 4), // NombreReal
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // ApePaterno
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // ApeMaterno
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdUsuario
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // Username
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Nombre
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // ApePaterno
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // ApeMaterno
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Password
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // IdPerfil
             cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // IdPersona
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // Activo
@@ -182,12 +190,12 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
     @Override
     public void readEntity(Cursor cursor, Usuario entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdUsuario(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setNombre(cursor.getString(offset + 2));
-        entity.setPassword(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setNombreReal(cursor.getString(offset + 4));
-        entity.setApePaterno(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setApeMaterno(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setIdUsuario(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setUsername(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setNombre(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setApePaterno(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setApeMaterno(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setPassword(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setIdPerfil(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setIdPersona(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
         entity.setActivo(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
