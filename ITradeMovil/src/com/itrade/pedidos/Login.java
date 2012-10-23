@@ -140,7 +140,8 @@ public class Login extends Activity {
 					param.add(new BasicNameValuePair("username", nombreUsuario));
 					param.add(new BasicNameValuePair("password", password));
 					//String route="dp2/itrade/ws/login/get_user_by_username_password/";
-					String route="/ws/login/get_user_by_username_password/";
+//					String route="/ws/login/get_user_by_username_password/";
+					String route="dp2/itrade/ws/login/get_user_by_username_password/";
 				    sync.conexion(param,route);
 				    try {
 						sync.getHilo().join();
