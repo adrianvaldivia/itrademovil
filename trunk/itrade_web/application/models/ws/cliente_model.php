@@ -56,5 +56,28 @@ class Cliente_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();	
 	}
+	public function get_cliente_by_id($idcliente){
+		$this->db->select($this->table_persona.".IdPersona, ".
+						$this->table_cliente.".IdCliente, ".
+						$this->table_persona.".Nombre, ".
+						$this->table_persona.".ApePaterno, ".
+						$this->table_cliente.".Razon_Social, ".
+						$this->table_cliente.".RUC, ".
+						$this->table_cliente.".Latitud, ".
+						$this->table_cliente.".Longitud, ".
+						$this->table_cliente.".Direccion, ".
+						$this->table_cliente.".IdCobrador, ".
+						$this->table_persona.".ApeMaterno ");
+						
+		$this->db->from($this->table_cliente);				
+		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
+		//Restriccion del día de hoy							
+		//Restriccion de un solo vendedor
+		$this->db->where($this->table_cliente.".IdCliente", $idcliente);	
+		$this->db->where($this->table_persona.".Activo", 1);
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		return $query->result();	
+	}
 }
 ?>
