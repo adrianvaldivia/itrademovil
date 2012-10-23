@@ -253,7 +253,7 @@ public class Login extends Activity {
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}	
 		for(int i=0;i<listaPersona.size();i++){
-			Persona persona = new Persona(null,listaPersona.get(i).getNombre(),listaPersona.get(i).getApePaterno(),listaPersona.get(i).getApeMaterno(),listaPersona.get(i).getDNI(),listaPersona.get(i).getFechNac(),listaPersona.get(i).getTelefono(),listaPersona.get(i).getEmail(),listaPersona.get(i).getActivo());
+			Persona persona = new Persona(null,listaPersona.get(i).getIdPersona(),listaPersona.get(i).getNombre(),listaPersona.get(i).getApePaterno(),listaPersona.get(i).getApeMaterno(),listaPersona.get(i).getDNI(),listaPersona.get(i).getFechNac(),listaPersona.get(i).getTelefono(),listaPersona.get(i).getEmail(),listaPersona.get(i).getActivo());
 			personaDao.insert(persona);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}

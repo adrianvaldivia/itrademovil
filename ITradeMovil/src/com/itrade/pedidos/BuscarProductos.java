@@ -341,14 +341,14 @@ public class BuscarProductos extends ListActivity{
         
 		for(int i=0;i<listaProducto.size();i++){
 
-			Producto productoAux = new Producto(null,listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());
+			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());
 			ElementoLista elemento = new ElementoLista(null,listaProducto.get(i).getDescripcion(),"Precio: "+listaProducto.get(i).getPrecio(),listaProducto.get(i).getId());
 			elementoListaDao.insert(elemento);
 			productoDao.insert(productoAux);			
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
 		for(int i=0;i<listaCategoria.size();i++){
-			Categoria categoria = new Categoria(null,listaCategoria.get(i).getDescripcion());
+			Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
 			categoriaDao.insert(categoria);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}

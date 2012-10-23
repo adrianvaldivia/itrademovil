@@ -7,9 +7,14 @@ package com.itrade.model;
 public class Usuario {
 
     private Long id;
+    private Long IdUsuario;
     /** Not-null value. */
     private String Nombre;
     private String Password;
+    /** Not-null value. */
+    private String NombreReal;
+    private String ApePaterno;
+    private String ApeMaterno;
     private Integer IdPerfil;
     private Integer IdPersona;
     private String Activo;
@@ -26,10 +31,14 @@ public class Usuario {
         this.id = id;
     }
 
-    public Usuario(Long id, String Nombre, String Password, Integer IdPerfil, Integer IdPersona, String Activo, Integer IdJerarquia, Integer IdZona, Integer IdDistrito, Integer IdCiudad, Integer IdPais) {
+    public Usuario(Long id, Long IdUsuario, String Nombre, String Password, String NombreReal, String ApePaterno, String ApeMaterno, Integer IdPerfil, Integer IdPersona, String Activo, Integer IdJerarquia, Integer IdZona, Integer IdDistrito, Integer IdCiudad, Integer IdPais) {
         this.id = id;
+        this.IdUsuario = IdUsuario;
         this.Nombre = Nombre;
         this.Password = Password;
+        this.NombreReal = NombreReal;
+        this.ApePaterno = ApePaterno;
+        this.ApeMaterno = ApeMaterno;
         this.IdPerfil = IdPerfil;
         this.IdPersona = IdPersona;
         this.Activo = Activo;
@@ -48,6 +57,14 @@ public class Usuario {
         this.id = id;
     }
 
+    public Long getIdUsuario() {
+        return IdUsuario;
+    }
+
+    public void setIdUsuario(Long IdUsuario) {
+        this.IdUsuario = IdUsuario;
+    }
+
     /** Not-null value. */
     public String getNombre() {
         return Nombre;
@@ -64,6 +81,32 @@ public class Usuario {
 
     public void setPassword(String Password) {
         this.Password = Password;
+    }
+
+    /** Not-null value. */
+    public String getNombreReal() {
+        return NombreReal;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setNombreReal(String NombreReal) {
+        this.NombreReal = NombreReal;
+    }
+
+    public String getApePaterno() {
+        return ApePaterno;
+    }
+
+    public void setApePaterno(String ApePaterno) {
+        this.ApePaterno = ApePaterno;
+    }
+
+    public String getApeMaterno() {
+        return ApeMaterno;
+    }
+
+    public void setApeMaterno(String ApeMaterno) {
+        this.ApeMaterno = ApeMaterno;
     }
 
     public Integer getIdPerfil() {

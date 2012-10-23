@@ -195,7 +195,7 @@ public class BuscarProspectosGreenDao extends ListActivity{
         double i,j;
         i=(double) 55.12;
         j=(double) 33.12;
-        Prospecto prospectoAux = new Prospecto (null,1,texto,"HardCoded",i,j,"HardCoded",1,1,"1");
+        Prospecto prospectoAux = new Prospecto (null,null,1,texto,"HardCoded",i,j,"HardCoded",1,1,"1");
         prospectoDao.insert(prospectoAux);
         //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 

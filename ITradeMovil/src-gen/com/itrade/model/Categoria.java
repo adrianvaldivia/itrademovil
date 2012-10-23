@@ -7,6 +7,7 @@ package com.itrade.model;
 public class Categoria {
 
     private Long id;
+    private Long IdCategoria;
     /** Not-null value. */
     private String Descripcion;
 
@@ -17,8 +18,9 @@ public class Categoria {
         this.id = id;
     }
 
-    public Categoria(Long id, String Descripcion) {
+    public Categoria(Long id, Long IdCategoria, String Descripcion) {
         this.id = id;
+        this.IdCategoria = IdCategoria;
         this.Descripcion = Descripcion;
     }
 
@@ -28,6 +30,14 @@ public class Categoria {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIdCategoria() {
+        return IdCategoria;
+    }
+
+    public void setIdCategoria(Long IdCategoria) {
+        this.IdCategoria = IdCategoria;
     }
 
     /** Not-null value. */
