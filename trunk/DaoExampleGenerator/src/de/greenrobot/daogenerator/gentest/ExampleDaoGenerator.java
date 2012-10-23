@@ -90,6 +90,9 @@ public class ExampleDaoGenerator {
         usuario.addLongProperty("IdUsuario");
         usuario.addStringProperty("Nombre").notNull();
         usuario.addStringProperty("Password");
+        usuario.addStringProperty("NombreReal").notNull();
+        usuario.addStringProperty("ApePaterno");
+        usuario.addStringProperty("ApeMaterno");  
         usuario.addIntProperty("IdPerfil");
         usuario.addIntProperty("IdPersona");
         usuario.addStringProperty("Activo");
