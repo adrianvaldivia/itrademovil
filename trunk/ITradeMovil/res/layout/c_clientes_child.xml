@@ -12,7 +12,7 @@
         android:layout_marginLeft="40dip"
         android:background="@color/blanco" >
 </ImageView>
-
+
         <TextView
             android:id="@+id/tvChild"
             android:layout_width="fill_parent"
@@ -24,8 +24,7 @@
             android:paddingRight="5dip"
             android:text="Children"
             android:textColor="@color/azul_2"
-            android:textSize="17dip"
-            android:textStyle="bold" >
+            android:textSize="17dip" >
 
 </TextView>
 </LinearLayout>
