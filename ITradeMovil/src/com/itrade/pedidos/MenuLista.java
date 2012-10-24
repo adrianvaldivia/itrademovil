@@ -96,7 +96,7 @@ public class MenuLista extends ListActivity{
 			startActivity(intent);		
      }
      if (selection.compareTo("Prospectos")==0){
-			Intent intent = new Intent(MenuLista.this, BuscarProspectosGreenDao.class);
+			Intent intent = new Intent(MenuLista.this, BuscarProspectos.class);
 			intent.putExtra("idempleado", idempleado);
 			intent.putExtra("boolVer", 1);
 			startActivity(intent);		
