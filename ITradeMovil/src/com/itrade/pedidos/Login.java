@@ -140,8 +140,7 @@ public class Login extends Activity {
 					param.add(new BasicNameValuePair("username", nombreUsuario));
 					param.add(new BasicNameValuePair("password", password));
 					//String route="dp2/itrade/ws/login/get_user_by_username_password/";
-//					String route="/ws/login/get_user_by_username_password/";
-					String route="dp2/itrade/ws/login/get_user_by_username_password/";
+					String route="/ws/login/get_user_by_username_password/";
 				    sync.conexion(param,route);
 				    try {
 						sync.getHilo().join();
@@ -254,8 +253,8 @@ public class Login extends Activity {
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}	
 		for(int i=0;i<listaPersona.size();i++){
-			Persona persona = new Persona(null,listaPersona.get(i).getIdPersona(),listaPersona.get(i).getNombre(),listaPersona.get(i).getApePaterno(),listaPersona.get(i).getApeMaterno(),listaPersona.get(i).getDNI(),listaPersona.get(i).getFechNac(),listaPersona.get(i).getTelefono(),listaPersona.get(i).getEmail(),listaPersona.get(i).getActivo());
-			personaDao.insert(persona);
+			//Persona persona = new Persona(null,listaPersona.get(i).getNombre(),listaPersona.get(i).getApePaterno(),listaPersona.get(i).getApeMaterno(),listaPersona.get(i).getDNI(),listaPersona.get(i).getFechNac(),listaPersona.get(i).getTelefono(),listaPersona.get(i).getEmail(),listaPersona.get(i).getActivo());
+			//personaDao.insert(persona);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
 	}
