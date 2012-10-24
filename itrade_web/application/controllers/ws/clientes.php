@@ -25,6 +25,20 @@ class Clientes extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}		
 	}	
+	public function get_clients_by_idvendedor_p($idvendedor_w='')
+	{
+		
+		$idvendedor=$this->input->post('idvendedor');				
+		if (isset($idvendedor_w)&& $idvendedor_w!= "" ){			
+			$result=$this->Cliente_model->get_clients_by_idvendedor_p($idvendedor_w);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));		
+		}		
+		if (isset($idvendedor)&& $idvendedor!=""  ){
+			$result=$this->Cliente_model->get_clients_by_idvendedor_p($idvendedor);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}
+				
+	}
 	//public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor)
 	public function registrar_prospecto()
 	{
