@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.itrade.R;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.controller.pedidos.SyncronizarPedidos;
 import com.itrade.model.Cliente;
 import com.itrade.model.Credito;
@@ -93,7 +94,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 
   cred = new Credito(Integer.parseInt(cantidad.getText().toString())); 
 
-                 SyncronizarPedidos sync = new SyncronizarPedidos(RegistrarProspecto.this);
+                 Syncronizar sync = new Syncronizar(RegistrarProspecto.this);
                  List<NameValuePair> param = new ArrayList <NameValuePair>();
                  param.add(new BasicNameValuePair("idvendedor", idusuario));
                  
