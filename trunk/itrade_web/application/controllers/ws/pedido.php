@@ -12,16 +12,18 @@ class Pedido extends CI_Controller {
 	{					
 		echo "Controlador Pedido";			
 	}	
-	public function pagar_pedido($idpedido_w='')
+	public function pagar_pedido($idpedido_w='',$montocobrado_w='',$numVoucher_w='')
 	{
 		$idpedido=$this->input->post('idpedido');		
+		$montocobrado=$this->input->post('montocobrado');
+		$numVoucher=$this->input->post('numVoucher');
 		
 		if (isset($idpedido_w)&& $idpedido_w!= "" ){			
-			$result=$this->Payment_model->pay_by_id($idpedido_w);	
+			$result=$this->Payment_model->pay_by_id($idpedido_w,$montocobrado_w,$numVoucher_W);	
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));		
 		}		
 		if (isset($idpedido)&& $idpedido!=""  ){
-			$result=$this->Payment_model->pay_by_id($idpedido);	
+			$result=$this->Payment_model->pay_by_id($idpedido,$montocobrado,$numVoucher);	
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}		
 	}
