@@ -128,26 +128,13 @@
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
 		                android:layout_marginTop="10dip" >
-
-		                <EditText
-		                    android:id="@+id/editTextCliente"
-		                    android:layout_width="wrap_content"
+
+		                <TextView
+		                    android:id="@+id/textView1"
+		                    android:layout_width="match_parent"
 		                    android:layout_height="wrap_content"
-		                    android:layout_marginLeft="10dp"
-		                    android:layout_weight="0.05"
-		                    android:ems="10"
-		                    android:hint="Ingrese Razon Social"
-		                    android:imeOptions="actionDone"
-		                    android:inputType="text" />
+		                    android:text="TextView" />
 
-		                <Button
-		                    android:id="@+id/buttonbuscar"
-		                    style="@drawable/estilo_botones"
-		                    android:layout_width="48dp"
-		                    android:layout_height="48dp"
-		                    android:layout_marginRight="10dp"
-		                    android:layout_weight="0.05"
-		                    android:background="@drawable/searchbutton" />
 		            </LinearLayout>
 		        </LinearLayout>
 
