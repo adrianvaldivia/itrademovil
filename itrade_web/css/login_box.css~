@@ -1,7 +1,8 @@
 #login_principal{
    left: 50%;
     margin-left: -150px;
-    margin-top: -100px;
+    /*margin-top: -100px;*/
+    margin-top: auto;
     position: absolute;
     top: 50%;
 }
@@ -10,7 +11,7 @@
 }
 #login_principal fieldset legend{
     font-size:20px;
-    color: #009B2E;
+    color: #0E64B5;
 }
 #login_principal table{
     margin:0px auto;
