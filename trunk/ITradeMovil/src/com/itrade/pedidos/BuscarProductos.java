@@ -133,7 +133,7 @@ public class BuscarProductos extends ListActivity{
         boolVer=bundle.getInt("boolVer");//booleano indica desde donde fue llamado el activity
         idpedido=bundle.getInt("idpedido");
 
-        daoProducto = new DAOProducto();
+        daoProducto = new DAOProducto(BuscarProductos.this);
         button_aceptar = (Button) findViewById(R.id.buttonaceptar);
         spinner_categoria = (Spinner) findViewById(R.id.spinnercategoria);
         spinner_categoria.setAdapter(adapterSpinner);
@@ -330,7 +330,7 @@ public class BuscarProductos extends ListActivity{
 		cursorElementoLista.requery();
 	}
     private void cargarBaseLocal() {
-        daoProducto = new DAOProducto();
+        daoProducto = new DAOProducto(BuscarProductos.this);
         listaProducto = daoProducto.getAllProductos(); //obtiene los clientes
         listaCategoria=daoProducto.getAllCategorias();
        
