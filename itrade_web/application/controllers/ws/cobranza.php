@@ -17,6 +17,10 @@ class Cobranza extends CI_Controller {
 		$result=$this->Product_model->get_all_products();	
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));	
 	}
-
+	public function get_all_categorias()
+	{				
+		$result=$this->Product_model->get_all_categorias();	
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));	
+	}
 }
 
