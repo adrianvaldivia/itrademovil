@@ -10,6 +10,7 @@ class Credito_model extends CI_Model {
     }
 
     function get_all_creditos() {
+	$this->db->flush_cache();
         $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename.Activo");
         $this->db->from($this->tablename);
         $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
@@ -24,8 +25,8 @@ class Credito_model extends CI_Model {
     function get($idcredito) {
         $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename.Activo");
         $this->db->from($this->tablename);
-        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente', 'right');
-        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona', 'left');
+        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
+        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona');
         $this->db->where($this->tablename . ".IdLinea", $idcredito);
         $query = $this->db->get();
         $this->db->close();
@@ -52,8 +53,8 @@ class Credito_model extends CI_Model {
     function get_montosolicitado_cliente($idcredito) {
         $this->db->select($this->tablename . ".MontoSolicitado");
         $this->db->from($this->tablename);
-        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente', 'right');
-        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona', 'left');
+        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
+        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona');
         $this->db->where($this->tablename . ".IdLinea", $idcredito);
 
         $query = $this->db->get();
@@ -62,23 +63,28 @@ class Credito_model extends CI_Model {
     }
 
     public function get_cliente_idCredito($idcredito) {
-        $this->db->select($this->tablename2 . ".IdCliente, $this->tablename2.IdPersona,$this->tablename2.Razon_Social, $this->tablename2.RUC, $this->tablename2.IdCliente, $this->tablename2.Activo");
-        $this->db->from($this->tablename2);
-        $this->db->join($this->tablename, $this->tablename . '.IdCliente=' . $this->tablename2 . '.IdCliente', 'right');
-        $this->db->join($this->tablename3, $this->tablename2 . '.IdPersona=' . $this->tablename3 . '.IdPersona', 'left');
-        $this->db->where($this->tablename . ".IdLinea", $idcredito);
+		$this->db->flush_cache();
+        $this->db->select($this->tablename2 . ".IdCliente, $this->tablename2.IdPersona,$this->tablename2.Razon_Social, $this->tablename2.RUC, $this->tablename2.IdCliente, $this->tablename3.Activo");
+        $this->db->from($this->tablename2);		
+        $this->db->join($this->tablename, $this->tablename . '.IdCliente=' . $this->tablename2 . '.IdCliente');
+        $this->db->join($this->tablename3, $this->tablename2 . '.IdPersona=' . $this->tablename3 . '.IdPersona');
+		$this->db->where($this->tablename . ".IdLinea", $idcredito);
+        
 
         $query = $this->db->get();
+		// print_r($this->db->last_query());
+// exit;
         $this->db->close();
-		
+		// print_r($query);
+// exit;
 		// if($query!=null){
         return $query->row(0);
-		/* echo 'si';
-		exit */;
+		 // echo 'si';
+		// exit ;
 		// }else {
 		// return false;
-		/* echo 'no';
-		exit */;
+		 // echo 'no';
+		// exit;
 		// }
     }
 

@@ -22,6 +22,20 @@
             base_url = '<?php echo base_url(); ?>';
             //]]>
         </script>
+		
+		<!--[if IE]>
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/ie.css" media="screen, projection, print" />
+	<![endif]-->
+	 <!--[if lt IE 7]>
+	<script src="js/DD_belatedPNG_0.0.7a-min.js" type="text/javascript"></script>
+	<script>
+
+		DD_belatedPNG.fix(' #header, h1, h1 a, .close, .field,.paginate .current, .icon, .required-icon');
+
+	</script>
+	  /* <link rel="stylesheet" href="<?php echo base_url() ?>css/ie6.css" type="text/css" media="screen, projection"/> */
+	<![endif]-->
+	
     </head>
     <body>
 
