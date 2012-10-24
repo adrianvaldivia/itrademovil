@@ -162,7 +162,7 @@ public class Login extends Activity {
 							Intent intent = new Intent(Login.this, MenuLista.class);					
 						    String nombre= usuario.getNombre();
 							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
-							intent.putExtra("idempleado", resul);
+							intent.putExtra("idempleado", usuario.getIdUsuario());
 							intent.putExtra("nombre", nombre);
 							intent.putExtra("apellidos", apellidos);
 							//intent.putExtra("usuario", usuario);					

@@ -129,7 +129,7 @@ public class BuscarPedidos extends ListActivity{
 		elementoListaDao.deleteAll();
         
 		for(int i=0;i<listaPedido.size();i++){
-			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),null,null,null,listaPedido.get(i).getMontoTotal());
+			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),listaPedido.get(i).getNumVoucher(),listaPedido.get(i).getMontoTotal());
 			pedidoDao.insert(pedido);
 			Cliente cliente = clienteDao.loadByRowId(listaPedido.get(i).getIdCliente());
 			ElementoLista elemento = new ElementoLista(null,cliente.getRazon_Social(),"Monto Total: "+listaPedido.get(i).getMontoTotal(),listaPedido.get(i).getId());

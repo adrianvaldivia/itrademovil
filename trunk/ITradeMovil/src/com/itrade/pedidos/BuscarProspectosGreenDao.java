@@ -54,7 +54,7 @@ public class BuscarProspectosGreenDao extends ListActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.buscarprospectos);
+        setContentView(R.layout.buscarprospectosfusion);
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
         db = helper.getWritableDatabase();

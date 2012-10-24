@@ -19,6 +19,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.model.Cliente;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.controller.pedidos.SyncronizarPedidos;
 import com.itrade.controller.pedidos.UsuarioFunctions;
 
@@ -82,23 +83,23 @@ public class DAOCliente {
 //		}
 //		return liscaCliente;
 //	}
-	public List<Cliente> getAllClientes(int idRuta) {
+	public List<Cliente> getAllClientes(int idUsuario) {
 		
 		List<Cliente> listaCliente = new ArrayList<Cliente>();
 		
 		Intent i = this.window.getIntent();                
-		idusuario=(String)i.getSerializableExtra("idempleado");		
+		idusuario=String.valueOf(idUsuario);	
 		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
 		
 		/*****ws****/
 		
 		
-		SyncronizarPedidos sync = new SyncronizarPedidos(window);
+		Syncronizar sync = new Syncronizar(window);
 		List<NameValuePair> param = new ArrayList<NameValuePair>();	
 		param.add(new BasicNameValuePair("idvendedor", idusuario));
 		
 //		String route="dp2/itrade/ws/cobranza/get_all_products";
-		String route="/ws/clientes/get_clientes_by_vendedor/";
+		String route="/ws/clientes/get_clients_by_idvendedor_p/";
 		
 		sync.conexion(param,route);
 		

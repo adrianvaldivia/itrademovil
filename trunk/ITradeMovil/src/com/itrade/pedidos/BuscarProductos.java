@@ -80,7 +80,7 @@ public class BuscarProductos extends ListActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.buscarproductos);
+        setContentView(R.layout.buscarproductosfusion);
         setTitle("iTrade - Productos");
         
         //inicio green Dao
