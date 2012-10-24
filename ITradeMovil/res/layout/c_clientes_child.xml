@@ -12,11 +12,12 @@
         android:layout_marginLeft="40dip"
         android:background="@color/blanco" >
 </ImageView>
-
+
         <TextView
             android:id="@+id/tvChild"
             android:layout_width="fill_parent"
             android:layout_height="45dip"
+            android:layout_marginLeft="50dip"
             android:background="@color/blanco"
             android:gravity="center_vertical"
             android:paddingLeft="5dip"
