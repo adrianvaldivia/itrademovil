@@ -115,6 +115,8 @@
         </activity>
         <activity android:name=".ListaClientes"/>
         <activity android:name=".cobranzas.ClientesListTask"/>
+        <activity android:name=".cobranzas.RequestDetailTask"/>
+        <activity android:name=".cobranzas.PaymentTask"/>		
     </application>
 
 </manifest>
