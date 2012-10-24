@@ -25,7 +25,27 @@ class Clientes extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}		
 	}	
-	
+	//public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor)
+	public function registrar_prospecto()
+	{
+		
+		$ruc=$this->input->post('ruc');				
+		$razon_social=$this->input->post('razon_social');				
+		$direccion=$this->input->post('direccion');				
+		$nombre=$this->input->post('nombre');				
+		$apepaterno=$this->input->post('apepaterno');				
+		$apematerno=$this->input->post('apematerno');
+		$telefono=$this->input->post('telefono');
+		$fechanac=$this->input->post('fechanac');
+		$dni=$this->input->post('dni');
+		$montosolicitado=$this->input->post('montosolicitado');
+		$idvendedor=$this->input->post('idvendedor');			
+		
+		if (isset($idvendedor)&& $idvendedor!=""  ){
+			$result=$this->Cliente_model->registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor);
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}		
+	}
 	public function get_prospecto_by_vendedor($idvendedor_w='',$razon_social_w='')
 	{
 		$idvendedor=$this->input->post('idvendedor');				
