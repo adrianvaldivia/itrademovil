@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.controller.pedidos.SyncronizarPedidos;
 import com.itrade.db.DAOCliente;
 import com.itrade.model.Cliente;
@@ -32,19 +33,16 @@ import com.itrade.R;
 
 
 public class BuscarProspectos extends Activity {
-	private DAOCliente daoProspecto;
+	//private DAOCliente daoProspecto;
 	private EditText textView_razonSocial;
 	private Button button_buscar;
 	private Button button_agregar;
 	private ListView list_prospectos;
-	//adapter aqui
-	//private ItemProspectoAdapter adapter;
+	
 	ArrayAdapter<Cliente> adapter;
 	private ArrayList<Cliente> listaProspectos;
 	String idusuario;
-	String razonSocial;
-	
-		
+	String razonSocial;			
 	
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
@@ -70,10 +68,10 @@ public class BuscarProspectos extends Activity {
 		
 		button_buscar.setOnClickListener(new OnClickListener() {
 	    public void onClick(View v) {
-//	    	Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();
+
 	    	//WEBSERVICE LLENA ARREGLO DE CLIENTES
 	    	        
-	    	SyncronizarPedidos sync = new SyncronizarPedidos(BuscarProspectos.this);
+	    	Syncronizar sync = new Syncronizar(BuscarProspectos.this);
 	    	List<NameValuePair> param = new ArrayList<NameValuePair>();								
 	    	param.add(new BasicNameValuePair("idvendedor", idusuario));	
 	    	param.add(new BasicNameValuePair("razon_social", razonSocial));
@@ -92,7 +90,7 @@ public class BuscarProspectos extends Activity {
 	    	listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());						
 
 	    	adapter =new ArrayAdapter<Cliente>(BuscarProspectos.this, android.R.layout.simple_list_item_1, listaProspectos); 
-	    		//new ExpandableListAdapter(getBaseContext(), idClientes, new ArrayList<ArrayList<Pedido>>());
+	    		
 	    	list_prospectos.setAdapter(adapter);
 	    }
 	    });
