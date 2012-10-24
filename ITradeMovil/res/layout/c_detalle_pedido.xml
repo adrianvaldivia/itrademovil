@@ -5,17 +5,19 @@
     android:layout_height="match_parent"
     android:layout_gravity="right"
     android:layout_marginBottom="0dp"
-    android:background="#FFFFFF" >
-
+    android:background="@color/blanco" >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="149dp"
+        android:background="@color/blanco"
         android:orientation="vertical" >
-
+
         <RelativeLayout
             android:id="@+id/top_control_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/blanco" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -31,10 +33,11 @@
                     android:layout_height="wrap_content"
                     android:background="@color/azul_2"
                     android:orientation="vertical" >
-
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="35dp" >
+                        android:layout_height="35dp"
+                        android:background="@color/azul_2" >
 
                         <TextView
                             android:id="@+id/txtItrade"
@@ -56,10 +59,11 @@
                             android:src="@drawable/maps" />
                     </LinearLayout>
                 </LinearLayout>
-
+
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/blanco"
                     android:orientation="vertical" >
 
                     <TextView
@@ -126,10 +130,11 @@
 
             </LinearLayout>
         </RelativeLayout>
-
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blanco"
             android:orientation="vertical" >
 
             <!--
@@ -139,17 +144,19 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/log3" />
             -->
-
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
                 android:layout_weight="0.55"
+                android:background="@color/blanco"
                 android:orientation="vertical" >
-
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:background="@color/blanco" >
 
                     <TextView
                         android:id="@+id/textVwCliente"
@@ -171,17 +178,19 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.55"
+                android:background="@color/blanco"
                 android:orientation="vertical" >
-
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dip" >
+                    android:layout_marginTop="10dip"
+                    android:background="@color/blanco" >
 
                     <TextView
                         android:id="@+id/TextVwDetalle"
@@ -210,25 +219,28 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="5dip"
                 android:background="@color/azul_2" />
-
+
             <ListView
                 android:id="@+id/listDetalle"
                 android:layout_width="fill_parent"
                 android:layout_height="282dp"
+                android:background="@color/blanco"
                 android:choiceMode="multipleChoice" >
 
             </ListView>
         </LinearLayout>
-
+
         <LinearLayout
             android:id="@+id/bottom_control_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
+            android:layout_height="wrap_content"
+            android:background="@color/blanco" >
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dip" >
+                android:layout_marginTop="60dip"
+                android:background="@color/blanco" >
 
                 <Button
                     android:id="@+id/btnCobrar"
