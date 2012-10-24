@@ -73,6 +73,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buscarclientesfusion);
         imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
         db = helper.getWritableDatabase();
@@ -80,15 +81,6 @@ public class BuscarClientesGreenDao extends ListActivity{
         daoSession = daoMaster.newSession();
         clienteDao = daoSession.getClienteDao();
         elementoListaDao = daoSession.getElementoListaDao();
-        
-        // Segunda parte
-//        String textColumn = ClienteDao.Properties.Razon_Social.columnName;
-//        String orderBy = textColumn + " COLLATE LOCALIZED ASC";
-//        cursor = db.query(clienteDao.getTablename(), clienteDao.getAllColumns(), null, null, null, null, orderBy);
-//        String[] from = { textColumn, ClienteDao.Properties.RUC.columnName };
-//        int[] to = { android.R.id.text1, android.R.id.text2 };
-//        adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, from,
-//                to);
         
         // Fin green Day  
         
@@ -104,7 +96,9 @@ public class BuscarClientesGreenDao extends ListActivity{
         
         setListAdapter(adapterElementoLista);
         guardaListaOriginal();
-        recuperarOriginal();
+		recuperarOriginal();	
+//        guardaListaOriginal();
+//        recuperarOriginal();
         
         Bundle bundle=getIntent().getExtras();
         idUsuario = bundle.getInt("idempleado");
@@ -182,8 +176,10 @@ public class BuscarClientesGreenDao extends ListActivity{
 //     String selection = l.getItemAtPosition(position).toString();
      
      //inicio cambios chichan
+int debug=0;
+debug++;
      this.encuentraCliente(id);
-     int temp=safeLongToInt(cliente.getId());
+     int temp=cliente.getIdCliente();
      Toast.makeText(this, "IdCliente:"+cliente.getId(), Toast.LENGTH_LONG).show();
      Intent intent = new Intent(BuscarClientesGreenDao.this, DetalleCliente.class);
      intent.putExtra("nombre", cliente.getRazon_Social());
@@ -196,7 +192,7 @@ public class BuscarClientesGreenDao extends ListActivity{
     
 	private void encuentraCliente(long id) {
 		ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
-		cliente=clienteDao.loadByRowId(elementoAux.getIdElemento());
+		cliente=clienteDao.loadByRowId(elementoAux.getId());
 	}
 
 	@Override
@@ -232,9 +228,16 @@ public class BuscarClientesGreenDao extends ListActivity{
 		for(int i=0;i<listaCliente.size();i++){
 			x=listaCliente.get(i).getLatitud();
 			y=listaCliente.get(i).getLongitud();
-			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),listaCliente.get(i).getActivo());
+			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
+					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
+					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
+					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
+					listaCliente.get(i).getActivo());
 	        clienteDao.insert(cliente2);
-			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),listaCliente.get(i).getId());
+	        long temp=0;
+	        temp=temp+listaCliente.get(i).getIdCliente();
+			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
@@ -275,12 +278,21 @@ public class BuscarClientesGreenDao extends ListActivity{
 		elementoListaDao.deleteAll();
         
 		for(int i=0;i<listaClienteOriginal.size();i++){
-			ElementoLista elemento = new ElementoLista(null,listaClienteOriginal.get(i).getRazon_Social(),"RUC: "+listaClienteOriginal.get(i).getRUC(),listaClienteOriginal.get(i).getId());
+	        long temp=0;
+	        temp=temp+listaClienteOriginal.get(i).getIdCliente();
+			ElementoLista elemento = new ElementoLista(null,listaClienteOriginal.get(i).getRazon_Social(),"RUC: "+listaClienteOriginal.get(i).getRUC(),temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
         cursorElementoLista.requery();	
 		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Toast.makeText(BuscarClientesGreenDao.this, "Regreso", Toast.LENGTH_LONG).show();
+		recuperarOriginal();			    
 	}
 	
 	@Override
