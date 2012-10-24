@@ -32,7 +32,7 @@ public class DetalleCliente extends ListActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detallecliente);
+        setContentView(R.layout.detalleclientefusion);
 	    bundle = getIntent().getExtras();	
 		nombre = bundle.getString("nombre");
 		apellidos = bundle.getString("apellidos");
@@ -85,13 +85,12 @@ public class DetalleCliente extends ListActivity{
     }
 
     private void saltarToCrearPedido() {
-	     Intent intent = new Intent(DetalleCliente.this, CrearPedido.class);
-	     intent.putExtra("nombre", nombre);
-	     intent.putExtra("apellidos", apellidos);
-	     intent.putExtra("idcliente", idcliente);
-	     intent.putExtra("idempleado", idempleado);
-	     startActivity(intent);		
-		// TODO Auto-generated method stub
+//	     Intent intent = new Intent(DetalleCliente.this, CrearPedido.class);
+//	     intent.putExtra("nombre", nombre);
+//	     intent.putExtra("apellidos", apellidos);
+//	     intent.putExtra("idcliente", idcliente);
+//	     intent.putExtra("idempleado", idempleado);
+//	     startActivity(intent);		
 		
 	}
 
