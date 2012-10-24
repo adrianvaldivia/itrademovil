@@ -42,6 +42,7 @@ public class BuscarProspectos extends Activity {
 	ArrayAdapter<Cliente> adapter;
 	private ArrayList<Cliente> listaProspectos;
 	String idusuario;
+	String razonSocial;
 	
 		
 	
@@ -65,41 +66,40 @@ public class BuscarProspectos extends Activity {
 		button_agregar = (Button) findViewById(R.id.buttonvermapa);
 		list_prospectos = (ListView) findViewById(R.id.list);
 		
-		//lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
+		razonSocial= textView_razonSocial.getText().toString();		
 		
- //WEBSERVICE LLENA ARREGLO DE CLIENTES
-        
-        SyncronizarPedidos sync = new SyncronizarPedidos(BuscarProspectos.this);
-		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		param.add(new BasicNameValuePair("idvendedor", idusuario));		
-		
-		//http://200.16.7.111/dp2/itrade/ws/clientes/get_prospecto_by_vendedor/
-		String route="/ws/clientes/get_prospecto_by_vendedor/";
-	    sync.conexion(param,route);
-	    try {
-			sync.getHilo().join();			
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	   
-	    Gson gson = new Gson();
-									
-		listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());						
-//	    ArrayList<String> idProspectos = new ArrayList<String>();	    	    	    	  
-//		for(Cliente prosp: prospectoList){
-//			idProspectos.add(prosp.getIdCliente().toString());
-//		}
-		
-		//adapter = new ItemProspectoAdapter(this, prospectoList);
-        adapter =new ArrayAdapter<Cliente>(this, android.R.layout.simple_list_item_1, listaProspectos); 
-        		//new ExpandableListAdapter(getBaseContext(), idClientes, new ArrayList<ArrayList<Pedido>>());
-        list_prospectos.setAdapter(adapter);
-        
-        
+		button_buscar.setOnClickListener(new OnClickListener() {
+	    public void onClick(View v) {
+//	    	Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();
+	    	//WEBSERVICE LLENA ARREGLO DE CLIENTES
+	    	        
+	    	SyncronizarPedidos sync = new SyncronizarPedidos(BuscarProspectos.this);
+	    	List<NameValuePair> param = new ArrayList<NameValuePair>();								
+	    	param.add(new BasicNameValuePair("idvendedor", idusuario));	
+	    	param.add(new BasicNameValuePair("razon_social", razonSocial));
+	    	
+	    	//http://200.16.7.111/dp2/itrade/ws/clientes/get_prospecto_by_vendedor/
+	    	String route="/ws/clientes/get_prospecto_by_vendedor/";
+	    	sync.conexion(param,route);
+	    	try {
+	    		sync.getHilo().join();			
+	    	} catch (InterruptedException e) {
+	    		// TODO Auto-generated catch block
+	    		e.printStackTrace();
+	    	}	   
+	    	Gson gson = new Gson();
+	    										
+	    	listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());						
+
+	    	adapter =new ArrayAdapter<Cliente>(BuscarProspectos.this, android.R.layout.simple_list_item_1, listaProspectos); 
+	    		//new ExpandableListAdapter(getBaseContext(), idClientes, new ArrayList<ArrayList<Pedido>>());
+	    	list_prospectos.setAdapter(adapter);
+	    }
+	    });
+		                                  
         button_agregar.setOnClickListener(evento);
     
-	}
-	
+	}		
 	
 	OnClickListener evento = new OnClickListener() {
 		
