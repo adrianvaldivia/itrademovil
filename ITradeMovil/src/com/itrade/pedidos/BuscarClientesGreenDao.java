@@ -3,6 +3,7 @@ package com.itrade.pedidos;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -62,12 +64,15 @@ public class BuscarClientesGreenDao extends ListActivity{
 	List<Cliente> listaCliente;
 	List<Cliente> listaClienteOriginal;
 	
-	public int idempleado;
+	public int idUsuario;
+	InputMethodManager imm;
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buscarclientesfusion);
+        imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
         db = helper.getWritableDatabase();
@@ -102,7 +107,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         recuperarOriginal();
         
         Bundle bundle=getIntent().getExtras();
-        idempleado = bundle.getInt("idempleado");
+        idUsuario = bundle.getInt("idempleado");
         setTitle("Clientes");
         
         button_vermapa = (Button) findViewById(R.id.buttonvermapa);
@@ -127,6 +132,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 			public void onClick(View v) {
 //				Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();
 				buscarCliente();
+				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); 
 			}
 	 	});
 	    addUiListeners();
@@ -183,7 +189,7 @@ public class BuscarClientesGreenDao extends ListActivity{
      intent.putExtra("nombre", cliente.getRazon_Social());
      intent.putExtra("apellidos", cliente.getRUC());
      intent.putExtra("idcliente", temp);
-     intent.putExtra("idempleado", idempleado);
+     intent.putExtra("idempleado", idUsuario);
      startActivity(intent);
      
     }    
@@ -216,7 +222,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	}
     private void cargarBaseLocal() {
         daoCliente = new DAOCliente(this);  
-        listaCliente = daoCliente.getAllClientes(0); //obtiene los clientes
+        listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
         listaClienteOriginal = daoCliente.getAllClientes(0); //obtiene los clientes
         Double x;
 		Double y;
@@ -226,7 +232,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 		for(int i=0;i<listaCliente.size();i++){
 			x=listaCliente.get(i).getLatitud();
 			y=listaCliente.get(i).getLongitud();
-			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),null,null,null,listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),listaCliente.get(i).getActivo());
+			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),listaCliente.get(i).getActivo());
 	        clienteDao.insert(cliente2);
 			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),listaCliente.get(i).getId());
 			elementoListaDao.insert(elemento);

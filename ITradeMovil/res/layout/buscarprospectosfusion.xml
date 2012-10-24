@@ -148,25 +148,14 @@
 		    android:layout_marginBottom="0dp"
 		    android:layout_weight="0.10" >
 
-		                    <Button
-	        android:id="@+id/buttonvermapa"
-	        style="@drawable/estilo_botones"
-	        android:layout_width="160dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.10"
-	        android:background="@drawable/estilo_botones"
-	        android:text="@string/vermapa"
-	        android:textColor="@color/blanco" />
-
-	    <Button
-	        android:id="@+id/button1"
-	        style="@drawable/estilo_botones"
-	        android:layout_width="159dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.10"
-	        android:background="@drawable/estilo_botones"
-	        android:text="Regresar"
-	        android:textColor="@color/blanco" />
+            <Button
+                android:id="@+id/buttonvermapa"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.10"
+                android:background="@drawable/estilo_botones"
+                android:text="Agregar"
+                android:textColor="@color/blanco" />
 		</LinearLayout>
 	</LinearLayout>
 
