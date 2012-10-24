@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="right"
     android:background="#FFFFFF" >
-
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="149dp"
@@ -135,90 +135,98 @@
             android:textColor="@color/azul_2"
             android:textSize="40px"
             android:textStyle="bold" />
-
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
+            android:layout_height="wrap_content"
+            android:layout_weight="0.01"
+            android:orientation="vertical" >
+
             <TextView
                 android:id="@+id/textVwCli"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
-                android:layout_marginTop="30dip"
+                android:layout_marginTop="20dip"
                 android:text="Cliente:"
-                android:textColor="@color/azul_2" />
-
+                android:textColor="@color/azul_2"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/txtVwCliente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dip"
-                android:layout_marginTop="30dip"
+                android:layout_marginLeft="40dip"
+                android:layout_marginTop="10dip"
                 android:text="Eder Santander"
                 android:textColor="@color/azul_2" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
                 <TextView
                     android:id="@+id/textVwMedioPago"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
-                    android:layout_marginTop="30dip"
+                    android:layout_marginTop="20dip"
                     android:text="Medio de pago:"
                     android:textColor="@color/azul_2"
+                    android:textStyle="bold"
                     tools:ignore="DuplicateIds" />
-
+
                 <Spinner
                     android:id="@+id/spin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="282dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginTop="30dip" />
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginTop="10dip" />
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
                 <TextView
-                    android:id="@+id/textVwTransaccion"
+                    android:id="@+id/textVwMont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
-                    android:layout_marginTop="30dip"
-                    android:text="ID transaccion:"
+                    android:layout_marginTop="20dip"
+                    android:text="Monto a pagar:"
+                    android:textColor="@color/azul_2"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtVwMonto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dip"
+                    android:layout_marginTop="10dip"
+                    android:text="S/. 123.00"
                     android:textColor="@color/azul_2" />
 
-                <EditText
-                    android:id="@+id/editTxtTransaccion"
-                    android:layout_width="148dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginTop="30dip"
-                    android:ems="10"
-                    android:inputType="number" >
-
-                    <requestFocus />
-                </EditText>
             </LinearLayout>
         </LinearLayout>
-
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -227,25 +235,28 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="62dp" >
-
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
                 <TextView
-                    android:id="@+id/textVwMont"
+                    android:id="@+id/textVwTransaccion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
-                    android:layout_marginTop="30dip"
-                    android:text="Monto a pagar:"
-                    android:textColor="@color/azul_2" />
-
-                <TextView
-                    android:id="@+id/txtVwMonto"
-                    android:layout_width="wrap_content"
+                    android:layout_marginTop="20dip"
+                    android:text="ID transaccion:"
+                    android:textColor="@color/azul_2"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTxtTransaccion"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dip"
-                    android:layout_marginTop="30dip"
-                    android:text="S/. 123.00"
-                    android:textColor="@color/azul_2" />
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginTop="10dip"
+                    android:ems="10"
+                    android:inputType="number" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -289,9 +300,7 @@
                     android:text="Ruta"
                     android:textColor="@color/grisClaro" />
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
 </ScrollView>
