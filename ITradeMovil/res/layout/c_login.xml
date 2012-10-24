@@ -37,6 +37,7 @@
       <EditText
           android:id="@+id/loginUser"
           android:layout_width="fill_parent"
+          android:inputType="textNoSuggestions"
           android:layout_height="wrap_content" />
 
       <!-- Password Label -->
@@ -54,7 +55,7 @@
           android:id="@+id/loginPassword"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
-          android:password="true" />
+          android:inputType="textPassword" />
 
       <!-- Error message -->
 
