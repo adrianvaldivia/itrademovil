@@ -97,27 +97,29 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                  List<NameValuePair> param = new ArrayList <NameValuePair>();
                  param.add(new BasicNameValuePair("idvendedor", idusuario));
                  
-                 param.add(new BasicNameValuePair(" ", person.getDNI()));
-                 param.add(new BasicNameValuePair(" ", person.getNombre()));
-                 param.add(new BasicNameValuePair(" ", person.getApePaterno()));
-                 param.add(new BasicNameValuePair(" ",  person.getTelefono()));
-                 param.add(new BasicNameValuePair(" ",  person.getFechNac().toString()));
+                 param.add(new BasicNameValuePair("dni", person.getDNI()));
+                 param.add(new BasicNameValuePair("nombre", person.getNombre()));
+                 param.add(new BasicNameValuePair("apepaterno", person.getApePaterno()));
+                 param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
+                 param.add(new BasicNameValuePair("fechanac",  person.getFechNac().toString()));
             
-                 param.add(new BasicNameValuePair(" ", client.getRUC()));
-                 param.add(new BasicNameValuePair(" ", client.getRazon_Social()));
-                 param.add(new BasicNameValuePair(" ", client.getDireccion()));
+                 param.add(new BasicNameValuePair("ruc", client.getRUC()));
+                 param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
+                 param.add(new BasicNameValuePair("direccion", client.getDireccion()));
                 
                  String monto = cred.getCantidad()+"";
                  
-                 param.add(new BasicNameValuePair(" ", monto));
+                 param.add(new BasicNameValuePair("montosolicitado", monto));
                  
                  String route = "/ws/clientes/xxxxxxx";
 			sync.conexion(param, route);
 			
 	/********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
-			
-			Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
-			
+			   if (sync.getResponse()=="true")
+				   
+					Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
+			   else	
+				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
 			}
 		});
         
