@@ -111,7 +111,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                  
                  param.add(new BasicNameValuePair("montosolicitado", monto));
                  
-                 String route = "/ws/clientes/xxxxxxx";
+                 String route = "/ws/clientes/registrar_prospecto/";
 			sync.conexion(param, route);
 			
 	/********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
