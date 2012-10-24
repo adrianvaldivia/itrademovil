@@ -39,7 +39,8 @@ public class DAOProducto {
 		
 		Syncronizar sync = new Syncronizar(window);
 		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		String route="dp2/itrade/ws/cobranza/get_all_products";
+//		String route="dp2/itrade/ws/cobranza/get_all_products";
+		String route="/ws/cobranza/get_all_products";
 	    sync.conexion(param,route);
 	    try {
 			sync.getHilo().join();
@@ -66,7 +67,8 @@ public class DAOProducto {
 		
 		Syncronizar sync = new Syncronizar(window);
 		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		String route="dp2/itrade/ws/cobranza/get_all_categorias";
+//		String route="dp2/itrade/ws/cobranza/get_all_categorias";
+		String route="/ws/cobranza/get_all_categorias";
 	    sync.conexion(param,route);
 	    try {
 			sync.getHilo().join();
