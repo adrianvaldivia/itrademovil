@@ -53,7 +53,9 @@
         </div>
         <div id="content">
             <div id="contenido_principal" style="width:100%; height:100%;" >
-                <?php $this->load->view($main); ?>
+                <?php 
+				// echo $main;
+				$this->load->view($main); ?>
             </div>
         </div>
 <!--        <div id="footer">

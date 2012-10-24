@@ -10,7 +10,8 @@
 //        echo "<br />";
     }
     if ($acceso == 4) {
- 
+	
+ // $this->load->view('pages/dashboard_credit_content.php');
         echo anchor('admin/credito_controller/', 'Administrar Credito', array('title' => 'Administrar Credito'));
         echo "<br />";
     }
