@@ -14,6 +14,7 @@ import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
 import com.itrade.model.Usuario;
 import com.itrade.pedidos.Login;
+import com.itrade.pedidos.MenuLista;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,7 +23,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
@@ -36,15 +43,23 @@ public class ClientesListTask extends Activity {
 	public String nombre="";
 	public String apellidos="";
 	public String idusuario;
+	private ImageView btnClientes;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_lista_clientes);
-     // Retrive the ExpandableListView from the layout
+        setContentView(R.layout.c_lista_clientes);                       
         Intent i = getIntent();                
-		idusuario=(String)i.getSerializableExtra("idempleado");		
-		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
+		idusuario=(String)i.getSerializableExtra("idempleado");
+		btnClientes= (ImageView)findViewById(R.id.ImageButton04);
+		btnClientes.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 																				
+				intent.putExtra("idempleado", idusuario);
+				startActivity(intent);
+			}
+		});
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);                       
         listView.setOnChildClickListener(new OnChildClickListener()
         {
@@ -54,11 +69,27 @@ public class ClientesListTask extends Activity {
             	Pedido pedido= new Pedido();
                 
                 pedido = (Pedido)adapter.getChild(groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), "PEDIDO = "+ pedido.getIdPedido().toString(), Toast.LENGTH_LONG).show();
-                return false;
+                /*Intent para ver el detalle del pedido*/
+                Intent intent = new Intent(ClientesListTask.this, RequestDetailTask.class);		                
+				intent.putExtra("idpedido", pedido.getIdPedido().toString());
+				intent.putExtra("idcliente", pedido.getIdCliente().toString());
+				intent.putExtra("idempleado", idusuario);	
+				//intent.putExtra("usuario", usuario);					
+				startActivity(intent);									
+                //Toast.makeText(getBaseContext(), "PEDIDO = "+ pedido.getIdPedido().toString(), Toast.LENGTH_LONG).show();
+                return true;
                 //CLICK EN ALGUN PEDIDO
-            }
-        });        
+            }            
+        });
+               
+        listView.setOnItemLongClickListener(new OnItemLongClickListener() {        				
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getBaseContext(), "item="+arg2,Toast.LENGTH_LONG).show();
+				return true;
+			}			
+        });
+                
         listView.setOnGroupClickListener(new OnGroupClickListener(){           
 	        public boolean onGroupClick(ExpandableListView parent, View v,int groupPosition, long id) {
 		    // TODO Auto-generated method stub
@@ -83,11 +114,13 @@ public class ClientesListTask extends Activity {
 	    Gson gson = new Gson();
 		ArrayList<Cliente> cliList = new ArrayList<Cliente>();							
 		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());						
-	    ArrayList<String> idClientes = new ArrayList<String>();	    	    	    	  
+	    ArrayList<String> idClientes = new ArrayList<String>();
+	    ArrayList<String> nombresClientes = new ArrayList<String>();
 		for(Cliente cli: cliList){
 			idClientes.add(cli.getIdCliente().toString());
+			nombresClientes.add(cli.getApePaterno()+" "+cli.getNombre());
 		}
-        adapter = new ExpandableListAdapter(getBaseContext(), idClientes, new ArrayList<ArrayList<Pedido>>());
+        adapter = new ExpandableListAdapter(getBaseContext(), idClientes,nombresClientes, new ArrayList<ArrayList<Pedido>>());
         CargarLista();
         // Set this blank adapter to the list view
         listView.setAdapter(adapter);                       

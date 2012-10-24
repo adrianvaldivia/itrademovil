@@ -8,6 +8,7 @@ import com.itrade.model.Pedido;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	    }
 	    
 	    private Context context;
+	    private ArrayList<String> nomclientes;
 	    private ArrayList<String> clientes;
 	    private ArrayList<ArrayList<Pedido>> pedidos;
-	    public ExpandableListAdapter(Context context, ArrayList<String> parclientes,
-	            ArrayList<ArrayList<Pedido>> pedidos) {
+	    public ExpandableListAdapter(Context context, ArrayList<String> parclientes, ArrayList<String> nomclientes,ArrayList<ArrayList<Pedido>> pedidos) {
 	        this.context = context;
 	        this.clientes = new ArrayList<String>();	        
-	        this.pedidos= new ArrayList<ArrayList<Pedido>>();	        
+	        this.pedidos= new ArrayList<ArrayList<Pedido>>();
+	        this.nomclientes= new ArrayList<String>();
 	        for(int i=0;i<parclientes.size();i++){
+	        	this.nomclientes.add(nomclientes.get(i));
 	        	this.clientes.add(parclientes.get(i));
 	        	this.pedidos.add(new ArrayList<Pedido>());
 	        }	        	        
@@ -58,8 +61,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	    	   
 	    public Object getChild(int groupPosition, int childPosition) {
 	        return pedidos.get(groupPosition).get(childPosition);
-	    }
-	    	    	    		   
+	    }	    
+	    	    
 	    public long getChildId(int groupPosition, int childPosition) {
 	        return childPosition;
 	    }
@@ -72,7 +75,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	            convertView = infalInflater.inflate(R.layout.c_clientes_child, null);
 	        }
 	        TextView tv = (TextView) convertView.findViewById(R.id.tvChild);	        
-	        tv.setText("Pedido Nro: " +pedido.getIdPedido().toString()+"    S/. "+pedido.getMontoTotal().toString());	      
+	        tv.setText("Pedido Nro: " +pedido.getIdPedido().toString()+"    S/. "+pedido.getMontoTotalPedido().toString());	      
 	        tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);	        
 	        return convertView;
 	    }
@@ -88,6 +91,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	        return clientes.get(groupPosition);
 	    }
 
+	    public Object getGroupNomb(int groupPosition) {
+	        return this.nomclientes.get(groupPosition);
+	    }
 
 	    public int getGroupCount() {
 	        return clientes.size();
@@ -100,12 +106,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	    // Return a group view. You can load your custom layout here.
 	    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,ViewGroup parent) {
 	        String group = (String) getGroup(groupPosition);
+	        String groupNom = (String) getGroupNomb(groupPosition);
 	        if (convertView == null) {
 	            LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	            convertView = infalInflater.inflate(R.layout.c_clientes_group, null);
 	        }
 	        TextView tv = (TextView) convertView.findViewById(R.id.tvGroup);
-	        tv.setText(group);
+	        TextView tvNombre = (TextView) convertView.findViewById(R.id.tvNombre);
+	        tv.setText(group);	        
+	        tvNombre.setText(groupNom);
 	        return convertView;
 	    }
 
