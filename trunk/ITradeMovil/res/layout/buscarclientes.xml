@@ -177,37 +177,21 @@
                 android:text="@string/listavacia" />
 
         </LinearLayout>
-
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <Button
+                android:id="@+id/buttonvermapa"
+                style="@drawable/estilo_botones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_weight="0.10" >
-
-                <Button
-                    android:id="@+id/buttonvermapa"
-                    style="@drawable/estilo_botones"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/estilo_botones"
-                    android:text="@string/vermapa"
-                    android:textColor="@color/blanco" />
-
-                <Button
-                    android:id="@+id/button1"
-                    style="@drawable/estilo_botones"
-                    android:layout_width="159dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/estilo_botones"
-                    android:text="Regresar"
-                    android:textColor="@color/blanco" />
-
-            </LinearLayout>
+                android:layout_weight="0.10"
+                android:background="@drawable/estilo_botones"
+                android:text="@string/vermapa"
+                android:textColor="@color/blanco" />
 
         </LinearLayout>
 

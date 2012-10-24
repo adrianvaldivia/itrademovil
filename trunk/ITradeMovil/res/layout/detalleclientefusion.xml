@@ -111,16 +111,6 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_marginTop="10dip" >
-
-		                    <Button
-	        android:id="@+id/buttoncrearpedido"
-	        style="@drawable/estilo_botones"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-	        android:layout_weight="0.10"
-	        android:background="@drawable/estilo_botones"
-	        android:text="@string/crearpedido"
-	        android:textColor="@color/blanco" />
 
 		        </LinearLayout>
 		    </LinearLayout>
@@ -140,16 +130,26 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="0dp"
 		    android:layout_weight="0.10" >
+
+		                    <Button
+		                        android:id="@+id/buttonverpedidos"
+		                        style="@drawable/estilo_botones"
+		                        android:layout_width="154dp"
+		                        android:layout_height="wrap_content"
+		                        android:background="@drawable/estilo_botones"
+		                        android:text="@string/verpedidos"
+		                        android:textColor="@color/blanco" />
 
 		                    <Button
-	        android:id="@+id/buttonverpedidos"
-	        style="@drawable/estilo_botones"
-	        android:layout_width="160dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.10"
-	        android:background="@drawable/estilo_botones"
-	        android:text="@string/verpedidos"
-	        android:textColor="@color/blanco" />
+		                        android:id="@+id/buttoncrearpedido"
+		                        style="@drawable/estilo_botones"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"
+		                        android:layout_weight="0.10"
+		                        android:background="@drawable/estilo_botones"
+		                        android:text="@string/crearpedido"
+		                        android:textColor="@color/blanco" />
+
 		</LinearLayout>
 	</LinearLayout>
 
