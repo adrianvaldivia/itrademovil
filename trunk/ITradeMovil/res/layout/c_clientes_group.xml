@@ -12,22 +12,23 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:background="@color/blanco" >
-
+
          <TextView
              android:id="@+id/tvGroup"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+             android:layout_marginLeft="50dip"
              android:layout_weight="0.08"
              android:background="@color/White"
              android:text="Groups"
              android:textColor="@color/azul_2"
              android:textSize="17dip" />
-
+
          <TextView
              android:id="@+id/tvNombre"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_weight="0.15"
+             android:layout_weight="0.05"
              android:text="TextView"
              android:textColor="@color/azul_2"
              android:textSize="17dip" />
