@@ -15,13 +15,17 @@ class Payment_model extends CI_Model {
 		
     }	
 	
-	public function pay_by_id($idpedido){
+	public function pay_by_id($idpedido,$montocobrado,$numVoucher){
 		//obtain pedido
 		//si es que ya esta pagado, no se puede cambiar de estado y se devuelve un array vacio
 		
 		if ($this->pendiente($idpedido)){									
-			$this->db->set('IdEstadoPedido', 1);
-			$this->db->set('FechaCobranza', 'CURDATE()', FALSE);							
+			$this->db->set('IdEstadoPedido', 2);//Pagado
+			$this->db->set('MontoTotalCobrado', $montocobrado);
+			$this->db->set('FechaCobranza', 'CURDATE()', FALSE);
+			if (trim($numVoucher)!=""){
+				$this->db->set('NumVoucher', $numVoucher);
+			}
 			$this->db->where('IdPedido', $idpedido);
 			$this->db->update($this->table_pedido);
 			return $this->get_by_id($idpedido);
@@ -32,7 +36,7 @@ class Payment_model extends CI_Model {
 	
 	public function get_by_id($idpedido){
 		//IDPEDIDO, IDCLIENTE, NOMBRECLIENTE, MONTOTOTAL
-		$this->db->select($this->table_pedido.".IdPedido, ".
+		/*$this->db->select($this->table_pedido.".IdPedido, ".
 							$this->table_pedido.".IdCliente, ".
 							$this->table_persona.".Nombre, ".
 							$this->table_persona.".ApePaterno, ".
@@ -43,7 +47,9 @@ class Payment_model extends CI_Model {
 							$this->table_pedido.".MontoTotalPedido ");		
 		$this->db->from($this->table_pedido);
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
-		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
+		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");
+		*/
+		$this->db->from($this->table_pedido);		
 		$this->db->where($this->table_pedido.".IdPedido", $idpedido);			
 		$query = $this->db->get();
 		//echo $this->db->last_query();
@@ -54,8 +60,7 @@ class Payment_model extends CI_Model {
 		$this->db->select($this->table_pedido.".IdPedido");		
 		$this->db->from($this->table_pedido);		
 		$this->db->where($this->table_pedido.".IdPedido", $idpedido);
-		// 0 -> PENDIENTE, 1 -> PAGADO, 2 ->CANCELADO
-		$this->db->where($this->table_pedido.".IdEstadoPedido", 0);// 0 indica que no esta pagado
+		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);// 1 indica que no esta pagado
 		$query = $this->db->get();			
         if ($query->num_rows()>0){
 			//QUIERE DECIR QUE se puede pagar
@@ -69,6 +74,7 @@ class Payment_model extends CI_Model {
 		$this->db->from($this->table_pedido);
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");											
 		$this->db->where($this->table_cliente.".IdCobrador", $idcobrador);	
+		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);//Pendiente de pago
 		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
 		$this->db->where($dates);
 		$query = $this->db->get();
