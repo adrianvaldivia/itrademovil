@@ -1,139 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ScrollView1"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
-
+
     <LinearLayout
+        android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:background="@color/blanco"
         android:orientation="vertical" >
 
-        <RelativeLayout
-            android:id="@+id/top_control_bar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/azul_2" >
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txtItrade"
+                android:layout_width="246dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:background="@color/blanco"
-                android:orientation="vertical" >
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dip"
+                android:background="@color/azul_2"
+                android:text="iTrade"
+                android:textColor="@color/grisClaro"
+                android:textSize="20dip" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/azul_2"
-                    android:orientation="vertical" >
+            <ImageButton
+                android:id="@+id/btnExplorar"
+                android:layout_width="58dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/azul_2"
+                android:src="@drawable/maps" />
+        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.51"
+            android:orientation="vertical" >
 
-                        <TextView
-                            android:id="@+id/TextView02"
-                            android:layout_width="246dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="5dip"
-                            android:background="@color/azul_2"
-                            android:text="iTrade"
-                            android:textColor="@color/grisClaro"
-                            android:textSize="20dip" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp" />
+        </LinearLayout>
 
-                        <ImageButton
-                            android:id="@+id/ImageButton06"
-                            android:layout_width="58dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:background="@color/azul_2"
-                            android:src="@drawable/maps" />
-                    </LinearLayout>
-                </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/azul_2" >
 
-                <LinearLayout
-                    android:layout_width="2dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+            <ImageButton
+                android:id="@+id/btnCrearPedido"
+                style="@drawable/estilo_botones"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/add_to_cart" />
 
-                    <TextView
-                        android:id="@+id/TextView02"
-                        android:layout_width="2dp"
-                        android:layout_height="2dp" />
-                </LinearLayout>
+            <ImageButton
+                android:id="@+id/btnBuscarPedido"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/buscar_pedido" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/azul_2"
-                    android:orientation="vertical" >
+            <ImageButton
+                android:id="@+id/btnProspectos"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/user_customer" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@color/azul_2" >
+            <ImageButton
+                android:id="@+id/btnDirectorio"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/directorio" />
 
-                        <ImageButton
-                            android:id="@+id/ImageButton04"
-                            style="@drawable/estilo_botones"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/user_customer" />
+            <ImageButton
+                android:id="@+id/btnCalendario"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/calendar" />
 
-                        <ImageButton
-                            android:id="@+id/ImageButton07"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/e_mail" />
+            <ImageButton
+                android:id="@+id/btnMeta"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/excelencia" />
+        </LinearLayout>
 
-                        <ImageButton
-                            android:id="@+id/ImageButton05"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/users_search" />
-
-                        <ImageButton
-                            android:id="@+id/ImageButton02"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/emblem_money" />
-
-                        <ImageButton
-                            android:id="@+id/ImageButton01"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/directorio" />
-
-                        <ImageButton
-                            android:id="@+id/ImageButton03"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/calendar" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
+
                 <TextView
                     android:id="@+id/TextView1"
                     android:layout_width="wrap_content"
@@ -145,7 +120,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/azul_2"
                     android:textSize="24dp" />
-
+
                 <ImageView
                     android:id="@+id/imageView1"
                     android:layout_width="170dp"
@@ -153,16 +128,14 @@
                     android:layout_gravity="right"
                     android:layout_weight="0.75"
                     android:src="@drawable/company" />
-
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <TextView
                 android:id="@+id/TextView2"
                 android:layout_width="wrap_content"
@@ -171,14 +144,13 @@
                 android:text="RUC"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/pruc"
+                android:id="@+id/editText1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:ems="10" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -190,14 +162,13 @@
                 android:id="@+id/TextView04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <TextView
                 android:id="@+id/TextView3"
                 android:layout_width="wrap_content"
@@ -207,9 +178,9 @@
                 android:text="Razon Social"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/prazonsocial"
+                android:id="@+id/editText2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
@@ -221,7 +192,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -233,14 +203,13 @@
                 android:id="@+id/TextView01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <TextView
                 android:id="@+id/TextView5"
                 android:layout_width="wrap_content"
@@ -249,16 +218,15 @@
                 android:text="Direccion"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/pdirecc"
+                android:id="@+id/editText3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:ems="10" />
-
         </LinearLayout>
-
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -272,17 +240,15 @@
                 android:text="Telefono"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/ptelefempre"
+                android:id="@+id/editText4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
                 android:layout_marginTop="3dp"
                 android:ems="10" />
-
         </LinearLayout>
-
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>
