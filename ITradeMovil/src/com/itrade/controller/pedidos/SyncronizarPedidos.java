@@ -19,9 +19,18 @@ public class SyncronizarPedidos {
 	private Activity window;	
 	//private ArrayList<Login> loginList= new ArrayList<Login>();
 	private ArrayList<Pedido> pedidoList;
+	private String response;
 	
 	
 	
+	public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
 	public HiloConexion getHilo() {
 		return hilo;
 	}
