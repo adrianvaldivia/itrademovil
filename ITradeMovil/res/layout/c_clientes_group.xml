@@ -17,7 +17,7 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:background="@color/blanco" >
-
+
          <TextView
              android:id="@+id/tvGroup"
              android:layout_width="wrap_content"
@@ -27,8 +27,9 @@
              android:background="@color/White"
              android:text="Groups"
              android:textColor="@color/azul_2"
-             android:textSize="17dip" />
-
+             android:textSize="20dip"
+             android:textStyle="bold" />
+
          <TextView
              android:id="@+id/tvNombre"
              android:layout_width="wrap_content"
@@ -37,7 +38,8 @@
              android:background="@color/blanco"
              android:text="TextView"
              android:textColor="@color/azul_2"
-             android:textSize="17dip" />
+             android:textSize="20dip"
+             android:textStyle="bold" />
 
          <Button
              android:id="@+id/botonCheckIn"
