@@ -215,7 +215,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	    return true;
 	}
     private void cargarBaseLocal() {
-        daoCliente = new DAOCliente();  
+        daoCliente = new DAOCliente(this);  
         listaCliente = daoCliente.getAllClientes(0); //obtiene los clientes
         listaClienteOriginal = daoCliente.getAllClientes(0); //obtiene los clientes
         Double x;
