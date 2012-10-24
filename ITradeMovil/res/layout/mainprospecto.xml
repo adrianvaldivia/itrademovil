@@ -12,6 +12,7 @@
         <include layout="@layout/prospectocontacto"/>
         <include layout="@layout/prospectoempresa"/>
         <include layout="@layout/prospectocredito"/>
+
     </ViewFlipper>
 
 </LinearLayout>
