@@ -54,9 +54,10 @@ public class BuscarProspectos extends Activity {
 		
 		setContentView(R.layout.buscarprospectos);
 		
-		Intent i = getIntent();                
-		idusuario=(String)i.getSerializableExtra("idempleado");		
-		
+		Bundle bundle=getIntent().getExtras();
+        int idu = bundle.getInt("idempleado");		
+        idusuario= String.valueOf(idu);
+        
 		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
 		
 		textView_razonSocial= (EditText) findViewById(R.id.editTextCliente);
