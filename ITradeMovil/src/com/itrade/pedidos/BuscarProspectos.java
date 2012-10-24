@@ -1,4 +1,4 @@
-package com.itrade;
+package com.itrade.pedidos;
 
 import java.util.ArrayList;
 import java.util.List;
