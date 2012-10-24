@@ -44,7 +44,9 @@ public class HiloConexion extends Thread{
 
 		try{		       
 			//this.sync.getDial().show(this.sync.getWindow(), "Conectando...", "Conectando con el servidor");
-			WBhelper helper = new WBhelper("http://200.16.7.111/");				
+			//WBhelper helper = new WBhelper("http://10.0.2.2/itrade_web/");
+			WBhelper helper = new WBhelper("http://200.16.7.111/dp2/itrade/");
+			
 			//List<NameValuePair> params = new ArrayList<NameValuePair>();			
 			
 			///params.add(new BasicNameValuePair("username", "admin"));
