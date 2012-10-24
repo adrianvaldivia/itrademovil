@@ -9,9 +9,10 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.jsonParser.WBhelper;
-import com.itrade.modelo.Login;
-import com.itrade.modelo.Pedido;
+import com.itrade.model.Cliente;
+import com.itrade.model.Pedido;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,10 +24,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PaymentTask extends Activity {
 	/**
@@ -36,153 +42,202 @@ public class PaymentTask extends Activity {
 	private TextView txtVwPedido;
 	private TextView txtVwCliente;
 	private TextView txtVwMonto;
-	private Button btnPagar;//boton ingresar
+	private TextView txtVwTransaccion;
+	private EditText editNumVoucher;
+	private Button btnPagar;
+	private Button btnDetalle;
+	private Button btnRuta;
+	private ImageView btnClientes;
 	private Spinner spinTipo;
 	private String direccion="http://10.0.2.2/"; 
+	private String idpedido;
+	private String idcliente;
+	private String idempleado;
+	private Pedido pedidoSelected;
+	private Cliente clienteSelected;
 	private ArrayList<Pedido> requestList = new ArrayList<Pedido>();
 	private ArrayList<Pedido> payReqtList = new ArrayList<Pedido>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// TODO Put your code here		
-		setContentView(R.layout.cobrar_pedido);//utiliza el layout home   
-        Intent i = getIntent(); //Se obtiene el intent
-        // se obtienen los parametros que se pasaron como extras en el intent anterior
-        String pedido = (String)i.getSerializableExtra("pedido"); //Se obtiene el nombre de usuario      
-        //Elementos del XML DE COBRANZA       
-        txtVwPedido = (TextView) findViewById(R.id.txtVwPedido);//Pedido
+		
+		setContentView(R.layout.cobrar_pedido);		
+		
+		txtVwPedido = (TextView) findViewById(R.id.txtVwPedido);//Pedido
         txtVwCliente = (TextView) findViewById(R.id.txtVwCliente);//CLIENTE
         txtVwMonto = (TextView) findViewById(R.id.txtVwMonto);//monto
+        txtVwTransaccion = (TextView)findViewById(R.id.textVwTransaccion);
         spinTipo = (Spinner)findViewById(R.id.spin);
         btnPagar = (Button)findViewById(R.id.btnPagar);
-        //Creamos el adaptador
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.tipoPago,android.R.layout.simple_spinner_item);
-        //Añadimos el layout para el menú
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        //Le indicamos al spinner el adaptador a usar
-        spinTipo.setAdapter(adapter);        
-        //Se llama a un método que a su vez ejecutará el hilo asyncrono
-        executePaymentTask(pedido);//le paso los parámetros user y password
+        btnDetalle = (Button)findViewById(R.id.btnDetalle);        
+        editNumVoucher = (EditText)findViewById(R.id.editTxtTransaccion);
         
+		getParamsIntent();
+        fillValues();          
+        setValues(); 
+				    
+        //Elementos del XML DE COBRANZA       
+       
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.tipoPago,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinTipo.setAdapter(adapter);                       
+        spinTipo.setOnItemSelectedListener(new OnItemSelectedListener() {                        
+			public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				//Toast.makeText(getBaseContext(), "item="+arg1+"item2"+arg2,Toast.LENGTH_LONG).show();
+				if(arg2==0){
+					//Ocultar input
+					txtVwTransaccion.setVisibility(View.INVISIBLE);
+					editNumVoucher.setVisibility(View.INVISIBLE);
+					editNumVoucher.setText("");
+				}else{
+					//Mostrar input y textviewView.VISIBLE
+					txtVwTransaccion.setVisibility(View.VISIBLE);
+					editNumVoucher.setVisibility(View.VISIBLE);
+				}
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				//Ocultar Inicialmente
+				txtVwTransaccion.setVisibility(View.INVISIBLE);
+				editNumVoucher.setVisibility(View.INVISIBLE);
+				editNumVoucher.setText("");
+			}
+
+        });
         btnPagar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-	    		paymentRequestTask();												
+				Syncronizar sync = new Syncronizar(PaymentTask.this);
+				List<NameValuePair> param = new ArrayList<NameValuePair>();	
+				String numVoucher= editNumVoucher.getText().toString();
+				param.add(new BasicNameValuePair("idpedido", idpedido));
+				param.add(new BasicNameValuePair("montocobrado", pedidoSelected.getMontoTotalPedido().toString()));			
+				if (spinTipo.getSelectedItem().toString().toLowerCase()!="efectivo"){
+					param.add(new BasicNameValuePair("numVoucher", numVoucher));
+				}else{
+					param.add(new BasicNameValuePair("numVoucher", ""));
+				}
+				String route2="/ws/pedido/pagar_pedido/";
+				sync.conexion(param,route2);
+				try {
+					sync.getHilo().join();			
+				} catch (InterruptedException e) {
+					  // TODO Auto-generated catch block
+					e.printStackTrace();
+				}	    	  
+				Gson gson = new Gson();  
+				ArrayList<Pedido> listaPayments = new ArrayList<Pedido>();
+				listaPayments = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
+				String titulo="";
+				String mensaje=""; 
+				if (listaPayments.size()>0){
+					Pedido pedido = listaPayments.get(0);
+					titulo="Pago exitoso"; 
+					mensaje="Se registro el pago del pedido Nro: "+pedido.getIdPedido().toString()+
+							" La fecha del registro fue: "+pedido.getFechaCobranza(); 
+				}else{
+					
+					titulo="No se registro el pago";
+					mensaje="No se realizo el registro del pago"; 							
+				}				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+				alertDialogBuilder.setTitle(titulo);		 			
+				alertDialogBuilder
+						.setMessage(mensaje)
+						.setCancelable(false)						
+						.setNegativeButton("Aceptar",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {														
+								dialog.cancel();
+								//finish();
+								Intent intent = new Intent(PaymentTask.this, ClientesListTask.class); 													
+								intent.putExtra("idpedido", idpedido);
+								intent.putExtra("idcliente", idcliente);	
+								intent.putExtra("idempleado", idempleado);
+								startActivity(intent);
+							}
+				});		
+				AlertDialog alertDialog = alertDialogBuilder.create();		 
+				alertDialog.show();	
 			}
 	 	});
+        btnDetalle.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(PaymentTask.this, RequestDetailTask.class); 													
+				intent.putExtra("idpedido", idpedido);
+				intent.putExtra("idcliente", idcliente);
+				intent.putExtra("idempleado", idempleado);
+				startActivity(intent);
+			}
+		});
+        btnClientes= (ImageView)findViewById(R.id.ImageButton04);
+        btnClientes.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(PaymentTask.this, ClientesListTask.class); 																				
+				intent.putExtra("idempleado", idempleado);
+				startActivity(intent);
+			}
+		});
+       
         
+	}	
+	
+	public void getParamsIntent(){
+		Intent i = getIntent();   		
+        this.idpedido = (String)i.getSerializableExtra("idpedido");
+        this.idcliente = (String)i.getSerializableExtra("idcliente");
+        this.idempleado = (String)i.getSerializableExtra("idempleado");
+        Log.d("tag","pedido"+this.idpedido);
 	}
 	
-	public void paymentRequestTask(){
-		PayRequest task = new PayRequest();//declaro una tarea como una nueva clase
-	    task.execute(new String[] { requestList.get(0).getIdPedido().toString() });//Solo le pasamos el IDPEDIDO
-	}
-	
-	private class PayRequest extends AsyncTask<String, Void, String>{
-		protected String doInBackground(String... parameters) {//primero se ejecutará esto y en parameters están user y password
-			// TODO Auto-generated method stub
-			String response="";
-			//Llamada al webservice
-			WBhelper helper = new WBhelper(direccion);//Esta es una clase que yo cree que me ayuda con los webservices				
-			List<NameValuePair> params = new ArrayList<NameValuePair>();// declaro un arreglo para pasarle parámetros a mi webservice			
-			Log.d("idpedido=",parameters[0]);
-			params.add(new BasicNameValuePair("idpedido", parameters[0]));// Declaro un parámetro "username" que tiene el valor user que le pasé como atributo
-			//Obteniendo el response
-			String responseBody=helper.obtainResponse("itrade/Pedido/pagar_pedido/",params);// hago la llamada al webservice			
-			Log.d("response PAGAR PEDIDO Task=",responseBody);//Escribo en el logcat para saber que cosa es lo que esta llegando							
-			return responseBody;//retorno todo el string de respuesta
-		}				
-		@Override
-		/*SEGUNDO SE METE AKI*/
-		protected void onPostExecute(String result) {
-			Log.d("POST payment=",result); //lo que yo retorne del bakground lo obtengo en la variable result, por siacaso lo escribo en logcat con esta linea									
-			Gson gson = new Gson();//un helper para el parseo del texto a objeto 		
-			//Esta linea automaticamente le das el texto y te convierte a objeto, lo regresa en una lista de objetos																
-			payReqtList = gson.fromJson(result, new TypeToken<List<Pedido>>(){}.getType());//Es necesario que la clase login tenga los mismos campos del webservice un ejemplo es el siguiente
-			//[{"Username":"adg","Nombre":"Joel","ApePaterno":"Prada","ApeMaterno":"Licla"}]			
-			Integer inte=payReqtList.size();//Si es que el parseo lo hizo bien y hubo algun resultado el tamaño de la lista será mayor que 0
-			Log.d("Cantidad de pedidos!!!!!!!=",inte.toString());// por siacaso escribo el resultado en el logcat
-			String titulo="";
-			String mensaje=""; 
-			if (inte>0){//hago la validación		
-				Pedido pedido = payReqtList.get(0);// obtengo el elemento de la lista y lo transformo a string
-				titulo="Pago exitoso"; 
-				mensaje="Se registro el pago del pedido Nro: "+pedido.getIdPedido().toString()+
-						" La fecha del registro fue: "+pedido.getFechaCobranza(); 
-			}else{
-				//loginErrorMsg.setText("Incorrect username/password");
-				titulo="No se registro el pago";
-				mensaje="No se realizo el registro del pago"; 							
-			}
-			
-			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 
-			// set title
-			alertDialogBuilder.setTitle(titulo);		 
-				// set dialog message
-			alertDialogBuilder
-					.setMessage(mensaje)
-					.setCancelable(false)						
-					.setNegativeButton("Aceptar",new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,int id) {
-							// if this button is clicked, just close
-							// the dialog box and do nothing								
-							dialog.cancel();
-							finish();
-						}
-					});
-	 
-					// create alert dialog
-			AlertDialog alertDialog = alertDialogBuilder.create();		 
-					// show it
-			alertDialog.show();
-		}
-	}
-	
-	public void executePaymentTask(String idpedido) {
-		PaymentBackGroundTask task = new PaymentBackGroundTask();//declaro una tarea como una nueva clase
-	    task.execute(new String[] { idpedido });// le digo que se ejecute y le paso los parámetros user y pass
-
-	}
-	/*CLASE ASINCRONA*/
-	private class PaymentBackGroundTask extends AsyncTask<String, Void, String>{
-		@Override
-		/*PRIMERO SE METE AKI*/
-		protected String doInBackground(String... parameters) {//primero se ejecutará esto y en parameters están user y password
-			// TODO Auto-generated method stub
-			String response="";
-			//Llamada al webservice
-			WBhelper helper = new WBhelper(direccion);//Esta es una clase que yo cree que me ayuda con los webservices				
-			List<NameValuePair> params = new ArrayList<NameValuePair>();// declaro un arreglo para pasarle parámetros a mi webservice			
-			Log.d("idpedido=",parameters[0]);
-			params.add(new BasicNameValuePair("idpedido", parameters[0]));// Declaro un parámetro "username" que tiene el valor user que le pasé como atributo
-			//Obteniendo el response
-			String responseBody=helper.obtainResponse("itrade/Pedido/consultar_pedido/",params);// hago la llamada al webservice			
-			Log.d("response pAYMENT Task=",responseBody);//Escribo en el logcat para saber que cosa es lo que esta llegando							
-			return responseBody;//retorno todo el string de respuesta
-		}				
-		@Override
-		/*SEGUNDO SE METE AKI*/
-		protected void onPostExecute(String result) {
-			Log.d("POST payment=",result); //lo que yo retorne del bakground lo obtengo en la variable result, por siacaso lo escribo en logcat con esta linea						
-			
-			Gson gson = new Gson();//un helper para el parseo del texto a objeto 		
-			//Esta linea automaticamente le das el texto y te convierte a objeto, lo regresa en una lista de objetos
-			requestList = gson.fromJson(result, new TypeToken<List<Pedido>>(){}.getType());//Es necesario que la clase login tenga los mismos campos del webservice un ejemplo es el siguiente
-			//[{"Username":"adg","Nombre":"Joel","ApePaterno":"Prada","ApeMaterno":"Licla"}]			
-			Integer inte=requestList.size();//Si es que el parseo lo hizo bien y hubo algun resultado el tamaño de la lista será mayor que 0
-			Log.d("Cantidad de pedidos!!!!!!!=",inte.toString());// por siacaso escribo el resultado en el logcat
-			if (inte>0){//hago la validación		
-				Pedido pedido = requestList.get(0);// obtengo el elemento de la lista y lo transformo a string
-				txtVwPedido.setText("Pedido#"+pedido.getIdPedido());// seteo el valor en la vista				
-		        txtVwCliente.setText(pedido.getApePaterno()+" "+pedido.getApeMaterno()+" "+pedido.getNombre());// seteo el valor en la vista
-		        txtVwMonto.setText("S/."+pedido.getMontoTotal().toString());
-			}else{
-				//loginErrorMsg.setText("Incorrect username/password");
-				txtVwPedido.setText("No existe usuario con ese nombre");// No existe o hubo un error.
-				//Aca es donde pondremos la alerta de que no existe usuario o algo similar. Código de henry				
-			}
-			
-		}
+	public void setValues(){
 		
+        txtVwPedido.setText("Pedido#"+pedidoSelected.getIdPedido());		
+	    txtVwCliente.setText(clienteSelected.getApePaterno()+" "+clienteSelected.getApeMaterno()+" "+clienteSelected.getNombre());
+	    txtVwMonto.setText("S/."+pedidoSelected.getMontoTotalPedido().toString());		
+	}
+	
+	public void fillValues(){
+		//Get Pedido Data
+		Syncronizar sync = new Syncronizar(PaymentTask.this);
+		List<NameValuePair> param = new ArrayList<NameValuePair>();								
+		param.add(new BasicNameValuePair("idpedido", this.idpedido));		
+		String route2="/ws/pedido/consultar_pedido/";
+		sync.conexion(param,route2);
+		try {
+			sync.getHilo().join();			
+		} catch (InterruptedException e) {
+			  // TODO Auto-generated catch block
+			e.printStackTrace();
+		}	    	  
+		Gson gson = new Gson();  			
+		requestList = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());	
+		if (requestList.size()>0){
+			pedidoSelected = requestList.get(0);
+			Log.d("selecionado1","PEDIDO1"+pedidoSelected.getIdPedido().toString());
+		}else{
+			finish();
+		}									
+		//Get Cliente Data
+		Syncronizar sync2 = new Syncronizar(PaymentTask.this);
+		List<NameValuePair> param2 = new ArrayList<NameValuePair>();								
+		param2.add(new BasicNameValuePair("idcliente", this.idcliente));		
+		String route="/ws/clientes/get_cliente_by_id/";
+		sync2.conexion(param2,route);
+		try {
+			sync2.getHilo().join();			
+		} catch (InterruptedException e) {
+			  // TODO Auto-generated catch block
+			e.printStackTrace();
+		}	    	  		
+		ArrayList<Cliente> cliList = new ArrayList<Cliente>();			
+		cliList=gson.fromJson(sync2.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
+		if (cliList.size()>0){
+			this.clienteSelected=cliList.get(0);
+		}else{
+			finish();
+		}
 	}
 }
