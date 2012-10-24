@@ -4,35 +4,47 @@ package com.itrade.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.itrade.model.Cliente;
+import com.itrade.controller.pedidos.SyncronizarPedidos;
 import com.itrade.controller.pedidos.UsuarioFunctions;
 
 public class DAOCliente {
 
-
+	private Activity window;
 	
 	//    private final float factor=1000000;
 	// JSON Response node names
-	private static String KEY_SUCCESS = "success";
-	private static String KEY_ERROR = "error";
-	private static String KEY_ERROR_MSG = "error_msg";
-	private static String KEY_IDCLIENTE = "IdCliente";
-	private static String KEY_CLIENTES = "clientes";
-	private static String KEY_RAZON_SOCIAL = "Razon_Social";
-	private static String KEY_LONGITUDE = "Longitud";
-	private static String KEY_LATITUDE = "Latitud";
-	private static String KEY_RUC = "RUC";
+//	private static String KEY_SUCCESS = "success";
+//	private static String KEY_ERROR = "error";
+//	private static String KEY_ERROR_MSG = "error_msg";
+//	private static String KEY_IDCLIENTE = "IdCliente";
+//	private static String KEY_CLIENTES = "clientes";
+//	private static String KEY_RAZON_SOCIAL = "Razon_Social";
+//	private static String KEY_LONGITUDE = "Longitud";
+//	private static String KEY_LATITUDE = "Latitud";
+//	private static String KEY_RUC = "RUC";
     // products JSONArray
     JSONArray clientes = null;
+    
+    String idusuario;
 	
-	public DAOCliente(){
+	public DAOCliente(Activity window){
 		super();
+		this.window=window;
 	}
 //	public List<Cliente> getAllClientes(int idRuta) {
 //		List<Cliente> liscaCliente = new ArrayList<Cliente>();
@@ -71,50 +83,86 @@ public class DAOCliente {
 //		return liscaCliente;
 //	}
 	public List<Cliente> getAllClientes(int idRuta) {
+		
 		List<Cliente> listaCliente = new ArrayList<Cliente>();
-		UsuarioFunctions userFunction = new UsuarioFunctions();
-		JSONObject json = userFunction.getAllClientes();
+		
+		Intent i = this.window.getIntent();                
+		idusuario=(String)i.getSerializableExtra("idempleado");		
+		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
+		
+		/*****ws****/
+		
+		
+		SyncronizarPedidos sync = new SyncronizarPedidos(window);
+		List<NameValuePair> param = new ArrayList<NameValuePair>();	
+		param.add(new BasicNameValuePair("idvendedor", idusuario));
+		
+//		String route="dp2/itrade/ws/cobranza/get_all_products";
+		String route="/ws/clientes/get_clientes_by_vendedor/";
+		
+		sync.conexion(param,route);
 		
 		try {
-			if (json.getString(KEY_SUCCESS) != null) {				
-				String res = json.getString(KEY_SUCCESS);
-//				String uid = json.getString(KEY_IDCLIENTE);
-				
-				if(Integer.parseInt(res) == 1){					
-					clientes = json.getJSONArray(KEY_CLIENTES);						
-//					JSONObject json_user = json.getJSONObject("user");
-                    for (int i = 0; i < clientes.length(); i++) {
-                        JSONObject json_cliente = clientes.getJSONObject(i);
-                        
-                        
-                      Cliente cliente = new Cliente();
-                      // Storing each json item in variable 
-                      String strIdCliente=json_cliente.getString(KEY_IDCLIENTE);
-                      String strLatitud=json_cliente.getString(KEY_LATITUDE);
-                      String strLongitud=json_cliente.getString(KEY_LONGITUDE);
-                      cliente.setId(new Long(strIdCliente.toString()));
-                      cliente.setRazon_Social(json_cliente.getString(KEY_RAZON_SOCIAL));
-                      cliente.setRUC(json_cliente.getString(KEY_RUC));                   
+			sync.getHilo().join();
+			Log.d("TAG","LLEGA PRIMERO AKI");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Log.d("TAG","LLEGA SEGUNDO AKI");
+	    Gson gson = new Gson();
+							
+		Log.e("log_tag", "se cayo5" );
+		listaCliente	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());				    
 
-                      cliente.setLatitud(Double.parseDouble(strLatitud.toString()));
-                      cliente.setLongitud(Double.parseDouble(strLongitud.toString()));                                                                
-                      // adding object to ArrayList
-                      listaCliente.add(cliente);
-                    }
-					
-				}else{
-					// Error when trying to getAllClientes
-//					resul=-1;
-//					loginErrorMsg.setText("Incorrect username/password");
-				}
-			}
-			else{
-//				resul=-1;
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();			
-		}		
+		    /*****************************WEBSERVICE END**********************************/				
 		return listaCliente;
+		
+		
+//		UsuarioFunctions userFunction = new UsuarioFunctions();
+//		
+//		JSONObject json = userFunction.getAllClientes();
+//		
+//		try {
+//			if (json.getString(KEY_SUCCESS) != null) {				
+//				String res = json.getString(KEY_SUCCESS);
+////				String uid = json.getString(KEY_IDCLIENTE);
+//				
+//				if(Integer.parseInt(res) == 1){					
+//					clientes = json.getJSONArray(KEY_CLIENTES);						
+////					JSONObject json_user = json.getJSONObject("user");
+//                    for (int i = 0; i < clientes.length(); i++) {
+//                        JSONObject json_cliente = clientes.getJSONObject(i);
+//                        
+//                        
+//                      Cliente cliente = new Cliente();
+//                      // Storing each json item in variable 
+//                      String strIdCliente=json_cliente.getString(KEY_IDCLIENTE);
+//                      String strLatitud=json_cliente.getString(KEY_LATITUDE);
+//                      String strLongitud=json_cliente.getString(KEY_LONGITUDE);
+//                      cliente.setId(new Long(strIdCliente.toString()));
+//                      cliente.setRazon_Social(json_cliente.getString(KEY_RAZON_SOCIAL));
+//                      cliente.setRUC(json_cliente.getString(KEY_RUC));                   
+//
+//                      cliente.setLatitud(Double.parseDouble(strLatitud.toString()));
+//                      cliente.setLongitud(Double.parseDouble(strLongitud.toString()));                                                                
+//                      // adding object to ArrayList
+//                      listaCliente.add(cliente);
+//                    }
+//					
+//				}else{
+//					// Error when trying to getAllClientes
+////					resul=-1;
+////					loginErrorMsg.setText("Incorrect username/password");
+//				}
+//			}
+//			else{
+////				resul=-1;
+//			}
+//		} catch (JSONException e) {
+//			e.printStackTrace();			
+//		}		
+//		return listaCliente;
 	}
 	
 }
