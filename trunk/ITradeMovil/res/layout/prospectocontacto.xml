@@ -169,13 +169,14 @@
                 android:text="DNI"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/pdni"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:ems="10" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -192,14 +193,15 @@
                 android:text="Nombre"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/pnombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
                 android:layout_marginTop="5dp"
                 android:ems="10" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -215,13 +217,14 @@
                 android:text="Apellido"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/papellido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:ems="10" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -237,13 +240,14 @@
                 android:text="Cumpleaños"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/azul_2" />
-
+
             <EditText
-                android:id="@+id/EditText02"
+                android:id="@+id/pcumple"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:ems="10" />
+
         </LinearLayout>
     </LinearLayout>
 
