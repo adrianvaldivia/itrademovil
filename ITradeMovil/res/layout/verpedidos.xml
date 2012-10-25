@@ -68,7 +68,7 @@
 		            android:layout_height="wrap_content"
 		            android:background="@color/azul_2"
 		            android:orientation="vertical" >
-
+
 		            <LinearLayout
 		                android:layout_width="match_parent"
 		                android:layout_height="48dp"
@@ -117,6 +117,7 @@
 		                    android:background="@drawable/estilo_botones"
 		                    android:src="@drawable/calendar" />
 		            </LinearLayout>
+
 		        </LinearLayout>
 
 		        <LinearLayout
