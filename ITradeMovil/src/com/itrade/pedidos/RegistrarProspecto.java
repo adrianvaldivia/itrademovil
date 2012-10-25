@@ -58,14 +58,14 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     	dni = (EditText) findViewById(R.id.pdni);
     	nombre = (EditText) findViewById(R.id.pnombre);
     	apellido = (EditText) findViewById(R.id.papellido);
-    	telefperson =(EditText) findViewById(R.id.ptelefo);
+    	//telefperson =(EditText) findViewById(R.id.ptelefo);
     	fechanac = (EditText) findViewById(R.id.pcumple);
 
         /*Empresa = Cliente ****************************************************************/
     	ruc = (EditText) findViewById(R.id.pruc);
     	rzsocial = (EditText) findViewById(R.id.prazonsocial);
     	direcc =(EditText) findViewById(R.id.pdirecc);
-    	telefcliente = (EditText) findViewById(R.id.ptelefempre);
+    	//telefcliente = (EditText) findViewById(R.id.ptelefempre);
     
         /*Linea_Credito = Linea Credito ****************************************************************/
         cantidad = (EditText) findViewById(R.id.pcantidad);
@@ -73,58 +73,58 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         /*Btn Registrar*************************************************************************************/
     	btnregistrar = (Button)findViewById(R.id.pregistraprospecto);
         
-//    	btnregistrar.setOnClickListener(new OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//                 		
-//    client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString(), ruc.getText().toString(), null, null, direcc.getText().toString(), null, null, null); 
-//
-//    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-//    String strFecha = fechanac.getText().toString();
-//    Date fecha = null;
-//    try {
-//		fecha = formato.parse(strFecha);
-//	} catch (ParseException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
-//
-//    
-//  person = new Persona(null, null, nombre.getText().toString(), apellido.getText().toString(), null, dni.getText().toString(), fecha, telefperson.getText().toString(), null, null); 
-//
-//  cred = new Credito(Integer.parseInt(cantidad.getText().toString())); 
-//
-//                 Syncronizar sync = new Syncronizar(RegistrarProspecto.this);
-//                 List<NameValuePair> param = new ArrayList <NameValuePair>();
-//                 param.add(new BasicNameValuePair("idvendedor", idusuario));
-//                 
-//                 param.add(new BasicNameValuePair("dni", person.getDNI()));
-//                 param.add(new BasicNameValuePair("nombre", person.getNombre()));
-//                 param.add(new BasicNameValuePair("apepaterno", person.getApePaterno()));
-//                 param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
-//                 param.add(new BasicNameValuePair("fechanac",  person.getFechNac().toString()));
-//            
-//                 param.add(new BasicNameValuePair("ruc", client.getRUC()));
-//                 param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
-//                 param.add(new BasicNameValuePair("direccion", client.getDireccion()));
-//                
-//                 String monto = cred.getCantidad()+"";
-//                 
-//                 param.add(new BasicNameValuePair("montosolicitado", monto));
-//                 
-//                 String route = "/ws/clientes/registrar_prospecto/";
-//			sync.conexion(param, route);
-//			
-//	/********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
-//			   if (sync.getResponse()=="true")
-//				   
-//					Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
-//			   else	
-//				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
-//			}
-//		});
-//        
+    	btnregistrar.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+                 		
+    client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString(), ruc.getText().toString(), null, null, direcc.getText().toString(), null, null, null); 
+
+    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+    String strFecha = fechanac.getText().toString();
+    Date fecha = null;
+    try {
+		fecha = formato.parse(strFecha);
+	} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+    
+  person = new Persona(null, null, nombre.getText().toString(), apellido.getText().toString(), null, dni.getText().toString(), fecha, null, null, null); 
+
+  cred = new Credito(Integer.parseInt(cantidad.getText().toString())); 
+
+                 Syncronizar sync = new Syncronizar(RegistrarProspecto.this);
+                 List<NameValuePair> param = new ArrayList <NameValuePair>();
+                 param.add(new BasicNameValuePair("idvendedor", idusuario));
+                 
+                 param.add(new BasicNameValuePair("dni", person.getDNI()));
+                 param.add(new BasicNameValuePair("nombre", person.getNombre()));
+                 param.add(new BasicNameValuePair("apepaterno", person.getApePaterno()));
+             //    param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
+                 param.add(new BasicNameValuePair("fechanac",  person.getFechNac().toString()));
+            
+                 param.add(new BasicNameValuePair("ruc", client.getRUC()));
+                 param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
+                 param.add(new BasicNameValuePair("direccion", client.getDireccion()));
+                
+                 String monto = cred.getCantidad()+"";
+                 
+                 param.add(new BasicNameValuePair("montosolicitado", monto));
+                 
+                 String route = "/ws/clientes/registrar_prospecto/";
+			sync.conexion(param, route);
+			
+	/********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
+			   if (sync.getResponse()=="true")
+				   
+					Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
+			   else	
+				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
+			}
+		});
+        
     	
 
 //        Button bt1 = (Button) findViewById(R.id.buttonUno);
