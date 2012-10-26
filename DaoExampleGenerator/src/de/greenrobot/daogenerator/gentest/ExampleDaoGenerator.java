@@ -57,8 +57,11 @@ public class ExampleDaoGenerator {
     private static void addCliente(Schema schema) {
         Entity cliente = schema.addEntity("Cliente");
         cliente.addIdProperty();
-        cliente.addLongProperty("IdCliente");
         cliente.addIntProperty("IdPersona");
+        cliente.addLongProperty("IdCliente");     
+        cliente.addStringProperty("Nombre");
+        cliente.addStringProperty("ApePaterno");
+        cliente.addStringProperty("ApeMaterno");
         cliente.addStringProperty("Razon_Social").notNull();
         cliente.addStringProperty("RUC");
         cliente.addDoubleProperty("Latitud");
@@ -144,16 +147,23 @@ public class ExampleDaoGenerator {
         pedido.addDateProperty("FechaCobranza");
         pedido.addDoubleProperty("MontoSinIGV");
         pedido.addDoubleProperty("IGV");
+        pedido.addDoubleProperty("MontoTotalPedido");
+        pedido.addDoubleProperty("MontoTotalCobrado");
+        pedido.addStringProperty("NumVoucher");
         pedido.addDoubleProperty("MontoTotal");
     }
     private static void addPedidoLinea(Schema schema) {
         Entity pedidolinea = schema.addEntity("PedidoLinea");
         pedidolinea.addIdProperty();
-        pedidolinea.addLongProperty("IdPedidoLinea");
         pedidolinea.addIntProperty("IdPedido");
+        pedidolinea.addLongProperty("IdPedidoLinea");
         pedidolinea.addIntProperty("IdProducto");
         pedidolinea.addDoubleProperty("MontoLinea");
+        pedidolinea.addDoubleProperty("Precio");
         pedidolinea.addIntProperty("Cantidad");
+        pedidolinea.addStringProperty("NombreProducto");
+        pedidolinea.addStringProperty("Marca");
+        pedidolinea.addStringProperty("Categoria");
     }
 //    private static void addCustomerOrder(Schema schema) {
 //        Entity customer = schema.addEntity("Customer");

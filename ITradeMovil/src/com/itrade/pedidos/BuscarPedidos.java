@@ -48,7 +48,7 @@ public class BuscarPedidos extends ListActivity{
     List<Pedido> listaPedidoOriginal;  
 	List<String> lista = new ArrayList<String>();
 	DAOPedido daoPedido =null;
-	private Button button_cearpedido;
+//	private Button button_cearpedido;
 	private Button button_regresar;
 	int idempleado;
  
@@ -94,7 +94,7 @@ public class BuscarPedidos extends ListActivity{
 		idempleado = bundle.getInt("idempleado");
         setTitle("iTrade - Pedidos");
         
-        button_cearpedido = (Button) findViewById(R.id.buttoncrearpedido);
+//        button_cearpedido = (Button) findViewById(R.id.buttoncrearpedido);
 //        button_regresar = (Button) findViewById(R.id.buttonregresar);
         
      
@@ -102,15 +102,15 @@ public class BuscarPedidos extends ListActivity{
 //        lista= Convierte(listaIncidencia);
 //        ListView lv = getListView(); 
 //        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
-        button_cearpedido.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();
-				Intent intent = new Intent(BuscarPedidos.this, BuscarClientesGreenDao.class);		
-				intent.putExtra("idempleado", idempleado);
-				intent.putExtra("boolVer", 0);//boolean que indica quien llamo a la ventana
-				startActivity(intent);
-			}
-	 	});
+//        button_cearpedido.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();
+//				Intent intent = new Intent(BuscarPedidos.this, BuscarClientesGreenDao.class);		
+//				intent.putExtra("idempleado", idempleado);
+//				intent.putExtra("boolVer", 0);//boolean que indica quien llamo a la ventana
+//				startActivity(intent);
+//			}
+//	 	});
 //        button_regresar.setOnClickListener(new OnClickListener() {
 //			public void onClick(View v) {
 //				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();

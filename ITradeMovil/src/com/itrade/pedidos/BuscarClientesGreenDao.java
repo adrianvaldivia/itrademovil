@@ -180,7 +180,7 @@ int debug=0;
 debug++;
      this.encuentraCliente(id);
      int temp=cliente.getIdCliente();
-     Toast.makeText(this, "IdCliente:"+cliente.getId(), Toast.LENGTH_LONG).show();
+     //Toast.makeText(this, "IdCliente:"+cliente.getId(), Toast.LENGTH_LONG).show();
      Intent intent = new Intent(BuscarClientesGreenDao.this, DetalleCliente.class);
      intent.putExtra("nombre", cliente.getRazon_Social());
      intent.putExtra("apellidos", cliente.getRUC());
@@ -291,7 +291,7 @@ debug++;
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Toast.makeText(BuscarClientesGreenDao.this, "Regreso", Toast.LENGTH_LONG).show();
+		//Toast.makeText(BuscarClientesGreenDao.this, "Regreso", Toast.LENGTH_LONG).show();
 		recuperarOriginal();			    
 	}
 	
