@@ -98,7 +98,7 @@ public class DetalleCliente extends ListActivity{
 
 	    button_verpedidos.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Toast.makeText(DetalleCliente.this, "pruebaa", Toast.LENGTH_LONG).show();
+				//Toast.makeText(DetalleCliente.this, "pruebaa", Toast.LENGTH_LONG).show();
 //				Bundle bundle = getIntent().getExtras();
 				
 				//Intent intent = new Intent(DetalleCliente.this, VerMapaActivity.class);
@@ -108,7 +108,7 @@ public class DetalleCliente extends ListActivity{
 	 	});
 	    button_crearpedidos.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Toast.makeText(DetalleCliente.this, "pruebaa", Toast.LENGTH_LONG).show();
+				//Toast.makeText(DetalleCliente.this, "pruebaa", Toast.LENGTH_LONG).show();
 //				Bundle bundle = getIntent().getExtras();
 			     Intent intent = new Intent(DetalleCliente.this, CrearPedido.class);
 			     intent.putExtra("nombre", nombre);
@@ -139,7 +139,7 @@ public class DetalleCliente extends ListActivity{
      // TODO Auto-generated method stub
      //super.onListItemClick(l, v, position, id);
      String selection = l.getItemAtPosition(position).toString();
-     Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
+     //Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
     }    
     
 	public List<String> Convierte(List<String> lis){
@@ -159,7 +159,7 @@ public class DetalleCliente extends ListActivity{
 	}
 	@Override
 	protected void onDestroy() {
-		Toast.makeText(DetalleCliente.this, "destruyendo", Toast.LENGTH_LONG).show();
+		//Toast.makeText(DetalleCliente.this, "destruyendo", Toast.LENGTH_LONG).show();
 		//elementoListaDao.deleteAll();
 		//cursorElementoLista.requery();
 		db.close();

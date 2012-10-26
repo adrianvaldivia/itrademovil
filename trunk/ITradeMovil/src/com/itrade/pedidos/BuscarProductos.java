@@ -121,7 +121,7 @@ public class BuscarProductos extends ListActivity{
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
         String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
         int[] toElementoLista = { android.R.id.text1, android.R.id.text2 };
-        adapterElementoLista = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursorElementoLista, fromElementoLista,
+        adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);    
         //fin green Day de Elementos Lista 
         
