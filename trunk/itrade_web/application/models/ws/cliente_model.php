@@ -105,7 +105,7 @@ class Cliente_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();	
 	}
-	public function get_prospecto_by_vendedor($idvendedor,$razon_social){				
+	public function get_prospecto_by_vendedor($idvendedor,$razon_social=''){				
 		//IDPEDIDO, IDCLIENTE, NOMBRECLIENTE, MONTOTOTAL				
 		$this->db->select($this->table_persona.".IdPersona, ".
 						$this->table_cliente.".IdCliente, ".
@@ -119,16 +119,14 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".IdCobrador, ".
 						$this->table_persona.".ApeMaterno ");
 						
-		$this->db->from($this->table_pedido);
-		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
-		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
-		//Restriccion del día de hoy				
-		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
-		$this->db->where($dates);		
+		$this->db->from($this->table_cliente);		
+		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");							
 		//Restriccion de un solo vendedor
 		$this->db->where($this->table_cliente.".IdVendedor", $idvendedor);	
 		$this->db->where($this->table_cliente.".IdEstado", 1);	
-		$this->db->like($this->table_cliente.".Razon_Social", $razon_social);				
+		if ($razon_social!=''){
+			$this->db->like($this->table_cliente.".Razon_Social", $razon_social);				
+		}		
 		$this->db->group_by($this->table_cliente.".IdCliente");	
 		$query = $this->db->get();
 		//echo $this->db->last_query();
