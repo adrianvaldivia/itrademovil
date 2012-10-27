@@ -100,5 +100,24 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();
 	}	
+	
+	public function registrar_pedido($idcliente,$montototalpedidosinigv){		
+		$idpedido=$this->get_last_idpedido();					
+		$montototalpedidosinigv=number_format(round($montototalpedidosinigv,2),2,'.','');
+		$montototalconigv=number_format(round($montototalpedidosinigv*1.18,2),2,'.','');
+		$igv=number_format(round($montototalconigv-$montototalpedidosinigv,2),2,'.','');
+		$data=array("IdPedido"=>$idpedido+1,"IdCliente"=>$idcliente,"IdEstadoPedido"=>1,
+			"FechaPedido"=>date('Y-m-d'),"MontoSinIGV"=>$montototalpedidosinigv,"IGV"=>$igv,
+			"MontoTotalPedido"=>$montototalconigv,"MontoTotalCobrado"=>0);
+		$this->db->insert($this->table_pedido, $data);
+		return $this->get_last_idpedido();
+	}	
+
+	public function get_last_idpedido(){
+		$this->db->flush_cache();
+        $this->db->select_max('IdPedido');
+        $query = $this->db->get($this->table_pedido);
+        return $query->row(0)->IdPedido;
+    }	
 }
 ?>
