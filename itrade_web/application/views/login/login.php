@@ -9,10 +9,10 @@
             <title><?php echo $title; ?></title>   
 
             <!--styleshets CSS-->
-    <!--        <link href="<?php echo base_url() ?>css/tripoli.simple.css" rel="stylesheet" />
+        <!--  <link href="<?php echo base_url() ?>css/tripoli.simple.css" rel="stylesheet" />
             <link href="<?php echo base_url() ?>css/layout.css" rel="stylesheet" />		-->
             <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />
-             <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
+             <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	  
 
             <!--scripts js-->
             <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.2.3.pack.js"></script>
@@ -51,10 +51,11 @@
                 <? } ?>
 
             </div>
-        </div>-->
+        </div>--> 
 
-                <div id="header">
-                             <!--   <div id="title">iTRADE</div>-->
+                
+               <div id="header">
+                          
                     <div id="logo">
                         <a href="<? echo base_url() ?>home"> <img src="<?php echo base_url() ?>images/logo.png"/></a>
                     </div>
@@ -77,8 +78,7 @@
                             </script> 
         <? } else { ?>
             <? //si entra un usuario logueado al home ?>
-        <? } ?>
-                </div>
+        <? } ?></div> 
                 <div id="content">
                    <div id="contenido_principal" style="width:100%; height:100%;" >
 
@@ -87,8 +87,8 @@
         $this->load->view($main);
         ?>
 
-        <!--            </div>-->
-        <!--        </div>-->
+                    </div>
+               </div>
         <!--        <div id="footer">
                     <div>2012 - i-Trade</div>
                 </div>-->

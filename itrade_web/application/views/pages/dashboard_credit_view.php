@@ -23,7 +23,7 @@
             //]]>
         </script>
     </head>
-    <body>
+    <body class="credit">
 
         <div id="header">
 <!--                        <div id="title"><?echo $title?></div>-->
