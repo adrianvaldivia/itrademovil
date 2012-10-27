@@ -39,7 +39,8 @@ public class BuscarProspectos extends Activity {
 	private Button button_agregar;
 	private ListView list_prospectos;
 	
-	ArrayAdapter<Cliente> adapter;
+	//ArrayAdapter<Cliente> adapter;
+	ArrayAdapter<String> adapter;
 	private ArrayList<Cliente> listaProspectos;
 	String idusuario;
 	String razonSocial;			
@@ -56,7 +57,7 @@ public class BuscarProspectos extends Activity {
 		
 		Bundle bundle=getIntent().getExtras();
         int idu = bundle.getInt("idempleado");		
-        idusuario= String.valueOf(idu);
+        idusuario= String.valueOf(idu);        
         
 		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
 		
@@ -89,9 +90,13 @@ public class BuscarProspectos extends Activity {
 	    	Gson gson = new Gson();
 	    										
 	    	listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());						
-
-	    	adapter =new ArrayAdapter<Cliente>(BuscarProspectos.this, android.R.layout.simple_list_item_1, listaProspectos); 
-	    		
+	    	ArrayList<String> lprospectos=new ArrayList<String>();
+	    	for(int i=0;i<listaProspectos.size();i++){
+	        	lprospectos.add(listaProspectos.get(i).getRazon_Social());	        	
+	        }	
+	    	//adapter =new ArrayAdapter<Cliente>(BuscarProspectos.this, android.R.layout.simple_list_item_1, listaProspectos); 
+	    	adapter =new ArrayAdapter<String>(BuscarProspectos.this, android.R.layout.simple_list_item_1, lprospectos);
+	    	
 	    	list_prospectos.setAdapter(adapter);
 	    }
 	    });
@@ -106,6 +111,7 @@ public class BuscarProspectos extends Activity {
 			// TODO Auto-generated method stub
 			Toast.makeText(BuscarProspectos.this, "Ok", Toast.LENGTH_LONG).show();
 			Intent i = new Intent(BuscarProspectos.this, RegistrarProspecto.class);
+			i.putExtra("idempleado", idusuario);
 			startActivity(i);
 			BuscarProspectos.this.finish();
 		}
