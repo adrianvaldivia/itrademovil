@@ -31,6 +31,7 @@
         
         <activity             
             android:name=".pedidos.VerMapaActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/ventanamapa" >
         </activity>
         
@@ -46,6 +47,7 @@
          
          <activity
             android:name=".pedidos.BuscarPedidos"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         
@@ -61,56 +63,69 @@
         
         <activity
             android:name=".pedidos.BuscarProductos"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
 		<activity
             android:name=".pedidos.BuscarClientes"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.DetalleCliente"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.CrearPedido"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.BuscarProspectos"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         
         
         <activity
             android:name=".pedidos.MenuLista"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.BuscarClientesGreenDao"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name=".pedidos.BuscarProspectosGreenDao"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.MiMeta"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.SimpleCalendarViewActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.MiUbicacionActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.MiUbicacionImplActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".pedidos.RegistrarProspecto"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
         <activity android:name=".ListaClientes"/>
