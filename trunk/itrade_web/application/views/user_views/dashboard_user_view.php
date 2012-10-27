@@ -23,7 +23,7 @@
             //]]>
         </script>
     </head>
-    <body>
+    <body class="user">
 
         <div id="header">
             <!--            <div id="title">iTRADE</div>-->

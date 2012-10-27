@@ -131,6 +131,7 @@
 
             </div>
 
+                <input type="button" value="Regresar" class="button" onclick="window.location='<?= base_url() ?>admin/usuario_controller/'"/>
 
         </div>
 

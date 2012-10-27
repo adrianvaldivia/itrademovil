@@ -31,20 +31,21 @@
                 $idpersona = $usuario['IdPersona'];
                 ?>
                 <tr>
-                    <td>
+                    <td class='nombre'>
                         <div class="nombre"><? echo $usuario['Nombre']; ?></div>
                     </td>
-                    <td>
+                    <td class="perfil">
                         <div class="perfil"><? echo $usuario['Perfil']; ?></div>
-                    </td>
-                    <td>
+                    </td >
+                    <td class='estado'>
                         <div class="estado"><? echo $usuario['Activo']; ?></div>
                     </td>
-                    <td>
-                        <div class="accion"><? echo anchor("admin/usuario_controller/modificar/$idusuario/$idpersona", 'Editar', array('title' => 'Editar')); ?></div>
+                    <td class='accion'>
+                        <div class="accion"><? echo anchor("admin/usuario_controller/modificar/$idusuario/$idpersona", 'Editar', array('title' => 'Editar')); ?>
                         <? if ($usuario['Perfil'] == 'VENDEDOR'): ?>
-						<div class="accion"><? echo anchor("admin/usuario_controller/metas_user/$idusuario", 'Metas', array('title' => 'Metas')); ?></div>
+						<? echo anchor("admin/usuario_controller/metas_user/$idusuario", 'Metas', array('title' => 'Metas')); ?>
                         <? endif; ?>
+						</div>
                     </td>
                 </tr>
                 <?

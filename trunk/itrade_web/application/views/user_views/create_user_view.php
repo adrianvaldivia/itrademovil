@@ -138,7 +138,7 @@
 
             <p class="clear">
                 <input type="submit" value="Aceptar" class="button"/>
-                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url()?>home/'"/>
+                <input type="button" value="Cancelar" class="button" onclick="window.location='<?= base_url()?>admin/usuario_controller/'"/>
             </p>
             <?= form_close(); ?>
 

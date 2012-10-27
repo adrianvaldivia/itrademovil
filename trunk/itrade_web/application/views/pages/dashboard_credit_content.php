@@ -16,7 +16,7 @@
             <thead>
                 <tr>
                     <th>
-                        Cliente (Razon Social)
+                        Razon Social
                     </th>
                     <th>
                         Monto Solicitado
@@ -43,17 +43,17 @@
                     $idlinea = $credito['IdLinea'];
                     ?>
                     <tr>
-                        <td>
+                        <td class="razon">
                             <div class="nombre"><? echo $credito['Cliente']->Razon_Social; ?></div>
                         </td>
                         <td>
-                            <div class="perfil"><? echo $credito['MontoSolicitado']; ?></div>
+                            <div class="monto"><? echo $credito['MontoSolicitado']; ?></div>
                         </td>
                         <td>
-                            <div class="perfil"><? echo $credito['MontoActual']; ?></div>
+                            <div class="monto"><? echo $credito['MontoActual']; ?></div>
                         </td>
                         <td>
-                            <div class="perfil"><? echo $credito['MontoAprobado']; ?></div>
+                            <div class="monto"><? echo $credito['MontoAprobado']; ?></div>
                         </td>
                         <td>
                             <div class="estado"><? if($credito['Activo'] == 1)echo 'Aprobado';
@@ -61,7 +61,7 @@
                                                 if($credito['Activo'] == 2) echo 'Rechazado';?>
                             </div>
                         </td>
-                        <td><? if ($credito['Activo'] == 0) { ?>
+                        <td class="accion"><? if ($credito['Activo'] == 0) { ?>
                                 <div class="accion"><? echo anchor("admin/credito_controller/accept/" . $idlinea, 'Aceptar', array('title' => 'Aceptar')); ?></div>
 
                                 <div class="accion"><? echo anchor("admin/credito_controller/reject/" . $idlinea, 'Rechazar', array('title' => 'Rechazar')); ?></div>
