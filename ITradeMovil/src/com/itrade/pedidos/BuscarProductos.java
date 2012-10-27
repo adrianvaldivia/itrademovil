@@ -92,18 +92,6 @@ public class BuscarProductos extends ListActivity{
         categoriaDao = daoSession.getCategoriaDao();
         elementoListaDao = daoSession.getElementoListaDao();
         
-        // Segunda parte
-//        String textColumn = ProductoDao.Properties.Descripcion.columnName;
-//        String orderBy = textColumn + " COLLATE LOCALIZED ASC";
-//        cursor = db.query(productoDao.getTablename(), productoDao.getAllColumns(), null, null, null, null, orderBy);
-//        String[] from = { textColumn, ProductoDao.Properties.Precio.columnName };
-//        int[] to = { android.R.id.text1, android.R.id.text2 };
-//        adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, from,
-//                to);        
-        // Fin green Day de Productos      
-        
-        
-        
         //Inicio green Dao Spinner
         String textColumnSpinner = CategoriaDao.Properties.Descripcion.columnName;
         String orderBySpinner = textColumnSpinner + " COLLATE LOCALIZED ASC";
@@ -245,6 +233,10 @@ public class BuscarProductos extends ListActivity{
 	    pedidoLinea.setIdPedido(idpedido);
 	    //pedidoLinea.setNombre(producto.getDescripcion());
 	    this.listaPedidoLinea.add(pedidoLinea);
+	    //Toast.makeText(this, "C:"+cantidad+"Pr:"+producto.getIdproducto()+"Pe:"+idpedido, Toast.LENGTH_LONG).show();
+	    m_pw.dismiss();
+	}
+	public void onButtonCancelarPopup (View target) {
 	    //Toast.makeText(this, "C:"+cantidad+"Pr:"+producto.getIdproducto()+"Pe:"+idpedido, Toast.LENGTH_LONG).show();
 	    m_pw.dismiss();
 	}

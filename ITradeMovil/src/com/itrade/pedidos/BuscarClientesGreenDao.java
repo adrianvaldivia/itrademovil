@@ -71,7 +71,7 @@ public class BuscarClientesGreenDao extends ListActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(BuscarClientesGreenDao.this, "Createando", Toast.LENGTH_LONG).show();
+//        Toast.makeText(BuscarClientesGreenDao.this, "Createando", Toast.LENGTH_LONG).show();
         setContentView(R.layout.buscarclientesfusion);
         imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
 
@@ -289,7 +289,7 @@ debug++;
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
+//		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
 		recuperarOriginal();			    
 	}
 	

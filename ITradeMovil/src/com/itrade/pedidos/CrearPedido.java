@@ -66,7 +66,7 @@ public class CrearPedido extends ListActivity{
         productoDao = daoSession.getProductoDao();
       //Fin configuracion green dao
         
-        setContentView(R.layout.crearpedido);
+        setContentView(R.layout.crearpedidofusion);
 	    bundle = getIntent().getExtras();	
 		nombre = bundle.getString("nombre");
 		apellidos = bundle.getString("apellidos");

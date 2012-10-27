@@ -103,14 +103,29 @@
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:orientation="vertical" >
+		        android:background="@color/blanco" 
+		        android:orientation="vertical">
 
-		        <LinearLayout
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:layout_marginTop="10dip" >
+		        <TextView
+		            android:id="@+id/txtnombrecliente"
+		            android:layout_width="246dp"
+		            android:layout_height="30dp"
+		            android:layout_marginLeft="10dip"
+		            android:layout_marginTop="10dip"
+		            android:background="@color/blanco"
+		            android:text="Nombre del Cliente"
+		            android:textColor="@color/azul_2"
+		            android:textSize="20dip" />
 
-		        </LinearLayout>
+		        <TextView
+		            android:id="@+id/txtmontopedido"
+		            android:layout_width="246dp"
+		            android:layout_height="30dp"
+		            android:layout_marginLeft="10dip"
+		            android:background="@color/blanco"
+		            android:text="Monto Pedido"
+		            android:textColor="@color/Navy"
+		            android:textSize="15dip" />
 		    </LinearLayout>
 		</LinearLayout>>
 
@@ -127,26 +142,24 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="0dp"
 		    android:layout_weight="0.10" >
-
-		                    <Button
-		                        android:id="@+id/buttonvermapa"
-		                        style="@drawable/estilo_botones"
-		                        android:layout_width="160dp"
-		                        android:layout_height="wrap_content"
-		                        android:layout_weight="0.10"
-		                        android:background="@drawable/estilo_botones"
-		                        android:text="Agregar"
-		                        android:textColor="@color/blanco" />
-
-	    <Button
-	        android:id="@+id/button1"
-	        style="Aceptar"
-	        android:layout_width="159dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.10"
-	        android:background="@drawable/estilo_botones"
-	        android:text="Regresar"
-	        android:textColor="@color/blanco" />
+            <Button
+                android:id="@+id/buttonagregarproducto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:background="@drawable/estilo_botones"
+                android:text="Agregar"
+                android:textColor="@color/blanco" />
+
+
+            <Button
+                android:id="@+id/buttonregistrarpedido"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.10"
+                android:background="@drawable/estilo_botones"
+                android:text="Guardar"
+                android:textColor="@color/blanco" />
 
 		</LinearLayout>
 	</LinearLayout>
