@@ -96,9 +96,6 @@ public class BuscarClientesGreenDao extends ListActivity{
         
         setListAdapter(adapterElementoLista);
         guardaListaOriginal();
-		recuperarOriginal();	
-//        guardaListaOriginal();
-//        recuperarOriginal();
         
         Bundle bundle=getIntent().getExtras();
         idUsuario = bundle.getInt("idempleado");
@@ -107,7 +104,6 @@ public class BuscarClientesGreenDao extends ListActivity{
         button_vermapa = (Button) findViewById(R.id.buttonvermapa);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
         editText = (EditText) findViewById(R.id.editTextCliente);
-//        editText.setInputType(InputType.TYPE_NULL);
 
 	    button_vermapa.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -138,6 +134,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                	imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
                     return true;
                 }
                 return false;
@@ -166,7 +163,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 //            	Log.d("After", "After: ");
             	//Toast.makeText(NoteActivity.this, "After", Toast.LENGTH_LONG).show();
             }
-        });
+        });        
     }
 
 	@Override
@@ -291,7 +288,7 @@ debug++;
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//Toast.makeText(BuscarClientesGreenDao.this, "Regreso", Toast.LENGTH_LONG).show();
+		Toast.makeText(BuscarClientesGreenDao.this, "Resumiendo", Toast.LENGTH_LONG).show();
 		recuperarOriginal();			    
 	}
 	
@@ -302,5 +299,6 @@ debug++;
 		cursorElementoLista.close();
 	    super.onDestroy();
 	}
+	
 
 }

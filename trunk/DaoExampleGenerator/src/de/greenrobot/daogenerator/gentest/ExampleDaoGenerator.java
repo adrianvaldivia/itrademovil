@@ -58,7 +58,7 @@ public class ExampleDaoGenerator {
         Entity cliente = schema.addEntity("Cliente");
         cliente.addIdProperty();
         cliente.addIntProperty("IdPersona");
-        cliente.addLongProperty("IdCliente");     
+        cliente.addIntProperty("IdCliente");     
         cliente.addStringProperty("Nombre");
         cliente.addStringProperty("ApePaterno");
         cliente.addStringProperty("ApeMaterno");
