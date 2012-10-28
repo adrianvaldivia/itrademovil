@@ -179,7 +179,7 @@ class Cliente_model extends CI_Model {
 	public function registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni){
 		$this->db->flush_cache();
 		$idpersona=$this->get_last_idPersona();
-		$data=array("IdPersona"=>$idpersona+1,"Nombre"=>$nombre,"ApePaterno"=>$apepaterno,"ApeMaterno"=>$apematerno,"Telefono"=>$telefono,"FechNac"=>$fechanac,"DNI"=>$dni);
+		$data=array("Activo"=>1,"IdPersona"=>$idpersona+1,"Nombre"=>$nombre,"ApePaterno"=>$apepaterno,"ApeMaterno"=>$apematerno,"Telefono"=>$telefono,"FechNac"=>$fechanac,"DNI"=>$dni);
 		$this->db->insert($this->table_persona, $data);		
 		//return $this->db->insert_id($this->table_persona, $data);
 	}
