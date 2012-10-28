@@ -8,7 +8,7 @@ public class PedidoLinea {
 
     private Long id;
     private Integer IdPedido;
-    private Integer IdPedidoLinea;
+    private Long IdPedidoLinea;
     private Integer IdProducto;
     private Double MontoLinea;
     private Double Precio;
@@ -24,7 +24,7 @@ public class PedidoLinea {
         this.id = id;
     }
 
-    public PedidoLinea(Long id, Integer IdPedido, Integer IdPedidoLinea, Integer IdProducto, Double MontoLinea, Double Precio, Integer Cantidad, String NombreProducto, String Marca, String Categoria) {
+    public PedidoLinea(Long id, Integer IdPedido, Long IdPedidoLinea, Integer IdProducto, Double MontoLinea, Double Precio, Integer Cantidad, String NombreProducto, String Marca, String Categoria) {
         this.id = id;
         this.IdPedido = IdPedido;
         this.IdPedidoLinea = IdPedidoLinea;
@@ -53,11 +53,11 @@ public class PedidoLinea {
         this.IdPedido = IdPedido;
     }
 
-    public Integer getIdPedidoLinea() {
+    public Long getIdPedidoLinea() {
         return IdPedidoLinea;
     }
 
-    public void setIdPedidoLinea(Integer IdPedidoLinea) {
+    public void setIdPedidoLinea(Long IdPedidoLinea) {
         this.IdPedidoLinea = IdPedidoLinea;
     }
 

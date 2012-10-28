@@ -25,7 +25,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property IdPedido = new Property(1, Integer.class, "IdPedido", false, "ID_PEDIDO");
-        public final static Property IdPedidoLinea = new Property(2, Integer.class, "IdPedidoLinea", false, "ID_PEDIDO_LINEA");
+        public final static Property IdPedidoLinea = new Property(2, Long.class, "IdPedidoLinea", false, "ID_PEDIDO_LINEA");
         public final static Property IdProducto = new Property(3, Integer.class, "IdProducto", false, "ID_PRODUCTO");
         public final static Property MontoLinea = new Property(4, Double.class, "MontoLinea", false, "MONTO_LINEA");
         public final static Property Precio = new Property(5, Double.class, "Precio", false, "PRECIO");
@@ -81,7 +81,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
             stmt.bindLong(2, IdPedido);
         }
  
-        Integer IdPedidoLinea = entity.getIdPedidoLinea();
+        Long IdPedidoLinea = entity.getIdPedidoLinea();
         if (IdPedidoLinea != null) {
             stmt.bindLong(3, IdPedidoLinea);
         }
@@ -134,7 +134,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
         PedidoLinea entity = new PedidoLinea( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPedido
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdPedidoLinea
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // IdPedidoLinea
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // IdProducto
             cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4), // MontoLinea
             cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // Precio
@@ -151,7 +151,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     public void readEntity(Cursor cursor, PedidoLinea entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setIdPedidoLinea(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setIdPedidoLinea(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setIdProducto(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setMontoLinea(cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4));
         entity.setPrecio(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));

@@ -7,8 +7,9 @@ package com.itrade.model;
 public class Prospecto {
 
     private Long id;
-    private Integer IdProspecto;
-    private int IdPersona;
+    private Long IdProspecto;
+    private Integer IdPersona;
+    /** Not-null value. */
     private String Razon_Social;
     private String RUC;
     private Double Latitud;
@@ -25,7 +26,7 @@ public class Prospecto {
         this.id = id;
     }
 
-    public Prospecto(Long id, Integer IdProspecto, int IdPersona, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
+    public Prospecto(Long id, Long IdProspecto, Integer IdPersona, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
         this.id = id;
         this.IdProspecto = IdProspecto;
         this.IdPersona = IdPersona;
@@ -47,26 +48,28 @@ public class Prospecto {
         this.id = id;
     }
 
-    public Integer getIdProspecto() {
+    public Long getIdProspecto() {
         return IdProspecto;
     }
 
-    public void setIdProspecto(Integer IdProspecto) {
+    public void setIdProspecto(Long IdProspecto) {
         this.IdProspecto = IdProspecto;
     }
 
-    public int getIdPersona() {
+    public Integer getIdPersona() {
         return IdPersona;
     }
 
-    public void setIdPersona(int IdPersona) {
+    public void setIdPersona(Integer IdPersona) {
         this.IdPersona = IdPersona;
     }
 
+    /** Not-null value. */
     public String getRazon_Social() {
         return Razon_Social;
     }
 
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setRazon_Social(String Razon_Social) {
         this.Razon_Social = Razon_Social;
     }

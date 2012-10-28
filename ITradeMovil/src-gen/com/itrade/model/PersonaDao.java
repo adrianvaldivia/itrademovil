@@ -24,7 +24,7 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdPersona = new Property(1, Integer.class, "IdPersona", false, "ID_PERSONA");
+        public final static Property IdPersona = new Property(1, Long.class, "IdPersona", false, "ID_PERSONA");
         public final static Property Nombre = new Property(2, String.class, "Nombre", false, "NOMBRE");
         public final static Property ApePaterno = new Property(3, String.class, "ApePaterno", false, "APE_PATERNO");
         public final static Property ApeMaterno = new Property(4, String.class, "ApeMaterno", false, "APE_MATERNO");
@@ -76,7 +76,7 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer IdPersona = entity.getIdPersona();
+        Long IdPersona = entity.getIdPersona();
         if (IdPersona != null) {
             stmt.bindLong(2, IdPersona);
         }
@@ -129,7 +129,7 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
     public Persona readEntity(Cursor cursor, int offset) {
         Persona entity = new Persona( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPersona
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPersona
             cursor.getString(offset + 2), // Nombre
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // ApePaterno
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // ApeMaterno
@@ -146,7 +146,7 @@ public class PersonaDao extends AbstractDao<Persona, Long> {
     @Override
     public void readEntity(Cursor cursor, Persona entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdPersona(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setIdPersona(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setNombre(cursor.getString(offset + 2));
         entity.setApePaterno(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setApeMaterno(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));

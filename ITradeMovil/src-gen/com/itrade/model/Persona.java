@@ -7,7 +7,7 @@ package com.itrade.model;
 public class Persona {
 
     private Long id;
-    private Integer IdPersona;
+    private Long IdPersona;
     /** Not-null value. */
     private String Nombre;
     private String ApePaterno;
@@ -25,7 +25,7 @@ public class Persona {
         this.id = id;
     }
 
-    public Persona(Long id, Integer IdPersona, String Nombre, String ApePaterno, String ApeMaterno, String DNI, java.util.Date FechNac, String Telefono, String Email, String Activo) {
+    public Persona(Long id, Long IdPersona, String Nombre, String ApePaterno, String ApeMaterno, String DNI, java.util.Date FechNac, String Telefono, String Email, String Activo) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.Nombre = Nombre;
@@ -46,11 +46,11 @@ public class Persona {
         this.id = id;
     }
 
-    public Integer getIdPersona() {
+    public Long getIdPersona() {
         return IdPersona;
     }
 
-    public void setIdPersona(Integer IdPersona) {
+    public void setIdPersona(Long IdPersona) {
         this.IdPersona = IdPersona;
     }
 

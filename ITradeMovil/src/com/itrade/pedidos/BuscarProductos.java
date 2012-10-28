@@ -107,8 +107,8 @@ public class BuscarProductos extends ListActivity{
         String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
         String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
-        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-        int[] toElementoLista = { android.R.id.text1, android.R.id.text2 };
+        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName,ElementoListaDao.Properties.Terciario.columnName };
+        int[] toElementoLista = { R.id.text1, R.id.text2,R.id.text3 };
         adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);    
         //fin green Day de Elementos Lista 
@@ -296,7 +296,7 @@ public class BuscarProductos extends ListActivity{
             elementoListaDao.deleteAll();
     	
     		for(int i=0;i<productosAux.size();i++){
-    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),productosAux.get(i).getId());
+    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),"Monse",productosAux.get(i).getId());
     			elementoListaDao.insert(elemento);
     	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
     		}
@@ -314,7 +314,7 @@ public class BuscarProductos extends ListActivity{
 		for(int i=0;i<listaProductoOriginal.size();i++){
 
 //			Producto productoAux = new Producto(null,listaProductoOriginal.get(i).getDescripcion(),listaProductoOriginal.get(i).getPrecio(),listaProductoOriginal.get(i).getStock(),listaProductoOriginal.get(i).getActivo(),listaProductoOriginal.get(i).getIdCategoria(),listaProductoOriginal.get(i).getIdMarca());
-			ElementoLista elemento = new ElementoLista(null,listaProductoOriginal.get(i).getDescripcion(),"Precio: "+listaProductoOriginal.get(i).getPrecio(),listaProductoOriginal.get(i).getId());
+			ElementoLista elemento = new ElementoLista(null,listaProductoOriginal.get(i).getDescripcion(),"Precio: "+listaProductoOriginal.get(i).getPrecio(),"Monse",listaProductoOriginal.get(i).getId());
 			elementoListaDao.insert(elemento);
 //			productoDao.insert(productoAux);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
@@ -334,7 +334,7 @@ public class BuscarProductos extends ListActivity{
 		for(int i=0;i<listaProducto.size();i++){
 
 			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());
-			ElementoLista elemento = new ElementoLista(null,listaProducto.get(i).getDescripcion(),"Precio: "+listaProducto.get(i).getPrecio(),listaProducto.get(i).getId());
+			ElementoLista elemento = new ElementoLista(null,listaProducto.get(i).getDescripcion(),"Precio: "+listaProducto.get(i).getPrecio(),"Monse",listaProducto.get(i).getId());
 			elementoListaDao.insert(elemento);
 			productoDao.insert(productoAux);			
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());

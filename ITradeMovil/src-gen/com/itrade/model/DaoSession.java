@@ -9,9 +9,9 @@ import de.greenrobot.dao.DaoConfig;
 import de.greenrobot.dao.AbstractDaoSession;
 import de.greenrobot.dao.IdentityScopeType;
 
-import com.itrade.model.Usuario;
 import com.itrade.model.Cliente;
 import com.itrade.model.Prospecto;
+import com.itrade.model.Usuario;
 import com.itrade.model.Producto;
 import com.itrade.model.Persona;
 import com.itrade.model.Pedido;
@@ -19,9 +19,9 @@ import com.itrade.model.Categoria;
 import com.itrade.model.PedidoLinea;
 import com.itrade.model.ElementoLista;
 
-import com.itrade.model.UsuarioDao;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.ProspectoDao;
+import com.itrade.model.UsuarioDao;
 import com.itrade.model.ProductoDao;
 import com.itrade.model.PersonaDao;
 import com.itrade.model.PedidoDao;
@@ -38,9 +38,9 @@ import com.itrade.model.ElementoListaDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig usuarioDaoConfig;
     private final DaoConfig clienteDaoConfig;
     private final DaoConfig prospectoDaoConfig;
+    private final DaoConfig usuarioDaoConfig;
     private final DaoConfig productoDaoConfig;
     private final DaoConfig personaDaoConfig;
     private final DaoConfig pedidoDaoConfig;
@@ -48,9 +48,9 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig pedidoLineaDaoConfig;
     private final DaoConfig elementoListaDaoConfig;
 
-    private final UsuarioDao usuarioDao;
     private final ClienteDao clienteDao;
     private final ProspectoDao prospectoDao;
+    private final UsuarioDao usuarioDao;
     private final ProductoDao productoDao;
     private final PersonaDao personaDao;
     private final PedidoDao pedidoDao;
@@ -62,14 +62,14 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
-        usuarioDaoConfig = daoConfigMap.get(UsuarioDao.class).clone();
-        usuarioDaoConfig.initIdentityScope(type);
-
         clienteDaoConfig = daoConfigMap.get(ClienteDao.class).clone();
         clienteDaoConfig.initIdentityScope(type);
 
         prospectoDaoConfig = daoConfigMap.get(ProspectoDao.class).clone();
         prospectoDaoConfig.initIdentityScope(type);
+
+        usuarioDaoConfig = daoConfigMap.get(UsuarioDao.class).clone();
+        usuarioDaoConfig.initIdentityScope(type);
 
         productoDaoConfig = daoConfigMap.get(ProductoDao.class).clone();
         productoDaoConfig.initIdentityScope(type);
@@ -89,9 +89,9 @@ public class DaoSession extends AbstractDaoSession {
         elementoListaDaoConfig = daoConfigMap.get(ElementoListaDao.class).clone();
         elementoListaDaoConfig.initIdentityScope(type);
 
-        usuarioDao = new UsuarioDao(usuarioDaoConfig, this);
         clienteDao = new ClienteDao(clienteDaoConfig, this);
         prospectoDao = new ProspectoDao(prospectoDaoConfig, this);
+        usuarioDao = new UsuarioDao(usuarioDaoConfig, this);
         productoDao = new ProductoDao(productoDaoConfig, this);
         personaDao = new PersonaDao(personaDaoConfig, this);
         pedidoDao = new PedidoDao(pedidoDaoConfig, this);
@@ -99,9 +99,9 @@ public class DaoSession extends AbstractDaoSession {
         pedidoLineaDao = new PedidoLineaDao(pedidoLineaDaoConfig, this);
         elementoListaDao = new ElementoListaDao(elementoListaDaoConfig, this);
 
-        registerDao(Usuario.class, usuarioDao);
         registerDao(Cliente.class, clienteDao);
         registerDao(Prospecto.class, prospectoDao);
+        registerDao(Usuario.class, usuarioDao);
         registerDao(Producto.class, productoDao);
         registerDao(Persona.class, personaDao);
         registerDao(Pedido.class, pedidoDao);
@@ -111,9 +111,9 @@ public class DaoSession extends AbstractDaoSession {
     }
     
     public void clear() {
-        usuarioDaoConfig.getIdentityScope().clear();
         clienteDaoConfig.getIdentityScope().clear();
         prospectoDaoConfig.getIdentityScope().clear();
+        usuarioDaoConfig.getIdentityScope().clear();
         productoDaoConfig.getIdentityScope().clear();
         personaDaoConfig.getIdentityScope().clear();
         pedidoDaoConfig.getIdentityScope().clear();
@@ -122,16 +122,16 @@ public class DaoSession extends AbstractDaoSession {
         elementoListaDaoConfig.getIdentityScope().clear();
     }
 
-    public UsuarioDao getUsuarioDao() {
-        return usuarioDao;
-    }
-
     public ClienteDao getClienteDao() {
         return clienteDao;
     }
 
     public ProspectoDao getProspectoDao() {
         return prospectoDao;
+    }
+
+    public UsuarioDao getUsuarioDao() {
+        return usuarioDao;
     }
 
     public ProductoDao getProductoDao() {

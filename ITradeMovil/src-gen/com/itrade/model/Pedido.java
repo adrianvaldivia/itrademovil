@@ -7,7 +7,7 @@ package com.itrade.model;
 public class Pedido {
 
     private Long id;
-    private Integer IdPedido;
+    private Long IdPedido;
     private Integer IdCliente;
     private Integer IdEstadoPedido;
     private Integer CheckIn;
@@ -27,7 +27,7 @@ public class Pedido {
         this.id = id;
     }
 
-    public Pedido(Long id, Integer IdPedido, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, java.util.Date FechaPedido, java.util.Date FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotalPedido, Double MontoTotalCobrado, String NumVoucher, Double MontoTotal) {
+    public Pedido(Long id, Long IdPedido, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, java.util.Date FechaPedido, java.util.Date FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotalPedido, Double MontoTotalCobrado, String NumVoucher, Double MontoTotal) {
         this.id = id;
         this.IdPedido = IdPedido;
         this.IdCliente = IdCliente;
@@ -51,11 +51,11 @@ public class Pedido {
         this.id = id;
     }
 
-    public Integer getIdPedido() {
+    public Long getIdPedido() {
         return IdPedido;
     }
 
-    public void setIdPedido(Integer IdPedido) {
+    public void setIdPedido(Long IdPedido) {
         this.IdPedido = IdPedido;
     }
 

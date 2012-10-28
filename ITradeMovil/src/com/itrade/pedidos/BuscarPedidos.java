@@ -132,7 +132,7 @@ public class BuscarPedidos extends ListActivity{
 			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),listaPedido.get(i).getNumVoucher(),listaPedido.get(i).getMontoTotal());
 			pedidoDao.insert(pedido);
 			Cliente cliente = clienteDao.loadByRowId(listaPedido.get(i).getIdCliente());
-			ElementoLista elemento = new ElementoLista(null,cliente.getRazon_Social(),"Monto Total: "+listaPedido.get(i).getMontoTotal(),listaPedido.get(i).getId());
+			ElementoLista elemento = new ElementoLista(null,cliente.getRazon_Social(),"Monto Total: "+listaPedido.get(i).getMontoTotal(),null,listaPedido.get(i).getId());
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
@@ -150,7 +150,7 @@ public class BuscarPedidos extends ListActivity{
         
 		for(int i=0;i<listaPedidoOriginal.size();i++){
 			Cliente cliente = clienteDao.loadByRowId(listaPedidoOriginal.get(i).getIdCliente());
-			ElementoLista elemento = new ElementoLista(null,cliente.getRazon_Social(),"Monto Total: "+listaPedidoOriginal.get(i).getMontoTotal(),listaPedidoOriginal.get(i).getId());
+			ElementoLista elemento = new ElementoLista(null,cliente.getRazon_Social(),"Monto Total: "+listaPedidoOriginal.get(i).getMontoTotal(),null,listaPedidoOriginal.get(i).getId());
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
