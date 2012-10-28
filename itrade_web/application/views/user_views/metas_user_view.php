@@ -84,13 +84,13 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Meta
+                                    Periodo
                                 </th>
                                 <th>
-                                    Fecha Inicio
+                                    Fecha Inicio -  Fecha Fin
                                 </th>
                                 <th>
-                                    Fecha Fin
+                                    Monto
                                 </th>
                                 <th>
                                     Acciones
@@ -106,16 +106,16 @@
                                 ?>
                                 <tr>
                                     <td>
-                                        <div class="nombre"><? echo $meta['Monto']; ?></div>
+                                        <div class="nombre"><? echo $meta['Periodo']; ?></div>
                                     </td>
                                     <td>
-                                        <div class="perfil"><? echo $meta['FechaIni']; ?></div>
+                                        <div class="perfil"><? echo $meta['FechaIni']." - ".$meta['FechaFin']; ?></div>
                                     </td>
                                     <td>
-                                        <div class="estado"><? echo $meta['FechaFin']; ?></div>
+                                        <div class="estado"><? echo $meta['Monto']; ?></div>
                                     </td>
                                     <td>
-                                        <div class="accion"><? echo anchor("admin/usuario_controller/modificar_meta/".$meta['IdMeta'], 'Editar', array('title' => 'Editar')); ?></div>
+                                        <div class="accion"><? echo anchor("admin/usuario_controller/modificar_meta/$idusuario".$meta['IdPeriodo'], 'Editar', array('title' => 'Editar')); ?></div>
         <!--                                    <? // if ($metas['Perfil'] == 'Vendedor'):         ?><div class="accion"><? // echo anchor("admin/usuario_controller/metas_user/$idusuario", 'Metas', array('title' => 'Metas'));        ?></div>-->
 
                                     </td>

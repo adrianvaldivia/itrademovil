@@ -337,8 +337,9 @@ class Usuario_controller extends CI_Controller {
         $goals = $this->Meta_model->get_metas_usuario($idusuario);
 
         foreach ($goals as $goal) {
-            $metas[$goal['IdMeta']]['IdMeta'] = $goal['IdMeta'];
+            $metas[$goal['IdMeta']]['IdPeriodo'] = $goal['IdPeriodo'];
             $metas[$goal['IdMeta']]['IdUsuario'] = $goal['IdUsuario'];
+			$metas[$goal['IdMeta']]['Periodo'] = $goal['Periodo'];
             $metas[$goal['IdMeta']]['FechaIni'] = $goal['FechaIni'];
             $metas[$goal['IdMeta']]['FechaFin'] = $goal['FechaFin'];
             $metas[$goal['IdMeta']]['Monto'] = $goal['Monto'];
