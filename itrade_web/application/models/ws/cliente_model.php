@@ -9,6 +9,7 @@ class Cliente_model extends CI_Model {
 		$this->table_pedido = 'Pedido';
 		$this->table_estado_pedido = 'EstadoPedido';
 		$this->table_linea = 'Linea_Credito';
+		$this->table_usuario = 'Usuario';
     }	
 	
 	public function get_clients_by_idvendedor($idvendedor){				
@@ -132,7 +133,7 @@ class Cliente_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();	
 	}
-	public function registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor){		
+	public function registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador){		
 		$this->db->flush_cache();
 		$idpersona=0;
 		$this->registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni);
@@ -140,7 +141,7 @@ class Cliente_model extends CI_Model {
 		$idpersona=$this->get_last_idPersona();
 		//print_r($idpersona);
 		if ($idpersona!=0){
-			$this->registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor);
+			$this->registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor,$idcobrador);
 			$idcliente=$this->get_last_idCliente();	
 			if ($idcliente!=0){
 				$this->registrarLineaCredito($idcliente,$montosolicitado);
@@ -166,10 +167,10 @@ class Cliente_model extends CI_Model {
 		//return $this->db->insert_id($this->table_linea, $data);
 	}
 	
-	public function registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor){
+	public function registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor,$idcobrador){
 		$this->db->flush_cache();
 		$idcliente=$this->get_last_idCliente();
-		$data=array("IdCliente"=>$idcliente+1,"IdPersona"=>$idpersona,"Razon_Social"=>$razon_social,"RUC"=>$ruc,"Direccion"=>$direccion,"IdVendedor"=>$idvendedor,"IdEstado"=>1);	
+		$data=array("IdCliente"=>$idcliente+1,"IdPersona"=>$idpersona,"Razon_Social"=>$razon_social,"RUC"=>$ruc,"Direccion"=>$direccion,"IdVendedor"=>$idvendedor,"IdCobrador"=>$idcobrador,"IdEstado"=>1);	
 		$this->db->insert($this->table_cliente, $data);
 		//return $this->db->insert_id($this->table_cliente, $data);
 	}
@@ -201,5 +202,35 @@ class Cliente_model extends CI_Model {
         $query = $this->db->get($this->table_linea);
         return $query->row(0)->IdLinea;
     }
+	public function get_ubigeo_by_idusuario($idusuario){
+		$this->db->flush_cache();
+        $this->db->select('IdUbigeo');
+		$this->db->where($this->table_usuario.".IdUsuario", $idusuario);	
+		$this->db->where($this->table_usuario.".IdPerfil", 2);
+        $query = $this->db->get($this->table_usuario);
+		if ($query->num_rows()>0){
+			return $query->row(0)->IdUbigeo;
+		}else{
+			return 0;
+		}
+        
+	}
+	public function get_cobrador_by_idubigeo($idubigeo){
+		$this->db->flush_cache();
+        $this->db->select('IdUsuario');
+		$this->db->where($this->table_usuario.".IdUbigeo", $idubigeo);	
+		$this->db->where($this->table_usuario.".IdPerfil", 3);//Que sea cobrador
+        $query = $this->db->get($this->table_usuario);
+        if ($query->num_rows()>0){
+			return $query->row(0)->IdUsuario;
+		}else{
+			return 0;
+		}
+	}	
+	public function buscador_cobrador_por_vendedor($idvendedor){
+		$idubigeo=$this->get_ubigeo_by_idusuario($idvendedor);		
+		return $this->get_cobrador_by_idubigeo($idubigeo);					
+	}
+	
 }
 ?>

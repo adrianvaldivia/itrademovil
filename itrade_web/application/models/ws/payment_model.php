@@ -129,5 +129,21 @@ class Payment_model extends CI_Model {
 		}
 		return array();
 	}
+	public function get_last_idpedido_linea(){
+		$this->db->flush_cache();
+        $this->db->select_max('IdPedido');
+        $query = $this->db->get($this->table_pedido_linea);
+        return $query->row(0)->IdPedido;
+    }
+	public function registrar_pedido_linea($idpedido,$idproducto,$montolinea,$cantidad){		
+		//$idpedido=$this->get_last_idpedido();					
+		$montolinea=number_format(round($montolinea,2),2,'.','');
+		
+		$data=array("IdPedido"=>$idpedido,"IdProducto"=>$idproducto,
+			"MontoLinea"=>$montolinea,"Cantidad"=>$cantidad);
+		$this->db->insert($this->table_pedido_linea, $data);
+		return $this->get_last_idpedido_linea();
+	}	
+	
 }
 ?>
