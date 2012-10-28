@@ -24,7 +24,7 @@ public class CategoriaDao extends AbstractDao<Categoria, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdCategoria = new Property(1, Integer.class, "IdCategoria", false, "ID_CATEGORIA");
+        public final static Property IdCategoria = new Property(1, Long.class, "IdCategoria", false, "ID_CATEGORIA");
         public final static Property Descripcion = new Property(2, String.class, "Descripcion", false, "DESCRIPCION");
     };
 
@@ -62,7 +62,7 @@ public class CategoriaDao extends AbstractDao<Categoria, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer IdCategoria = entity.getIdCategoria();
+        Long IdCategoria = entity.getIdCategoria();
         if (IdCategoria != null) {
             stmt.bindLong(2, IdCategoria);
         }
@@ -80,7 +80,7 @@ public class CategoriaDao extends AbstractDao<Categoria, Long> {
     public Categoria readEntity(Cursor cursor, int offset) {
         Categoria entity = new Categoria( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdCategoria
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdCategoria
             cursor.getString(offset + 2) // Descripcion
         );
         return entity;
@@ -90,7 +90,7 @@ public class CategoriaDao extends AbstractDao<Categoria, Long> {
     @Override
     public void readEntity(Cursor cursor, Categoria entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdCategoria(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setIdCategoria(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setDescripcion(cursor.getString(offset + 2));
      }
     

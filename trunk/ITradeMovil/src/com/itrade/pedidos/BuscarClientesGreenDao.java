@@ -82,6 +82,8 @@ public class BuscarClientesGreenDao extends ListActivity{
         daoSession = daoMaster.newSession();
         clienteDao = daoSession.getClienteDao();
         elementoListaDao = daoSession.getElementoListaDao();
+        //posible error al borrar
+        elementoListaDao.deleteAll();
         
         // Fin green Day  
         
@@ -90,7 +92,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
         String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-        int[] toElementoLista = { android.R.id.text1, android.R.id.text2 };
+        int[] toElementoLista = { R.id.text1, R.id.text2 };
         adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);    
         //fin green Day de Elementos Lista
@@ -235,7 +237,7 @@ debug++;
 	        clienteDao.insert(cliente2);
 	        long temp=0;
 	        temp=temp+listaCliente.get(i).getIdCliente();
-			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),temp);
+			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
@@ -256,7 +258,7 @@ debug++;
 		for(int i=0;i<clientesAux.size();i++){
 //			x=clientesAux.get(i).getLatitud();
 //			y=clientesAux.get(i).getLongitud();
-			ElementoLista elemento = new ElementoLista(null,clientesAux.get(i).getRazon_Social(),"RUC: "+clientesAux.get(i).getRUC(),clientesAux.get(i).getId());
+			ElementoLista elemento = new ElementoLista(null,clientesAux.get(i).getRazon_Social(),"RUC: "+clientesAux.get(i).getRUC(),null,clientesAux.get(i).getId());
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
@@ -278,7 +280,7 @@ debug++;
 		for(int i=0;i<listaClienteOriginal.size();i++){
 	        long temp=0;
 	        temp=temp+listaClienteOriginal.get(i).getIdCliente();
-			ElementoLista elemento = new ElementoLista(null,listaClienteOriginal.get(i).getRazon_Social(),"RUC: "+listaClienteOriginal.get(i).getRUC(),temp);
+			ElementoLista elemento = new ElementoLista(null,listaClienteOriginal.get(i).getRazon_Social(),"RUC: "+listaClienteOriginal.get(i).getRUC(),null,temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}

@@ -10,6 +10,7 @@ public class ElementoLista {
     /** Not-null value. */
     private String Principal;
     private String Secundario;
+    private String Terciario;
     private Long IdElemento;
 
     public ElementoLista() {
@@ -19,10 +20,11 @@ public class ElementoLista {
         this.id = id;
     }
 
-    public ElementoLista(Long id, String Principal, String Secundario, Long IdElemento) {
+    public ElementoLista(Long id, String Principal, String Secundario, String Terciario, Long IdElemento) {
         this.id = id;
         this.Principal = Principal;
         this.Secundario = Secundario;
+        this.Terciario = Terciario;
         this.IdElemento = IdElemento;
     }
 
@@ -50,6 +52,14 @@ public class ElementoLista {
 
     public void setSecundario(String Secundario) {
         this.Secundario = Secundario;
+    }
+
+    public String getTerciario() {
+        return Terciario;
+    }
+
+    public void setTerciario(String Terciario) {
+        this.Terciario = Terciario;
     }
 
     public Long getIdElemento() {

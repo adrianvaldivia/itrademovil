@@ -24,8 +24,8 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdProspecto = new Property(1, Integer.class, "IdProspecto", false, "ID_PROSPECTO");
-        public final static Property IdPersona = new Property(2, int.class, "IdPersona", false, "ID_PERSONA");
+        public final static Property IdProspecto = new Property(1, Long.class, "IdProspecto", false, "ID_PROSPECTO");
+        public final static Property IdPersona = new Property(2, Integer.class, "IdPersona", false, "ID_PERSONA");
         public final static Property Razon_Social = new Property(3, String.class, "Razon_Social", false, "RAZON__SOCIAL");
         public final static Property RUC = new Property(4, String.class, "RUC", false, "RUC");
         public final static Property Latitud = new Property(5, Double.class, "Latitud", false, "LATITUD");
@@ -51,8 +51,8 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'PROSPECTO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'ID_PROSPECTO' INTEGER," + // 1: IdProspecto
-                "'ID_PERSONA' INTEGER NOT NULL ," + // 2: IdPersona
-                "'RAZON__SOCIAL' TEXT," + // 3: Razon_Social
+                "'ID_PERSONA' INTEGER," + // 2: IdPersona
+                "'RAZON__SOCIAL' TEXT NOT NULL ," + // 3: Razon_Social
                 "'RUC' TEXT," + // 4: RUC
                 "'LATITUD' REAL," + // 5: Latitud
                 "'LONGITUD' REAL," + // 6: Longitud
@@ -78,16 +78,16 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer IdProspecto = entity.getIdProspecto();
+        Long IdProspecto = entity.getIdProspecto();
         if (IdProspecto != null) {
             stmt.bindLong(2, IdProspecto);
         }
-        stmt.bindLong(3, entity.getIdPersona());
  
-        String Razon_Social = entity.getRazon_Social();
-        if (Razon_Social != null) {
-            stmt.bindString(4, Razon_Social);
+        Integer IdPersona = entity.getIdPersona();
+        if (IdPersona != null) {
+            stmt.bindLong(3, IdPersona);
         }
+        stmt.bindString(4, entity.getRazon_Social());
  
         String RUC = entity.getRUC();
         if (RUC != null) {
@@ -136,9 +136,9 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
     public Prospecto readEntity(Cursor cursor, int offset) {
         Prospecto entity = new Prospecto( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdProspecto
-            cursor.getInt(offset + 2), // IdPersona
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Razon_Social
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdProspecto
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdPersona
+            cursor.getString(offset + 3), // Razon_Social
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // RUC
             cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // Latitud
             cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6), // Longitud
@@ -154,9 +154,9 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
     @Override
     public void readEntity(Cursor cursor, Prospecto entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdProspecto(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setIdPersona(cursor.getInt(offset + 2));
-        entity.setRazon_Social(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIdProspecto(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setIdPersona(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setRazon_Social(cursor.getString(offset + 3));
         entity.setRUC(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setLatitud(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));
         entity.setLongitud(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));

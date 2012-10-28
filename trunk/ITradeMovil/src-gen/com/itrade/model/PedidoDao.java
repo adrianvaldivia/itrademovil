@@ -24,7 +24,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdPedido = new Property(1, Integer.class, "IdPedido", false, "ID_PEDIDO");
+        public final static Property IdPedido = new Property(1, Long.class, "IdPedido", false, "ID_PEDIDO");
         public final static Property IdCliente = new Property(2, Integer.class, "IdCliente", false, "ID_CLIENTE");
         public final static Property IdEstadoPedido = new Property(3, Integer.class, "IdEstadoPedido", false, "ID_ESTADO_PEDIDO");
         public final static Property CheckIn = new Property(4, Integer.class, "CheckIn", false, "CHECK_IN");
@@ -82,7 +82,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer IdPedido = entity.getIdPedido();
+        Long IdPedido = entity.getIdPedido();
         if (IdPedido != null) {
             stmt.bindLong(2, IdPedido);
         }
@@ -154,7 +154,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     public Pedido readEntity(Cursor cursor, int offset) {
         Pedido entity = new Pedido( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPedido
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPedido
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdCliente
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // IdEstadoPedido
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // CheckIn
@@ -174,7 +174,7 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
     @Override
     public void readEntity(Cursor cursor, Pedido entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setIdCliente(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setIdEstadoPedido(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setCheckIn(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));

@@ -7,7 +7,8 @@ package com.itrade.model;
 public class Producto {
 
     private Long id;
-    private int IdProducto;
+    private Long IdProducto;
+    /** Not-null value. */
     private String Descripcion;
     private Double Precio;
     private Integer Stock;
@@ -22,7 +23,7 @@ public class Producto {
         this.id = id;
     }
 
-    public Producto(Long id, int IdProducto, String Descripcion, Double Precio, Integer Stock, String Activo, Integer IdCategoria, Integer IdMarca) {
+    public Producto(Long id, Long IdProducto, String Descripcion, Double Precio, Integer Stock, String Activo, Integer IdCategoria, Integer IdMarca) {
         this.id = id;
         this.IdProducto = IdProducto;
         this.Descripcion = Descripcion;
@@ -41,18 +42,20 @@ public class Producto {
         this.id = id;
     }
 
-    public int getIdProducto() {
+    public Long getIdProducto() {
         return IdProducto;
     }
 
-    public void setIdProducto(int IdProducto) {
+    public void setIdProducto(Long IdProducto) {
         this.IdProducto = IdProducto;
     }
 
+    /** Not-null value. */
     public String getDescripcion() {
         return Descripcion;
     }
 
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setDescripcion(String Descripcion) {
         this.Descripcion = Descripcion;
     }

@@ -26,7 +26,8 @@ public class ElementoListaDao extends AbstractDao<ElementoLista, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Principal = new Property(1, String.class, "Principal", false, "PRINCIPAL");
         public final static Property Secundario = new Property(2, String.class, "Secundario", false, "SECUNDARIO");
-        public final static Property IdElemento = new Property(3, Long.class, "IdElemento", false, "ID_ELEMENTO");
+        public final static Property Terciario = new Property(3, String.class, "Terciario", false, "TERCIARIO");
+        public final static Property IdElemento = new Property(4, Long.class, "IdElemento", false, "ID_ELEMENTO");
     };
 
 
@@ -45,7 +46,8 @@ public class ElementoListaDao extends AbstractDao<ElementoLista, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'PRINCIPAL' TEXT NOT NULL ," + // 1: Principal
                 "'SECUNDARIO' TEXT," + // 2: Secundario
-                "'ID_ELEMENTO' INTEGER);"); // 3: IdElemento
+                "'TERCIARIO' TEXT," + // 3: Terciario
+                "'ID_ELEMENTO' INTEGER);"); // 4: IdElemento
     }
 
     /** Drops the underlying database table. */
@@ -70,9 +72,14 @@ public class ElementoListaDao extends AbstractDao<ElementoLista, Long> {
             stmt.bindString(3, Secundario);
         }
  
+        String Terciario = entity.getTerciario();
+        if (Terciario != null) {
+            stmt.bindString(4, Terciario);
+        }
+ 
         Long IdElemento = entity.getIdElemento();
         if (IdElemento != null) {
-            stmt.bindLong(4, IdElemento);
+            stmt.bindLong(5, IdElemento);
         }
     }
 
@@ -89,7 +96,8 @@ public class ElementoListaDao extends AbstractDao<ElementoLista, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // Principal
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // Secundario
-            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3) // IdElemento
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Terciario
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // IdElemento
         );
         return entity;
     }
@@ -100,7 +108,8 @@ public class ElementoListaDao extends AbstractDao<ElementoLista, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setPrincipal(cursor.getString(offset + 1));
         entity.setSecundario(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setIdElemento(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setTerciario(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIdElemento(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
      }
     
     /** @inheritdoc */

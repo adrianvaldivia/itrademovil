@@ -51,6 +51,7 @@ public class ExampleDaoGenerator {
         elemento.addIdProperty();
         elemento.addStringProperty("Principal").notNull();
         elemento.addStringProperty("Secundario");
+        elemento.addStringProperty("Terciario");
         elemento.addLongProperty("IdElemento");
     }
     

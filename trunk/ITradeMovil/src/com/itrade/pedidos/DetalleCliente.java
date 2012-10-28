@@ -148,10 +148,10 @@ public class DetalleCliente extends ListActivity{
 		lista.add("Nombre: "+this.nombre);
 		lista.add("RUC: "+this.apellidos);
 		long i=0;
-		ElementoLista elemento = new ElementoLista(null,"Razon Social:",this.nombre,i);
+		ElementoLista elemento = new ElementoLista(null,"Razon Social:",this.nombre,null,i);
 		elementoListaDao.insert(elemento);
 		
-		ElementoLista elemento2 = new ElementoLista(null,"RUC:",this.apellidos,i);
+		ElementoLista elemento2 = new ElementoLista(null,"RUC:",this.apellidos,null,i);
 		elementoListaDao.insert(elemento2);
 		cursorElementoLista.requery();
 //		lista.add("ID: "+this.idcliente);
