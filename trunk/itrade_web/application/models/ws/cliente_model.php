@@ -147,15 +147,15 @@ class Cliente_model extends CI_Model {
 				$this->registrarLineaCredito($idcliente,$montosolicitado);
 				$idlinea=$this->get_last_idlinea();
 				if ($idlinea!=0){
-					return "true";
+					return $idlinea;
 				}else{
-					return "false";
+					return "0";
 				}
 			}else{
-				return "false";
+				return "0";
 			}
 		}else{
-			return "false";
+			return "0";
 		}
 			
 	}
