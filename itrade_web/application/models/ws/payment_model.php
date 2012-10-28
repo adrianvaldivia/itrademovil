@@ -119,6 +119,15 @@ class Payment_model extends CI_Model {
         $this->db->select_max('IdPedido');
         $query = $this->db->get($this->table_pedido);
         return $query->row(0)->IdPedido;
-    }	
+    }
+	public function cancelar_pedido($idpedido){
+		if ($this->pendiente($idpedido)){									
+			$this->db->set('IdEstadoPedido', 3);//Pagado						
+			$this->db->where('IdPedido', $idpedido);
+			$this->db->update($this->table_pedido);
+			return $this->get_by_id($idpedido);
+		}
+		return array();
+	}
 }
 ?>
