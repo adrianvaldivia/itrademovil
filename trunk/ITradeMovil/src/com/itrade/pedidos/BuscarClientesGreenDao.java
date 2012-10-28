@@ -99,6 +99,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         
         setListAdapter(adapterElementoLista);
         guardaListaOriginal();
+        recuperarOriginal();
         
         Bundle bundle=getIntent().getExtras();
         idUsuario = bundle.getLong("idempleado");

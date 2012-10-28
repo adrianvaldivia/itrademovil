@@ -56,7 +56,7 @@ public class BuscarProspectos extends Activity {
 		setContentView(R.layout.buscarprospectos);
 		
 		Bundle bundle=getIntent().getExtras();
-        int idu = bundle.getInt("idempleado");		
+        long idu = bundle.getLong("idempleado");		
         idusuario= String.valueOf(idu);        
         
 		Log.d("IDUSUARIO", "usuario="+idusuario.toString());

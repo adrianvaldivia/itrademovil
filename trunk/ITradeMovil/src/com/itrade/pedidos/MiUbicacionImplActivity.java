@@ -73,8 +73,6 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
     final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
     //private Timer myTimer;
     private Handler mHandler = new Handler();
-    int idruta;
-	int idunidad;
     //green dao
     private SQLiteDatabase db;
 
@@ -92,21 +90,7 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
     public LocationManager gpsLocationManager;
     static Context context = null;
     boolean primeraVez=false;
-
-
-//    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 2; // in Meters
-//    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 0; // in Milliseconds  
-//    public LocationResult locationResult = new LocationResult(){
-//        @Override
-//        public void gotLocation(Location location){
-//        	if (location!=null){
-//        		latitudAux=location.getLatitude();
-//        		longitudAux=location.getLongitude();
-//        	}
-//            //Got the location!
-//        }
-//    };
-//  public MyLocation myLocation;// = new MyLocation(2000);
+    boolean boolHayGPS=true;
 
         
     // ===========================================================
@@ -118,8 +102,8 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
             super.onCreate(savedInstanceState);
 			Bundle bundle = getIntent().getExtras();			
 			
-			idruta = bundle.getInt("idruta");
-			idunidad =bundle.getInt("idunidad");
+//			idruta = bundle.getInt("idruta");
+
 			setTitle("I Trade - Mi Ubicacion");
             //daoPara = new DAOParadero();
 			//inicio de green Dao
@@ -197,23 +181,11 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
             mOsmv.getOverlays().add(posicionActualOverlay);
 //            if (this.listaGeoPoint!=null)
 //            	posicionActualOverlay.setLocation(gPt0);
-            ///////////////////////////////////////////////////////////////////////timer
-            mHandler.removeCallbacks(Timer_Tick);
-		    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
-    		//////////////////////////////////////////////////////////// fin timer
-            
-            //listeners para el GPS
-//		    myLocation = new MyLocation(120000);//30 segundos
-
-
-
-            
-
-//            GeoPoint gPt1= new GeoPoint(49406100,8715140);//Ubico de la posicion actual
-//            if (gPt1!=null){
-//            	posicionActualOverlay.setLocation(gPt1);
-//    			mapController.setCenter(gPt1);
-//            }            
+//            ///////////////////////////////////////////////////////////////////////timer
+//            mHandler.removeCallbacks(Timer_Tick);
+//		    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
+//    		//////////////////////////////////////////////////////////// fin timer
+                     
     }
 
 
@@ -305,21 +277,16 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 	};
 	      
 	private void obtenerUbicacion() {
-//		myLocation.getLocation(this, locationResult);//obtengo la ubicacion del listener
-		
-		boolean isavailable = gpsLocationManager.isProviderEnabled(GPSPROVIDER);
+		boolean isavailable;
+		if (boolHayGPS){
+			isavailable = gpsLocationManager.isProviderEnabled(GPSPROVIDER);//error	
+		}
+		else
+			isavailable=false;
 
         if(isavailable) {
-	        String mlocProvider;
-	        Criteria hdCrit = new Criteria();
 
-	        hdCrit.setAccuracy(Criteria.ACCURACY_COARSE);
-
-	        mlocProvider = gpsLocationManager.getBestProvider(hdCrit, true);
-//          Location loc = gpsLocationManager.getLastKnownLocation(mlocProvider);
-//            Location loc = gpsLocationManager.getLastKnownLocation("gps");
             Location loc = gpsLocationManager.getLastKnownLocation(GPSPROVIDER);
-
 
             if(loc != null) {
                 double latitude = loc.getLatitude();
@@ -336,7 +303,9 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
             }
             else
             	Toast.makeText(MiUbicacionImplActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
-        }				
+        }
+        else
+        	Toast.makeText(MiUbicacionImplActivity.this,"Encienda el GPS, y salga fuera del edificio por favor.", Toast.LENGTH_LONG).show();
 	}
 
 	 private Boolean displayGpsStatus() {  
@@ -368,39 +337,24 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 	@Override
 	public void onResume() {
 	    super.onResume();
+        ///////////////////////////////////////////////////////////////////////timer
+        mHandler.removeCallbacks(Timer_Tick);
+	    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
+		//////////////////////////////////////////////////////////// fin timer
 	    primeraVez=true;
 	    if(displayGpsStatus()){
-//	    	myLocation.getLocation(this, locationResult);	
 	        context = this;
 	       
-//	        gpsLocationListener = new GpsLocationListener(this);
-
 	        /*Start Location Service for GPS*/
 	        gpsLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);	       
 
 	        /*Register GPS listener with Location Manager*/
 	        gpsLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 2, this);
-//	        boolean isavailable = gpsLocationManager.isProviderEnabled(GPSPROVIDER);
-//
-//	        if(isavailable) {
-//
-////	            Location loc = gpsLocationManager.getLastKnownLocation("gps");
-//	            Location loc = gpsLocationManager.getLastKnownLocation(GPSPROVIDER);
-//
-//	            if(loc != null) {
-//	                double latitude = loc.getLatitude();
-//	                double longitude = loc.getLongitude();
-//	                GeoPoint p = new GeoPoint((int) (latitude * 1000000), (int) (longitude * 1000000));
-//	            	posicionActualOverlay.setLocation(p);
-//	    			mapController.setCenter(p);
-//	                Toast.makeText(MiUbicacionImplActivity.this,"Longitude is  "+longitude + "   Latitude is   "+latitude, Toast.LENGTH_LONG).show();
-//
-//	            }
-//	        }
 
 	    }
 	    else{
-	    	Toast.makeText(MiUbicacionImplActivity.this, "No hay GPS", Toast.LENGTH_LONG).show();
+	    	Toast.makeText(MiUbicacionImplActivity.this, "GPS no encendido", Toast.LENGTH_LONG).show();
+	    	boolHayGPS=false;
 	    }
 
 	}
@@ -410,6 +364,8 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 	  public void onPause() {
 //	    myLocation.cancelTimer();
 	    super.onPause();
+	    if (mHandler!=null)
+	    	mHandler.removeCallbacks(Timer_Tick);
 	    if (gpsLocationManager!=null)
 	    	gpsLocationManager.removeUpdates(this);
 	  }
