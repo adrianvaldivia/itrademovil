@@ -133,10 +133,10 @@ class Cliente_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();	
 	}
-	public function registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador){		
+	public function registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$email,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador){		
 		$this->db->flush_cache();
 		$idpersona=0;
-		$this->registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni);
+		$this->registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni,$email);
 		//echo "persona".$idpersona;
 		$idpersona=$this->get_last_idPersona();
 		//print_r($idpersona);
@@ -164,6 +164,7 @@ class Cliente_model extends CI_Model {
 		$idlinea=$this->get_last_idlinea();
 		$data=array("IdLinea"=>$idlinea+1,"MontoSolicitado"=>$montosolicitado,"IdCliente"=>$idcliente,"Activo"=>1);	
 		$this->db->insert($this->table_linea, $data);
+		return $this->get_last_idlinea();
 		//return $this->db->insert_id($this->table_linea, $data);
 	}
 	
@@ -173,14 +174,16 @@ class Cliente_model extends CI_Model {
 		$data=array("IdCliente"=>$idcliente+1,"IdPersona"=>$idpersona,"Razon_Social"=>$razon_social,"RUC"=>$ruc,"Direccion"=>$direccion,"IdVendedor"=>$idvendedor,"IdCobrador"=>$idcobrador,"IdEstado"=>1);	
 		$this->db->insert($this->table_cliente, $data);
 		//return $this->db->insert_id($this->table_cliente, $data);
+		return $this->get_last_idCliente();
 	}
 	
 	
-	public function registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni){
+	public function registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni,$email){
 		$this->db->flush_cache();
 		$idpersona=$this->get_last_idPersona();
-		$data=array("Activo"=>1,"IdPersona"=>$idpersona+1,"Nombre"=>$nombre,"ApePaterno"=>$apepaterno,"ApeMaterno"=>$apematerno,"Telefono"=>$telefono,"FechNac"=>$fechanac,"DNI"=>$dni);
-		$this->db->insert($this->table_persona, $data);		
+		$data=array("Email"=>$email,"Activo"=>1,"IdPersona"=>$idpersona+1,"Nombre"=>$nombre,"ApePaterno"=>$apepaterno,"ApeMaterno"=>$apematerno,"Telefono"=>$telefono,"FechNac"=>$fechanac,"DNI"=>$dni);
+		$this->db->insert($this->table_persona, $data);	
+		return $this->get_last_idPersona();
 		//return $this->db->insert_id($this->table_persona, $data);
 	}
 	
