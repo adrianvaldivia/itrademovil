@@ -22,7 +22,7 @@ public class MenuLista extends ListActivity{
 	public Bundle bundle;// = getIntent().getExtras();
 	public String nombre="";
 	public String apellidos="";
-	public long idempleado;
+	public long idusuario;
 	private TextView textView_NombreUsuario;
 	
 	
@@ -33,7 +33,7 @@ public class MenuLista extends ListActivity{
         textView_NombreUsuario  = (TextView) findViewById(R.id.nombreusuario);
 //inicio cambios
         bundle = getIntent().getExtras();
-		idempleado=bundle.getLong("idempleado");
+		idusuario=bundle.getLong("idusuario");
 		nombre =bundle.getString("nombre");
 		apellidos=bundle.getString("apellidos");
 		setTitle("iTrade - Bienvenido");
@@ -67,7 +67,7 @@ public class MenuLista extends ListActivity{
 //     Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
      if (selection.compareTo("Clientes")==0){
 			Intent intent = new Intent(MenuLista.this, BuscarClientesGreenDao.class);		
-			intent.putExtra("idempleado", idempleado);
+			intent.putExtra("idusuario", idusuario);
 			intent.putExtra("boolVer", 1);
 			startActivity(intent);
     	 
@@ -80,7 +80,7 @@ public class MenuLista extends ListActivity{
      }
      if (selection.compareTo("Pedidos")==0){
 			Intent intent = new Intent(MenuLista.this, BuscarPedidos.class);
-			intent.putExtra("idempleado", idempleado);
+			intent.putExtra("idusuario", idusuario);
 			
 			startActivity(intent);
     	 
@@ -95,7 +95,7 @@ public class MenuLista extends ListActivity{
      }
      if (selection.compareTo("Prospectos")==0){
 			Intent intent = new Intent(MenuLista.this, BuscarProspectos.class);
-			intent.putExtra("idempleado", idempleado);
+			intent.putExtra("idusuario", idusuario);
 			intent.putExtra("boolVer", 1);
 			startActivity(intent);		
      }

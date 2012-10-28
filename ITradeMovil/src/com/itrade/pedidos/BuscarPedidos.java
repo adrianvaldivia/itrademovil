@@ -50,7 +50,7 @@ public class BuscarPedidos extends ListActivity{
 	DAOPedido daoPedido =null;
 //	private Button button_cearpedido;
 	private Button button_regresar;
-	int idempleado;
+	long idUsuario;
  
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class BuscarPedidos extends ListActivity{
         this.recuperarOriginal();
  
 		Bundle bundle = getIntent().getExtras();
-		idempleado = bundle.getInt("idempleado");
+		idUsuario = bundle.getInt("idusuario");
         setTitle("iTrade - Pedidos");
         
 //        button_cearpedido = (Button) findViewById(R.id.buttoncrearpedido);
@@ -106,7 +106,7 @@ public class BuscarPedidos extends ListActivity{
 //			public void onClick(View v) {
 //				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();
 //				Intent intent = new Intent(BuscarPedidos.this, BuscarClientesGreenDao.class);		
-//				intent.putExtra("idempleado", idempleado);
+//				intent.putExtra("idusuario", idusuario);
 //				intent.putExtra("boolVer", 0);//boolean que indica quien llamo a la ventana
 //				startActivity(intent);
 //			}
@@ -123,7 +123,7 @@ public class BuscarPedidos extends ListActivity{
 
     private void cargarBaseLocal() {
     	daoPedido = new DAOPedido();
-    	listaPedido = daoPedido.getAllPedidos(idempleado); //obtiene los pedidos
+    	listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
 
 		pedidoDao.deleteAll();
 		elementoListaDao.deleteAll();
