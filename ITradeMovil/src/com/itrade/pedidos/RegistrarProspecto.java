@@ -18,6 +18,7 @@ import com.itrade.model.Persona;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +36,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	
 	ViewFlipper vf;
 	
-	EditText ruc,rzsocial,direcc,telefcliente,dni,nombre,apellido,telefperson,fechanac,cantidad;
+	EditText ruc,rzsocial,direcc,telefcliente,dni,nombre,apellidopater,apellidomater,telefperson,fechanac,correo,cantidad;
 	
 	Button btnregistrar;
 	
@@ -44,6 +45,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	Credito cred;
 		
 	String idusuario;
+	String idu;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +53,21 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 
         vf = (ViewFlipper) findViewById(R.id.viewFlipper);
         
-        Intent i = getIntent();
-        idusuario = (String)i.getSerializableExtra("idempleado");
+ /****************************************************/
+        Bundle bundle=getIntent().getExtras();
+        //int idu = bundle.getInt("idempleado");		
+        idu = bundle.getString("idempleado");
+        //idusuario= String.valueOf(idu);
+  /*************************************************************/
         
         /*Contacto = Persona ****************************************************************/
     	dni = (EditText) findViewById(R.id.pdni);
     	nombre = (EditText) findViewById(R.id.pnombre);
-    	apellido = (EditText) findViewById(R.id.papellido);
-    	//telefperson =(EditText) findViewById(R.id.ptelefo);
+    	apellidopater = (EditText) findViewById(R.id.papellidopat);
+    	apellidomater = (EditText) findViewById(R.id.papellidomat);
+    	telefperson =(EditText) findViewById(R.id.telefono);
     	fechanac = (EditText) findViewById(R.id.pcumple);
+    	correo = (EditText) findViewById(R.id.correo);
 
         /*Empresa = Cliente ****************************************************************/
     	ruc = (EditText) findViewById(R.id.pruc);
@@ -75,55 +83,112 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         
     	btnregistrar.setOnClickListener(new OnClickListener() {
 			
-			public void onClick(View v) {
+		
+    		public void onClick(View v) {
 				// TODO Auto-generated method stub
-                 		
-    client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString(), ruc.getText().toString(), null, null, direcc.getText().toString(), null, null, null); 
 
-    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+    			if ((!ruc.getText().toString().trim().equals("")) &&
+                  (!rzsocial.getText().toString().trim().equals("")) &&
+                  (!direcc.getText().toString().trim().equals("")) &&
+                  (!telefcliente.getText().toString().trim().equals("")) &&
+                  (!dni.getText().toString().trim().equals("")) &&
+                  (!nombre.getText().toString().trim().equals("")) &&
+                  (!apellidopater.getText().toString().trim().equals("")) &&
+                  (!apellidomater.getText().toString().trim().equals("")) &&
+                  (!telefperson.getText().toString().trim().equals("")) &&
+                  (!fechanac.getText().toString().trim().equals("")) &&
+                  (!correo.getText().toString().trim().equals("")) &&
+                  (!cantidad.getText().toString().trim().equals(""))) 
+            		  
+         {           		
+    
+    				if ((ruc.length()!=11) || (dni.length()!=8) || (Integer.parseInt(cantidad.getText().toString().trim()) < 1))
+    				
+    				Toast.makeText(RegistrarProspecto.this, "Revisar valores de DNI, RUC y Cantidad", Toast.LENGTH_SHORT).show();
+    		
+    				else 
+    					
+            	  client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), null, null, direcc.getText().toString().trim(), null, null, null); 
+
+    SimpleDateFormat formato = new SimpleDateFormat("yyyy-mm-dd");
     String strFecha = fechanac.getText().toString();
+    
     Date fecha = null;
+    
     try {
-		fecha = formato.parse(strFecha);
+   	      
+    	fecha = formato.parse(strFecha);
+		
 	} catch (ParseException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	    e.printStackTrace();
+    }
 
-    
-  person = new Persona(null, null, nombre.getText().toString(), apellido.getText().toString(), null, dni.getText().toString(), fecha, null, null, null); 
+   
+  person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), fecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
 
-  cred = new Credito(Integer.parseInt(cantidad.getText().toString())); 
+  String valor = cantidad.getText().toString().trim();
+  cred = new Credito(Integer.parseInt(valor)); 
 
+   /***************Falta Ingresar los idsssss de las tablas **************/
+ 
                  Syncronizar sync = new Syncronizar(RegistrarProspecto.this);
                  List<NameValuePair> param = new ArrayList <NameValuePair>();
-                 param.add(new BasicNameValuePair("idvendedor", idusuario));
+                 param.add(new BasicNameValuePair("idvendedor", idu));
                  
                  param.add(new BasicNameValuePair("dni", person.getDNI()));
                  param.add(new BasicNameValuePair("nombre", person.getNombre()));
                  param.add(new BasicNameValuePair("apepaterno", person.getApePaterno()));
-             //    param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
-                 param.add(new BasicNameValuePair("fechanac",  person.getFechNac().toString()));
+                 param.add(new BasicNameValuePair("apematerno", person.getApeMaterno()));
+                 param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
+                 param.add(new BasicNameValuePair("correo",  person.getEmail()));
+                 param.add(new BasicNameValuePair("fechnac",  fecha.toString())); // Revisar Nombre de FechaNac
             
                  param.add(new BasicNameValuePair("ruc", client.getRUC()));
                  param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
                  param.add(new BasicNameValuePair("direccion", client.getDireccion()));
                 
-                 String monto = cred.getCantidad()+"";
+                 //String monto = cred.getCantidad()+"";
+                // int valor = Integer.parseInt(cantidad.getText().toString());
+                
                  
-                 param.add(new BasicNameValuePair("montosolicitado", monto));
-                 
+                 param.add(new BasicNameValuePair("montosolicitado", Integer.toString(cred.getCantidad()) ));
+
                  String route = "/ws/clientes/registrar_prospecto/";
-			sync.conexion(param, route);
-			
-	/********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
-			   if (sync.getResponse()=="true")
-				   
-					Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
+			     sync.conexion(param, route);
+	             
+			     try {
+					sync.getHilo().join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}		
+	
+			     /********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
+			     String valor1 = sync.getResponse().trim();
+			     int valor2 = Integer.parseInt(valor1);
+			    
+			     if (valor2>0)
+				
+			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
 			   else	
 				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
-			}
-		});
+			
+         
+         }// fin de mi IF true
+      
+    		else 
+    		{
+    			Toast.makeText(RegistrarProspecto.this, "Todos los Campos son obligatorios", Toast.LENGTH_SHORT).show();
+    			
+    		}
+    	
+    	 	} // fin del evento Onclick del Guardar	
+    		
+    	
+    	}); 
+    	
+    	 
         
     	
 
