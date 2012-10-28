@@ -100,56 +100,77 @@
 		            android:background="@drawable/estilo_botones"
 		            android:src="@drawable/excelencia" />
 		    </LinearLayout>
-
-
+
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:orientation="vertical" >
 
 		        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" >
+		            android:id="@+id/referencia"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginTop="10dp" >
 
-            <TextView
-                android:id="@+id/TextView1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1.00"
-                android:gravity="center"
-                android:text="Línea de Crédito"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/azul_2"
-                android:textSize="24dp" />
+		            <TextView
+		                android:id="@+id/TextView1"
+		                android:layout_width="wrap_content"
+		                android:layout_height="match_parent"
+		                android:layout_marginTop="20dp"
+		                android:layout_weight="1.00"
+		                android:gravity="center"
+		                android:text="Línea de Crédito"
+		                android:textAppearance="?android:attr/textAppearanceLarge"
+		                android:textColor="@color/azul_2"
+		                android:textSize="24dp" />
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="136dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:layout_weight="1.00"
-                android:src="@drawable/credit_cards" />
-        </LinearLayout>
+		            <ImageView
+		                android:id="@+id/imageView1"
+		                android:layout_width="136dp"
+		                android:layout_height="match_parent"
+		                android:layout_gravity="right"
+		                android:layout_weight="1.00"
+		                android:src="@drawable/credit_cards" />
+		        </LinearLayout>
+
+		        <LinearLayout
+		            android:id="@+id/referencia1"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginTop="10dp"
+		            android:layout_weight="3.48" >
+
+		            <EditText
+		                android:id="@+id/pcantidad"
+		                android:layout_width="match_parent"
+		                android:layout_height="wrap_content"
+		                android:layout_marginTop="50dp"
+		                android:ems="10"
+		                android:hint="Línea de Crédito (S/.)"
+		                android:inputType="number"
+		                android:maxLength="4" />
+		        </LinearLayout>
 		    </LinearLayout>
-		</LinearLayout>>
+
+		</LinearLayout>
 
 	</RelativeLayout>
-
-
+
 	<LinearLayout
 	    android:id="@+id/bottom_control_bar"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentBottom="true" >
-
+
 		<LinearLayout
+		    android:id="@+id/abajo"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="0dp"
 		    android:layout_weight="0.10" >
 
+		    
+		    
             <Button
                 android:id="@+id/pregistraprospecto"
                 style="@drawable/estilo_botones"
@@ -159,41 +180,12 @@
                 android:background="@drawable/estilo_botones"
                 android:text="Registrar"
                 android:textColor="@color/blanco" />
-		</LinearLayout>
+	
+            
+            	</LinearLayout>
 	</LinearLayout>
-
+
 	
 	
-	<LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" 
-            android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar">
 
-
-            <TextView
-                android:id="@+id/TextView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:text="Línea de Crédito (S/.)"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/azul_2" />
-
-
-            <EditText
-                android:id="@+id/pcantidad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:ems="10" >
-
-                <requestFocus />
-            </EditText>
-            android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar"
-        </LinearLayout>
-	
-	<TextView android:id="@android:id/empty" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="@string/listavacia"
-		android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar" />
 </RelativeLayout>
