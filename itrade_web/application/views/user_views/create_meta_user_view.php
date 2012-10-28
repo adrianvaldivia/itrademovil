@@ -77,14 +77,8 @@
                 <fieldset class="left">
                     <legend>Datos Generales</legend>
                     <p>
-                        <label>Fecha Inicio: <span class="mandatory">(*)</span> </label>
-                        <?php $fechaini = array('name' => 'fechaini', 'id' => 'fechaini', 'size' => 15, 'class' => 'mandatory dateISO', 'title' => 'Por favor ingrese una fecha', 'value' =>  set_value('fechaini')); ?>
-                        <?= form_input($fechaini) ?>
-                    </p>
-                    <p>
-                        <label>Fecha Fin: <span class="mandatory">(*)</span> </label>
-                        <?php $fechafin = array('name' => 'fechafin', 'id' => 'fechafin', 'size' => 15, 'class' => 'mandatory dateISO', 'title' => 'Por favor ingrese una fecha', 'value' =>  set_value('fechafin')); ?>
-                        <?= form_input($fechafin) ?>
+                    		<label>Periodo: <span class="mandatory">(*)</span> </label>
+                    		<?= form_dropdown('idperiodo', $periodos) ?>
                     </p>
                     <p>
                         <label>Monto: <span class="mandatory">(*)</span></label>

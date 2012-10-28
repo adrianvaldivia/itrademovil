@@ -30,7 +30,7 @@ class Usuario_controller extends CI_Controller {
         $data['title'] = "Itrade Mantenimientos";
         $data['main'] = "pages/dashboard_content.php"; //RUTA		
         $data['usuarios'] = $this->list_all_users();
-//        print_r($data['usuarios']);
+
         $data['username'] = $this->session->userdata('username');
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');
@@ -51,7 +51,7 @@ class Usuario_controller extends CI_Controller {
         $data['ubigeo'] = $this->get_all_ubigeos();
         $data['usuario'] = $this->Usuario_model->get($idcontact);
         $data['persona'] = $this->Persona_model->get($number);
-//print_r($data['persona']);
+
         $this->load->vars($data);
         $this->load->view('user_views/edit_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
@@ -87,7 +87,7 @@ class Usuario_controller extends CI_Controller {
         $data['acceso'] = $this->session->userdata('acceso');
         $data['perfiles'] = $this->get_all_profile();
         $data['ubigeo'] = $this->get_all_ubigeos();
-//        print_r($data['ubigeo']);
+
         $this->load->vars($data);
         $this->load->view('user_views/create_user_view');
     }
@@ -99,7 +99,8 @@ class Usuario_controller extends CI_Controller {
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');
         $data['idusuario'] = $idusuario;
-//        print_r($data['ubigeo']);
+        $data['periodos']=$this->get_all_periodos();
+
         $this->load->vars($data);
         $this->load->view('user_views/create_meta_user_view');
     }
@@ -112,21 +113,24 @@ class Usuario_controller extends CI_Controller {
         $data['acceso'] = $this->session->userdata('acceso');
         $data['metas'] = $this->get_metas_usuario($idusuario);
         $data['idusuario'] = $idusuario;
+    
 //        print_r($data['metas']);
 
         $this->load->vars($data);
         $this->load->view('user_views/metas_user_view');
     }
 
-    public function modificar_meta($idmeta) {
+    public function modificar_meta($idusuario,$idperiodo) {
         //cargar las noticias               
         $data['title'] = "Modificar Meta";
         $data['main'] = "login/login_box.php"; //RUTA		
         $data['username'] = $this->session->userdata('username');
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');
+        $data['periodos']=$this->get_all_periodos();
+                 
         //OBTENIENDO DATA PARA PERFILES
-        $data['meta'] = $this->Meta_model->get($idmeta);
+        $data['meta'] = $this->Meta_model->get($idusuario,$idperiodo);
 
         $this->load->vars($data);
         $this->load->view('user_views/edit_meta_user_view');
@@ -255,14 +259,13 @@ class Usuario_controller extends CI_Controller {
         $this->set_validation_rules($rules_create);
 
 //        if ($this->form_validation->run()) {
-        // print_r($idPersona);
-        //TABLA USUARIO
+
+               
+        //TABLA META
         $data['Meta'] = array(
-            'IdMeta' => $this->Meta_model->get_last_idMeta() + 1,
+            'IdPeriodo' => xss_clean($this->input->post('idperiodo'))+1,
             'IdUsuario' => $idusuario,
             'Monto' => xss_clean($this->input->post('monto')),
-            'FechaIni' => xss_clean($this->input->post('fechaini')),
-            'FechaFin' => xss_clean($this->input->post('fechafin')),
         );
 
         //crea el usuario
@@ -282,32 +285,23 @@ class Usuario_controller extends CI_Controller {
         //$this->load->view('template');
     }
 
-    public function edit_meta($idmeta = '') {
+    public function edit_meta($idusuario = '',$idperiodo='') {
         //Parametro para setear reglas del edit
         $rules_edit = 1;
         $this->set_validation_rules($rules_edit);
         $data['username'] = $this->session->userdata('username');
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');
-        $idusuario = $this->Meta_model->get_meta_idUsuario($idmeta);
+
 //        if (/* $this->form_validation->run() */true) {
-        //TABLA USUARIO
-        $data['Meta'] = array(
-            'IdMeta' => $idmeta,
-            'IdUsuario' => $idusuario,
-            'Monto' => xss_clean($this->input->post('monto')),
-            'FechaIni' => xss_clean($this->input->post('fechaini')),
-            'FechaFin' => xss_clean($this->input->post('fechafin')),
-        );
 
-        echo '<pre>';
-//        print_r($this->input->post());
+        //TABLA META
+        $data['Meta']['Monto'] = xss_clean($this->input->post('monto'));
 
-
-        $this->Meta_model->edit($idmeta, $data['Meta']);
+        $this->Meta_model->edit($idusuario,$idperiodo,$data['Meta']);
 
         $this->session->set_flashdata('message', 'Los datos del usuarios han sido modificados correctamente.');
-        redirect('admin/usuario_controller/metas_user/' . $idusuario, 'refresh');
+        redirect('admin/usuario_controller/metas_user/' . $idusuario.'/'. $idperiodo, 'refresh');
 
 //        } else {
 //            $data['error_message'] = validation_errors();
@@ -338,7 +332,7 @@ class Usuario_controller extends CI_Controller {
         $goals = $this->Meta_model->get_metas_usuario($idusuario);
 //        print_r($goals);
 //        exit;
-$a=0;
+		  $a=0;
         foreach ($goals as $goal) {
             $metas[$a]['IdPeriodo'] = $goal['IdPeriodo'];
             $metas[$a]['IdUsuario'] = $goal['IdUsuario'];
@@ -364,7 +358,17 @@ $a=0;
         }
         return $usuarios;
     }
-
+	
+	function get_all_periodos() {
+        $periodos = array();
+        $allperiodos = $this->Meta_model->get_all_periodos();
+     
+        foreach ($allperiodos as $periodo) {
+            $periodos[] = $periodo['Descripcion'];
+        }
+        return $periodos;
+    }
+    
     function get_all_ubigeos() {
         $ubigeos = array();
         $allubigeos = $this->Ubigeo_model->get_all_ubigeos();

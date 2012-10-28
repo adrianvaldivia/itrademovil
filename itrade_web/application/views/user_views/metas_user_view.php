@@ -101,7 +101,7 @@
                         <tbody>
 
                             <?
-                            //print_r($metas);
+                            
                             foreach ($metas as $meta) {
                                 ?>
                                 <tr>
@@ -115,8 +115,7 @@
                                         <div class="estado"><? echo $meta['Monto']; ?></div>
                                     </td>
                                     <td>
-                                        <div class="accion"><? echo anchor("admin/usuario_controller/modificar_meta/$idusuario".$meta['IdPeriodo'], 'Editar', array('title' => 'Editar')); ?></div>
-        <!--                                    <? // if ($metas['Perfil'] == 'Vendedor'):         ?><div class="accion"><? // echo anchor("admin/usuario_controller/metas_user/$idusuario", 'Metas', array('title' => 'Metas'));        ?></div>-->
+                                        <div class="accion"><? echo anchor("admin/usuario_controller/modificar_meta/$idusuario/".$meta['IdPeriodo'], 'Editar', array('title' => 'Editar')); ?></div>
 
                                     </td>
                                 </tr>

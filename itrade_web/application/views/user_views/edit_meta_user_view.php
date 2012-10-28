@@ -72,19 +72,13 @@
             ?>
 
             <div class="contenido_principal" style="width:70%; height:100%;  min-width:650px; max-width:650px;">
-                <?= form_open("admin/usuario_controller/edit_meta/".$meta->IdMeta, array('id' => 'userForm')); ?>
+                <?= form_open("admin/usuario_controller/edit_meta/$meta->IdUsuario/$meta->IdPeriodo", array('id' => 'userForm')); ?>
 
                 <fieldset class="left">
                     <legend>Datos Generales</legend>
                     <p>
-                        <label>Fecha Inicio: <span class="mandatory">(*)</span> </label>
-                        <?php $fechaini = array('name' => 'fechaini', 'id' => 'fechaini', 'size' => 15, 'class' => 'mandatory dateISO', 'title' => 'Por favor ingrese una fecha', 'value' => $meta->FechaIni); ?>
-                        <?= form_input($fechaini) ?>
-                    </p>
-                    <p>
-                        <label>Fecha Fin: <span class="mandatory">(*)</span> </label>
-                        <?php $fechafin = array('name' => 'fechafin', 'id' => 'fechafin', 'size' => 15, 'class' => 'mandatory dateISO', 'title' => 'Por favor ingrese una fecha', 'value' =>$meta->FechaFin); ?>
-                        <?= form_input($fechafin) ?>
+                    		<label>Periodo: <span class="mandatory">(*)</span> </label>
+                    		<?= form_dropdown('idperiodo', $periodos,$meta->IdPeriodo-1); ?>
                     </p>
                     <p>
                         <label>Monto: <span class="mandatory">(*)</span></label>
