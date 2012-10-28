@@ -64,7 +64,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	List<Cliente> listaCliente;
 	List<Cliente> listaClienteOriginal;
 	
-	public int idUsuario;
+	public long idUsuario;
 	InputMethodManager imm;
 
 	
@@ -101,7 +101,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         guardaListaOriginal();
         
         Bundle bundle=getIntent().getExtras();
-        idUsuario = bundle.getInt("idempleado");
+        idUsuario = bundle.getLong("idempleado");
         setTitle("Clientes");
         
         button_vermapa = (Button) findViewById(R.id.buttonvermapa);
