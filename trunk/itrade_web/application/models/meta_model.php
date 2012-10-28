@@ -51,7 +51,7 @@ class Meta_model extends CI_Model {
     }
 
     public function get_metas_usuario($idusuario) {
-        $this->db->select($this->tablename3 . ".Descripcion Descripcion , $this->tablename3.FechaIni FechaIni, $this->tablename3.FechaFin FechaFin, $this->tablename .Monto Monto");
+        $this->db->select($this->tablename3 . ".Descripcion Periodo, $this->tablename3.FechaIni FechaIni, $this->tablename3.IdPeriodo IdPeriodo, $this->tablename3.FechaFin FechaFin, $this->tablename .Monto Monto,$this->tablename .IdUsuario IdUsuario");
         $this->db->from($this->tablename3);
         $this->db->where($this->tablename . ".IdUsuario",$idusuario);
         $this->db->join($this->tablename, $this->tablename . '.IdPeriodo=' . $this->tablename3 . '.IdPeriodo');
