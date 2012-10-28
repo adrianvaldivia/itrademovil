@@ -49,7 +49,7 @@ public class BuscarProspectosGreenDao extends ListActivity{
 	Prospecto prospecto= new Prospecto();
 	List<Prospecto> listaProspecto;
 	
-	public int idempleado;
+	public long idusuario;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class BuscarProspectosGreenDao extends ListActivity{
         setListAdapter(adapter);
         // Fin green Day
         Bundle bundle=getIntent().getExtras();
-        idempleado = bundle.getInt("idempleado");
+        idusuario = bundle.getLong("idusuario");
         setTitle("I Trade - Prospectos");
         
         button_vermapa = (Button) findViewById(R.id.buttonvermapa);
@@ -125,7 +125,7 @@ public class BuscarProspectosGreenDao extends ListActivity{
      intent.putExtra("nombre", prospecto.getRazon_Social());
      intent.putExtra("apellidos", prospecto.getRUC());
      intent.putExtra("idcliente", temp);
-     intent.putExtra("idempleado", idempleado);
+     intent.putExtra("idusuario", idusuario);
      startActivity(intent);
      
     }    

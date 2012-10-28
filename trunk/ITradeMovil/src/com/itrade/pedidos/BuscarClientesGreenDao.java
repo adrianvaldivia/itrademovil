@@ -102,7 +102,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         recuperarOriginal();
         
         Bundle bundle=getIntent().getExtras();
-        idUsuario = bundle.getLong("idempleado");
+        idUsuario = bundle.getLong("idusuario");
         setTitle("Clientes");
         
         button_vermapa = (Button) findViewById(R.id.buttonvermapa);
@@ -186,7 +186,7 @@ debug++;
      intent.putExtra("nombre", cliente.getRazon_Social());
      intent.putExtra("apellidos", cliente.getRUC());
      intent.putExtra("idcliente", temp);
-     intent.putExtra("idempleado", idUsuario);
+     intent.putExtra("idusuario", idUsuario);
      startActivity(intent);
      
     }    

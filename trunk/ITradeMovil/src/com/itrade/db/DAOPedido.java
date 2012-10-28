@@ -80,7 +80,7 @@ public class DAOPedido {
 //		return listaPedido;
 //	}
 
-	public List<Pedido> getAllPedidos(int idempleado) {
+	public List<Pedido> getAllPedidos(long idUsuario) {
 		List<Pedido> listaPedido = new ArrayList<Pedido>();
 		UsuarioFunctions userFunction = new UsuarioFunctions();
 		JSONObject json = userFunction.getAllPedidos();

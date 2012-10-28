@@ -35,7 +35,7 @@ public class CrearPedido extends ListActivity{
 	public String nombre="";
 	public String apellidos="";
 	public int idcliente;
-	public int idempleado;
+	public long idusuario;
 	public String pruebaPaso;
 	private static final int REQUEST_CODE=10;
 	List<PedidoLinea> listaPedidoLinea=new ArrayList<PedidoLinea>();
@@ -71,7 +71,7 @@ public class CrearPedido extends ListActivity{
 		nombre = bundle.getString("nombre");
 		apellidos = bundle.getString("apellidos");
 		idcliente = bundle.getInt("idcliente");
-		idempleado = bundle.getInt("idempleado");
+		idusuario = bundle.getLong("idusuario");
 //		guardarPedido();
         setTitle("iTrade - Crear Pedido");
 

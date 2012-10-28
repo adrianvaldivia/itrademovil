@@ -34,7 +34,7 @@ public class DetalleCliente extends ListActivity{
 	public String nombre="";
 	public String apellidos="";
 	public int idcliente;
-	public int idempleado;
+	public long idusuario;
 	int boolVer;
 	//green dao
     private SQLiteDatabase db;
@@ -77,7 +77,7 @@ public class DetalleCliente extends ListActivity{
 		nombre = bundle.getString("nombre");
 		apellidos = bundle.getString("apellidos");
 		idcliente = bundle.getInt("idcliente");
-		idempleado = bundle.getInt("idempleado");
+		idusuario = bundle.getLong("idusuario");
 		boolVer=bundle.getInt("boolVer");//booleano indica desde donde fue llamado el activity
 
 //        Bundle bundle=getIntent().getExtras();
@@ -114,7 +114,7 @@ public class DetalleCliente extends ListActivity{
 			     intent.putExtra("nombre", nombre);
 			     intent.putExtra("apellidos", apellidos);
 			     intent.putExtra("idcliente", idcliente);
-			     intent.putExtra("idempleado", idempleado);
+			     intent.putExtra("idusuario", idusuario);
 			     startActivity(intent);				
 	
 			}
@@ -129,7 +129,7 @@ public class DetalleCliente extends ListActivity{
 //	     intent.putExtra("nombre", nombre);
 //	     intent.putExtra("apellidos", apellidos);
 //	     intent.putExtra("idcliente", idcliente);
-//	     intent.putExtra("idempleado", idempleado);
+//	     intent.putExtra("idusuario", idusuario);
 //	     startActivity(intent);		
 		
 	}
