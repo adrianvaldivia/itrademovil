@@ -77,7 +77,22 @@ class Pedido extends CI_Controller {
 			$result=$this->Payment_model->registrar_pedido($idcliente_w,$montototalpedidosinigv_w);
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}
-	}	
+	}
+	public function registrar_pedido_linea($idpedido_w='',$idproducto_w='',$montolinea_w='',$cantidad_w=''){
+		
+		$idpedido=$this->input->post('idpedido');
+		$idproducto=$this->input->post('idproducto');
+		$montolinea=$this->input->post('montolinea');
+		$cantidad=$this->input->post('cantidad');		
+		if (isset($idpedido)&& $idpedido!= "" ){					
+			$result=$this->Payment_model->registrar_pedido_linea($idpedido,$idproducto,$montolinea,$cantidad);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
+		}		
+		if (isset($idpedido_w)&& $idpedido_w!=""  ){
+			$result=$this->Payment_model->registrar_pedido_linea($idpedido_w,$idproducto_w,$montolinea_w,$cantidad_w);
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}
+	}
 	public function cancelar_pedido($idpedido_w=''){
 		$idpedido=$this->input->post('idpedido');			
 		if (isset($idpedido)&& $idpedido!= "" ){					
