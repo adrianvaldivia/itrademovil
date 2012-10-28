@@ -35,6 +35,7 @@ class Usuario_controller extends CI_Controller {
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');
         $this->load->vars($data);
+        
         $this->load->view('user_views/dashboard_user_view');
     }
 
@@ -335,14 +336,17 @@ class Usuario_controller extends CI_Controller {
     function get_metas_usuario($idusuario) {
         $metas = array();
         $goals = $this->Meta_model->get_metas_usuario($idusuario);
-
+//        print_r($goals);
+//        exit;
+$a=0;
         foreach ($goals as $goal) {
-            $metas[$goal['IdMeta']]['IdPeriodo'] = $goal['IdPeriodo'];
-            $metas[$goal['IdMeta']]['IdUsuario'] = $goal['IdUsuario'];
-			$metas[$goal['IdMeta']]['Periodo'] = $goal['Periodo'];
-            $metas[$goal['IdMeta']]['FechaIni'] = $goal['FechaIni'];
-            $metas[$goal['IdMeta']]['FechaFin'] = $goal['FechaFin'];
-            $metas[$goal['IdMeta']]['Monto'] = $goal['Monto'];
+            $metas[$a]['IdPeriodo'] = $goal['IdPeriodo'];
+            $metas[$a]['IdUsuario'] = $goal['IdUsuario'];
+            $metas[$a]['Periodo'] = $goal['Periodo'];
+            $metas[$a]['FechaIni'] = $goal['FechaIni'];
+            $metas[$a]['FechaFin'] = $goal['FechaFin'];
+            $metas[$a]['Monto'] = $goal['Monto'];
+            $a++;
         }
         return $metas;
     }
