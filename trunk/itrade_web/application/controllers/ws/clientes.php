@@ -50,14 +50,14 @@ class Clientes extends CI_Controller {
 		$apematerno=$this->input->post('apematerno');
 		$telefono=$this->input->post('telefono');
 		$fechanac=$this->input->post('fechanac');
+		$email=$this->input->post('email');
 		$dni=$this->input->post('dni');
 		$montosolicitado=$this->input->post('montosolicitado');
 		$idvendedor=$this->input->post('idvendedor');		
 		$idcobrador=$this->Cliente_model->buscador_cobrador_por_vendedor($idvendedor);
-		if ($idcobrador!=0){
-			echo "encontro cobrador".$idcobrador;
+		if ($idcobrador!=0){			
 			if (isset($idvendedor)&& $idvendedor!=""){
-				$result=$this->Cliente_model->registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador);
+				$result=$this->Cliente_model->registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$email,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador);
 				$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 			}else{
 				$this->output->set_content_type('application/json')->set_output(json_encode("0"));
@@ -106,4 +106,5 @@ class Clientes extends CI_Controller {
 		}	
 	}
 }
+
 
