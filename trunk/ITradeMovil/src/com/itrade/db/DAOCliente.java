@@ -83,7 +83,7 @@ public class DAOCliente {
 //		}
 //		return liscaCliente;
 //	}
-	public List<Cliente> getAllClientes(int idUsuario) {
+	public List<Cliente> getAllClientes(long idUsuario) {
 		
 		List<Cliente> listaCliente = new ArrayList<Cliente>();
 		

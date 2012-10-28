@@ -22,7 +22,7 @@ public class MenuLista extends ListActivity{
 	public Bundle bundle;// = getIntent().getExtras();
 	public String nombre="";
 	public String apellidos="";
-	public int idempleado;
+	public long idempleado;
 	private TextView textView_NombreUsuario;
 	
 	
@@ -33,7 +33,7 @@ public class MenuLista extends ListActivity{
         textView_NombreUsuario  = (TextView) findViewById(R.id.nombreusuario);
 //inicio cambios
         bundle = getIntent().getExtras();
-		idempleado=bundle.getInt("idempleado");
+		idempleado=bundle.getLong("idempleado");
 		nombre =bundle.getString("nombre");
 		apellidos=bundle.getString("apellidos");
 		setTitle("iTrade - Bienvenido");
