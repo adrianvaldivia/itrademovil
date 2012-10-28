@@ -56,7 +56,7 @@ public class BuscarProspectos extends Activity {
 		setContentView(R.layout.buscarprospectos);
 		
 		Bundle bundle=getIntent().getExtras();
-        long idu = bundle.getLong("idempleado");		
+        long idu = bundle.getLong("idusuario");		
         idusuario= String.valueOf(idu);        
         
 		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
@@ -111,7 +111,7 @@ public class BuscarProspectos extends Activity {
 			// TODO Auto-generated method stub
 			Toast.makeText(BuscarProspectos.this, "Ok", Toast.LENGTH_LONG).show();
 			Intent i = new Intent(BuscarProspectos.this, RegistrarProspecto.class);
-			i.putExtra("idempleado", idusuario);
+			i.putExtra("idusuario", idusuario);
 			startActivity(i);
 			BuscarProspectos.this.finish();
 		}

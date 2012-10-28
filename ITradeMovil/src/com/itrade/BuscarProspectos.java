@@ -56,7 +56,7 @@ public class BuscarProspectos extends Activity {
 		setContentView(R.layout.buscarprospectos);
 		
 		Intent i = getIntent();                
-		idusuario=(String)i.getSerializableExtra("idempleado");		
+		idusuario=(String)i.getSerializableExtra("idusuario");		
 		
 		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
 		
