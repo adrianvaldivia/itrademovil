@@ -17,9 +17,18 @@ class Meta_model extends CI_Model {
         $this->db->close();
         return $query->result_array();
     }
+    
+    function get_all_periodos() {
+        $this->db->select('Descripcion');
+        $this->db->from($this->tablename3);
+        $query = $this->db->get();
+        $this->db->close();
+        return $query->result_array();
+    }
 
-    function get($idmeta) {
-        $this->db->where('IdMeta', $idmeta);
+    function get($idusuario,$idperiodo) {
+    		
+        $this->db->where(array('IdPeriodo'=>$idperiodo,'IdUsuario'=> $idusuario));
         $query = $this->db->get($this->tablename);
         $rows = $query->result();
         $this->db->close();
@@ -30,9 +39,10 @@ class Meta_model extends CI_Model {
         return $this->db->insert($this->tablename, $data);
     }
 
-    function edit($idmeta, $data) {
-        $this->db->where('IdMeta', $idmeta);
-        return $this->db->update($this->tablename, $data);
+    function edit($idusuario,$idperiodo,$data) {
+      $this->db->where(array('IdPeriodo'=>$idperiodo,'IdUsuario'=> $idusuario));
+    	return $this->db->update($this->tablename, $data);
+
     }
 
     function get_last_idMeta() {
