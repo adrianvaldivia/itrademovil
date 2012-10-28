@@ -55,8 +55,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         
  /****************************************************/
         Bundle bundle=getIntent().getExtras();
-        //int idu = bundle.getInt("idempleado");		
-        idu = bundle.getString("idempleado");
+        //int idu = bundle.getInt("idusuario");		
+        idu = bundle.getString("idusuario");
         //idusuario= String.valueOf(idu);
   /*************************************************************/
         
