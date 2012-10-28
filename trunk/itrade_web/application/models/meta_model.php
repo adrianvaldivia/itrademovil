@@ -6,6 +6,7 @@ class Meta_model extends CI_Model {
         parent::__construct();
         $this->tablename = 'Meta';
         $this->tablename2 = 'Usuario';
+		 $this->tablename3 = 'PeriodoMeta';
     }
 
     function get_all_metas() {
@@ -50,9 +51,10 @@ class Meta_model extends CI_Model {
     }
 
     public function get_metas_usuario($idusuario) {
-        $this->db->select($this->tablename . ".IdUsuario, $this->tablename .Monto, $this->tablename .IdMeta,$this->tablename .IdUsuario, $this->tablename .FechaIni, $this->tablename .FechaFin");
-        $this->db->from($this->tablename);
+        $this->db->select($this->tablename3 . ".Descripcion Descripcion , $this->tablename3.FechaIni FechaIni, $this->tablename3.FechaFin FechaFin, $this->tablename .Monto Monto");
+        $this->db->from($this->tablename3);
         $this->db->where($this->tablename . ".IdUsuario",$idusuario);
+        $this->db->join($this->tablename, $this->tablename . '.IdPeriodo=' . $this->tablename3 . '.IdPeriodo');
         $this->db->join($this->tablename2, $this->tablename2 . '.IdUsuario=' . $this->tablename . '.IdUsuario');
         $query = $this->db->get();
         $this->db->close();
