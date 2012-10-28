@@ -80,8 +80,6 @@ public class MenuLista extends ListActivity{
      }
      if (selection.compareTo("Pedidos")==0){
 			Intent intent = new Intent(MenuLista.this, BuscarPedidos.class);
-			intent.putExtra("idruta", 0);
-			intent.putExtra("idunidad", 1);
 			intent.putExtra("idempleado", idempleado);
 			
 			startActivity(intent);
@@ -103,8 +101,6 @@ public class MenuLista extends ListActivity{
      }
      if (selection.compareTo("Mi Ubicacion")==0){
 			Intent intent = new Intent(MenuLista.this, MiUbicacionImplActivity.class);
-			intent.putExtra("idruta", 0);
-			intent.putExtra("idunidad", 0);
 			startActivity(intent);		
      }
     }    
