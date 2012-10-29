@@ -81,8 +81,8 @@ public class CrearPedido extends ListActivity{
         String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
         String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
-        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-        int[] toElementoLista = { R.id.text1, R.id.text2 };
+        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName,ElementoListaDao.Properties.Terciario.columnName };
+        int[] toElementoLista = { R.id.text1, R.id.text2,R.id.text3 };
         adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);    
         //fin green Day de Elementos Lista
@@ -115,7 +115,7 @@ public class CrearPedido extends ListActivity{
 			public void onClick(View v) {
 //				Toast.makeText(CrearPedido.this, "pruebaa", Toast.LENGTH_LONG).show();
 //				Bundle bundle = getIntent().getExtras();
-				
+				listaPedidoLinea.clear();//posible error
 				Intent intent = new Intent(CrearPedido.this, BuscarProductos.class);
 				intent.putExtra("boolVer", 1);//booleano para ver o no ver el popup
 				intent.putExtra("idpedido", idpedido);
@@ -144,7 +144,7 @@ public class CrearPedido extends ListActivity{
 	public List<String> Convierte(List<String> lis){
 		List<String> lista=new ArrayList<String>();
 		this.txt_nombre.setText(this.nombre);
-		this.txt_ruc.setText("RUC: "+this.apellidos);
+		this.txt_ruc.setText("Monto S/.");
 //		lista.add("Nombre: "+this.nombre);
 //		lista.add("RUC: "+this.apellidos);
 //		lista.add("Lista de Productos:");
@@ -157,18 +157,20 @@ public class CrearPedido extends ListActivity{
 //		lista.add("RUC: "+this.apellidos);
 //		lista.add("Lista de Productos:");
 		for(int i=0;i<listaProductoNombre.size();i++){
-			long temp=0;
-			temp=temp+listaProductoElegido.get(i);
-			ElementoLista elemento = new ElementoLista(null,listaProductoNombre.get(i),"Cantidad: "+this.listaProductoCantidad.get(i),null,temp);
-			elementoListaDao.insert(elemento);
+
 			lista.add(listaProductoNombre.get(i)+"  Cantidad:"+this.listaProductoCantidad.get(i));
 		    PedidoLinea pedidoLinea = new PedidoLinea();
 		    pedidoLinea.setCantidad(listaProductoCantidad.get(i));
 		    pedidoLinea.setIdProducto(listaProductoElegido.get(i));
 		    pedidoLinea.setIdPedido(idpedido);
 		    pedidoLinea.setMontoLinea(obtenerPrecio(pedidoLinea.getIdProducto())*pedidoLinea.getCantidad());
+			long temp=0;
+			temp=temp+listaProductoElegido.get(i);
+			ElementoLista elemento = new ElementoLista(null,listaProductoNombre.get(i),"Cantidad: "+this.listaProductoCantidad.get(i),"SubTotal:"+pedidoLinea.getMontoLinea(),temp);
+			elementoListaDao.insert(elemento);
 		    this.listaPedidoLinea.add(pedidoLinea);
 		}
+		procesaPedido();
 		cursorElementoLista.requery();
 		return lista;
 	}
@@ -184,14 +186,16 @@ public class CrearPedido extends ListActivity{
         daoPedido = new DAOPedido();
         Pedido pedido= new Pedido();
         pedido.setIdCliente(idcliente);
-        procesaPedido();//obtiene el monto Total
+        //procesaPedido();//obtiene el monto Total
         pedido.setMontoTotal(montoTotal);
         idpedido=daoPedido.registrarPedido(pedido);
 	}
 	private void procesaPedido() {//acumulador del monto Total
+		montoTotal=0.0;
         for(int i=0;i<listaPedidoLinea.size();i++){
         	montoTotal=montoTotal+listaPedidoLinea.get(i).getMontoLinea();
         }
+        this.txt_ruc.setText("S/. "+montoTotal);
 		// TODO Auto-generated method stub
 		
 	}
@@ -215,7 +219,7 @@ public class CrearPedido extends ListActivity{
 	public void onRestart(){
 //		Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
 		super.onRestart();
-		//setTitle("Volviendo");
+		//setTitle("Volviendo");		
 		List<String> lista =null;
 		List<String> listaGenerica =null; 
 		lista= this.ConvierteAlVolver(listaGenerica);
