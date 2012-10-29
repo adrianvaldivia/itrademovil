@@ -14,6 +14,7 @@ class Reporte_model extends CI_Model {
 		$this->table_categoria = 'Categoria';
 		$this->table_linea_pedido = 'Linea_Pedido';
 		$this->table_producto = 'Producto';
+		$this->table_estado_pedido = 'estadopedido';
     }	
 	
 	
@@ -83,7 +84,7 @@ class Reporte_model extends CI_Model {
 				$this->db->select($this->table_ubigeo.".Pais as nombre");								
 				break;
 			case 2://departamento							
-				$this->db->select($this->table_ubigeo.".Deparmento as nombre");						
+				$this->db->select($this->table_ubigeo.".Departamento as nombre");						
 				break;
 			case 3://distrito		
 				$this->db->select($this->table_ubigeo.".Distrito as nombre");								
@@ -279,6 +280,196 @@ class Reporte_model extends CI_Model {
 			
 		$query = $this->db->get();	
 		//echo $this->db->last_query();
+		return $query->result();
+		
+	}
+	
+	public function zonas_resumido_sinc($anho,$idjerarquia,$idubigeo,$id){				
+		switch($idjerarquia){
+		
+		//YA NO SE DEVOLVERAN SUMAS ACUMULADAS SINO CADA UNO DE LOS PEDIDOS POR SEPARADO
+			case 1://pais
+			//select date_format(now(),'%M')as Monthname;
+				//$this->db->select("date_format(now(),'%M') as Monthname");
+				//$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_pedido.".FechaPedido");				
+				$this->db->select($this->table_ubigeo.".Departamento");				
+				$this->db->select($this->table_pedido.".MontoTotalPedido");
+				$this->db->select($this->table_pedido.".MontoTotalCobrado");
+				break;
+			case 2://departamento	
+				//$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_ubigeo.".Distrito");				
+				$this->db->select($this->table_pedido.".MontoTotalPedido");
+					$this->db->select($this->table_pedido.".MontoTotalCobrado");
+				break;
+			case 3://distrito
+				//$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_pedido.".FechaPedido");				
+				$this->db->select($this->table_ubigeo.".Zona");				
+				$this->db->select($this->table_pedido.".MontoTotalPedido");	
+				$this->db->select($this->table_pedido.".MontoTotalCobrado");				
+				break;
+		}		
+			
+		//$str="month(".$this->table_pedido.".FechaPedido) >= MONTH( DATE_SUB( CURDATE( ) , INTERVAL 7 MONTH ) )";
+		//RELACIONES
+		$this->db->from($this->table_pedido);
+						//TABLA JOIN, RELACION//
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
+		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
+		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");				
+											
+		switch($idjerarquia){
+			case 1:				
+				$this->db->where($this->table_ubigeo.".Pais", $id);
+				break;
+			case 2:				
+				$this->db->where($this->table_ubigeo.".Departamento", $id);
+				break;
+			case 3:				
+				$this->db->where($this->table_ubigeo.".Distrito", $id);
+				break;
+		}			
+		
+		//trabajo del arrego $anho
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		//$str="anho(".$this->table_pedido.".FechaPedido) = ".$anho;		
+		$this->db->where($str);//UBIGEO
+		//$dates="(DATEDIFF(".$this->table_atencion_omega.".fecAtencion,".$this->table_atencion.".fecha)=0)";
+		//$this->db->where($dates);
+		//$this->//FECHA			
+		
+		//SE COMENTA EL GROUP BY PORKE YA NO SE VA A AGRUPAR POR DEPS, DIST O ZONAS
+		/*
+		switch($idjerarquia){
+			case 1://pais
+				$this->db->group_by($this->table_ubigeo.".Departamento");				
+				break;
+			case 2://departamento
+							
+				$this->db->group_by($this->table_ubigeo.".Distrito");	
+				break;
+			case 3://distrito							
+				$this->db->group_by($this->table_ubigeo.".Zona");	
+				break;
+		}*/
+		
+		$query = $this->db->get();	
+		echo $this->db->last_query();
+		return $query->result();
+		
+	}
+	
+	public function circulo_resumido_sinc($anho,$idjerarquia,$idubigeo,$id){				
+		
+		//SELECTS
+		switch($idjerarquia){
+		
+		//YA NO SE DEVOLVERAN SUMAS ACUMULADAS SINO CADA UNO DE LOS PEDIDOS POR SEPARADO
+			case 1://pais
+			//select date_format(now(),'%M')as Monthname;
+				//$this->db->select("date_format(now(),'%M') as Monthname");
+				//$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_pedido.".FechaPedido");				
+				$this->db->select($this->table_ubigeo.".Departamento");				
+				$this->db->select_sum($this->table_pedido.".MontoTotalPedido");						
+				$this->db->select_sum($this->table_meta.".Monto");
+				break;
+			case 2://departamento	
+				//$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_ubigeo.".Distrito");				
+				$this->db->select_sum($this->table_pedido.".MontoTotalPedido");						
+				$this->db->select_sum($this->table_meta.".Monto");
+				break;
+			case 3://distrito
+				//$this->db->select($this->table_pedido.".FechaPedido");
+				$this->db->select($this->table_pedido.".FechaPedido");				
+				$this->db->select($this->table_ubigeo.".Zona");				
+				$this->db->select_sum($this->table_pedido.".MontoTotalPedido");						
+				$this->db->select_sum($this->table_meta.".Monto");				
+				break;
+		}		
+		
+						
+		//RELACIONES
+		$this->db->from($this->table_pedido);
+						//TABLA JOIN, RELACION//
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
+		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
+		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");	
+		/*$this->db->join($this->table_departamento,$this->table_ubigeo.".IdDepartamento =".$this->table_departamento.".IdDepartamento");
+		$this->db->join($this->table_distrito,$this->table_ubigeo.".IdDistrito =".$this->table_distrito.".IdDistrito");
+		$this->db->join($this->table_zona,$this->table_ubigeo.".IdZona =".$this->table_zona.".IdZona");*/
+		$this->db->join($this->table_meta,$this->table_usuario.".IdUsuario =".$this->table_meta.".IdUsuario");
+												
+		//WHERES
+		
+		switch($idjerarquia){
+			case 1:				
+				$this->db->where($this->table_ubigeo.".Pais", $id);
+				break;
+			case 2:				
+				$this->db->where($this->table_ubigeo.".Departamento", $id);
+				break;
+			case 3:				
+				$this->db->where($this->table_ubigeo.".Distrito", $id);
+				break;
+		}	
+
+			
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		//$str="anho(".$this->table_pedido.".FechaPedido) = ".$anho;		
+		$this->db->where($str);//UBIGEO
+		
+		
+		
+		//GROUP BY
+		//$this->db->group_by($this->table_ubigeo.".Zona");				
+		
+						
+		$query = $this->db->get();	
+		echo $this->db->last_query();
 		return $query->result();
 		
 	}
