@@ -28,7 +28,7 @@
 		            android:layout_gravity="center_vertical"
 		            android:layout_marginLeft="5dip"
 		            android:background="@color/azul_2"
-		            android:text="iTrade"
+		            android:text="iTrade - Productos"
 		            android:textColor="@color/grisClaro"
 		            android:textSize="20dip" />
 

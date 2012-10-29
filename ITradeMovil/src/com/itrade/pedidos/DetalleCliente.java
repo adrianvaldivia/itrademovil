@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,6 +31,8 @@ public class DetalleCliente extends ListActivity{
 
 	private Button button_verpedidos;
 	private Button button_crearpedidos;
+	private TextView txt_nombre;
+	private TextView txt_ruc;
 	public Bundle bundle;// = getIntent().getExtras();
 	public String nombre="";
 	public String apellidos="";
@@ -65,7 +68,7 @@ public class DetalleCliente extends ListActivity{
         String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
         String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-        int[] toElementoLista = { android.R.id.text1, android.R.id.text2 };
+        int[] toElementoLista = { R.id.text1, R.id.text2 };
         adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);    
         //fin green Day de Elementos Lista
@@ -85,16 +88,13 @@ public class DetalleCliente extends ListActivity{
         //daoCliente = new DAOCliente();
         button_verpedidos = (Button) findViewById(R.id.buttonverpedidos);
         button_crearpedidos = (Button) findViewById(R.id.buttoncrearpedido);
+        txt_nombre = (TextView) findViewById(R.id.txtnombrecliente);
+        txt_ruc = (TextView) findViewById(R.id.txtruccliente);
 
         List<String> listaCliente =null;  
 //        listaCliente = daoCliente.getCliente(0); //obtiene los clientes
-
-        List<String> lista =null;
-        
-        lista= this.Convierte(listaCliente);
-//        ListView lv = getListView(); 
-//        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
-        //setListAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista)); 
+               
+        Convierte(listaCliente);
 
 	    button_verpedidos.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -134,28 +134,26 @@ public class DetalleCliente extends ListActivity{
 		
 	}
 
-	@Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-     // TODO Auto-generated method stub
-     //super.onListItemClick(l, v, position, id);
-     String selection = l.getItemAtPosition(position).toString();
-     //Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
-    }    
+//	@Override
+//    protected void onListItemClick(ListView l, View v, int position, long id) {
+//     // TODO Auto-generated method stub
+//     //super.onListItemClick(l, v, position, id);
+//     String selection = l.getItemAtPosition(position).toString();
+//     //Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
+//    }    
     
-	public List<String> Convierte(List<String> lis){
+	public void Convierte(List<String> lis){
 		elementoListaDao.deleteAll();
-		List<String> lista=new ArrayList<String>();
-		lista.add("Nombre: "+this.nombre);
-		lista.add("RUC: "+this.apellidos);
-		long i=0;
-		ElementoLista elemento = new ElementoLista(null,"Razon Social:",this.nombre,null,i);
+		long i=1;
+		this.txt_nombre.setText(this.nombre);
+		this.txt_ruc.setText("RUC: "+this.apellidos);
+		ElementoLista elemento = new ElementoLista(null,"Direccion:","HardCoded",null,i);
 		elementoListaDao.insert(elemento);
-		
-		ElementoLista elemento2 = new ElementoLista(null,"RUC:",this.apellidos,null,i);
+		i++;
+		ElementoLista elemento2 = new ElementoLista(null,"Credito Disponible:","HardCoded",null,i);
 		elementoListaDao.insert(elemento2);
 		cursorElementoLista.requery();
 //		lista.add("ID: "+this.idcliente);
-		return lista;
 	}
 	@Override
 	protected void onDestroy() {

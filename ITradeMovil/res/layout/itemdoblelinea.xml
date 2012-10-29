@@ -40,14 +40,14 @@
 	    android:layout_below="@id/text1"
 	    android:layout_toLeftOf="@+id/text3"
 	    android:textAppearance="?android:attr/textAppearanceSmall"
-	    android:textColor="@color/OrangeRed" />
+	    android:textColor="@color/Black" />
 	
 	<TextView android:id="@+id/text3"
 		android:layout_width="100dip"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/text1"
         android:layout_alignRight="@id/text1"
-        android:textColor="@color/Black"
+        android:textColor="@color/OrangeRed"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 	/>
 

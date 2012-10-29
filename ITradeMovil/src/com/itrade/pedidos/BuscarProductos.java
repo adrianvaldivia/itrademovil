@@ -223,8 +223,17 @@ public class BuscarProductos extends ListActivity{
 	}
 
 	public void onButtonInPopup (View target) {
-	    String strCantidad = textView_Cantidad.getText().toString();	    
-	    cantidad = Integer.parseInt(strCantidad);	
+	    String strCantidad = textView_Cantidad.getText().toString();
+	    if(strCantidad!=null){
+	    	if (strCantidad.length()>0) {
+	    		cantidad = Integer.parseInt(strCantidad);
+	    	}
+	    	else
+	    		cantidad=0;
+	    }
+	    else
+	    	cantidad=0;
+	    	
 	    Long idProductoAux=producto.getId();
 	    int intAux= safeLongToInt(idProductoAux);
 	    PedidoLinea pedidoLinea = new PedidoLinea();
