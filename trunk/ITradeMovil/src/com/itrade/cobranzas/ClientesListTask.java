@@ -17,6 +17,9 @@ import com.itrade.pedidos.Login;
 import com.itrade.pedidos.MenuLista;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,11 +41,14 @@ public class ClientesListTask extends Activity {
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
+	final Context context = this;
 	private ExpandableListAdapter adapter;
 	public Bundle bundle;
 	public String nombre="";
 	public String apellidos="";
 	public String idusuario;
+	public String idpedido;
+	
 	private ImageView btnClientes;
     /** Called when the activity is first created. */
     @Override
@@ -83,9 +89,57 @@ public class ClientesListTask extends Activity {
         });
                
         listView.setOnItemLongClickListener(new OnItemLongClickListener() {        				
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long id) {
 				// TODO Auto-generated method stub
-				Toast.makeText(getBaseContext(), "item="+arg2,Toast.LENGTH_LONG).show();
+				Pedido pedido= new Pedido();
+				int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+				int childPosition = ExpandableListView.getPackedPositionChild(id);
+				if (childPosition>=0){
+					pedido=(Pedido)adapter.getChild(groupPosition, childPosition);
+//					
+					idpedido= pedido.getIdPedido().toString();
+//					
+//					Gson gson = new Gson();  
+//					ArrayList<Pedido> lista = new ArrayList<Pedido>();
+//					lista = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
+										
+//					Pedido pedidito = lista.get(0);
+					String titulo="Cancelar pedido"; 
+					String mensaje="¿Deseas cancelar el pedido N°: "+ idpedido + " ?"; 
+					
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+					alertDialogBuilder.setTitle(titulo);		 			
+					alertDialogBuilder
+							.setMessage(mensaje)
+							.setCancelable(true)
+							.setNegativeButton("Cancelar", null)
+							.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {														
+									dialog.cancel();
+									
+									Syncronizar sync = new Syncronizar(ClientesListTask.this);
+									List<NameValuePair> param = new ArrayList<NameValuePair>();
+									param.add(new BasicNameValuePair("idpedido", idpedido));
+									String route2="/ws/pedido/cancelar_pedido/";
+									sync.conexion(param,route2);
+									try {
+										sync.getHilo().join();
+									} catch (InterruptedException e) {
+										  // TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									
+									
+									Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
+									intent.putExtra("idempleado", idusuario);
+									startActivity(intent);
+								}
+					});		
+					AlertDialog alertDialog = alertDialogBuilder.create();		 
+					alertDialog.show();	
+					
+//					Toast.makeText(getBaseContext(), "item="+pedido.getIdPedido(),Toast.LENGTH_LONG).show();
+				}
 				return true;
 			}			
         });
