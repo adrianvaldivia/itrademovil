@@ -42,8 +42,8 @@ public class MenuLista extends ListActivity{
         button_salirmenu = (Button) findViewById(R.id.salirmenu);
         
         ListView lv = getListView();
-        ArrayList<ItemMenu> itemsCompra = obtenerItems();        
-        ItemMenuAdapter adapter = new ItemMenuAdapter(this, itemsCompra);        
+        ArrayList<ItemMenu> items = obtenerItems();        
+        ItemMenuAdapter adapter = new ItemMenuAdapter(this, items);        
         lv.setAdapter(adapter);
 
 //        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));

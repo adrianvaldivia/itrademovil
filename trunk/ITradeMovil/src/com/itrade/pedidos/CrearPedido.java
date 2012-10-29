@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,6 +31,8 @@ public class CrearPedido extends ListActivity{
 	DAOPedido daoPedido =null;
 	private Button button_agregarproducto;
 	private Button button_registrarpedido;
+	private TextView txt_nombre;
+	private TextView txt_ruc;
 	public Bundle bundle;
 	public int idpedido=0;
 	public String nombre="";
@@ -77,6 +80,8 @@ public class CrearPedido extends ListActivity{
 
         button_agregarproducto = (Button) findViewById(R.id.buttonagregarproducto);
         button_registrarpedido = (Button) findViewById(R.id.buttonregistrarpedido);
+        txt_nombre = (TextView) findViewById(R.id.txtnombrecliente);
+        txt_ruc = (TextView) findViewById(R.id.txtruccliente);
 
         List<String> listaGenerica =null;  
 
@@ -117,17 +122,19 @@ public class CrearPedido extends ListActivity{
     }    
     
 	public List<String> Convierte(List<String> lis){
-		List<String> lista=new ArrayList<String>();;
-		lista.add("Nombre: "+this.nombre);
-		lista.add("RUC: "+this.apellidos);
-		lista.add("Lista de Productos:");
+		List<String> lista=new ArrayList<String>();
+		this.txt_nombre.setText(this.nombre);
+		this.txt_ruc.setText("RUC: "+this.apellidos);
+//		lista.add("Nombre: "+this.nombre);
+//		lista.add("RUC: "+this.apellidos);
+//		lista.add("Lista de Productos:");
 		return lista;
 	}
 	public List<String> ConvierteAlVolver(List<String> lis){
 		List<String> lista=new ArrayList<String>();;
-		lista.add("Nombre: "+this.nombre);
-		lista.add("RUC: "+this.apellidos);
-		lista.add("Lista de Productos:");
+//		lista.add("Nombre: "+this.nombre);
+//		lista.add("RUC: "+this.apellidos);
+//		lista.add("Lista de Productos:");
 		for(int i=0;i<listaProductoNombre.size();i++){
 			lista.add(listaProductoNombre.get(i)+"  Cantidad:"+this.listaProductoCantidad.get(i));
 		    PedidoLinea pedidoLinea = new PedidoLinea();
