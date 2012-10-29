@@ -149,13 +149,13 @@ class Cliente_model extends CI_Model {
 				if ($idlinea!=0){
 					return $idlinea;
 				}else{
-					return "0";
+					return 0;
 				}
 			}else{
-				return "0";
+				return 0;
 			}
 		}else{
-			return "0";
+			return 0;
 		}
 			
 	}
