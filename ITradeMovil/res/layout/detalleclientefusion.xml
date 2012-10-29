@@ -127,16 +127,17 @@
 		        android:background="@color/azul_2" >
 
 		        <TextView
-		            android:id="@+id/txtItrade"
+		            android:id="@+id/txtListaInformacion2"
 		            android:layout_width="246dp"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="center_vertical"
 		            android:layout_marginLeft="5dip"
-		            android:layout_marginBottom="5dip"
+		            android:layout_marginTop="3dip"
+		            android:layout_marginBottom="3dip"
 		            android:background="@color/azul_2"
 		            android:text="Informacion Adicional"
 		            android:textColor="@color/grisClaro"
-		            android:textSize="20dip" />
+		            android:textSize="15dip" />
 
 		    </LinearLayout>
 		</LinearLayout>
