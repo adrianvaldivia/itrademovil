@@ -41,17 +41,6 @@
 		    </LinearLayout>
 
 		    <LinearLayout
-		        android:layout_width="2dp"
-		        android:layout_height="wrap_content"
-		        android:orientation="vertical" >
-
-		        <TextView
-		            android:id="@+id/textView1"
-		            android:layout_width="2dp"
-		            android:layout_height="2dp" />
-		    </LinearLayout>
-
-		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="48dp"
 		        android:background="@color/azul_2" >
@@ -130,19 +119,21 @@
 		    </LinearLayout>
 		    <LinearLayout
 		        android:layout_width="match_parent"
-		        android:layout_height="25dp"
+		        android:layout_height="wrap_content"
 		        android:background="@color/azul_2" >
 
 		        <TextView
-		            android:id="@+id/txtItrade"
+		            android:id="@+id/txtListaProductos2"
 		            android:layout_width="246dp"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="center_vertical"
 		            android:layout_marginLeft="5dip"
+					android:layout_marginTop="3dip"
+		            android:layout_marginBottom="3dip"
 		            android:background="@color/azul_2"
 		            android:text="Lista de Productos"
 		            android:textColor="@color/grisClaro"
-		            android:textSize="20dip" />
+		            android:textSize="15dip" />
 
 		    </LinearLayout>
 		</LinearLayout>>

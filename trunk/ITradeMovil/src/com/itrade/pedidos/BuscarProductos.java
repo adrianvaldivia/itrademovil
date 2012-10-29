@@ -58,6 +58,7 @@ public class BuscarProductos extends ListActivity{
 	ArrayList <Integer> listaProductoCantidad= new ArrayList<Integer>();//arreglo de cantidades
 	ArrayList <String> listaProductoNombre= new ArrayList<String>();//lista de arreglo de nombres
 	Producto producto= new Producto();
+	long idElemento;
 	public EditText textView_Cantidad;
 	public int idpedido;
 	Spinner spinner_categoria;
@@ -178,6 +179,7 @@ public class BuscarProductos extends ListActivity{
 
      this.encuentraProducto(id);
      if (boolVer==1){
+    	 
     	 // Inicio del popup
     	 LayoutInflater inflater = (LayoutInflater)
          this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -205,7 +207,7 @@ public class BuscarProductos extends ListActivity{
 //			}
 //		}
 		ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
-		
+		idElemento=elementoAux.getId();
 		producto=productoDao.loadByRowId(elementoAux.getIdElemento());
 	}
 	public void PreparaArreglos(){		
@@ -224,9 +226,13 @@ public class BuscarProductos extends ListActivity{
 
 	public void onButtonInPopup (View target) {
 	    String strCantidad = textView_Cantidad.getText().toString();
+	    Long idProductoAux=producto.getId();
+	    int intAux= safeLongToInt(idProductoAux);//idProducto
 	    if(strCantidad!=null){
 	    	if (strCantidad.length()>0) {
 	    		cantidad = Integer.parseInt(strCantidad);
+	    		registraCantidadLista();
+	    		chequeaProductoRepetido(intAux);
 	    	}
 	    	else
 	    		cantidad=0;
@@ -234,8 +240,6 @@ public class BuscarProductos extends ListActivity{
 	    else
 	    	cantidad=0;
 	    	
-	    Long idProductoAux=producto.getId();
-	    int intAux= safeLongToInt(idProductoAux);
 	    PedidoLinea pedidoLinea = new PedidoLinea();
 	    pedidoLinea.setCantidad(cantidad);
 	    pedidoLinea.setIdProducto(intAux);
@@ -245,6 +249,17 @@ public class BuscarProductos extends ListActivity{
 	    //Toast.makeText(this, "C:"+cantidad+"Pr:"+producto.getIdproducto()+"Pe:"+idpedido, Toast.LENGTH_LONG).show();
 	    m_pw.dismiss();
 	}
+
+
+	private void registraCantidadLista() {
+		// TODO Auto-generated method stub
+		ElementoLista elementoAux=  elementoListaDao.loadByRowId(idElemento);
+		elementoAux.setTerciario("Cantidad: "+cantidad);
+		this.elementoListaDao.deleteByKey(this.idElemento);
+		elementoListaDao.insert(elementoAux);
+		cursorElementoLista.requery();	
+	}
+
 	public void onButtonCancelarPopup (View target) {
 	    //Toast.makeText(this, "C:"+cantidad+"Pr:"+producto.getIdproducto()+"Pe:"+idpedido, Toast.LENGTH_LONG).show();
 	    m_pw.dismiss();
@@ -305,7 +320,12 @@ public class BuscarProductos extends ListActivity{
             elementoListaDao.deleteAll();
     	
     		for(int i=0;i<productosAux.size();i++){
-    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),"Monse",productosAux.get(i).getId());
+    			String strCantidad="";
+    			int cantidadAux=encuentraElegido(productosAux.get(i).getId());
+    			if (cantidadAux!=-1){
+    				strCantidad="Cantidad: "+cantidadAux;
+    			}
+    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),strCantidad,productosAux.get(i).getId());
     			elementoListaDao.insert(elemento);
     	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
     		}
@@ -313,7 +333,38 @@ public class BuscarProductos extends ListActivity{
     	}
 	}
 	
-    private void guardaListaOriginal() {
+    private int encuentraElegido(Long id) {
+    	int resul=-1;
+    	int idAux=safeLongToInt(id);
+    	for(int i=0;i<listaPedidoLinea.size();i++){
+    		if (listaPedidoLinea.get(i).getIdProducto()==idAux){
+    			resul=listaPedidoLinea.get(i).getCantidad();
+    			break;
+    		}
+    	}
+    	
+		// TODO Auto-generated method stub
+		return resul;
+	}
+	private void chequeaProductoRepetido(int idProductoAux) {
+    	int resul=-1;
+    	for(int i=0;i<listaPedidoLinea.size();i++){
+    		
+    		if (listaPedidoLinea.get(i).getIdProducto()==idProductoAux){
+    			resul=i;
+    			break;
+    		}
+    	}
+    	if (resul!=-1){
+    		listaPedidoLinea.remove(resul);
+    	}
+    		
+    	
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void guardaListaOriginal() {
 		this.listaProductoOriginal=productoDao.loadAll();
 		
 	}
@@ -323,7 +374,7 @@ public class BuscarProductos extends ListActivity{
 		for(int i=0;i<listaProductoOriginal.size();i++){
 
 //			Producto productoAux = new Producto(null,listaProductoOriginal.get(i).getDescripcion(),listaProductoOriginal.get(i).getPrecio(),listaProductoOriginal.get(i).getStock(),listaProductoOriginal.get(i).getActivo(),listaProductoOriginal.get(i).getIdCategoria(),listaProductoOriginal.get(i).getIdMarca());
-			ElementoLista elemento = new ElementoLista(null,listaProductoOriginal.get(i).getDescripcion(),"Precio: "+listaProductoOriginal.get(i).getPrecio(),"Monse",listaProductoOriginal.get(i).getId());
+			ElementoLista elemento = new ElementoLista(null,listaProductoOriginal.get(i).getDescripcion(),"Precio: "+listaProductoOriginal.get(i).getPrecio(),null,listaProductoOriginal.get(i).getId());
 			elementoListaDao.insert(elemento);
 //			productoDao.insert(productoAux);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
@@ -343,7 +394,7 @@ public class BuscarProductos extends ListActivity{
 		for(int i=0;i<listaProducto.size();i++){
 
 			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());
-			ElementoLista elemento = new ElementoLista(null,listaProducto.get(i).getDescripcion(),"Precio: "+listaProducto.get(i).getPrecio(),"Monse",listaProducto.get(i).getId());
+			ElementoLista elemento = new ElementoLista(null,listaProducto.get(i).getDescripcion(),"Precio: "+listaProducto.get(i).getPrecio(),null,listaProducto.get(i).getId());
 			elementoListaDao.insert(elemento);
 			productoDao.insert(productoAux);			
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());

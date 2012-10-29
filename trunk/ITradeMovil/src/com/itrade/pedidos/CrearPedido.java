@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
+import com.itrade.model.ElementoLista;
+import com.itrade.model.ElementoListaDao;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoLinea;
 import com.itrade.model.Producto;
@@ -16,6 +18,7 @@ import com.itrade.db.DAOPedido;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +58,9 @@ public class CrearPedido extends ListActivity{
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private ProductoDao productoDao;
+    private ElementoListaDao elementoListaDao;
+    private Cursor cursorElementoLista;
+    SimpleCursorAdapter adapterElementoLista;
 	
 	
     @Override
@@ -67,7 +74,20 @@ public class CrearPedido extends ListActivity{
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         productoDao = daoSession.getProductoDao();
-      //Fin configuracion green dao
+        elementoListaDao = daoSession.getElementoListaDao();
+        elementoListaDao.deleteAll();
+        //Fin configuracion green dao
+        //Inicio green Dao Elementos Lista
+        String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
+        String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
+        cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
+        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
+        int[] toElementoLista = { R.id.text1, R.id.text2 };
+        adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
+        		toElementoLista);    
+        //fin green Day de Elementos Lista
+        
+        setListAdapter(adapterElementoLista);
         
         setContentView(R.layout.crearpedidofusion);
 	    bundle = getIntent().getExtras();	
@@ -88,9 +108,9 @@ public class CrearPedido extends ListActivity{
         List<String> lista =null;
         
         lista= this.Convierte(listaGenerica);
-        ListView lv = getListView(); 
-        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
-        //setListAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista)); 
+//        ListView lv = getListView(); 
+//        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
+
 	    button_agregarproducto.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 //				Toast.makeText(CrearPedido.this, "pruebaa", Toast.LENGTH_LONG).show();
@@ -113,13 +133,13 @@ public class CrearPedido extends ListActivity{
 
     }
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-     // TODO Auto-generated method stub
-     //super.onListItemClick(l, v, position, id);
-     String selection = l.getItemAtPosition(position).toString();
-     Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
-    }    
+//    @Override
+//    protected void onListItemClick(ListView l, View v, int position, long id) {
+//     // TODO Auto-generated method stub
+//     //super.onListItemClick(l, v, position, id);
+//     String selection = l.getItemAtPosition(position).toString();
+//     Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
+//    }    
     
 	public List<String> Convierte(List<String> lis){
 		List<String> lista=new ArrayList<String>();
@@ -131,11 +151,16 @@ public class CrearPedido extends ListActivity{
 		return lista;
 	}
 	public List<String> ConvierteAlVolver(List<String> lis){
-		List<String> lista=new ArrayList<String>();;
+		List<String> lista=new ArrayList<String>();
+		elementoListaDao.deleteAll();
 //		lista.add("Nombre: "+this.nombre);
 //		lista.add("RUC: "+this.apellidos);
 //		lista.add("Lista de Productos:");
 		for(int i=0;i<listaProductoNombre.size();i++){
+			long temp=0;
+			temp=temp+listaProductoElegido.get(i);
+			ElementoLista elemento = new ElementoLista(null,listaProductoNombre.get(i),"Cantidad: "+this.listaProductoCantidad.get(i),null,temp);
+			elementoListaDao.insert(elemento);
 			lista.add(listaProductoNombre.get(i)+"  Cantidad:"+this.listaProductoCantidad.get(i));
 		    PedidoLinea pedidoLinea = new PedidoLinea();
 		    pedidoLinea.setCantidad(listaProductoCantidad.get(i));
@@ -144,6 +169,7 @@ public class CrearPedido extends ListActivity{
 		    pedidoLinea.setMontoLinea(obtenerPrecio(pedidoLinea.getIdProducto())*pedidoLinea.getCantidad());
 		    this.listaPedidoLinea.add(pedidoLinea);
 		}
+		cursorElementoLista.requery();
 		return lista;
 	}
 	private Double obtenerPrecio(Integer idProducto) {
@@ -193,8 +219,8 @@ public class CrearPedido extends ListActivity{
 		List<String> lista =null;
 		List<String> listaGenerica =null; 
 		lista= this.ConvierteAlVolver(listaGenerica);
-        ListView lv = getListView(); 
-        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
+//        ListView lv = getListView(); 
+//        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
  
 	}
  
