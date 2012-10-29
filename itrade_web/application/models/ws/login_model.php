@@ -18,7 +18,10 @@ class Login_model extends CI_Model {
 	}	
 	function get_by_username($username,$password){			
 		/*Relacion entre las tablas*/		
-		$this->db->select($this->table_usuario.".IdUsuario, ".$this->table_usuario.".Nombre as Username, ".$this->table_persona.".Nombre , ".$this->table_persona.".ApePaterno, ".$this->table_persona.".ApeMaterno, ".$this->table_usuario.".IdPerfil");
+		$this->db->select($this->table_usuario.".IdUsuario, ".
+		$this->table_usuario.".Nombre as Username, ".$this->table_persona.".Nombre , ".
+		$this->table_persona.".ApePaterno, ".$this->table_persona.".ApeMaterno, ".
+		$this->table_usuario.".IdPerfil, ".$this->table_usuario.".IdUbigeo, ".$this->table_usuario.".IdJerarquia");
 		$this->db->from($this->table_persona);
 		$this->db->join($this->table_usuario,$this->table_usuario.".IdPersona =".$this->table_persona.".IdPersona");
 		/*hace el match con los parametros*/
