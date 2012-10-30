@@ -103,6 +103,17 @@ class Pedido extends CI_Controller {
 			$result=$this->Payment_model->cancelar_pedido($idpedido_w);
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}
-	}	
+	}
+	public function ultimos_pedidos($idvendedor_w){
+		$idvendedor=$this->input->post('idvendedor');	
+		if (isset($idvendedor)&& $idvendedor!= "" ){			
+			$result=$this->Payment_model->ultimos_pedidos($idvendedor);	
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
+		}		
+		if (isset($idvendedor_w)&& $idvendedor_w!=""  ){
+			$result=$this->Payment_model->ultimos_pedidos($idvendedor_w);
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+		}	
+	}
 }
 
