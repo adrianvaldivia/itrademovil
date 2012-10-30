@@ -520,6 +520,21 @@ class Reporte_model extends CI_Model {
 		
 	}
 	
-	
+	public function reporte_mes($param){	
+		$query = $this->db->query("
+		SELECT MONTH(FechaPedido) AS MES,ZONA,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN 1 ELSE 0 END) AS CANTPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		FROM Pedido A, Cliente B, Usuario C, Ubigeo D
+		WHERE A.IdCliente=B.IdCliente AND B.IdVendedor=C.IdUsuario AND C.IdUbigeo=D.IdUbigeo
+		AND LEFT(A.FechaPedido+0,6)='".$param."'
+		GROUP BY MONTH(FechaPedido) , ZONA
+		");
+		return $query->result();
+	}
 }
 ?>
