@@ -138,6 +138,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                	buscarCliente();
                 	imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
                     return true;
                 }
@@ -181,7 +182,7 @@ int debug=0;
 debug++;
      this.encuentraCliente(id);
      int temp=cliente.getIdCliente();
-     //Toast.makeText(this, "IdCliente:"+cliente.getId(), Toast.LENGTH_LONG).show();
+//     Toast.makeText(this, "IdCliente: "+temp, Toast.LENGTH_LONG).show();
      Intent intent = new Intent(BuscarClientesGreenDao.this, DetalleCliente.class);
      intent.putExtra("nombre", cliente.getRazon_Social());
      intent.putExtra("apellidos", cliente.getRUC());
@@ -193,7 +194,7 @@ debug++;
     
 	private void encuentraCliente(long id) {
 		ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
-		cliente=clienteDao.loadByRowId(elementoAux.getId());
+		cliente=clienteDao.loadByRowId(elementoAux.getIdElemento());
 	}
 
 	@Override
@@ -237,7 +238,7 @@ debug++;
 					listaCliente.get(i).getActivo());
 	        clienteDao.insert(cliente2);
 	        long temp=0;
-	        temp=temp+listaCliente.get(i).getIdCliente();
+	        temp=temp+listaCliente.get(i).getId();
 			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
@@ -257,8 +258,6 @@ debug++;
 		elementoListaDao.deleteAll();
         
 		for(int i=0;i<clientesAux.size();i++){
-//			x=clientesAux.get(i).getLatitud();
-//			y=clientesAux.get(i).getLongitud();
 			ElementoLista elemento = new ElementoLista(null,clientesAux.get(i).getRazon_Social(),"RUC: "+clientesAux.get(i).getRUC(),null,clientesAux.get(i).getId());
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
@@ -280,7 +279,7 @@ debug++;
         
 		for(int i=0;i<listaClienteOriginal.size();i++){
 	        long temp=0;
-	        temp=temp+listaClienteOriginal.get(i).getIdCliente();
+	        temp=temp+listaClienteOriginal.get(i).getId();
 			ElementoLista elemento = new ElementoLista(null,listaClienteOriginal.get(i).getRazon_Social(),"RUC: "+listaClienteOriginal.get(i).getRUC(),null,temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
