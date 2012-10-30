@@ -218,15 +218,31 @@ public class BuscarProductos extends ListActivity{
 		}
 	}
 	private String encuentraNombreProducto(Integer idProducto) {
-		String str="";		
-		Producto productoAux=productoDao.loadByRowId(idProducto);
-		str=productoAux.getDescripcion();
+		String str="";
+		//Producto productoAux=productoDao.loadByRowId(idProducto);
+		str=str+idProducto;
+        List<Producto> productosAux = productoDao.queryBuilder()
+        		.where(Properties.IdProducto.eq(str))
+        		.orderAsc(Properties.Id).list();
+        
+        if (productosAux!=null){
+        	if(productosAux.size()>0){
+        		Producto productoTemp=productosAux.get(0);
+            	str=productoTemp.getDescripcion();//posible error	
+        	}
+        	else
+        		str="Error Nombre Prod";
+        }
+        	
+        
+        
+		
 		return str;
 	}
 
 	public void onButtonInPopup (View target) {
 	    String strCantidad = textView_Cantidad.getText().toString();
-	    Long idProductoAux=producto.getId();
+	    Long idProductoAux=producto.getIdProducto();//cambios chichan antes getId();
 	    int intAux= safeLongToInt(idProductoAux);//idProducto
 	    if(strCantidad!=null){
 	    	if (strCantidad.length()>0) {
@@ -310,8 +326,11 @@ public class BuscarProductos extends ListActivity{
 	
     private void filtrarLista(long id) {
     	recuperarOriginal();
-    	if (id!=0){
-    		String str=String.valueOf(id);
+    	if (id!=0){// cuando el Id es cero muestro todos
+//    		String str=String.valueOf(id);
+    		Categoria categoriaTemp =categoriaDao.loadByRowId(id);
+    		String str=String.valueOf(categoriaTemp.getIdCategoria());
+    		
         	
             List<Producto> productosAux = productoDao.queryBuilder()
             		.where(Properties.IdCategoria.eq(str))
@@ -330,6 +349,21 @@ public class BuscarProductos extends ListActivity{
     	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
     		}
     		cursorElementoLista.requery();	
+    	}
+    	else{    		        	
+            List<Producto> productosAux = productoDao.loadAll();
+            elementoListaDao.deleteAll();
+            
+    		for(int i=0;i<productosAux.size();i++){
+    			String strCantidad="";
+    			int cantidadAux=encuentraElegido(productosAux.get(i).getId());
+    			if (cantidadAux!=-1){//cuando la cantidad es menos uno significa que no fue encontrado
+    				strCantidad="Cantidad: "+cantidadAux;
+    			}
+    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),strCantidad,productosAux.get(i).getId());
+    			elementoListaDao.insert(elemento);
+    		}
+    		cursorElementoLista.requery();    		
     	}
 	}
 	

@@ -13,6 +13,7 @@ import com.itrade.model.Producto;
 import com.itrade.model.ProductoDao;
 import com.itrade.R;
 import com.itrade.model.DaoMaster.DevOpenHelper;
+import com.itrade.model.ProductoDao.Properties;
 import com.itrade.db.DAOPedido;
 
 
@@ -177,8 +178,15 @@ public class CrearPedido extends ListActivity{
 	private Double obtenerPrecio(Integer idProducto) {
 		// TODO Auto-generated method stubaa
 		Double precioAux=0.0;
-		Producto productoAux= this.productoDao.loadByRowId(idProducto);
-		precioAux=productoAux.getPrecio();
+//		Producto productoAux= this.productoDao.loadByRowId(idProducto);
+		String str="";
+		//Producto productoAux=productoDao.loadByRowId(idProducto);
+		str=str+idProducto;
+        List<Producto> productosAux = productoDao.queryBuilder()
+        		.where(Properties.IdProducto.eq(str))
+        		.orderAsc(Properties.Id).list();        
+        Producto productoTemp=productosAux.get(0);
+		precioAux=productoTemp.getPrecio();
 		return precioAux;
 	}
 
