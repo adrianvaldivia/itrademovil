@@ -228,6 +228,21 @@ class Reportes extends CI_Controller {
 		}					
 	}
 	
+	public function reporte_mes($param_w=""){		
+		//2012-05-10
+		$param=$this->input->post('month');	
+		/*SOLO PARA WEB*/		
+		if (isset($param_w)&& $param_w!= "" ){				
+			$result=$this->Reporte_model->reporte_mes($param_w);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($param)&& $param!= ""){				
+			$result=$this->Reporte_model->reporte_mes($param);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}			
+	}
+	
 	
 }
 
