@@ -39,8 +39,8 @@ class Clientes extends CI_Controller {
 		}
 				
 	}
-	//public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor)
-	public function registrar_prospecto()
+	public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor)
+	//public function registrar_prospecto()
 	{		
 		$ruc=$this->input->post('ruc');				
 		$razon_social=$this->input->post('razon_social');				
@@ -58,12 +58,13 @@ class Clientes extends CI_Controller {
 		if ($idcobrador!=0){			
 			if (isset($idvendedor)&& $idvendedor!=""){
 				$result=$this->Cliente_model->registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$email,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador);
-				$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+				//$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+				$this->output->set_content_type('application/json')->set_output($result);					
 			}else{
-				$this->output->set_content_type('application/json')->set_output(json_encode("0"));
+				$this->output->set_content_type('application/json')->set_output(json_encode(0));
 			}
 		}else{
-			$this->output->set_content_type('application/json')->set_output(json_encode("0"));
+			$this->output->set_content_type('application/json')->set_output(json_encode(0));
 		}
 				
 	}
