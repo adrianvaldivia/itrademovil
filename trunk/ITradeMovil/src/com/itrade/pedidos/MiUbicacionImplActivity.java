@@ -166,8 +166,8 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
             mapController = mOsmv.getController();
             //mapController.setZoom(5);//-12.071208,-77.077569
           			
-//            GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
-            GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania  
+            GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
+//            GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania  
             mapController.setCenter(gPt0);
             mapController.setZoom(13);
             //////////////////////////////////////////////////////LAYER DE RUTA

@@ -182,7 +182,7 @@ int debug=0;
 debug++;
      this.encuentraCliente(id);
      int temp=cliente.getIdCliente();
-//     Toast.makeText(this, "IdCliente: "+temp, Toast.LENGTH_LONG).show();
+//    Toast.makeText(this, "IdCliente: "+temp, Toast.LENGTH_LONG).show();
      Intent intent = new Intent(BuscarClientesGreenDao.this, DetalleCliente.class);
      intent.putExtra("nombre", cliente.getRazon_Social());
      intent.putExtra("apellidos", cliente.getRUC());
@@ -221,7 +221,7 @@ debug++;
     private void cargarBaseLocal() {
         daoCliente = new DAOCliente(this);  
         listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
         Double x;
 		Double y;
 		clienteDao.deleteAll();
@@ -238,12 +238,14 @@ debug++;
 					listaCliente.get(i).getActivo());
 	        clienteDao.insert(cliente2);
 	        long temp=0;
-	        temp=temp+listaCliente.get(i).getId();
+//	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
+	        temp=temp+i+1;//aca tambien habia error
 			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
         cursorElementoLista.requery();		
+        guardaListaOriginal();
 	}
 
 	private void buscarCliente() {
