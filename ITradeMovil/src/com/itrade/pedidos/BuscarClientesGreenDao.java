@@ -220,7 +220,7 @@ debug++;
     private void cargarBaseLocal() {
         daoCliente = new DAOCliente(this);  
         listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        listaClienteOriginal = daoCliente.getAllClientes(0); //obtiene los clientes
+        listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
         Double x;
 		Double y;
 		clienteDao.deleteAll();
