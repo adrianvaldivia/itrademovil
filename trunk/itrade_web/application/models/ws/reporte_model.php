@@ -241,6 +241,52 @@ class Reporte_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();
 		
+	}
+
+	public function circulo_resumido2($month,$idubigeo){				
+		
+		//SELECTS
+		
+		$this->db->select($this->table_ubigeo.".Zona");				
+		$this->db->select_sum($this->table_pedido.".MontoTotalPedido");						
+		$this->db->select_sum($this->table_meta.".Monto");
+						
+		//RELACIONES
+		$this->db->from($this->table_pedido);
+						//TABLA JOIN, RELACION//
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
+		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
+		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");	
+		/*$this->db->join($this->table_departamento,$this->table_ubigeo.".IdDepartamento =".$this->table_departamento.".IdDepartamento");
+		$this->db->join($this->table_distrito,$this->table_ubigeo.".IdDistrito =".$this->table_distrito.".IdDistrito");
+		$this->db->join($this->table_zona,$this->table_ubigeo.".IdZona =".$this->table_zona.".IdZona");*/
+		$this->db->join($this->table_meta,$this->table_usuario.".IdUsuario =".$this->table_meta.".IdUsuario");
+												
+				
+		//$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		//$this->db->where($str);
+		
+		//prueba
+		$str="month(".$this->table_pedido.".FechaPedido) >= MONTH( DATE_SUB( CURDATE( ) , INTERVAL 7 MONTH ) )";
+		//$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		$this->db->where($str);
+		
+		
+		//WHERE
+		/*$this->db->where($this->table_ubigeo.".Pais", $idpais);
+		$this->db->where($this->table_ubigeo.".Departamento", $iddepartamento);
+		$this->db->where($this->table_ubigeo.".Distrito", $iddistrito);*/
+		$this->db->where($this->table_ubigeo.".IdUbigeo", $idubigeo);
+		
+		
+		//GROUP BY
+		$this->db->group_by($this->table_ubigeo.".Zona");				
+		
+						
+		$query = $this->db->get();	
+		echo $this->db->last_query();
+		return $query->result();
+		
 	}	
 	
 	public function pedido_resumido_e1($month){				
