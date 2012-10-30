@@ -144,6 +144,15 @@ class Payment_model extends CI_Model {
 		$this->db->insert($this->table_pedido_linea, $data);
 		return $this->get_last_idpedido_linea();
 	}	
-	
+	public function ultimos_pedidos($idvendedor){
+		$this->db->from($this->table_pedido);
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");											
+		$this->db->where($this->table_cliente.".IdVendedor", $idvendedor);						
+		$this->db->order_by($this->table_pedido.".FechaPedido", "desc");
+		$this->db->limit(30);
+		$query = $this->db->get();		
+		//echo $this->db->last_query();		
+		return $query->result();	
+	}
 }
 ?>
