@@ -56,18 +56,6 @@ class Cobranza extends CI_Controller {
         $config['newline']="\r\n";
         $config['mailtype'] = "html";
 		
-		/*
-		$config['protocol']='smtp';
-        $config['mailpath'] = '/usr/sbin/sendmail';
-        $config['smtp_host']='mail.aniak.org';
-        $config['smtp_port']='587';
-        $config['smtp_timeout']='60';
-        $config['smtp_user']='pacifico@aniak.org';
-        $config['smtp_pass']='k?xbHJbH';
-        $config['charset']='utf-8';
-        $config['newline']="\r\n";
-        $config['mailtype'] = "html";
-		*/
         $this->email->initialize($config);
         $this->email->from('itradedp2@gmail.com', 'Itrade');
 		echo "CLIENTE MAIL: ".$cliente->Email;
@@ -82,7 +70,7 @@ class Cobranza extends CI_Controller {
                                 <br><a href='".base_url()."' target='_blank' >www.precisa.com</a>
                                 ");
 */
-		$this->email->message("Mi prueba");
+		$this->email->message("HOli!!!! de parte de ochi!!! :D");
 								
         if ($this->email->send()){
 			echo $this->email->print_debugger();
