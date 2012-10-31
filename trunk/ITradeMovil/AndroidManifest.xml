@@ -1,34 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.itrade"
-    android:versionCode="1"
-    android:versionName="1.0" >
-
-    <uses-sdk android:minSdkVersion="8" />
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />    
-	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />    
-	<uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES" />   	
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <application
-        android:icon="@drawable/mapa"
-        android:label="@string/app_name"
-        android:background="@android:color/transparent" >
-        <activity
-            android:name=".pedidos.Login"
-            android:label="@string/app_name" >
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest android:versionCode="1" android:versionName="1.0"
+    package="com.itrade" xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-sdk android:minSdkVersion="8"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+    <uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
+    <application android:background="@android:color/transparent"
+        android:icon="@drawable/mapa" android:label="@string/app_name">
+        <activity android:label="@string/app_name" android:name=".pedidos.Login">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        
         <activity             
             android:name=".pedidos.VerMapaActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -141,7 +132,8 @@
         <activity android:name=".ListaClientes"/>
         <activity android:name=".cobranzas.ClientesListTask"/>
         <activity android:name=".cobranzas.RequestDetailTask"/>
-        <activity android:name=".cobranzas.PaymentTask"/>		
+        <activity android:name=".cobranzas.PaymentTask"/>
+        <activity android:name=".cobranzas.RutaCliente"/>
     </application>
-
+    <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
 </manifest>
