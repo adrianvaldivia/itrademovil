@@ -1,20 +1,28 @@
 package com.itrade.cobranzas;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
-import org.osmdroid.views.MapView; 
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
+import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,24 +30,10 @@ import com.itrade.R;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
 
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle; 
-import android.util.Log;
-import android.widget.Toast;
-
-
-public class RutaCliente extends Activity {
+public class MapaClientes extends Activity {
 	private MapView myOpenMapView;
 	private  MapController myMapController;
-	private  String IdCliente; 
+	private  String IdVendedor; 
 	private Location loc;
 	private Geocoder geoCoder;
 	private LocationManager locationManager;
@@ -50,20 +44,19 @@ public class RutaCliente extends Activity {
 	  @Override    
 public void onCreate(Bundle savedInstanceState) {        
 	super.onCreate(savedInstanceState); 
-	setContentView(R.layout.c_ruta);        
+	setContentView(R.layout.c_mapa);    //mapa ca,biar por c_mapa    
 	Intent i = getIntent();                
 	
-	   myLocationListener = new LocationListener(){
+	   myLocationListener = new LocationListener(){		   
 		   public void onLocationChanged(Location location) {
 		    // TODO Auto-generated method stub
 		    updateLoc(location);
 		   }
-
+		   
 		   public void onProviderDisabled(String provider) {
 		    // TODO Auto-generated method stub
 		    
 		   }
-
 		   
 		   public void onProviderEnabled(String provider) {
 		    // TODO Auto-generated method stub
@@ -76,14 +69,13 @@ public void onCreate(Bundle savedInstanceState) {
 		   }
 		      
 	    };
-		
-	  IdCliente=(String)i.getSerializableExtra("idcliente");
-	  Log.d("IDCLIENTE",IdCliente);
-	  Syncronizar sync = new Syncronizar(RutaCliente.this);
+	
+	  IdVendedor=(String)i.getSerializableExtra("idempleado");
+	  Syncronizar sync = new Syncronizar(MapaClientes.this);
 		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		param.add(new BasicNameValuePair("idcliente", IdCliente));	
+		param.add(new BasicNameValuePair("idvendedor", IdVendedor));	
 			//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
-			String route="ws/clientes/get_cliente_by_id";
+			String route="ws/clientes/get_clients_by_idvendedor_p";
 		    sync.conexion(param,route);
 		    try {
 				sync.getHilo().join();			
@@ -95,15 +87,11 @@ public void onCreate(Bundle savedInstanceState) {
 		    Gson gson = new Gson();
 			ArrayList<Cliente> cliList = new ArrayList<Cliente>();							
 			cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
-			Log.d("ClienteeeEder", cliList+"jahhaha");
-		    Double Longitud = cliList.get(0).getLongitud();
-		    Double Latitud = cliList.get(0).getLatitud();
-			setTitle("I Trade - Mi Ubicacion");
-			Log.d("ClienteeeEder", "hhahahhahahhah");
+			
 			
    
 
-	myOpenMapView = (MapView) findViewById(R.id.openmapview);       
+	myOpenMapView = (MapView) findViewById(R.id.openmaptotal);       
 	myOpenMapView.setTileSource(TileSourceFactory.MAPNIK);
 	myOpenMapView.setBuiltInZoomControls(true);       
 	myMapController = myOpenMapView.getController();        
@@ -123,10 +111,18 @@ public void onCreate(Bundle savedInstanceState) {
 
 
 	
-	
-	 
+    if (cliList!= null) {
+    	for(int ii=0;ii <  cliList.size()-1;ii++){
+		Log.d("ClienteeeEder", cliList+"jahhaha");
+	    Double Longitud = cliList.get(ii).getLongitud();
+	    Double Latitud = cliList.get(ii).getLatitud();
+		setTitle("I Trade - Mi Ubicacion");
+		
+		GeoPoint geo=new GeoPoint(Latitud,Longitud);
+		anotherOverlayItemArray.add(new OverlayItem("Cliente", cliList.get(0).getNombre()+" "+cliList.get(0).getApeMaterno(), geo));}
+    }
 //	anotherOverlayItemArray.add(new OverlayItem("0, 0", "0, 0", new GeoPoint(0, 0)));
-anotherOverlayItemArray.add(new OverlayItem("Cliente", cliList.get(0).getNombre()+" "+cliList.get(0).getApeMaterno(), new GeoPoint(Latitud,Longitud)));  
+  
 	//anotherOverlayItemArray.add(new OverlayItem("Peru", "Lima", new GeoPoint(loc.getAltitude(),loc.getLongitude()))); 
 //	Log.d("Latituddd", ""+loc.getLatitude());
 
@@ -141,12 +137,14 @@ anotherOverlayItemArray.add(new OverlayItem("Cliente", cliList.get(0).getNombre(
 	anotherOverlayItemArray.add(new OverlayItem("Canada", "Canada", new GeoPoint(45.4, -75.666667))); */
 	
 	OnItemGestureListener<OverlayItem> myOnItemGestureListener = new OnItemGestureListener<OverlayItem>() {    
+		  
 		public boolean onItemLongPress(int arg0, OverlayItem arg1) {       
 			// TODO Auto-generated method stub        
 			return false;    }    
 		
+			   
 			public boolean onItemSingleTapUp(int index, OverlayItem item) {  
-				Toast.makeText( RutaCliente.this,            
+				Toast.makeText( MapaClientes.this,            
 						item.mDescription + "\n" + item.mTitle + "\n"      
 				+ item.mGeoPoint.getLatitudeE6() + " : "                
 								+ item.mGeoPoint.getLongitudeE6(),       
@@ -194,4 +192,5 @@ anotherOverlayItemArray.add(new OverlayItem("Cliente", cliList.get(0).getNombre(
 
 
 	  
+
 

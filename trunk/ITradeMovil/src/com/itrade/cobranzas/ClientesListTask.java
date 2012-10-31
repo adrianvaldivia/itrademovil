@@ -57,6 +57,7 @@ public class ClientesListTask extends Activity {
 	private ImageView btnDirectorio;
 	private ImageView btnCalendario;
 	private ImageView btnMapa;
+	private ImageView btnMapaTotal;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,7 +125,16 @@ public class ClientesListTask extends Activity {
 				startActivity(intent);
 			}
 		});		
-		
+		/*btn Mapa Clientes*/
+		btnMapaTotal= (ImageView)findViewById(R.id.btnMapa);
+		btnMapaTotal.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ClientesListTask.this, MapaClientes.class);		
+				intent.putExtra("idempleado", idusuario);				
+				startActivity(intent);
+			}
+		});	
 		
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);                       
         listView.setOnChildClickListener(new OnChildClickListener()

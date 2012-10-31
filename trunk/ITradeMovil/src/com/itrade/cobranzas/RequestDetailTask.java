@@ -102,8 +102,9 @@ public class RequestDetailTask extends Activity {
 	    		//Definido en el evento onlick    						 						
 				Intent intent = new Intent(RequestDetailTask.this, RutaCliente.class); 													
 				/*intent.putExtra("idpedido", idpedido);
-				intent.putExtra("idcliente", idcliente); 	
-				intent.putExtra("idempleado", idempleado);			*/
+				intent.putExtra("idempleado", idempleado);
+				intent.putExtra("idcliente", idcliente); */
+				intent.putExtra("idcliente", idcliente); 
 				startActivity(intent);									
 			}
 	 	});
@@ -220,7 +221,7 @@ public class RequestDetailTask extends Activity {
 		intent.putExtra("idempleado", idempleado);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);                
         SmsManager sms = SmsManager.getDefault();        
-        sms.sendTextMessage("979331334", null, "Holi Ochi!! Prueba detalle", pi, null);								
+        sms.sendTextMessage("979331334", null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								
     }
 	
 }
