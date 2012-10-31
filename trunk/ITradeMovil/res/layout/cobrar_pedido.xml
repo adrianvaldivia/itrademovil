@@ -293,15 +293,16 @@
                     android:background="@drawable/estilo_botones"
                     android:text="Pagar"
                     android:textColor="@color/grisClaro" />
-
+
                 <Button
-                    android:id="@+id/btnRuta"
+                    android:id="@+id/btnRutaPed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.11"
                     android:background="@drawable/estilo_botones"
                     android:text="Ruta"
                     android:textColor="@color/grisClaro" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
