@@ -142,6 +142,10 @@ class Pedido extends CI_Controller {
 		}
 		//$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
 	}
+	public function get_periodos(){
+		$result=$this->Payment_model->get_periodos();	
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));	
+	}
 	
 }
 
