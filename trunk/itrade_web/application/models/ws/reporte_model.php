@@ -599,6 +599,81 @@ class Reporte_model extends CI_Model {
 		
 	}
 	
+	public function circulo_resumido_sinc2($anho,$idjerarquia,$idubigeo,$id){				
+		
+	
+		//trabajo del arrego $anho
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year, 
+		DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname,
+		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS Monto
+		FROM (`Pedido`)
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
+		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario 
+		WHERE   ".$str." 
+		GROUP BY 
+		Year, Monthname, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		");
+		//$str="anho(".$this->table_pedido.".FechaPedido) = ".$anho;		
+		//$this->db->where($str);//UBIGEO
+		
+		
+		
+		//$dates="(DATEDIFF(".$this->table_atencion_omega.".fecAtencion,".$this->table_atencion.".fecha)=0)";
+		//$this->db->where($dates);
+		//$this->//FECHA			
+		
+		//SE COMENTA EL GROUP BY PORKE YA NO SE VA A AGRUPAR POR DEPS, DIST O ZONAS
+		/*
+		switch($idjerarquia){
+			case 1://pais
+				$this->db->group_by($this->table_ubigeo.".Departamento");				
+				break;
+			case 2://departamento
+							
+				$this->db->group_by($this->table_ubigeo.".Distrito");	
+				break;
+			case 3://distrito							
+				$this->db->group_by($this->table_ubigeo.".Zona");	
+				break;
+		}*/
+		
+		//$query = $this->db->get();	
+		//echo $this->db->last_query();
+		return $query->result();
+		
+	}
+	
+	
+	
+	
+	
 	public function reporte_mes($param){	
 		$query = $this->db->query("
 		SELECT MONTH(FechaPedido) AS MES,ZONA,
@@ -615,5 +690,7 @@ class Reporte_model extends CI_Model {
 		");
 		return $query->result();
 	}
+	
+	
 }
 ?>
