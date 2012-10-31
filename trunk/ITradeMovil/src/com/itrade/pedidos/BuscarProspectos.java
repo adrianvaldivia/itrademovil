@@ -43,7 +43,7 @@ public class BuscarProspectos extends Activity {
 	private ListView list_prospectos;
 	
 	//ArrayAdapter<Cliente> adapter;
-	ItemProspectoAdapter adapter2;
+	//ItemProspectoAdapter adapter2;
 	ArrayAdapter<String> adapter;
 	private ArrayList<Cliente> listaProspectos;
 	private ArrayList<Meta> listameta;
@@ -138,12 +138,12 @@ public class BuscarProspectos extends Activity {
 	        	lprospectos.add(listaProspectos.get(i).getRazon_Social());	        	
 	        }	
 	    	//adapter =new ArrayAdapter<Cliente>(BuscarProspectos.this, android.R.layout.simple_list_item_1, listaProspectos); 
-	    	//adapter =new ArrayAdapter<String>(BuscarProspectos.this, android.R.layout.simple_list_item_1, lprospectos);
+	    	adapter =new ArrayAdapter<String>(BuscarProspectos.this, android.R.layout.simple_list_item_1, lprospectos);
 	    	
-	    	adapter2 =new ItemProspectoAdapter(BuscarProspectos.this, listaProspectos);
+	    	//adapter2 =new ItemProspectoAdapter(BuscarProspectos.this, listaProspectos);
 	    	
-	    	//list_prospectos.setAdapter(adapter);
-	    	list_prospectos.setAdapter(adapter2);
+	    	list_prospectos.setAdapter(adapter);
+	    	//list_prospectos.setAdapter(adapter2);
 	    }
 	    });
 		                                  
