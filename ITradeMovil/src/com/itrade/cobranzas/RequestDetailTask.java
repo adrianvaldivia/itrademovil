@@ -15,12 +15,15 @@ import com.itrade.model.Pedido;
 import com.itrade.model.PedidoLinea;
 import com.itrade.modelo.Login;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,7 +124,7 @@ public class RequestDetailTask extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				String titulo="Notificar"; 
-				String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+				String mensaje="¿Deseas Enviar mensaje de texto a: "+clienteSelected.getNombre()+" ?"; 				
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
 				alertDialogBuilder.setTitle(titulo);		 			
 				alertDialogBuilder
@@ -129,24 +132,9 @@ public class RequestDetailTask extends Activity {
 						.setCancelable(true)
 						.setNegativeButton("Cancelar", null)
 						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {														
+							public void onClick(DialogInterface dialog,int id) {																						
 								dialog.cancel();
-								
-								Syncronizar sync = new Syncronizar(RequestDetailTask.this);
-								List<NameValuePair> param = new ArrayList<NameValuePair>();
-								param.add(new BasicNameValuePair("idcobrador", idempleado));
-								String route2="/ws/cobranza/send_notifications/";
-								sync.conexion(param,route2);
-								try {
-									sync.getHilo().join();
-								} catch (InterruptedException e) {
-									  // TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-																
-								Intent intent = new Intent(RequestDetailTask.this, RequestDetailTask.class); 													
-								intent.putExtra("idempleado", idempleado);
-								startActivity(intent);
+								sendSms();								
 							}
 				});		
 				AlertDialog alertDialog = alertDialogBuilder.create();		 
@@ -225,5 +213,14 @@ public class RequestDetailTask extends Activity {
 		}			
 		Log.d("tag", "LLEGO10");
 	}
+	public void sendSms(){
+		Intent intent = new Intent(RequestDetailTask.this, RequestDetailTask.class); 																					
+		intent.putExtra("idpedido", idpedido);
+		intent.putExtra("idcliente",idcliente);
+		intent.putExtra("idempleado", idempleado);
+		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);                
+        SmsManager sms = SmsManager.getDefault();        
+        sms.sendTextMessage("979331334", null, "Holi Ochi!! Prueba detalle", pi, null);								
+    }
 	
 }
