@@ -12,6 +12,7 @@ class Payment_model extends CI_Model {
 		$this->table_producto = 'Producto';
 		$this->table_marca = 'Marca';
 		$this->table_categoria = 'Categoria';
+		$this->table_periodos = 'PeriodoMeta';
 		
     }	
 	
@@ -178,29 +179,11 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();	
 	}
-	
-	/*
-	SELECT * 
-FROM PeriodoMeta P, Meta M
-WHERE P.FechaFin >= NOW( ) 
-AND P.FechaIni <= NOW( ) 
-AND P.IdPeriodo=M.IdPeriodo
-AND M.IdUsuario=
-
-SELECT SUM(MontoTotalPedido)
-FROM Pedido P
-WHERE '2012-12-03' >= P.FechaPedido
-AND '2012-03-03' <= P.FechaPedido
-
-
-
-SELECT SUM( MontoTotalPedido ) as montototal 
-FROM Pedido P, Cliente C
-WHERE  '2012-12-03' >= P.FechaPedido
-AND  '2012-03-03' <= P.FechaPedido
-AND P.IdCliente = C.IdCliente
-AND C.IdCobrador =6
-
-	*/
+	public function get_periodos(){
+		$this->db->from($this->table_periodos);				
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		return $query->result();
+	}
 }
 ?>
