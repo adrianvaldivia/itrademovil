@@ -168,14 +168,14 @@ class Payment_model extends CI_Model {
 	}
 	public function get_monto($idvendedor,$fechini,$fechfin){
 		$query = $this->db->query("
-			SELECT SUM( MontoTotalPedido ) as montototal 
+			SELECT SUM( P.MontoTotalPedido ) as montototal 
 			FROM Pedido P, Cliente C
 			WHERE  NOW() >= P.FechaPedido
 			AND  '".$fechini."' <= P.FechaPedido
 			AND P.IdCliente = C.IdCliente
 			AND C.IdCobrador ='".$idvendedor."' 
 		");
-		//echo $this->db->last_query();
+		echo $this->db->last_query();
 		return $query->result();	
 	}
 	
