@@ -5,9 +5,11 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -91,8 +93,8 @@ public class BuscarPedidos extends ListActivity{
         		toElementoLista);
         setListAdapter(adapterElementoLista);
         //fin green Day de Elementos Lista
-        this.guardaListaOriginal();
-        this.recuperarOriginal();
+//        this.guardaListaOriginal();
+//        this.recuperarOriginal();
  
 		Bundle bundle = getIntent().getExtras();
 		idUsuario = bundle.getLong("idusuario");
@@ -285,6 +287,12 @@ public class BuscarPedidos extends ListActivity{
 	                            break;
 	    }
 	    return true;
+	}
+	@Override
+	public void onResume() {
+        this.guardaListaOriginal();
+        this.recuperarOriginal();
+		super.onResume();
 	}
 	@Override
 	protected void onDestroy() {
