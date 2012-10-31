@@ -122,7 +122,7 @@ public class BuscarPedidos extends ListActivity{
 
 
     private void cargarBaseLocal() {
-    	daoPedido = new DAOPedido();
+    	daoPedido = new DAOPedido(BuscarPedidos.this);
     	listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
 
 		pedidoDao.deleteAll();

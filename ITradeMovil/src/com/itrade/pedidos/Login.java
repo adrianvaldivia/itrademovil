@@ -85,7 +85,7 @@ public class Login extends Activity {
 
 	    
 	    
-	    daoUsu = new DAOUsuario();
+	    daoUsu = new DAOUsuario(Login.this);
 	    daoPerso = new DAOPersona();
     
 	    
@@ -93,7 +93,7 @@ public class Login extends Activity {
 	    textView_Password  = (EditText) findViewById(R.id.loginPassword);
 	    button_Ingresar = (Button) findViewById(R.id.btnLogin);
 	        
-	    //M�todo click etn Boton Ingresar
+	    //M?todo click etn Boton Ingresar
 
 	    button_Ingresar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -110,53 +110,12 @@ public class Login extends Activity {
 				String password = textView_Password.getText().toString();
 				
 				int resul=1;
-				/*
-				if (boolBaseLocalUsuariosVacia){
-					resul= daoUsu.confirmarLogin(nombreUsuario, password);
-				}
-				else{
-					resul=confirmarLoginLocal(nombreUsuario, password);
-				}
-				*/
-				
 				
 				
 				if (resul!=-1) {
-			    	/*
-					if(boolBaseLocalPersonasVacia){
-						datEmpleado = daoPerso.buscarDatosPersona(resul);
-					}
-					else{
-						datEmpleado = buscarDatosPersonaLocal(resul);
-					}
-					*/
 					
-//				    datEmpleado = daoPerso.buscarDatosPersona(resul);
-					
-					/**************************WEBSERVICE BEGIN******************************/
-					
-					Syncronizar sync = new Syncronizar(Login.this);
-					List<NameValuePair> param = new ArrayList<NameValuePair>();								
-					param.add(new BasicNameValuePair("username", nombreUsuario));
-					param.add(new BasicNameValuePair("password", password));
-					//String route="dp2/itrade/ws/login/get_user_by_username_password/";
-					String route="/ws/login/get_user_by_username_password/";
-				    sync.conexion(param,route);
-				    try {
-						sync.getHilo().join();
-						Log.d("TAG","LLEGA PRIMERO AKI");
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				    Log.d("TAG","LLEGA SEGUNDO AKI");
-				    Gson gson = new Gson();
-					ArrayList<Usuario> logList = new ArrayList<Usuario>();					
-					Log.e("log_tag", "se cayo5" );
-					logList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Usuario>>(){}.getType());				    
-					if (logList.size()>0){
-						Usuario usuario = logList.get(0);					    					   
-					    /*****************************WEBSERVICE END**********************************/
+					Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
+					if (usuario != null){											    					   					   
 					    
 						if (usuario.getIdPerfil()==2){//PEDIDOS
 							Intent intent = new Intent(Login.this, MenuLista.class);					
@@ -241,8 +200,8 @@ public class Login extends Activity {
 	    return true;
 	}
     private void cargarBaseLocal() {
-//        daoCliente = new DAOCliente();  
-        listaUsuario = daoUsu.getAllUsuarios(); //obtiene los usuarios
+  
+       //listaUsuario = daoUsu.getAllUsuarios(); //obtiene los usuarios
         listaPersona = daoPerso.getAllPersonas(); //obtiene los usuarios
         usuarioDao.deleteAll();
         personaDao.deleteAll();

@@ -67,7 +67,7 @@ public class DAOProducto {
 		
 		Syncronizar sync = new Syncronizar(window);
 		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-//		String route="dp2/itrade/ws/cobranza/get_all_categorias";
+
 		String route="/ws/cobranza/get_all_categorias";
 	    sync.conexion(param,route);
 	    try {

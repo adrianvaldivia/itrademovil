@@ -191,7 +191,7 @@ public class CrearPedido extends ListActivity{
 	}
 
 	public void guardarPedido(){
-        daoPedido = new DAOPedido();
+        daoPedido = new DAOPedido(CrearPedido.this);
         Pedido pedido= new Pedido();
         pedido.setIdCliente(idcliente);
         //procesaPedido();//obtiene el monto Total
@@ -210,7 +210,7 @@ public class CrearPedido extends ListActivity{
 
 	public void guardarDetallePedido(){
 		procesaPedidoLinea();
-        daoPedido = new DAOPedido();
+        daoPedido = new DAOPedido(CrearPedido.this);
         for(int i=0;i<listaPedidoLinea.size();i++){
         	daoPedido.registrarPedidoLinea(listaPedidoLinea.get(i));
         	
