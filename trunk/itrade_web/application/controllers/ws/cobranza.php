@@ -75,7 +75,12 @@ class Cobranza extends CI_Controller {
                                 <br><a href='".base_url()."' target='_blank' >www.precisa.com</a>
                                 ");
 */
-		$this->email->message("HOli!!!! de parte de ochi!!! :D");
+		$this->email->message("Estimado(a) ".$cliente->Nombre." ".$cliente->ApePaterno." ".$cliente->ApeMaterno."<br>
+								Con razon social".$cliente->Razon_Social."<br>
+								Durante el transcurso del dia se aproximara nuestro cobrador a la direccion:<br>
+								".$cliente->Direccion.".<br> 
+								<br>
+								Que tenga un buen dia.");
 								
         if ($this->email->send()){
 			echo $this->email->print_debugger();
