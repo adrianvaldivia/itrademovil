@@ -131,9 +131,9 @@ class Pedido extends CI_Controller {
 			$fechafin=$ele->FechaFin;
 			$suma=$this->Payment_model->get_monto($idvendedor,$ele->FechaIni,$ele->FechaFin);			
 		}				
-		//var_dump($suma);
+		var_dump($suma);
 		foreach($suma as $elem){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$elem->montototal,"fechini"=>$fechaini,"fechafin"=>$fechafin)));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array("suma"=>$elem->montototal,"fechini"=>$fechaini,"fechafin"=>$fechafin)));
 		}
 		//$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
 	}
