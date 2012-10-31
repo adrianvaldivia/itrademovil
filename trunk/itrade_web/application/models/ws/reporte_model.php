@@ -48,7 +48,7 @@ class Reporte_model extends CI_Model {
 		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
 		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");				
 											
-		switch($idjerarquia){
+		/*switch($idjerarquia){
 			case 1:				
 				$this->db->where($this->table_ubigeo.".Pais", $id);
 				break;
@@ -58,9 +58,9 @@ class Reporte_model extends CI_Model {
 			case 3:				
 				$this->db->where($this->table_ubigeo.".Distrito", $id);
 				break;
-		}			
-		$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
-		$this->db->where($str);//UBIGEO			
+		}		*/	
+		/*$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		$this->db->where($str);//UBIGEO	*/		
 		switch($idjerarquia){
 			case 1://pais
 				$this->db->group_by($this->table_ubigeo.".Departamento");				
@@ -72,7 +72,7 @@ class Reporte_model extends CI_Model {
 			case 3://distrito							
 				$this->db->group_by($this->table_ubigeo.".Zona");	
 				break;
-		}				
+		}			
 		$query = $this->db->get();	
 		//echo $this->db->last_query();
 		return $query->result();
