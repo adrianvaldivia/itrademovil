@@ -121,7 +121,8 @@ public class DAOPersona {
                       persona.setTelefono(strTelefono);
                       persona.setEmail(strEmail);
                       persona.setActivo(strActivo);
-                      persona.setFechNac(fechaNacimiento);
+//                      persona.setFechNac(fechaNacimiento);
+                      persona.setFechNac(strFechNac);
                       persona.setDNI(strDNI);                   
                       // adding object to ArrayList
                       listaPersona.add(persona);

@@ -11,6 +11,7 @@ public class Usuario {
     /** Not-null value. */
     private String Nombre;
     private String Password;
+    private String Username;
     /** Not-null value. */
     private String NombreReal;
     private String ApePaterno;
@@ -31,11 +32,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public Usuario(Long id, Long IdUsuario, String Nombre, String Password, String NombreReal, String ApePaterno, String ApeMaterno, Integer IdPerfil, Integer IdPersona, String Activo, Integer IdJerarquia, Integer IdZona, Integer IdDistrito, Integer IdCiudad, Integer IdPais) {
+    public Usuario(Long id, Long IdUsuario, String Nombre, String Password, String Username, String NombreReal, String ApePaterno, String ApeMaterno, Integer IdPerfil, Integer IdPersona, String Activo, Integer IdJerarquia, Integer IdZona, Integer IdDistrito, Integer IdCiudad, Integer IdPais) {
         this.id = id;
         this.IdUsuario = IdUsuario;
         this.Nombre = Nombre;
         this.Password = Password;
+        this.Username = Username;
         this.NombreReal = NombreReal;
         this.ApePaterno = ApePaterno;
         this.ApeMaterno = ApeMaterno;
@@ -81,6 +83,14 @@ public class Usuario {
 
     public void setPassword(String Password) {
         this.Password = Password;
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setUsername(String Username) {
+        this.Username = Username;
     }
 
     /** Not-null value. */

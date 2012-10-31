@@ -125,7 +125,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     }
 
    
-  person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), fecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
+//  person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), fecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
 
   String valor = cantidad.getText().toString().trim();
   cred = new Credito(Integer.parseInt(valor)); 

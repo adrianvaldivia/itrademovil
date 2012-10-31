@@ -13,7 +13,7 @@ public class Persona {
     private String ApePaterno;
     private String ApeMaterno;
     private String DNI;
-    private java.util.Date FechNac;
+    private String FechNac;
     private String Telefono;
     private String Email;
     private String Activo;
@@ -25,7 +25,7 @@ public class Persona {
         this.id = id;
     }
 
-    public Persona(Long id, Long IdPersona, String Nombre, String ApePaterno, String ApeMaterno, String DNI, java.util.Date FechNac, String Telefono, String Email, String Activo) {
+    public Persona(Long id, Long IdPersona, String Nombre, String ApePaterno, String ApeMaterno, String DNI, String FechNac, String Telefono, String Email, String Activo) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.Nombre = Nombre;
@@ -88,11 +88,11 @@ public class Persona {
         this.DNI = DNI;
     }
 
-    public java.util.Date getFechNac() {
+    public String getFechNac() {
         return FechNac;
     }
 
-    public void setFechNac(java.util.Date FechNac) {
+    public void setFechNac(String FechNac) {
         this.FechNac = FechNac;
     }
 
