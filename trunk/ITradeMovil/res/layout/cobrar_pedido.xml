@@ -14,7 +14,8 @@
         <RelativeLayout
             android:id="@+id/top_control_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/blanco" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,7 +34,8 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="35dp" >
+                        android:layout_height="35dp"
+                        android:background="@color/azul_2" >
 
                         <TextView
                             android:id="@+id/TextView01"
@@ -47,7 +49,7 @@
                             android:textSize="20dip" />
 
                         <ImageButton
-                            android:id="@+id/ImageButton06"
+                            android:id="@+id/btnMapa"
                             android:layout_width="58dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
@@ -59,6 +61,7 @@
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/blanco"
                     android:orientation="vertical" >
 
                     <TextView
@@ -79,7 +82,7 @@
                         android:background="@color/azul_2" >
 
                         <ImageButton
-                            android:id="@+id/ImageButton04"
+                            android:id="@+id/btnListaClientes"
                             style="@drawable/estilo_botones"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
@@ -87,35 +90,35 @@
                             android:src="@drawable/user_customer" />
 
                         <ImageButton
-                            android:id="@+id/ImageButton07"
+                            android:id="@+id/btnMailMasivo"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/e_mail" />
 
                         <ImageButton
-                            android:id="@+id/ImageButton05"
+                            android:id="@+id/btnBuscarCliente"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/users_search" />
 
                         <ImageButton
-                            android:id="@+id/ImageButton02"
+                            android:id="@+id/btnDepositarBanco"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/emblem_money" />
 
                         <ImageButton
-                            android:id="@+id/ImageButton01"
+                            android:id="@+id/btnDirectorio"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/directorio" />
 
                         <ImageButton
-                            android:id="@+id/ImageButton03"
+                            android:id="@+id/btnCalendario"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
