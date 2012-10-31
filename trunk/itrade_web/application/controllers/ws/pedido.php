@@ -120,10 +120,11 @@ class Pedido extends CI_Controller {
 	//Busco la de meta del vendedor
 	//Busco la meta actual dependiendo de la fecha
 	// 
-	public function meta_periodo($idvendedor_w=''){
+	public function meta_periodo($idvendedor=''){
 		//$idvendedor=$this->input->post('idvendedor');
 		//$idvendedor=1;
 		$arr_meta=$this->Payment_model->get_meta($idvendedor);
+		echo implode(",",$arr_meta)."<BR>";
 		$suma=$this->Payment_model->get_monto($idvendedor,$arr_meta['fechaini'],$arr_meta['fechafin']);		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
 	}
