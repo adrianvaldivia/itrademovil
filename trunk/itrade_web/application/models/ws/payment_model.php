@@ -163,7 +163,8 @@ class Payment_model extends CI_Model {
 			AND P.IdPeriodo = M.IdPeriodo
 			AND M.IdUsuario =  '".$idvendedor."'
 		");
-		$query->result();
+		$query=$this->db->get();
+		//$query->result();
 		$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
 		return $arr;	
 	}
@@ -176,7 +177,8 @@ class Payment_model extends CI_Model {
 			AND P.IdCliente = C.IdCliente
 			AND C.IdCobrador ='".$idvendedor."' 
 		");
-		$query->result();
+		//$query->result();
+		$query=$this->db->get();
 		return $query->row(0)->montototal;	
 	}
 	
