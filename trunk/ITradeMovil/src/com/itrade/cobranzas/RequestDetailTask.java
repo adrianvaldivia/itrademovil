@@ -16,6 +16,9 @@ import com.itrade.model.PedidoLinea;
 import com.itrade.modelo.Login;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +34,7 @@ public class RequestDetailTask extends Activity {
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
+	final Context context = this;
 	private String idpedido;
 	private String idcliente;
 	private String idempleado;
@@ -39,7 +43,16 @@ public class RequestDetailTask extends Activity {
 	private ArrayList<com.itrade.cobranzas.PedidoLinea> detallePedido;
 	private PedidoLineaAdapter pedidosAdapter;
 	private Button buttonCobrar;
+	private Button buttonRuta;
+	//Botones
 	private ImageView btnClientes;
+	private ImageView btnMail;
+	private ImageView btnBuscar;
+	private ImageView btnDepositar;
+	private ImageView btnDirectorio;
+	private ImageView btnCalendario;
+	private ImageView btnMapa;
+	
 	public PedidoLineaAdapter getPedidosAdapter() {
 		return pedidosAdapter;
 	}
@@ -80,6 +93,19 @@ public class RequestDetailTask extends Activity {
 				startActivity(intent);									
 			}
 	 	});
+        buttonRuta= (Button)findViewById(R.id.btnRuta);
+        buttonRuta.setOnClickListener(new OnClickListener() {
+	    	public void onClick(View v) {
+	    		//Definido en el evento onlick    						 						
+				Intent intent = new Intent(RequestDetailTask.this, RutaCliente.class); 													
+				/*intent.putExtra("idpedido", idpedido);
+				intent.putExtra("idcliente", idcliente); 	
+				intent.putExtra("idempleado", idempleado);			*/
+				startActivity(intent);									
+			}
+	 	});
+        //btnRuta
+        //bUTTON Clientes
         btnClientes= (ImageView)findViewById(R.id.btnPedidos);
 		btnClientes.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
@@ -87,6 +113,45 @@ public class RequestDetailTask extends Activity {
 				Intent intent = new Intent(RequestDetailTask.this, ClientesListTask.class); 																				
 				intent.putExtra("idempleado", idempleado);
 				startActivity(intent);
+			}
+		});
+		//Button mail
+		btnMail= (ImageView)findViewById(R.id.btnNotificar);
+		btnMail.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String titulo="Notificar"; 
+				String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+				alertDialogBuilder.setTitle(titulo);		 			
+				alertDialogBuilder
+						.setMessage(mensaje)
+						.setCancelable(true)
+						.setNegativeButton("Cancelar", null)
+						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {														
+								dialog.cancel();
+								
+								Syncronizar sync = new Syncronizar(RequestDetailTask.this);
+								List<NameValuePair> param = new ArrayList<NameValuePair>();
+								param.add(new BasicNameValuePair("idcobrador", idempleado));
+								String route2="/ws/cobranza/send_notifications/";
+								sync.conexion(param,route2);
+								try {
+									sync.getHilo().join();
+								} catch (InterruptedException e) {
+									  // TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+																
+								Intent intent = new Intent(RequestDetailTask.this, RequestDetailTask.class); 													
+								intent.putExtra("idempleado", idempleado);
+								startActivity(intent);
+							}
+				});		
+				AlertDialog alertDialog = alertDialogBuilder.create();		 
+				alertDialog.show();	
+				
 			}
 		});
 	}
