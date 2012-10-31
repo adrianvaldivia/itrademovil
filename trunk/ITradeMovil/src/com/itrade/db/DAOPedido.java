@@ -47,8 +47,8 @@ public class DAOPedido {
 		Syncronizar sync = new Syncronizar(window);
 		List<NameValuePair> param = new ArrayList<NameValuePair>();
 		String idusuario=String.valueOf(idUsuario);
-		param.add(new BasicNameValuePair("idvendedor", idusuario));
-		String route="/ws/pedido/ultimos_pedidos/";
+//		param.add(new BasicNameValuePair("idvendedor", idusuario));
+		String route="/ws/pedido/ultimos_pedidos/"+idusuario;
 		
 	    sync.conexion(param,route);
 	    try {

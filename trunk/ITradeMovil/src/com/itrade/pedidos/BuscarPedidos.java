@@ -91,7 +91,7 @@ public class BuscarPedidos extends ListActivity{
         this.recuperarOriginal();
  
 		Bundle bundle = getIntent().getExtras();
-		idUsuario = bundle.getInt("idusuario");
+		idUsuario = bundle.getLong("idusuario");
         setTitle("iTrade - Pedidos");
         
 //        button_cearpedido = (Button) findViewById(R.id.buttoncrearpedido);
