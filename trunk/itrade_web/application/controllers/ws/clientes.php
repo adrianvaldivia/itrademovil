@@ -39,9 +39,10 @@ class Clientes extends CI_Controller {
 		}
 				
 	}
-	public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor)
-	//public function registrar_prospecto()
+	//public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor,$email)
+	public function registrar_prospecto()
 	{		
+	
 		$ruc=$this->input->post('ruc');				
 		$razon_social=$this->input->post('razon_social');				
 		$direccion=$this->input->post('direccion');				
@@ -54,6 +55,7 @@ class Clientes extends CI_Controller {
 		$dni=$this->input->post('dni');
 		$montosolicitado=$this->input->post('montosolicitado');
 		$idvendedor=$this->input->post('idvendedor');		
+		
 		$idcobrador=$this->Cliente_model->buscador_cobrador_por_vendedor($idvendedor);
 		if ($idcobrador!=0){			
 			if (isset($idvendedor)&& $idvendedor!=""){
