@@ -120,9 +120,12 @@ class Pedido extends CI_Controller {
 	//Busco la de meta del vendedor
 	//Busco la meta actual dependiendo de la fecha
 	// 
-	public function meta_periodo($idvendedor=''){
-		//$idvendedor=$this->input->post('idvendedor');
+	public function meta_periodo($idvendedor_w=''){
+		$idvendedor=$this->input->post('idvendedor');
 		//$idvendedor=1;
+		if ($idvendedor_w!=''){
+			$idvendedor=$idvendedor;
+		}
 		$arr_meta=$this->Payment_model->get_meta($idvendedor);
 		//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
 		//var_dump($arr_meta);
@@ -131,9 +134,11 @@ class Pedido extends CI_Controller {
 			$fechafin=$ele->FechaFin;
 			$suma=$this->Payment_model->get_monto($idvendedor,$ele->FechaIni,$ele->FechaFin);			
 		}				
-		var_dump($suma);
+		//var_dump($suma);
 		foreach($suma as $elem){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array("suma"=>$elem->montototal,"fechini"=>$fechaini,"fechafin"=>$fechafin)));
+			$nume=$elem->montototal;
+			$numeout="$nume";
+			$this->output->set_content_type('application/json')->set_output(json_encode(array("suma"=>$numeout,"fechini"=>$fechaini,"fechafin"=>$fechafin)));
 		}
 		//$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
 	}
