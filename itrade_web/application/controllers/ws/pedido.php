@@ -104,7 +104,7 @@ class Pedido extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}
 	}
-	public function ultimos_pedidos($idvendedor_w){
+	public function ultimos_pedidos($idvendedor_w=''){
 		$idvendedor=$this->input->post('idvendedor');	
 		if (isset($idvendedor)&& $idvendedor!= "" ){			
 			$result=$this->Payment_model->ultimos_pedidos($idvendedor);	
@@ -115,5 +115,18 @@ class Pedido extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}	
 	}
+	
+	//idvendedor me pasas
+	//Busco la de meta del vendedor
+	//Busco la meta actual dependiendo de la fecha
+	// 
+	public function meta_periodo($idvendedor_w=''){
+		//$idvendedor=$this->input->post('idvendedor');
+		//$idvendedor=1;
+		$arr_meta=$this->Payment_model->get_meta($idvendedor);
+		$suma=$this->Payment_model->get_monto($idvendedor,$arr_meta['fechaini'],$arr_meta['fechafin']);		
+		$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
+	}
+	
 }
 
