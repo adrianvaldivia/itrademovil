@@ -125,12 +125,17 @@ class Pedido extends CI_Controller {
 		//$idvendedor=1;
 		$arr_meta=$this->Payment_model->get_meta($idvendedor);
 		//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
-		var_dump($arr_meta);
-		Foreach($arr_meta as $ele){
-			$suma=$this->Payment_model->get_monto($idvendedor,$ele->FechaIni,$ele->FechaFin);		
+		//var_dump($arr_meta);
+		foreach($arr_meta as $ele){
+			$fechaini=$ele->FechaIni;
+			$fechafin=$ele->FechaFin;
+			$suma=$this->Payment_model->get_monto($idvendedor,$ele->FechaIni,$ele->FechaFin);			
 		}				
-		var_dump($suma);
-		$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
+		//var_dump($suma);
+		foreach($suma as $elem){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$elem->montototal,"fechini"=>$fechaini,"fechafin"=>$fechafin)));
+		}
+		//$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
 	}
 	
 }
