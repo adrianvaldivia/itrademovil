@@ -173,9 +173,9 @@ class Payment_model extends CI_Model {
 			WHERE  NOW() >= P.FechaPedido
 			AND  '".$fechini."' <= P.FechaPedido
 			AND P.IdCliente = C.IdCliente
-			AND C.IdCobrador ='".$idvendedor."' 
+			AND C.IdVendedor ='".$idvendedor."' 
 		");
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();	
 	}
 	
