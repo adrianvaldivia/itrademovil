@@ -16,11 +16,13 @@ import com.itrade.model.Pedido;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +49,8 @@ public class PaymentTask extends Activity {
 	private Button btnPagar;
 	private Button btnDetalle;
 	private Button btnRuta;
+	private Button buttonRuta;
+	private ImageView btnMail;
 	private ImageView btnClientes;
 	private Spinner spinTipo;
 	private String direccion="http://10.0.2.2/"; 
@@ -171,7 +175,7 @@ public class PaymentTask extends Activity {
 				startActivity(intent);
 			}
 		});
-        btnClientes= (ImageView)findViewById(R.id.ImageButton04);
+        btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
         btnClientes.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -180,8 +184,45 @@ public class PaymentTask extends Activity {
 				startActivity(intent);
 			}
 		});
-       
         
+      //Button mail
+        btnMail= (ImageView)findViewById(R.id.btnMailMasivo);
+		btnMail.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String titulo="Notificar"; 
+				String mensaje="¿Deseas Notificar ahora a: "+clienteSelected.getNombre()+"?"; 				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+				alertDialogBuilder.setTitle(titulo);		 			
+				alertDialogBuilder
+						.setMessage(mensaje)
+						.setCancelable(true)
+						.setNegativeButton("Cancelar", null)
+						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {																													
+								dialog.cancel();
+								sendSms();	
+							}
+				});		
+				AlertDialog alertDialog = alertDialogBuilder.create();		 
+				alertDialog.show();	
+				
+			}
+		});	
+		
+		//button ruta
+		
+		 buttonRuta= (Button)findViewById(R.id.btnRutaPed);
+	     buttonRuta.setOnClickListener(new OnClickListener() {
+		    	public void onClick(View v) {
+		    		//Definido en el evento onlick    						 						
+					Intent intent = new Intent(PaymentTask.this, RutaCliente.class); 													
+					/*intent.putExtra("idpedido", idpedido);
+					intent.putExtra("idcliente", idcliente); 	
+					intent.putExtra("idempleado", idempleado);			*/
+					startActivity(intent);									
+				}
+		 });
 	}	
 	
 	public void getParamsIntent(){
@@ -240,4 +281,13 @@ public class PaymentTask extends Activity {
 			finish();
 		}
 	}
+	public void sendSms(){
+		Intent intent = new Intent(PaymentTask.this, PaymentTask.class); 																					
+		intent.putExtra("idpedido", idpedido);
+		intent.putExtra("idcliente",idcliente);
+		intent.putExtra("idempleado", idempleado);
+		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);                
+        SmsManager sms = SmsManager.getDefault();        
+        sms.sendTextMessage("979331334", null, "Holi Ochi!! Prueba PAGOS", pi, null);								
+    }
 }
