@@ -13,6 +13,7 @@ import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
 import com.itrade.model.Usuario;
+import com.itrade.pedidos.BuscarClientesGreenDao;
 import com.itrade.pedidos.Login;
 import com.itrade.pedidos.MenuLista;
 
@@ -48,8 +49,14 @@ public class ClientesListTask extends Activity {
 	public String apellidos="";
 	public String idusuario;
 	public String idpedido;
-	
+	//Botones
 	private ImageView btnClientes;
+	private ImageView btnMail;
+	private ImageView btnBuscar;
+	private ImageView btnDepositar;
+	private ImageView btnDirectorio;
+	private ImageView btnCalendario;
+	private ImageView btnMapa;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +64,8 @@ public class ClientesListTask extends Activity {
         setContentView(R.layout.c_lista_clientes);                       
         Intent i = getIntent();                
 		idusuario=(String)i.getSerializableExtra("idempleado");
-		btnClientes= (ImageView)findViewById(R.id.ImageButton04);
+		/*BTN clientes*/
+		btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
 		btnClientes.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -66,6 +74,58 @@ public class ClientesListTask extends Activity {
 				startActivity(intent);
 			}
 		});
+		/*BTN Mensaje masivo*/
+		btnMail= (ImageView)findViewById(R.id.btnMailMasivo);
+		btnMail.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String titulo="Notificar"; 
+				String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+				alertDialogBuilder.setTitle(titulo);		 			
+				alertDialogBuilder
+						.setMessage(mensaje)
+						.setCancelable(true)
+						.setNegativeButton("Cancelar", null)
+						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {														
+								dialog.cancel();
+								
+								Syncronizar sync = new Syncronizar(ClientesListTask.this);
+								List<NameValuePair> param = new ArrayList<NameValuePair>();
+								param.add(new BasicNameValuePair("idcobrador", idusuario));
+								String route2="/ws/cobranza/send_notifications/";
+								sync.conexion(param,route2);
+								try {
+									sync.getHilo().join();
+								} catch (InterruptedException e) {
+									  // TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+																
+								Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
+								intent.putExtra("idempleado", idusuario);
+								startActivity(intent);
+							}
+				});		
+				AlertDialog alertDialog = alertDialogBuilder.create();		 
+				alertDialog.show();	
+				
+			}
+		});
+		/*btn buscar clientes*/
+		btnBuscar= (ImageView)findViewById(R.id.btnBuscarCliente);
+		btnBuscar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ClientesListTask.this, BuscarClientesGreenDao.class);		
+				intent.putExtra("idusuario", idusuario);
+				intent.putExtra("boolVer", 1);
+				startActivity(intent);
+			}
+		});		
+		
+		
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);                       
         listView.setOnChildClickListener(new OnChildClickListener()
         {
