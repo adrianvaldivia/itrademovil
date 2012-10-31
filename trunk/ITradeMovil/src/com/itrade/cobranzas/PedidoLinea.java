@@ -18,6 +18,7 @@ public class PedidoLinea {
  private String Categoria;
 
  public PedidoLinea() {
+ 
  }
 
  public PedidoLinea(Long id) {
