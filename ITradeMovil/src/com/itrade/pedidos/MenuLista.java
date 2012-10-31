@@ -99,8 +99,9 @@ public class MenuLista extends ListActivity{
 			intent.putExtra("boolVer", 1);
 			startActivity(intent);		
      }
-     if (selection.compareTo("Mi Ubicacion")==0){
-			Intent intent = new Intent(MenuLista.this, MiUbicacionImplActivity.class);
+     if (selection.compareTo("Mi Ubicacion")==0){			
+			Intent intent = new Intent(MenuLista.this, UbicacionCheckInActivity.class);
+			intent.putExtra("idusuario", idusuario);
 			startActivity(intent);		
      }
     }    

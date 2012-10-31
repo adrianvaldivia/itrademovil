@@ -157,6 +157,8 @@ public class BuscarClientesGreenDao extends ListActivity{
                 if (enable==false){
                 	recuperarOriginal();
                 }
+                else
+                	buscarCliente();
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -184,8 +186,6 @@ debug++;
      int temp=cliente.getIdCliente();
 //    Toast.makeText(this, "IdCliente: "+temp, Toast.LENGTH_LONG).show();
      Intent intent = new Intent(BuscarClientesGreenDao.this, DetalleCliente.class);
-     intent.putExtra("nombre", cliente.getRazon_Social());
-     intent.putExtra("apellidos", cliente.getRUC());
      intent.putExtra("idcliente", temp);
      intent.putExtra("idusuario", idUsuario);
      startActivity(intent);

@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itrade.R;
+import com.itrade.model.Cliente;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
 import com.itrade.model.ElementoListaDao;
+import com.itrade.model.Producto;
 import com.itrade.model.DaoMaster.DevOpenHelper;
+import com.itrade.model.ClienteDao.Properties;
 
 
 import android.app.ListActivity;
@@ -45,6 +48,7 @@ public class DetalleCliente extends ListActivity{
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private ElementoListaDao elementoListaDao;
+    private ClienteDao clienteDao;
     //fin green dao
 
 //    private Cursor cursor;
@@ -63,6 +67,7 @@ public class DetalleCliente extends ListActivity{
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();        
         elementoListaDao = daoSession.getElementoListaDao();
+        clienteDao = daoSession.getClienteDao();
         //Inicio green Dao Elementos Lista
         String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
         String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
@@ -77,10 +82,9 @@ public class DetalleCliente extends ListActivity{
         
         
 	    bundle = getIntent().getExtras();	
-		nombre = bundle.getString("nombre");
-		apellidos = bundle.getString("apellidos");
 		idcliente = bundle.getInt("idcliente");
 		idusuario = bundle.getLong("idusuario");
+		obtenerDatosCliente();//obtiene los datos del SQLite
 		boolVer=bundle.getInt("boolVer");//booleano indica desde donde fue llamado el activity
 
 //        Bundle bundle=getIntent().getExtras();
@@ -124,7 +128,29 @@ public class DetalleCliente extends ListActivity{
         }
     }
 
-    private void saltarToCrearPedido() {
+    private void obtenerDatosCliente() {
+		// TODO Auto-generated method stub
+		String str="";
+		//Producto productoAux=productoDao.loadByRowId(idProducto);
+		str=str+idcliente;
+        List<Cliente> clientesAux = clienteDao.queryBuilder()
+        		.where(Properties.IdCliente.eq(str))
+        		.orderAsc(Properties.Id).list();
+        
+        if (clientesAux!=null){
+        	if(clientesAux.size()>0){
+        		Cliente clienteTemp=clientesAux.get(0);
+            	nombre=clienteTemp.getRazon_Social();
+            	apellidos=clienteTemp.getRUC();
+        	}
+        	else
+            	nombre="Error";
+        }
+    	
+		
+	}
+
+	private void saltarToCrearPedido() {
 //	     Intent intent = new Intent(DetalleCliente.this, CrearPedido.class);
 //	     intent.putExtra("nombre", nombre);
 //	     intent.putExtra("apellidos", apellidos);
@@ -134,13 +160,6 @@ public class DetalleCliente extends ListActivity{
 		
 	}
 
-//	@Override
-//    protected void onListItemClick(ListView l, View v, int position, long id) {
-//     // TODO Auto-generated method stub
-//     //super.onListItemClick(l, v, position, id);
-//     String selection = l.getItemAtPosition(position).toString();
-//     //Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
-//    }    
     
 	public void Convierte(List<String> lis){
 		elementoListaDao.deleteAll();
