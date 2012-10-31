@@ -124,7 +124,7 @@ class Pedido extends CI_Controller {
 		$idvendedor=$this->input->post('idvendedor');
 		//$idvendedor=1;
 		if ($idvendedor_w!=''){
-			$idvendedor=$idvendedor;
+			$idvendedor=$idvendedor_w;
 		}
 		$arr_meta=$this->Payment_model->get_meta($idvendedor);
 		//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
