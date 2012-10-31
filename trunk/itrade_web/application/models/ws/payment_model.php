@@ -162,12 +162,8 @@ class Payment_model extends CI_Model {
 			AND P.FechaIni <= NOW( ) 
 			AND P.IdPeriodo = M.IdPeriodo
 			AND M.IdUsuario =  '".$idvendedor."'
-		");
-		$query=$this->db->get();
-		//$query->result();
-		echo $this->db->last_query()."<br><br>";
-		$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
-		return $arr;	
+		");	
+		return $query->result();	
 	}
 	public function get_monto($idvendedor,$fechini,$fechfin){
 		$query = $this->db->query("
@@ -178,10 +174,7 @@ class Payment_model extends CI_Model {
 			AND P.IdCliente = C.IdCliente
 			AND C.IdCobrador ='".$idvendedor."' 
 		");
-		//$query->result();
-		$query=$this->db->get();
-		echo $this->db->last_query()."<br><br>";
-		return $query->row(0)->montototal;	
+		return $query->result();	
 	}
 	
 	/*
