@@ -46,7 +46,8 @@ public class BuscarProspectos extends Activity {
 	//ItemProspectoAdapter adapter2;
 	ArrayAdapter<String> adapter;
 	private ArrayList<Cliente> listaProspectos;
-	private ArrayList<Meta> listameta;
+	//private ArrayList<Meta> listameta;
+	private Meta mimeta;
 	String idusuario;
 	String razonSocial;			
 	
@@ -58,7 +59,7 @@ public class BuscarProspectos extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.buscarprospectos);
+		setContentView(R.layout.buscarprospectosfusion);
 		
 		Bundle bundle=getIntent().getExtras();
         long idu = bundle.getLong("idusuario");		
@@ -72,7 +73,7 @@ public class BuscarProspectos extends Activity {
 		button_meta = (ImageButton) findViewById(R.id.btnMeta);
 		list_prospectos = (ListView) findViewById(R.id.list);
 		
-		razonSocial= textView_razonSocial.getText().toString();		
+			
 		
 		
 		button_meta.setOnClickListener(new OnClickListener(){
@@ -85,7 +86,8 @@ public class BuscarProspectos extends Activity {
 		    	
 		    	
 		    	//poner ruta real para meta
-		    	String route="/ws/clientes/get_meta_by_vendedor/";
+		    	///dp2/itrade/ws/pedido/meta_periodo/
+		    	String route="/ws/pedido/meta_periodo/";
 		    	sync.conexion(param,route);
 		    	try {
 		    		sync.getHilo().join();			
@@ -95,14 +97,14 @@ public class BuscarProspectos extends Activity {
 		    	}	   
 		    	Gson gson = new Gson();
 		    										
-		    	listameta	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Meta>>(){}.getType());			
-				
+		    	//listameta	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Meta>>(){}.getType());			
+		    	mimeta	=	gson.fromJson(sync.getResponse(), Meta.class);
 		    	Toast.makeText(BuscarProspectos.this, "Ok", Toast.LENGTH_LONG).show();
 				Intent i = new Intent(BuscarProspectos.this, MiMeta.class);
 				i.putExtra("idusuario", idusuario);
-				i.putExtra("periodo", listameta.get(0).getPeriodo());
-				i.putExtra("meta", listameta.get(0).getMetareal());
-				i.putExtra("avance", listameta.get(0).getAvance());
+				i.putExtra("periodo", mimeta.getNombre());
+				i.putExtra("meta", mimeta.getMeta());
+				i.putExtra("avance", mimeta.getSuma());
 				startActivity(i);
 				BuscarProspectos.this.finish();
 		    	
@@ -119,6 +121,9 @@ public class BuscarProspectos extends Activity {
 	    	Syncronizar sync = new Syncronizar(BuscarProspectos.this);
 	    	List<NameValuePair> param = new ArrayList<NameValuePair>();								
 	    	param.add(new BasicNameValuePair("idvendedor", idusuario));	
+	    	
+	    	razonSocial= textView_razonSocial.getText().toString();	
+	    	
 	    	param.add(new BasicNameValuePair("razon_social", razonSocial));
 	    	
 	    	//http://200.16.7.111/dp2/itrade/ws/clientes/get_prospecto_by_vendedor/
