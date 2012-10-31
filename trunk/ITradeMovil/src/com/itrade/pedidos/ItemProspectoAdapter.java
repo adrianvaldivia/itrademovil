@@ -57,7 +57,7 @@ public class ItemProspectoAdapter extends BaseAdapter {
         	
         	holder = new ViewHolder();
           
-          //holder.razonsocial = (TextView) vi.findViewById(R.id.empty2);
+          holder.razonsocial = (TextView) vi.findViewById(R.id.empty2);
           vi.setTag(holder);          
 
         }
@@ -68,18 +68,6 @@ public class ItemProspectoAdapter extends BaseAdapter {
         Cliente item = prospectos.get(position);
         
         holder.razonsocial.setText(item.getRazon_Social());
-////      
-////      return v;
-//        
-//        ImageView image = (ImageView) vi.findViewById(R.id.imagen);
-//       // int imageResource = activity.getResources().getIdentifier(item.getRutaImagen(), null, activity.getPackageName());
-//        //image.setImageDrawable(activity.getResources().getDrawable(imageResource));
-//        
-//        TextView nombre = (TextView) vi.findViewById(R.id.nombre);
-//        nombre.setText(item.getNombre());
-//        
-//        TextView tipo = (TextView) vi.findViewById(R.id.tipo);
-//        //tipo.setText(item.getTipo());
 
         return vi;
    
