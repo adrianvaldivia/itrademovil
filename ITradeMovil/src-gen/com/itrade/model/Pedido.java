@@ -11,8 +11,8 @@ public class Pedido {
     private Integer IdCliente;
     private Integer IdEstadoPedido;
     private Integer CheckIn;
-    private java.util.Date FechaPedido;
-    private java.util.Date FechaCobranza;
+    private String FechaPedido;
+    private String FechaCobranza;
     private Double MontoSinIGV;
     private Double IGV;
     private Double MontoTotalPedido;
@@ -27,7 +27,7 @@ public class Pedido {
         this.id = id;
     }
 
-    public Pedido(Long id, Long IdPedido, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, java.util.Date FechaPedido, java.util.Date FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotalPedido, Double MontoTotalCobrado, String NumVoucher, Double MontoTotal) {
+    public Pedido(Long id, Long IdPedido, Integer IdCliente, Integer IdEstadoPedido, Integer CheckIn, String FechaPedido, String FechaCobranza, Double MontoSinIGV, Double IGV, Double MontoTotalPedido, Double MontoTotalCobrado, String NumVoucher, Double MontoTotal) {
         this.id = id;
         this.IdPedido = IdPedido;
         this.IdCliente = IdCliente;
@@ -83,19 +83,19 @@ public class Pedido {
         this.CheckIn = CheckIn;
     }
 
-    public java.util.Date getFechaPedido() {
+    public String getFechaPedido() {
         return FechaPedido;
     }
 
-    public void setFechaPedido(java.util.Date FechaPedido) {
+    public void setFechaPedido(String FechaPedido) {
         this.FechaPedido = FechaPedido;
     }
 
-    public java.util.Date getFechaCobranza() {
+    public String getFechaCobranza() {
         return FechaCobranza;
     }
 
-    public void setFechaCobranza(java.util.Date FechaCobranza) {
+    public void setFechaCobranza(String FechaCobranza) {
         this.FechaCobranza = FechaCobranza;
     }
 

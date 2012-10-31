@@ -94,6 +94,7 @@ public class ExampleDaoGenerator {
         usuario.addLongProperty("IdUsuario");
         usuario.addStringProperty("Nombre").notNull();
         usuario.addStringProperty("Password");
+		usuario.addStringProperty("Username");
         usuario.addStringProperty("NombreReal").notNull();
         usuario.addStringProperty("ApePaterno");
         usuario.addStringProperty("ApeMaterno");  
@@ -132,7 +133,7 @@ public class ExampleDaoGenerator {
         persona.addStringProperty("ApePaterno");
         persona.addStringProperty("ApeMaterno");      
         persona.addStringProperty("DNI");
-        persona.addDateProperty("FechNac");
+        persona.addStringProperty("FechNac");
         persona.addStringProperty("Telefono");
         persona.addStringProperty("Email");
         persona.addStringProperty("Activo");
@@ -144,8 +145,8 @@ public class ExampleDaoGenerator {
         pedido.addIntProperty("IdCliente");
         pedido.addIntProperty("IdEstadoPedido");
         pedido.addIntProperty("CheckIn");
-        pedido.addDateProperty("FechaPedido");
-        pedido.addDateProperty("FechaCobranza");
+        pedido.addStringProperty("FechaPedido");
+        pedido.addStringProperty("FechaCobranza");
         pedido.addDoubleProperty("MontoSinIGV");
         pedido.addDoubleProperty("IGV");
         pedido.addDoubleProperty("MontoTotalPedido");

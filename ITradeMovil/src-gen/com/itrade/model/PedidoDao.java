@@ -28,8 +28,8 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
         public final static Property IdCliente = new Property(2, Integer.class, "IdCliente", false, "ID_CLIENTE");
         public final static Property IdEstadoPedido = new Property(3, Integer.class, "IdEstadoPedido", false, "ID_ESTADO_PEDIDO");
         public final static Property CheckIn = new Property(4, Integer.class, "CheckIn", false, "CHECK_IN");
-        public final static Property FechaPedido = new Property(5, java.util.Date.class, "FechaPedido", false, "FECHA_PEDIDO");
-        public final static Property FechaCobranza = new Property(6, java.util.Date.class, "FechaCobranza", false, "FECHA_COBRANZA");
+        public final static Property FechaPedido = new Property(5, String.class, "FechaPedido", false, "FECHA_PEDIDO");
+        public final static Property FechaCobranza = new Property(6, String.class, "FechaCobranza", false, "FECHA_COBRANZA");
         public final static Property MontoSinIGV = new Property(7, Double.class, "MontoSinIGV", false, "MONTO_SIN_IGV");
         public final static Property IGV = new Property(8, Double.class, "IGV", false, "IGV");
         public final static Property MontoTotalPedido = new Property(9, Double.class, "MontoTotalPedido", false, "MONTO_TOTAL_PEDIDO");
@@ -56,8 +56,8 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
                 "'ID_CLIENTE' INTEGER," + // 2: IdCliente
                 "'ID_ESTADO_PEDIDO' INTEGER," + // 3: IdEstadoPedido
                 "'CHECK_IN' INTEGER," + // 4: CheckIn
-                "'FECHA_PEDIDO' INTEGER," + // 5: FechaPedido
-                "'FECHA_COBRANZA' INTEGER," + // 6: FechaCobranza
+                "'FECHA_PEDIDO' TEXT," + // 5: FechaPedido
+                "'FECHA_COBRANZA' TEXT," + // 6: FechaCobranza
                 "'MONTO_SIN_IGV' REAL," + // 7: MontoSinIGV
                 "'IGV' REAL," + // 8: IGV
                 "'MONTO_TOTAL_PEDIDO' REAL," + // 9: MontoTotalPedido
@@ -102,14 +102,14 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
             stmt.bindLong(5, CheckIn);
         }
  
-        java.util.Date FechaPedido = entity.getFechaPedido();
+        String FechaPedido = entity.getFechaPedido();
         if (FechaPedido != null) {
-            stmt.bindLong(6, FechaPedido.getTime());
+            stmt.bindString(6, FechaPedido);
         }
  
-        java.util.Date FechaCobranza = entity.getFechaCobranza();
+        String FechaCobranza = entity.getFechaCobranza();
         if (FechaCobranza != null) {
-            stmt.bindLong(7, FechaCobranza.getTime());
+            stmt.bindString(7, FechaCobranza);
         }
  
         Double MontoSinIGV = entity.getMontoSinIGV();
@@ -158,8 +158,8 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdCliente
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // IdEstadoPedido
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // CheckIn
-            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // FechaPedido
-            cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)), // FechaCobranza
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // FechaPedido
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // FechaCobranza
             cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7), // MontoSinIGV
             cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8), // IGV
             cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9), // MontoTotalPedido
@@ -178,8 +178,8 @@ public class PedidoDao extends AbstractDao<Pedido, Long> {
         entity.setIdCliente(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setIdEstadoPedido(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setCheckIn(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setFechaPedido(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
-        entity.setFechaCobranza(cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)));
+        entity.setFechaPedido(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setFechaCobranza(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setMontoSinIGV(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
         entity.setIGV(cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8));
         entity.setMontoTotalPedido(cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9));
