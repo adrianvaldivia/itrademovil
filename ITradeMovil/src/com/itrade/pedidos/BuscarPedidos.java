@@ -4,18 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.itrade.model.Cliente;
 import com.itrade.model.ClienteDao;
@@ -49,13 +58,17 @@ public class BuscarPedidos extends ListActivity{
 	List<String> lista = new ArrayList<String>();
 	DAOPedido daoPedido =null;
 //	private Button button_cearpedido;
-	private Button button_regresar;
 	long idUsuario;
- 
+	private EditText editText;
+	private Button button_buscar;
+	InputMethodManager imm;
+	Cliente cliente= new Cliente();
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.verpedidos);
+		setContentView(R.layout.buscarpedidosfusion);
+		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
 		
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -65,25 +78,14 @@ public class BuscarPedidos extends ListActivity{
         pedidoDao = daoSession.getPedidoDao();
         elementoListaDao= daoSession.getElementoListaDao();
         clienteDao= daoSession.getClienteDao();
-        
-//        // Segunda parte
-//        String textColumn = PedidoDao.Properties.IdCliente.columnName;
-//        String orderBy = textColumn + " COLLATE LOCALIZED ASC";
-//        cursor = db.query(pedidoDao.getTablename(), pedidoDao.getAllColumns(), null, null, null, null, orderBy);
-//        String[] from = { textColumn, PedidoDao.Properties.MontoTotal.columnName };
-//        int[] to = { android.R.id.text1, android.R.id.text2 };
-//        adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, from,
-//                to);
-//        setListAdapter(adapter);
-        // Fin green Day
-        
+                
         //Inicio green Dao Elementos Lista
         String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
         String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
         String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-        int[] toElementoLista = { android.R.id.text1, android.R.id.text2 };
-        adapterElementoLista = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursorElementoLista, fromElementoLista,
+        int[] toElementoLista = { R.id.text1, R.id.text2 };
+        adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);
         setListAdapter(adapterElementoLista);
         //fin green Day de Elementos Lista
@@ -93,35 +95,118 @@ public class BuscarPedidos extends ListActivity{
 		Bundle bundle = getIntent().getExtras();
 		idUsuario = bundle.getLong("idusuario");
         setTitle("iTrade - Pedidos");
-        
-//        button_cearpedido = (Button) findViewById(R.id.buttoncrearpedido);
-//        button_regresar = (Button) findViewById(R.id.buttonregresar);
-        
-     
-        
-//        lista= Convierte(listaIncidencia);
-//        ListView lv = getListView(); 
-//        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
-//        button_cearpedido.setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();
-//				Intent intent = new Intent(BuscarPedidos.this, BuscarClientesGreenDao.class);		
-//				intent.putExtra("idusuario", idusuario);
-//				intent.putExtra("boolVer", 0);//boolean que indica quien llamo a la ventana
-//				startActivity(intent);
-//			}
-//	 	});
-//        button_regresar.setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//				//Toast.makeText(BuscarPedidos.this, "pruebaa", Toast.LENGTH_LONG).show();
-//				BuscarPedidos.this.finish();
-//			}
-//	 	});
+        editText = (EditText) findViewById(R.id.editTextCliente);
+        button_buscar = (Button) findViewById(R.id.buttonbuscar);
+	    button_buscar.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+//				Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();
+				buscarPedido();
+				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); 
+			}
+	 	});
+	    addUiListeners();
  
 	}
+	
+    protected void addUiListeners() {
+        editText.setOnEditorActionListener(new OnEditorActionListener() {
 
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                	buscarPedido();
+                	imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
+                    return true;
+                }
+                return false;
+            }
+        });
 
-    private void cargarBaseLocal() {
+        final View button = findViewById(R.id.buttonbuscar);
+        button.setEnabled(false);
+        
+        editText.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                boolean enable = s.length() != 0;//habilita o deshabilita el boton segun sea el caso
+                button.setEnabled(enable);
+                if (enable==false){
+                	recuperarOriginal();
+                }
+                else
+                	buscarPedido();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            	Log.d("Before", "Before: ");
+            	//Toast.makeText(NoteActivity.this, "Before", Toast.LENGTH_LONG).show();
+            }
+
+            public void afterTextChanged(Editable s) {
+//            	Log.d("After", "After: ");
+            	//Toast.makeText(NoteActivity.this, "After", Toast.LENGTH_LONG).show();
+            }
+        });        
+    }
+	private void buscarPedido() {
+        String texto = editText.getText().toString();
+        String strIdCliente=encuentraIdCliente(texto);
+//        editText.setText("");
+        List<Pedido> pedidosAux = pedidoDao.queryBuilder()
+        		.where(com.itrade.model.PedidoDao.Properties.IdCliente.eq(strIdCliente))
+        		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
+		elementoListaDao.deleteAll();
+        
+		for(int i=0;i<pedidosAux.size();i++){
+//			Cliente clienteTemp = clienteDao.loadByRowId(listaPedido.get(i).getIdCliente());
+			long longTemp=0;
+			longTemp=longTemp+pedidosAux.get(i).getIdCliente();
+			Cliente clienteTemp= this.encuentraCliente(longTemp);
+			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+pedidosAux.get(i).getMontoSinIGV(),null,pedidosAux.get(i).getId());
+						
+			elementoListaDao.insert(elemento);
+	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+		}
+        cursorElementoLista.requery();	                
+    }
+
+    private String encuentraIdCliente(String razonSocial) {
+		// TODO Auto-generated method stub
+    	String str="";
+        List<Cliente> clientesAux = clienteDao.queryBuilder()
+			.where(com.itrade.model.ClienteDao.Properties.Razon_Social.like("%"+razonSocial+"%"))
+			.orderAsc(com.itrade.model.ClienteDao.Properties.Id).list();
+    	
+        if (clientesAux!=null){
+        	if(clientesAux.size()>0){
+        		Cliente clienteTemp=clientesAux.get(0);
+            	str=""+clienteTemp.getIdCliente();//posible error	
+        	}
+        	else
+        		str="-1";
+        }
+    	
+    	return str;		
+	}
+    private Cliente encuentraCliente(long idCliente) {
+    	Cliente clienteTemp = new Cliente();
+		// TODO Auto-generated method stub
+    	String strIdCliente=""+idCliente;
+        List<Cliente> clientesAux = clienteDao.queryBuilder()
+			.where(com.itrade.model.ClienteDao.Properties.IdCliente.eq(strIdCliente))
+			.orderAsc(com.itrade.model.ClienteDao.Properties.Id).list();
+    	
+        if (clientesAux!=null){
+        	if(clientesAux.size()>0){
+        		clienteTemp=clientesAux.get(0);            		
+        	}
+        	else
+        		clienteTemp=null;;
+        }
+    	
+    	return clienteTemp;		
+	}
+
+	private void cargarBaseLocal() {
     	daoPedido = new DAOPedido(BuscarPedidos.this);
     	listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
 
@@ -131,8 +216,10 @@ public class BuscarPedidos extends ListActivity{
 		for(int i=0;i<listaPedido.size();i++){
 			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),listaPedido.get(i).getNumVoucher(),listaPedido.get(i).getMontoTotal());
 			pedidoDao.insert(pedido);
-			Cliente cliente = clienteDao.loadByRowId(listaPedido.get(i).getIdCliente());
-			ElementoLista elemento = new ElementoLista(null,cliente.getRazon_Social(),"Monto Total: "+listaPedido.get(i).getMontoSinIGV(),null,listaPedido.get(i).getId());
+			long longTemp=0;
+			longTemp=longTemp+listaPedido.get(i).getIdCliente();
+			Cliente clienteTemp= this.encuentraCliente(longTemp);
+			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+listaPedido.get(i).getMontoSinIGV(),null,listaPedido.get(i).getId());
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
@@ -149,8 +236,11 @@ public class BuscarPedidos extends ListActivity{
 		elementoListaDao.deleteAll();
         
 		for(int i=0;i<listaPedidoOriginal.size();i++){
-			Cliente cliente = clienteDao.loadByRowId(listaPedidoOriginal.get(i).getIdCliente());
-			ElementoLista elemento = new ElementoLista(null,cliente.getRazon_Social(),"Monto Total: "+listaPedidoOriginal.get(i).getMontoTotal(),null,listaPedidoOriginal.get(i).getId());
+//			Cliente cliente = clienteDao.loadByRowId(listaPedidoOriginal.get(i).getIdCliente());
+			long longTemp=0;
+			longTemp=longTemp+listaPedidoOriginal.get(i).getIdCliente();
+			Cliente clienteTemp= this.encuentraCliente(longTemp);
+			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+listaPedidoOriginal.get(i).getMontoSinIGV(),null,listaPedidoOriginal.get(i).getId());
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
