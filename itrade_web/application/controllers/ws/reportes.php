@@ -257,6 +257,38 @@ class Reportes extends CI_Controller {
 		}					
 	}
 	
+	public function circulo_resumido_sinc2($anho_w="",$idjerarquia_w="",$idubigeo_w=""){		
+		//2012-05-10
+		$anho=$this->input->post('anho');
+		$idubigeo=$this->input->post('idubigeo');
+		$idjerarquia=$this->input->post('idjerarquia');	
+					
+		/*SOLO PARA WEB*/		
+		if (isset($anho_w)&& $anho_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" && isset($idjerarquia_w)&& $idjerarquia_w!=""){	
+			//$obj_id=$result=$this->Reporte_model->objetoUbigeo($idjerarquia_w,$idubigeo_w);			
+			
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}	
+			
+			$result=$this->Reporte_model->circulo_resumido_sinc2($anho_w,$idjerarquia_w,$idubigeo_w,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($anho)&& $anho!= "" && isset($idubigeo)&& $idubigeo!="" && isset($idjerarquia)&& $idjerarquia!="" ){	
+			
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo,$idjerarquia);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}	
+			
+			$result=$this->Reporte_model->circulo_resumido_sinc2($anho,$idjerarquia,$idubigeo,$id);	
+			//$result=$this->Reporte_model->zonas_detallado($month,$idjerarquia,$idubigeo,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}					
+	}
+	
 	public function reporte_mes($param_w=""){		
 		//2012-05-10
 		$param=$this->input->post('month');	
