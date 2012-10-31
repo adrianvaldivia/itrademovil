@@ -163,7 +163,7 @@ class Payment_model extends CI_Model {
 			AND P.IdPeriodo = M.IdPeriodo
 			AND M.IdUsuario =  '".$idvendedor."'
 		");	
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();	
 	}
 	public function get_monto($idvendedor,$fechini,$fechfin){
@@ -175,7 +175,7 @@ class Payment_model extends CI_Model {
 			AND P.IdCliente = C.IdCliente
 			AND C.IdCobrador ='".$idvendedor."' 
 		");
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();	
 	}
 	
