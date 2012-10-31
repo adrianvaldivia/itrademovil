@@ -8,6 +8,7 @@ import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
 import com.itrade.model.ElementoListaDao;
 import com.itrade.model.Pedido;
+import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoLinea;
 import com.itrade.model.Producto;
 import com.itrade.model.ProductoDao;
@@ -59,6 +60,7 @@ public class CrearPedido extends ListActivity{
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private ProductoDao productoDao;
+    private PedidoDao pedidoDao;
     private ElementoListaDao elementoListaDao;
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
@@ -76,6 +78,7 @@ public class CrearPedido extends ListActivity{
         daoSession = daoMaster.newSession();
         productoDao = daoSession.getProductoDao();
         elementoListaDao = daoSession.getElementoListaDao();
+        pedidoDao = daoSession.getPedidoDao();
         elementoListaDao.deleteAll();
         //Fin configuracion green dao
         //Inicio green Dao Elementos Lista
@@ -196,7 +199,9 @@ public class CrearPedido extends ListActivity{
         pedido.setIdCliente(idcliente);
         //procesaPedido();//obtiene el monto Total
         pedido.setMontoTotal(montoTotal);
+        pedido.setMontoSinIGV(montoTotal);
         idpedido=daoPedido.registrarPedido(pedido);
+        pedidoDao.insert(pedido);
 	}
 	private void procesaPedido() {//acumulador del monto Total
 		montoTotal=0.0;
