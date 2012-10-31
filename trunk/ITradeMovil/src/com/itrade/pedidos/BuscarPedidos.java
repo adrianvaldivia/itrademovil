@@ -21,6 +21,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,7 @@ public class BuscarPedidos extends ListActivity{
 	long idUsuario;
 	private EditText editText;
 	private Button button_buscar;
+	private ImageButton  button_clientes;
 	InputMethodManager imm;
 	Cliente cliente= new Cliente();
 	
@@ -97,11 +99,19 @@ public class BuscarPedidos extends ListActivity{
         setTitle("iTrade - Pedidos");
         editText = (EditText) findViewById(R.id.editTextCliente);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
+        button_clientes = (ImageButton) findViewById(R.id.btnProspectos);
 	    button_buscar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 //				Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();
 				buscarPedido();
 				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); 
+			}
+	 	});
+	    button_clientes.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(BuscarPedidos.this,  BuscarClientesGreenDao.class);
+				intent.putExtra("idusuario", idUsuario);
+				startActivity(intent);		
 			}
 	 	});
 	    addUiListeners();
@@ -149,27 +159,31 @@ public class BuscarPedidos extends ListActivity{
     }
 	private void buscarPedido() {
         String texto = editText.getText().toString();
-        String strIdCliente=encuentraIdCliente(texto);
-//        editText.setText("");
-        List<Pedido> pedidosAux = pedidoDao.queryBuilder()
-        		.where(com.itrade.model.PedidoDao.Properties.IdCliente.eq(strIdCliente))
-        		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
-		elementoListaDao.deleteAll();
-        
-		for(int i=0;i<pedidosAux.size();i++){
-//			Cliente clienteTemp = clienteDao.loadByRowId(listaPedido.get(i).getIdCliente());
-			long longTemp=0;
-			longTemp=longTemp+pedidosAux.get(i).getIdCliente();
-			Cliente clienteTemp= this.encuentraCliente(longTemp);
-			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+pedidosAux.get(i).getMontoSinIGV(),null,pedidosAux.get(i).getId());
-						
-			elementoListaDao.insert(elemento);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
+        ArrayList<String> listaGenerica = encuentraIdCliente(texto);//lista con los Ids de los clientes encontrados
+        elementoListaDao.deleteAll();
+        if(listaGenerica.size()>0){
+        	for(int k=0;k<listaGenerica.size();k++){
+        		String strIdCliente=listaGenerica.get(k);
+        		List<Pedido> pedidosAux = pedidoDao.queryBuilder()
+              		.where(com.itrade.model.PedidoDao.Properties.IdCliente.eq(strIdCliente))
+              		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
+      		              
+        		for(int i=0;i<pedidosAux.size();i++){
+        			long longTemp=0;
+        			longTemp=longTemp+pedidosAux.get(i).getIdCliente();
+        			Cliente clienteTemp= this.encuentraCliente(longTemp);
+        			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+pedidosAux.get(i).getMontoSinIGV(),null,pedidosAux.get(i).getId());
+      						
+        			elementoListaDao.insert(elemento);
+        			//Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+        		}
+            }
+        }                
         cursorElementoLista.requery();	                
     }
 
-    private String encuentraIdCliente(String razonSocial) {
+    private ArrayList<String> encuentraIdCliente(String razonSocial) {
+    	ArrayList<String> listaGenerica = new ArrayList<String>();
 		// TODO Auto-generated method stub
     	String str="";
         List<Cliente> clientesAux = clienteDao.queryBuilder()
@@ -178,14 +192,18 @@ public class BuscarPedidos extends ListActivity{
     	
         if (clientesAux!=null){
         	if(clientesAux.size()>0){
-        		Cliente clienteTemp=clientesAux.get(0);
-            	str=""+clienteTemp.getIdCliente();//posible error	
+        		for(int i=0;i<clientesAux.size();i++){
+        			Cliente clienteTemp=clientesAux.get(i);
+                	str=""+clienteTemp.getIdCliente();//posible error
+                	listaGenerica.add(str);
+        		}
+        			
         	}
         	else
         		str="-1";
         }
     	
-    	return str;		
+    	return listaGenerica;		
 	}
     private Cliente encuentraCliente(long idCliente) {
     	Cliente clienteTemp = new Cliente();

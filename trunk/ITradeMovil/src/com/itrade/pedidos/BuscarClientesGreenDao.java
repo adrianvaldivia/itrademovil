@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	DAOCliente daoCliente =null;
 	private Button button_vermapa;
 	private Button button_buscar;
+	private ImageButton  button_pedidos;
 	Cliente cliente= new Cliente();
 	List<Cliente> listaCliente;
 	List<Cliente> listaClienteOriginal;
@@ -107,18 +109,20 @@ public class BuscarClientesGreenDao extends ListActivity{
         
         button_vermapa = (Button) findViewById(R.id.buttonvermapa);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
+        button_pedidos = (ImageButton) findViewById(R.id.btnCrearPedido);
         editText = (EditText) findViewById(R.id.editTextCliente);
 
 	    button_vermapa.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-//				Toast.makeText(BuscarClientesGreenDao.this, "pruebaa", Toast.LENGTH_LONG).show();
-//				Bundle bundle = getIntent().getExtras();
-				
-				Intent intent = new Intent(BuscarClientesGreenDao.this, VerMapaActivity.class);
-				
-				intent.putExtra("idruta", 0);
-				intent.putExtra("idunidad", 0);
-				
+			public void onClick(View v) {				
+				Intent intent = new Intent(BuscarClientesGreenDao.this, UbicacionCheckInActivity.class);
+				intent.putExtra("idusuario", idUsuario);
+				startActivity(intent);		
+			}
+	 	});
+	    button_pedidos.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(BuscarClientesGreenDao.this,  BuscarPedidos.class);
+				intent.putExtra("idusuario", idUsuario);
 				startActivity(intent);		
 			}
 	 	});
