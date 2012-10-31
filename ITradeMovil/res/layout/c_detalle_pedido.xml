@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="right"
     android:layout_marginBottom="0dp"
     android:background="@color/blanco" >
-
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="149dp"
+        android:layout_height="wrap_content"
         android:background="@color/blanco"
         android:orientation="vertical" >
 
@@ -129,7 +130,7 @@
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
-
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -141,7 +142,7 @@
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/log3" />
+                android:src="@drawable/log3" />
             -->
 
             <LinearLayout
@@ -214,7 +215,7 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="5dip"
                 android:background="@color/azul_2" />
-
+
             <ListView
                 android:id="@+id/listDetalle"
                 android:layout_width="fill_parent"
@@ -222,16 +223,15 @@
                 android:layout_weight="23.88"
                 android:background="@color/blanco"
                 android:choiceMode="multipleChoice" >
-
             </ListView>
-
+
             <LinearLayout
                 android:id="@+id/bottom_control_bar"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/blanco"
                 android:gravity="bottom" >
-
+
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -257,8 +257,7 @@
                         android:textColor="@color/grisClaro" />
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>
