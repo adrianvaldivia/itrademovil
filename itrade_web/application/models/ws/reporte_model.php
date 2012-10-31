@@ -459,16 +459,23 @@ class Reporte_model extends CI_Model {
 		$str.=")";
 		
 		$query = $this->db->query("
-		SELECT DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname,  `Pedido`.`FechaPedido` , 
-		`Ubigeo`.`Departamento` ,  `Pedido`.`MontoTotalPedido` , `Pedido`.`MontoTotalCobrado` 
+		SELECT 
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year, 
+		DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
+		`Pedido`.`MontoTotalPedido` , `Pedido`.`MontoTotalCobrado` 
 		FROM (
 		`Pedido`
 		)
 		JOIN  `Cliente` ON  `Pedido`.`IdCliente` =  `Cliente`.`IdCliente` 
 		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
-		WHERE  `Ubigeo`.`Pais` =  'Peru'
-		 and '".$str."' ");
+		WHERE   ".$str." 
+		GROUP BY 
+		Year, Monthname, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		");
 		//$str="anho(".$this->table_pedido.".FechaPedido) = ".$anho;		
 		//$this->db->where($str);//UBIGEO
 		
@@ -494,7 +501,7 @@ class Reporte_model extends CI_Model {
 		}*/
 		
 		//$query = $this->db->get();	
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();
 		
 	}
