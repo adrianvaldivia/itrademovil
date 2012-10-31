@@ -76,8 +76,8 @@ public class ExampleDaoGenerator {
     private static void addProspecto(Schema schema) {
         Entity prospecto = schema.addEntity("Prospecto");
         prospecto.addIdProperty();
-        prospecto.addLongProperty("IdProspecto");
         prospecto.addIntProperty("IdPersona");
+        prospecto.addIntProperty("IdProspecto");        
         prospecto.addStringProperty("Razon_Social").notNull();
         prospecto.addStringProperty("RUC");
         prospecto.addDoubleProperty("Latitud");
