@@ -7,8 +7,8 @@ package com.itrade.model;
 public class Prospecto {
 
     private Long id;
-    private Long IdProspecto;
     private Integer IdPersona;
+    private Integer IdProspecto;
     /** Not-null value. */
     private String Razon_Social;
     private String RUC;
@@ -26,10 +26,10 @@ public class Prospecto {
         this.id = id;
     }
 
-    public Prospecto(Long id, Long IdProspecto, Integer IdPersona, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
+    public Prospecto(Long id, Integer IdPersona, Integer IdProspecto, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
         this.id = id;
-        this.IdProspecto = IdProspecto;
         this.IdPersona = IdPersona;
+        this.IdProspecto = IdProspecto;
         this.Razon_Social = Razon_Social;
         this.RUC = RUC;
         this.Latitud = Latitud;
@@ -48,20 +48,20 @@ public class Prospecto {
         this.id = id;
     }
 
-    public Long getIdProspecto() {
-        return IdProspecto;
-    }
-
-    public void setIdProspecto(Long IdProspecto) {
-        this.IdProspecto = IdProspecto;
-    }
-
     public Integer getIdPersona() {
         return IdPersona;
     }
 
     public void setIdPersona(Integer IdPersona) {
         this.IdPersona = IdPersona;
+    }
+
+    public Integer getIdProspecto() {
+        return IdProspecto;
+    }
+
+    public void setIdProspecto(Integer IdProspecto) {
+        this.IdProspecto = IdProspecto;
     }
 
     /** Not-null value. */
