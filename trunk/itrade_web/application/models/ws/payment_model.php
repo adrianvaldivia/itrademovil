@@ -154,5 +154,54 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();		
 		return $query->result();	
 	}
+	public function get_meta($idvendedor){
+		$query = $this->db->query("
+			SELECT P.Descripcion, M.Monto
+			FROM PeriodoMeta P, Meta M
+			WHERE P.FechaFin >= NOW( ) 
+			AND P.FechaIni <= NOW( ) 
+			AND P.IdPeriodo = M.IdPeriodo
+			AND M.IdUsuario =  '".$idvendedor."'
+		");
+		$query->result();
+		$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
+		return $arr;	
+	}
+	public function get_monto($idvendedor,$fechini,$fechfin){
+		$query = $this->db->query("
+			SELECT SUM( MontoTotalPedido ) as montototal 
+			FROM Pedido P, Cliente C
+			WHERE  NOW() >= P.FechaPedido
+			AND  '".$fechini."' <= P.FechaPedido
+			AND P.IdCliente = C.IdCliente
+			AND C.IdCobrador ='".$idvendedor."' 
+		");
+		$query->result();
+		return $query->row(0)->montototal;	
+	}
+	
+	/*
+	SELECT * 
+FROM PeriodoMeta P, Meta M
+WHERE P.FechaFin >= NOW( ) 
+AND P.FechaIni <= NOW( ) 
+AND P.IdPeriodo=M.IdPeriodo
+AND M.IdUsuario=
+
+SELECT SUM(MontoTotalPedido)
+FROM Pedido P
+WHERE '2012-12-03' >= P.FechaPedido
+AND '2012-03-03' <= P.FechaPedido
+
+
+
+SELECT SUM( MontoTotalPedido ) as montototal 
+FROM Pedido P, Cliente C
+WHERE  '2012-12-03' >= P.FechaPedido
+AND  '2012-03-03' <= P.FechaPedido
+AND P.IdCliente = C.IdCliente
+AND C.IdCobrador =6
+
+	*/
 }
 ?>
