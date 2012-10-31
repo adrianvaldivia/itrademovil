@@ -288,6 +288,6 @@ public class PaymentTask extends Activity {
 		intent.putExtra("idempleado", idempleado);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);                
         SmsManager sms = SmsManager.getDefault();        
-        sms.sendTextMessage("979331334", null, "Holi Ochi!! Prueba PAGOS", pi, null);								
+        sms.sendTextMessage("979331334", null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								
     }
 }
