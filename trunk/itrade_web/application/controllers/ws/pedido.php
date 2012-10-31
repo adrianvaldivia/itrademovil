@@ -126,6 +126,10 @@ class Pedido extends CI_Controller {
 		$arr_meta=$this->Payment_model->get_meta($idvendedor);
 		//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
 		var_dump($arr_meta);
+		Foreach($arr_meta as $ele){
+			$suma=$this->Payment_model->get_monto($idvendedor,$ele->FechaIni,$ele->FechaFin);		
+		}
+		
 		echo implode(",",$arr_meta)."<BR>";
 		$suma=$this->Payment_model->get_monto($idvendedor,$arr_meta['fechaini'],$arr_meta['fechafin']);		
 		var_dump($suma);
