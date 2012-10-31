@@ -90,17 +90,16 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     			if ((!ruc.getText().toString().trim().equals("")) &&
                   (!rzsocial.getText().toString().trim().equals("")) &&
                   (!direcc.getText().toString().trim().equals("")) &&
-                  (!telefcliente.getText().toString().trim().equals("")) &&
+                  (!telefperson.getText().toString().trim().equals("")) &&
                   (!dni.getText().toString().trim().equals("")) &&
                   (!nombre.getText().toString().trim().equals("")) &&
                   (!apellidopater.getText().toString().trim().equals("")) &&
                   (!apellidomater.getText().toString().trim().equals("")) &&
-                  (!telefperson.getText().toString().trim().equals("")) &&
-                  (!fechanac.getText().toString().trim().equals("")) &&
-                  (!correo.getText().toString().trim().equals("")) &&
-                  (!cantidad.getText().toString().trim().equals(""))) 
+                 (!cantidad.getText().toString().trim().equals(""))) 
             		  
-         {           		
+         {           //  (!fechanac.getText().toString().trim().equals("")) &&
+                    //(!correo.getText().toString().trim().equals("")) &&
+                    		
     
     				if ((ruc.length()!=11) || (dni.length()!=8) || (Integer.parseInt(cantidad.getText().toString().trim()) < 1))
     				
@@ -125,7 +124,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     }
 
    
-//  person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), fecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
+    person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), strFecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
 
   String valor = cantidad.getText().toString().trim();
   cred = new Credito(Integer.parseInt(valor)); 
@@ -141,8 +140,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                  param.add(new BasicNameValuePair("apepaterno", person.getApePaterno()));
                  param.add(new BasicNameValuePair("apematerno", person.getApeMaterno()));
                  param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
-                 param.add(new BasicNameValuePair("correo",  person.getEmail()));
-                 param.add(new BasicNameValuePair("fechnac",  fecha.toString())); // Revisar Nombre de FechaNac
+            //     param.add(new BasicNameValuePair("correo",  person.getEmail()));
+             //    param.add(new BasicNameValuePair("fechanac",  fecha.toString())); // Revisar Nombre de FechaNac
             
                  param.add(new BasicNameValuePair("ruc", client.getRUC()));
                  param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
@@ -165,10 +164,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 				}		
 	
 			     /********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
-			     String valor1 = sync.getResponse().trim();
-			     int valor2 = Integer.parseInt(valor1);
 			    
-			     if (valor2>0)
+			     if (!sync.getResponse().equals("0"))
 				
 			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
 			   else	

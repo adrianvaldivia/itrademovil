@@ -26,7 +26,7 @@ public class MiMeta extends Activity {
     	
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.mimeta);
+        setContentView(R.layout.mimetafusion);
         button_aceptar = (Button) findViewById(R.id.btn_aceptarmeta);
         tv_avancemeta = (TextView) findViewById(R.id.txt_avancemeta);
         tv_metareal = (TextView) findViewById(R.id.txt_metareal);
