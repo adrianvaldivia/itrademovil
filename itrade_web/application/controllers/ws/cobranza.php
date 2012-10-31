@@ -24,7 +24,7 @@ class Cobranza extends CI_Controller {
 		$result=$this->Product_model->get_all_categorias();	
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));	
 	}
-	public function send_notifications($idcobrador){
+	public function send_notifications($idcobrador=''){
 		$clientes=$this->Cliente_model->get_clients_by_idvendedor($idcobrador);
 		$cantidadClientes=count($clientes);
 		if (count($clientes)>0){
