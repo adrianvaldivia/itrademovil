@@ -126,7 +126,11 @@
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
-
+		<org.osmdroid.views.MapView
+		    android:id="@+id/openmaptotal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="404dp" />
+ 
     </LinearLayout>
 
 </LinearLayout>
