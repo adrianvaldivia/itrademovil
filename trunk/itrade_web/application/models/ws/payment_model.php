@@ -165,6 +165,7 @@ class Payment_model extends CI_Model {
 		");
 		$query=$this->db->get();
 		//$query->result();
+		echo $this->db->last_query()."<br><br>";
 		$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
 		return $arr;	
 	}
@@ -179,6 +180,7 @@ class Payment_model extends CI_Model {
 		");
 		//$query->result();
 		$query=$this->db->get();
+		echo $this->db->last_query()."<br><br>";
 		return $query->row(0)->montototal;	
 	}
 	
