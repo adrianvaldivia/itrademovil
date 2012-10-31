@@ -68,7 +68,6 @@ public class MenuLista extends ListActivity{
      if (selection.compareTo("Clientes")==0){
 			Intent intent = new Intent(MenuLista.this, BuscarClientesGreenDao.class);		
 			intent.putExtra("idusuario", idusuario);
-			intent.putExtra("boolVer", 1);
 			startActivity(intent);
     	 
      }
@@ -81,7 +80,6 @@ public class MenuLista extends ListActivity{
      if (selection.compareTo("Pedidos")==0){
 			Intent intent = new Intent(MenuLista.this, BuscarPedidos.class);
 			intent.putExtra("idusuario", idusuario);
-			
 			startActivity(intent);
     	 
      }
