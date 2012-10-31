@@ -156,7 +156,7 @@ class Payment_model extends CI_Model {
 	}
 	public function get_meta($idvendedor){
 		$query = $this->db->query("
-			SELECT P.Descripcion, M.Monto
+			SELECT P.Descripcion, M.Monto, P.FechaIni ,P.FechaFin  
 			FROM PeriodoMeta P, Meta M
 			WHERE P.FechaFin >= NOW( ) 
 			AND P.FechaIni <= NOW( ) 
