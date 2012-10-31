@@ -29,21 +29,30 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.itrade.R;
 import com.itrade.model.Cliente;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
+import com.itrade.model.PedidoLinea;
+import com.itrade.model.ClienteDao.Properties;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 
 
 
-public class MiUbicacionImplActivity extends Activity implements LocationListener {
+public class UbicacionCheckInActivity extends Activity implements LocationListener {
 
     // ===========================================================
     // Constants
@@ -55,6 +64,10 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
     // ===========================================================
     // Fields
     // ===========================================================
+//	private final Double  TOLERANCIA = 0.0004;
+	private final Double  TOLERANCIA = 0.004;
+	private final Double  FACTOR = 1000000.0;
+	PopupWindow m_pw;
 	public int j=0;
     private MapView mOsmv;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
@@ -79,7 +92,7 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 
     private DaoMaster daoMaster;
     private DaoSession daoSession;
-    private ClienteDao cliente2Dao;
+    private ClienteDao clienteDao;
 
     SimpleCursorAdapter adapter;
     // fin de green dao
@@ -91,6 +104,8 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
     static Context context = null;
     boolean primeraVez=false;
     boolean boolHayGPS=true;
+    public long idusuario;
+    Cliente cliente= new Cliente();
 
         
     // ===========================================================
@@ -100,7 +115,8 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
     @Override
     public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-			Bundle bundle = getIntent().getExtras();			
+			Bundle bundle = getIntent().getExtras();
+			idusuario = bundle.getLong("idusuario");
 			
 //			idruta = bundle.getInt("idruta");
 
@@ -112,10 +128,10 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 	        db = helper.getWritableDatabase();
 	        daoMaster = new DaoMaster(db);
 	        daoSession = daoMaster.newSession();
-	        cliente2Dao = daoSession.getClienteDao();
+	        clienteDao = daoSession.getClienteDao();
 	        	        
 	        //fin green dao
-	        listaCliente=cliente2Dao.loadAll();
+	        listaCliente=clienteDao.loadAll();
 //            listaCliente= daoPara.getAllParaderos(idruta);//idRuta
             listaGeoPoint=this.Convierte(listaCliente);
 
@@ -138,21 +154,21 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
                               				//single tap
                                             public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                                                     Toast.makeText(
-                                                                    MiUbicacionImplActivity.this,
+                                                                    UbicacionCheckInActivity.this,
                                                                     item.mTitle , Toast.LENGTH_LONG).show();
+                                                    encuentraCliente(item.mDescription);
                                                     return true; // We 'handled' this event.
                                             }
 
-                                            //long pressed
+
+											//long pressed
                                             public boolean onItemLongPress(final int index, final OverlayItem item) {
-                                                    Toast.makeText(
-                                                    		MiUbicacionImplActivity.this,
-                                                                    item.mTitle , Toast.LENGTH_LONG).show();
-                                                    //cambios chichan
-                                                    Intent intent = new Intent(MiUbicacionImplActivity.this, BuscarProductos.class);
-                                    				//intent.putExtra("idcliente", 3);//falta capturar el idcliente
-                                    				startActivity(intent);
-                                    				//fin cambios chichan
+                                            		
+//                                                    Toast.makeText(
+//                                                    		UbicacionCheckInActivity.this,
+//                                                                    item.mTitle, Toast.LENGTH_LONG).show();
+                                                    encuentraCliente(item.mDescription);//mDescription es IdCliente
+                                                    HacerCheckIn();//error
                                                     return false;
                                             }
                                     }, mResourceProxy);
@@ -206,19 +222,6 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 //            return true;
 //    }
 
-    @Override
-    public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
-//            switch (item.getItemId()) {
-//            case 0:
-//                    this.mOsmv.getController().zoomIn();
-//                    return true;
-//
-//            case 1:
-//                    this.mOsmv.getController().zoomOut();
-//                    return true;
-//            }
-            return false;
-    }
 
     // ===========================================================
     // Methods
@@ -255,7 +258,7 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 //	        items.add(olItem);
 	        //fin cambios
 			for(i=0;i<lis.size();i++){
-				items.add(new OverlayItem(lis.get(i).getRazon_Social(), "SampleDescription1", lista.get(i)));
+				items.add(new OverlayItem(lis.get(i).getRazon_Social(), ""+lis.get(i).getIdCliente(), lista.get(i)));
 			}  
 		}
 
@@ -302,10 +305,10 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
                 }                
             }
             else
-            	Toast.makeText(MiUbicacionImplActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
+            	Toast.makeText(UbicacionCheckInActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
         }
         else
-        	Toast.makeText(MiUbicacionImplActivity.this,"Encienda el GPS, y salga fuera del edificio por favor.", Toast.LENGTH_LONG).show();
+        	Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS, y salga fuera del edificio por favor.", Toast.LENGTH_LONG).show();
 	}
 
 	 private Boolean displayGpsStatus() {  
@@ -353,7 +356,7 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 
 	    }
 	    else{
-	    	Toast.makeText(MiUbicacionImplActivity.this, "GPS no encendido", Toast.LENGTH_LONG).show();
+	    	Toast.makeText(UbicacionCheckInActivity.this, "GPS no encendido", Toast.LENGTH_LONG).show();
 	    	boolHayGPS=false;
 	    }
 
@@ -406,6 +409,86 @@ public class MiUbicacionImplActivity extends Activity implements LocationListene
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	
+	public void HacerCheckIn() {		
+		// TODO Auto-generated method stub
+		
+   	 // Inicio del popup
+   	 LayoutInflater inflater = (LayoutInflater)
+        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+   	 View layout = inflater.inflate(R.layout.mypopupcheckin,
+   	 (ViewGroup) findViewById(R.id.MyLinearLayoutCheckIn));
+   	 m_pw = new PopupWindow( layout,  350,  250,  true);
+   	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+		
+	}
+    private void encuentraCliente(String strIdCliente) {
+		// TODO Auto-generated method stub    	
+        List<Cliente> clientesAux = clienteDao.queryBuilder()
+        		.where(Properties.IdCliente.eq(strIdCliente))
+        		.orderAsc(Properties.Id).list();
+        
+        if (clientesAux!=null){
+        	if(clientesAux.size()>0){
+        		this.cliente=clientesAux.get(0);
+        	}
+        	else
+            	cliente.setRazon_Social("Error");
+        }
+	}
+    
+	public void onButtonInPopup (View target) {
+		if(primeraVez==false){
+			if(estaCerca()){
+				int temp=cliente.getIdCliente();
+			     Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
+			     intent.putExtra("idcliente", temp);
+			     intent.putExtra("idusuario", idusuario);
+			     startActivity(intent);
+			}
+			else{
+				Toast.makeText(
+			             UbicacionCheckInActivity.this,
+			                    "Cliente muy lejos de la Ubicacion actual, elija otro por favor" , Toast.LENGTH_LONG).show();
+			}
+		     
+			
+		}
+		else{
+            Toast.makeText(
+             UbicacionCheckInActivity.this,
+                    "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_LONG).show();
+		}
+	    m_pw.dismiss();
+
+	}
+
+	public void onButtonCancelarPopup (View target) {
+	    m_pw.dismiss();
+	}
+	
+	private boolean estaCerca() {
+		boolean resul=false;		
+        GeoPoint punto = posicionActualOverlay.getMyLocation();
+        
+        double resta1=0;
+        double resta2=0;
+        resta1=punto.getLatitudeE6()/FACTOR;
+        resta1=resta1-cliente.getLatitud();
+        resta2=punto.getLongitudeE6()/FACTOR;
+        resta2=resta2-cliente.getLongitud();
+        resta1=Math.abs (resta1);
+        resta2=Math.abs (resta2);
+        if(resta1<=TOLERANCIA && resta2<=TOLERANCIA)
+            resul=true;
+        else
+            resul=false;
+        
+		// TODO Auto-generated method stub
+		return resul;
 	}
 
 }
