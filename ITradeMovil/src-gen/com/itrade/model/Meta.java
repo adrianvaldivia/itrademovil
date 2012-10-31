@@ -1,37 +1,56 @@
 package com.itrade.model;
 
 public class Meta {
-	private double metareal;
-	
+	private double suma;//avance
 
-	private double avance;
-	private String periodo;
+	private String fechini;//fecha inicio periodo
+	private String fechafin;//fecha fin del periodo
+	private double meta;//meta	
+	private String nombre;//descripcion periodo
 	
+	public String getFechini() {
+		return fechini;
+	}
+
+	public void setFechini(String fechini) {
+		this.fechini = fechini;
+	}
+
+	public String getFechafin() {
+		return fechafin;
+	}
+
+	public void setFechafin(String fechafin) {
+		this.fechafin = fechafin;
+	}
+
 	public Meta() {
     }
+
+	public double getSuma() {
+		return suma;
+	}
+
+	public void setSuma(double suma) {
+		this.suma = suma;
+	}
+
+	public double getMeta() {
+		return meta;
+	}
+
+	public void setMeta(double meta) {
+		this.meta = meta;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 	
-	public double getMetareal() {
-		return metareal;
-	}
-
-	public void setMetareal(double metareal) {
-		this.metareal = metareal;
-	}
-
-	public double getAvance() {
-		return avance;
-	}
-
-	public void setAvance(double avance) {
-		this.avance = avance;
-	}
-
-	public String getPeriodo() {
-		return periodo;
-	}
-
-	public void setPeriodo(String periodo) {
-		this.periodo = periodo;
-	}
+	
 	
 }
