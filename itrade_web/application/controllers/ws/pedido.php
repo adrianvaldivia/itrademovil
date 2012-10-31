@@ -125,10 +125,10 @@ class Pedido extends CI_Controller {
 		//$idvendedor=1;
 		$arr_meta=$this->Payment_model->get_meta($idvendedor);
 		//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
-		print_r($arr_meta);
+		var_dump($arr_meta);
 		echo implode(",",$arr_meta)."<BR>";
 		$suma=$this->Payment_model->get_monto($idvendedor,$arr_meta['fechaini'],$arr_meta['fechafin']);		
-		print_r($suma);
+		var_dump($suma);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
 	}
 	
