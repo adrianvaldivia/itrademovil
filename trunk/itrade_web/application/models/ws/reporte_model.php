@@ -371,10 +371,14 @@ class Reporte_model extends CI_Model {
 		switch($idjerarquia){
 		case 1:
 		
+		
+		//DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
 		$query = $this->db->query("
+		
+		
 		SELECT 
 		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year, 
-		DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+		MONTH( Pedido.FechaPedido) AS Month, 
 			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
 		SUM(`Pedido`.`MontoTotalPedido`) , SUM(`Pedido`.`MontoTotalCobrado`) 
@@ -386,7 +390,7 @@ class Reporte_model extends CI_Model {
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		WHERE   ".$str." and `Ubigeo`.`Pais`= '".$id."'  
 		 GROUP BY 
-		Year, Monthname, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
 		");
 		break;
@@ -396,7 +400,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		SELECT 
 		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year, 
-		DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+		MONTH( Pedido.FechaPedido) AS Month, 
 			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
 		SUM(`Pedido`.`MontoTotalPedido`) , SUM(`Pedido`.`MontoTotalCobrado`) 
@@ -408,7 +412,7 @@ class Reporte_model extends CI_Model {
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		WHERE   ".$str." and `Ubigeo`.`Departamento`= '".$id."'  
 		 GROUP BY 
-		Year, Monthname, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
 		");
 		break;
@@ -419,7 +423,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		SELECT 
 		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year, 
-		DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+		MONTH( Pedido.FechaPedido) AS Month, 
 			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
 		SUM(`Pedido`.`MontoTotalPedido`) , SUM(`Pedido`.`MontoTotalCobrado`) 
@@ -431,7 +435,7 @@ class Reporte_model extends CI_Model {
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		WHERE   ".$str." and `Ubigeo`.`Distrito`= '".$id."'    
 		 GROUP BY 
-		Year, Monthname, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
 		");
 		break;	
