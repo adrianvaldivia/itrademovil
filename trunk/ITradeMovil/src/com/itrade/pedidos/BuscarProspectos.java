@@ -143,7 +143,7 @@ public class BuscarProspectos extends Activity {
 	        	lprospectos.add(listaProspectos.get(i).getRazon_Social());	        	
 	        }	
 	    	//adapter =new ArrayAdapter<Cliente>(BuscarProspectos.this, android.R.layout.simple_list_item_1, listaProspectos); 
-	    	adapter =new ArrayAdapter<String>(BuscarProspectos.this, android.R.layout.simple_list_item_1, lprospectos);
+	    	adapter =new ArrayAdapter<String>(BuscarProspectos.this, R.layout.itemsimplelinea, lprospectos);
 	    	
 	    	//adapter2 =new ItemProspectoAdapter(BuscarProspectos.this, listaProspectos);
 	    	
