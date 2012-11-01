@@ -239,7 +239,7 @@ class Reporte_model extends CI_Model {
 
 			
 		$query = $this->db->get();	
-		//echo $this->db->last_query();
+		echo $this->db->last_query();
 		return $query->result();
 		
 	}
@@ -335,17 +335,6 @@ class Reporte_model extends CI_Model {
 	
 	public function zonas_resumido_sinc2($anho,$idjerarquia,$idubigeo,$id){				
 		
-		/*switch($idjerarquia){
-			case 1:				
-				$this->db->where($this->table_ubigeo.".Pais", $id);
-				break;
-			case 2:				
-				$this->db->where($this->table_ubigeo.".Departamento", $id);
-				break;
-			case 3:				
-				$this->db->where($this->table_ubigeo.".Distrito", $id);
-				break;
-		}	*/
 		//trabajo del arrego $anho
 		
 		$myarr = explode("-",$anho);
@@ -483,9 +472,7 @@ class Reporte_model extends CI_Model {
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
 		$this->db->join($this->table_usuario,$this->table_cliente.".IdVendedor =".$this->table_usuario.".IdUsuario");				
 		$this->db->join($this->table_ubigeo,$this->table_usuario.".IdUbigeo =".$this->table_ubigeo.".IdUbigeo");	
-		/*$this->db->join($this->table_departamento,$this->table_ubigeo.".IdDepartamento =".$this->table_departamento.".IdDepartamento");
-		$this->db->join($this->table_distrito,$this->table_ubigeo.".IdDistrito =".$this->table_distrito.".IdDistrito");
-		$this->db->join($this->table_zona,$this->table_ubigeo.".IdZona =".$this->table_zona.".IdZona");*/
+	
 		$this->db->join($this->table_meta,$this->table_usuario.".IdUsuario =".$this->table_meta.".IdUsuario");
 												
 		//WHERES
@@ -523,13 +510,12 @@ class Reporte_model extends CI_Model {
 		}
 		$str.=")";
 		
-		//$str="anho(".$this->table_pedido.".FechaPedido) = ".$anho;		
+			
 		$this->db->where($str);//UBIGEO
 		
 		
 		
-		//GROUP BY
-		//$this->db->group_by($this->table_ubigeo.".Zona");				
+					
 		
 						
 		$query = $this->db->get();	
@@ -562,48 +548,205 @@ class Reporte_model extends CI_Model {
 		}
 		$str.=")";
 		
+		switch($idjerarquia){
+		Case 1:
 		$query = $this->db->query("
 		SELECT 
 		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
-		DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+		MONTH( Pedido.FechaPedido) AS Month, 
 		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
-		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS Monto 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
 		FROM (`Pedido`)
 		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
 		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
 		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
 		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
-		WHERE   ".$str." 
+		WHERE   ".$str." and `Ubigeo`.`Pais`= '".$id."' 
 		GROUP BY 
-		Year, Monthname, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
 		");
-		//$str="anho(".$this->table_pedido.".FechaPedido) = ".$anho;		
-		//$this->db->where($str);//UBIGEO
+		break;
+		
+		case 2:
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
+		MONTH( Pedido.FechaPedido) AS Month, 
+		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
+		FROM (`Pedido`)
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
+		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
+		WHERE   ".$str."  and `Ubigeo`.`Departamento`= '".$id."' 
+		GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		");
+		break;
 		
 		
+		case 3:
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
+		MONTH( Pedido.FechaPedido) AS Month,  
+		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
+		FROM (`Pedido`)
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
+		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
+		WHERE   ".$str."  and `Ubigeo`.`Distrito`= '".$id."' 
+		GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		");
+		break;
 		
-		//$dates="(DATEDIFF(".$this->table_atencion_omega.".fecAtencion,".$this->table_atencion.".fecha)=0)";
-		//$this->db->where($dates);
-		//$this->//FECHA			
+		}
 		
-		//SE COMENTA EL GROUP BY PORKE YA NO SE VA A AGRUPAR POR DEPS, DIST O ZONAS
-		/*
+		//echo $this->db->last_query();
+		return $query->result();
+		
+	}
+	
+	public function marcas_resumido_sinc($anho,$idjerarquia,$idubigeo,$id){				
+		
+		//trabajo del arrego $anho
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		
 		switch($idjerarquia){
-			case 1://pais
-				$this->db->group_by($this->table_ubigeo.".Departamento");				
-				break;
-			case 2://departamento
-							
-				$this->db->group_by($this->table_ubigeo.".Distrito");	
-				break;
-			case 3://distrito							
-				$this->db->group_by($this->table_ubigeo.".Zona");	
-				break;
-		}*/
+		case 1:
 		
-		//$query = $this->db->get();	
+		
+		//DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+		$query = $this->db->query("		
+		
+		SELECT 	
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
+		MONTH( Pedido.FechaPedido) AS Month,  
+		`Usuario`.`Nombre`, 
+		`Ubigeo`.`IdUbigeo`, 
+		`Usuario`.`IdJerarquia`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona`,		
+		`Marca`.`Descripcion`, 
+		`Categoria`.`IdCategoria`,
+		`Categoria`.`Descripcion`, 
+		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
+		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
+		FROM (`Linea_Pedido`)
+		JOIN `Pedido` ON `Linea_Pedido`.`IdPedido` =`Pedido`.`IdPedido`
+		JOIN `Producto` ON `Linea_Pedido`.`IdProducto` =`Producto`.`IdProducto`
+		JOIN `Marca` ON `Producto`.`IdMarca` =`Marca`.`IdMarca`
+		JOIN `Categoria` ON `Producto`.`IdCategoria` =`Categoria`.`IdCategoria`
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente` 
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo` 
+		WHERE   ".$str." and `Ubigeo`.`Pais`= '".$id."'  
+		 GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , `Marca`.`Descripcion`,
+		`Categoria`.`IdCategoria`, 
+		`Categoria`.`Descripcion`
+		");
+		break;
+		
+		case 2:
+		
+		$query = $this->db->query("		
+		
+		SELECT 	
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
+		MONTH( Pedido.FechaPedido) AS Month,  
+		`Usuario`.`Nombre`, 
+		`Ubigeo`.`IdUbigeo`, 
+		`Usuario`.`IdJerarquia`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona`,		
+		`Marca`.`Descripcion`,
+		`Categoria`.`Descripcion`, 
+		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
+		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
+		FROM (`Linea_Pedido`)
+		JOIN `Pedido` ON `Linea_Pedido`.`IdPedido` =`Pedido`.`IdPedido`
+		JOIN `Producto` ON `Linea_Pedido`.`IdProducto` =`Producto`.`IdProducto`
+		JOIN `Marca` ON `Producto`.`IdMarca` =`Marca`.`IdMarca`
+		JOIN `Categoria` ON `Producto`.`IdCategoria` =`Categoria`.`IdCategoria`
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente` 
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo` 
+		WHERE   ".$str." and `Ubigeo`.`Departamento`= '".$id."'  
+		 GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , `Marca`.`Descripcion`, `Categoria`.`Descripcion`
+		");
+		break;
+		
+		
+		case 3:
+		
+		$query = $this->db->query("		
+		
+		SELECT 	
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
+		MONTH( Pedido.FechaPedido) AS Month,  
+		`Usuario`.`Nombre`, 
+		`Ubigeo`.`IdUbigeo`, 
+		`Usuario`.`IdJerarquia`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona`,		
+		`Marca`.`Descripcion`, 
+		`Categoria`.`Descripcion`, 
+		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
+		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
+		FROM (`Linea_Pedido`)
+		JOIN `Pedido` ON `Linea_Pedido`.`IdPedido` =`Pedido`.`IdPedido`
+		JOIN `Producto` ON `Linea_Pedido`.`IdProducto` =`Producto`.`IdProducto`
+		JOIN `Marca` ON `Producto`.`IdMarca` =`Marca`.`IdMarca`
+		JOIN `Categoria` ON `Producto`.`IdCategoria` =`Categoria`.`IdCategoria`
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente` 
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo` 
+		WHERE   ".$str." and `Ubigeo`.`Distrito`= '".$id."'  
+		 GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , `Marca`.`Descripcion`, `Categoria`.`Descripcion` 
+		");
+		break;	
+		}		
 		//echo $this->db->last_query();
 		return $query->result();
 		
@@ -613,20 +756,140 @@ class Reporte_model extends CI_Model {
 	
 	
 	
-	public function reporte_mes($param){	
+	public function reporte_pedido_sinc($anho,$idjerarquia,$idubigeo,$id){
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		switch($idjerarquia){
+		case 1:
+		
 		$query = $this->db->query("
-		SELECT MONTH(FechaPedido) AS MES,ZONA,
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month,
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		
 		SUM(CASE WHEN IdEstadoPedido=1 THEN 1 ELSE 0 END) AS CANTPEDIDOE1,
 		SUM(CASE WHEN IdEstadoPedido=1 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE1,
 		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
 		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
-		FROM Pedido A, Cliente B, Usuario C, Ubigeo D
-		WHERE A.IdCliente=B.IdCliente AND B.IdVendedor=C.IdUsuario AND C.IdUbigeo=D.IdUbigeo
-		AND LEFT(A.FechaPedido+0,6)='".$param."'
-		GROUP BY MONTH(FechaPedido) , ZONA
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Pais`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month,
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
 		");
+		break;
+		
+		case 2:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month, 
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN 1 ELSE 0 END) AS CANTPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Departamento`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month, 
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,
+		`D`.`Pais`, 
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		case 3:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month, 
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN 1 ELSE 0 END) AS CANTPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Distrito`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month, 
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		
+		}
+		//echo $this->db->last_query();
 		return $query->result();
 	}
 	
