@@ -289,17 +289,59 @@ class Reportes extends CI_Controller {
 		}					
 	}
 	
-	public function reporte_mes($param_w=""){		
+	public function marcas_resumido_sinc($anho_w="",$idjerarquia_w="",$idubigeo_w=""){		
 		//2012-05-10
-		$param=$this->input->post('month');	
+		$anho=$this->input->post('anho');
+		$idjerarquia=$this->input->post('idjerarquia');
+		$idubigeo=$this->input->post('idubigeo');			
 		/*SOLO PARA WEB*/		
-		if (isset($param_w)&& $param_w!= "" ){				
-			$result=$this->Reporte_model->reporte_mes($param_w);				
+		if (isset($anho_w)&& $anho_w!= "" && isset($idjerarquia_w)&& $idjerarquia_w!="" && isset($idubigeo_w)&& $idubigeo_w!=""){	
+			
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}	
+			
+			$result=$this->Reporte_model->marcas_resumido_sinc($anho_w,$idjerarquia_w,$idubigeo_w,$id);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}
 		/*SOLO PARA ANDROID*/		
-		if (isset($param)&& $param!= ""){				
-			$result=$this->Reporte_model->reporte_mes($param);				
+		if (isset($anho)&& $anho!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!=""){	
+			
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo,$idjerarquia);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}	
+			
+			$result=$this->Reporte_model->marcas_resumido_sinc($anho,$idjerarquia,$idubigeo,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}			
+	}
+	
+	
+	public function reporte_pedido_sinc($anho_w="",$idjerarquia_w="",$idubigeo_w=""){		
+		//2012-05-10
+		$anho=$this->input->post('anho');
+		$idubigeo=$this->input->post('idubigeo');
+		$idjerarquia=$this->input->post('idjerarquia');	
+		/*SOLO PARA WEB*/		
+		if (isset($anho_w)&& $anho_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" && isset($idjerarquia_w)&& $idjerarquia_w!=""){				
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}				
+			$result=$this->Reporte_model->reporte_pedido_sinc($anho_w,$idjerarquia_w,$idubigeo_w,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($anho)&& $anho!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!=""){				
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo,$idjerarquia);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}	
+			
+			
+			$result=$this->Reporte_model->reporte_pedido_sinc($anho,$idjerarquia,$idubigeo,$id);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}			
 	}
