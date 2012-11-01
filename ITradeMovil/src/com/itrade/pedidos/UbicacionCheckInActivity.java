@@ -39,6 +39,7 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itrade.R;
@@ -106,6 +107,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     boolean boolHayGPS=true;
     public long idusuario;
     Cliente cliente= new Cliente();
+    private TextView txt_nombre;
 
         
     // ===========================================================
@@ -420,7 +422,9 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
         this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
    	 View layout = inflater.inflate(R.layout.mypopupcheckin,
    	 (ViewGroup) findViewById(R.id.MyLinearLayoutCheckIn));
+   	 txt_nombre  = (TextView) layout.findViewById(R.id.txtcheckin);   	 
    	 m_pw = new PopupWindow( layout,  350,  250,  true);
+   	 txt_nombre.setText("Check In con "+cliente.getRazon_Social()+"?");
    	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
 		
