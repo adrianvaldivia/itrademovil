@@ -59,8 +59,8 @@ class Reporte_model extends CI_Model {
 				$this->db->where($this->table_ubigeo.".Distrito", $id);
 				break;
 		}		*/	
-		/*$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
-		$this->db->where($str);//UBIGEO	*/		
+		$str="month(".$this->table_pedido.".FechaPedido) = ".$month;		
+		$this->db->where($str);//UBIGEO		
 		switch($idjerarquia){
 			case 1://pais
 				$this->db->group_by($this->table_ubigeo.".Departamento");				
