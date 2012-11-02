@@ -149,6 +149,26 @@ class Pedido extends CI_Controller {
 		$result=$this->Payment_model->get_periodos();	
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));	
 	}
+	public function get_periodo_jeraquia_ubigeo($idjerarquia_w='',$idubigeo_w=''){
+		$idjerarquia=$this->input->post('idjerarquia');
+		$idubigeo=$this->input->post('idubigeo');
+		if ($idubigeo_w!='' && isset($idubigeo_w) && $idjerarquia_w!='' && $idjerarquia_w){
+			$idjerarquia=$idjerarquia_w;
+			$idubigeo=$idubigeo_w;
+		}
+		$result=$this->Payment_model->get_periodo_jeraquia_ubigeo($idjerarquia,$idubigeo);
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
+	public function get_monto_zona($idzona_w='',$idperiodo_w=''){
+		$idzona=$this->input->post('idzona');
+		$idperiodo=$this->input->post('idperiodo');
+		if ($idzona_w!='' && isset($idzona_w) && $idperiodo_w!='' && $idperiodo_w){
+			$idzona=$idperiodo_w;
+			$idperiodo=$idperiodo_w;
+		}
+		$result=$this->Payment_model->get_monto_zona($idzona,$idperiodo);
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
 	
 }
 
