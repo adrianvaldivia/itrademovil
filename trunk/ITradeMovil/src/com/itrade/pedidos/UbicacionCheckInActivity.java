@@ -109,6 +109,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     public long idusuario;
     Cliente cliente= new Cliente();
     private TextView txt_nombre;
+    int numLayers;
 
         
     // ===========================================================
@@ -131,9 +132,6 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	        clienteDao = daoSession.getClienteDao();	        	        
 	        //fin green dao
 	        
-	        listaCliente=clienteDao.loadAll();
-            listaGeoPoint=this.Convierte(listaCliente);
-
             mResourceProxy = new DefaultResourceProxyImpl(getApplicationContext());
 
             final RelativeLayout rl = new RelativeLayout(this);
@@ -141,43 +139,14 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             this.mOsmv = new MapView(this, 256);
             rl.addView(this.mOsmv, new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
                             LayoutParams.FILL_PARENT));
-
-            /* Itemized Overlay */
-            {
-                    /* Create a static ItemizedOverlay showing a some Markers on some cities. */
-
-
-                    /* OnTapListener for the Markers, shows a simple Toast. */
-                    this.mMyLocationOverlay = new ItemizedIconOverlay<OverlayItem>(items,
-                                    new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                              				//single tap
-                                            public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                                                    Toast.makeText(
-                                                                    UbicacionCheckInActivity.this,
-                                                                    item.mTitle , Toast.LENGTH_LONG).show();
-                                                    encuentraCliente(item.mDescription);
-                                                    return true; // We 'handled' this event.
-                                            }
-
-
-											//long pressed
-                                            public boolean onItemLongPress(final int index, final OverlayItem item) {
-                                            		
-//                                                    Toast.makeText(
-//                                                    		UbicacionCheckInActivity.this,
-//                                                                    item.mTitle, Toast.LENGTH_LONG).show();
-                                                    encuentraCliente(item.mDescription);//mDescription es IdCliente
-                                                    HacerCheckIn();//error
-                                                    return false;
-                                            }
-                                    }, mResourceProxy);
-                    this.mOsmv.getOverlays().add(this.mMyLocationOverlay);
-            }
-
             this.setContentView(rl);
             mOsmv.setBuiltInZoomControls(true);
             mOsmv.setMultiTouchControls(true);
-  
+///////////////////////////////////
+                        
+	        listaCliente=clienteDao.loadAll();
+            listaGeoPoint=this.Convierte();
+                        
             mapController = mOsmv.getController();
             //mapController.setZoom(5);//-12.071208,-77.077569
           			
@@ -187,20 +156,15 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             mapController.setZoom(13);
             //////////////////////////////////////////////////////LAYER DE RUTA
             myPath = new PathOverlay(Color.RED, this);
-            cargarGeoPoints();      
+            cargarGeoPointsRuta();      
             if (this.listaGeoPoint!=null)
             	mapController.setCenter(gPt0);
 //            mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
           ////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
             this.posicionActualOverlay = new SimpleLocationOverlay(this);
-            mOsmv.getOverlays().add(posicionActualOverlay);
-//            if (this.listaGeoPoint!=null)
-//            	posicionActualOverlay.setLocation(gPt0);
-//            ///////////////////////////////////////////////////////////////////////timer
-//            mHandler.removeCallbacks(Timer_Tick);
-//		    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
-//    		//////////////////////////////////////////////////////////// fin timer
-                     
+            mOsmv.getOverlays().add(posicionActualOverlay);   
+            numLayers=this.mOsmv.getOverlays().size();
+            numLayers++;// sumo uno por el layer de los WayPoints
     }
 
 
@@ -216,7 +180,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     // ===========================================================
     // Methods
     // ===========================================================
-    private void cargarGeoPoints() {//aca cargo los puntos de la ruta
+    private void cargarGeoPointsRuta() {//aca cargo los puntos de la ruta
 		// TODO Auto-generated method stub
     	for(int i=0;i<this.listaGeoPoint.size();i++){
     		myPath.addPoint(this.listaGeoPoint.get(i));
@@ -227,31 +191,26 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     		
 		
 	}
-	private List<GeoPoint> Convierte(List<Cliente> lis) {
+	private List<GeoPoint> Convierte() {
+		
 		List<GeoPoint> lista=new ArrayList<GeoPoint>();;
 		int i;
-		for(i=0;i<lis.size();i++){
-			posxdouble=lis.get(i).getLatitud()*factor;
-			posydouble=lis.get(i).getLongitud()*factor;
+		for(i=0;i<listaCliente.size();i++){
+			posxdouble=listaCliente.get(i).getLatitud()*factor;
+			posydouble=listaCliente.get(i).getLongitud()*factor;
 			posxint=(int)posxdouble;
 			posyint=(int)posydouble;
 			GeoPoint aux = new GeoPoint(posxint,posyint);
 			lista.add(aux);
 		}
-		if (!lis.isEmpty()){
-//	        //icono customizado        
-//	        OverlayItem olItem = new OverlayItem(lis.get(i-1).getNombre(), "SampleDescription", lista.get(i-1));
-//	        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker);
-//	        olItem.setMarker(newMarker);
-//	        items.add(olItem);
-	        //fin cambios
+		if (!listaCliente.isEmpty()){
 			items.clear();
-			for(i=0;i<lis.size();i++){
-				if (lis.get(i).getActivo().compareTo("A")==0){
-					items.add(new OverlayItem(lis.get(i).getRazon_Social(), ""+lis.get(i).getIdCliente(), lista.get(i)));
+			for(i=0;i<listaCliente.size();i++){
+				if (listaCliente.get(i).getActivo().compareTo("A")==0){
+					items.add(new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i)));
 				}
-				if (lis.get(i).getActivo().compareTo("C")==0){
-			        OverlayItem olItem = new OverlayItem(lis.get(i).getRazon_Social(), ""+lis.get(i).getIdCliente(), lista.get(i));
+				if (listaCliente.get(i).getActivo().compareTo("C")==0){
+			        OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
 			        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
@@ -338,6 +297,56 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	@Override
 	public void onResume() {
 	    super.onResume();
+	        listaCliente=clienteDao.loadAll();
+	        listaGeoPoint=this.Convierte();
+        
+        
+        ////////////////////////////////////
+        /* Itemized Overlay */
+        {
+                /* Create a static ItemizedOverlay showing a some Markers on some cities. */
+
+
+                /* OnTapListener for the Markers, shows a simple Toast. */
+                this.mMyLocationOverlay = new ItemizedIconOverlay<OverlayItem>(items,
+                                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                          				//single tap
+                                        public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                                                Toast.makeText(
+                                                                UbicacionCheckInActivity.this,
+                                                                item.mTitle , Toast.LENGTH_LONG).show();
+                                                encuentraCliente(item.mDescription);
+                                                return true; // We 'handled' this event.
+                                        }
+
+
+										//long pressed
+                                        public boolean onItemLongPress(final int index, final OverlayItem item) {
+                                        		
+//                                                Toast.makeText(
+//                                                		UbicacionCheckInActivity.this,
+//                                                                item.mTitle, Toast.LENGTH_LONG).show();
+                                                encuentraCliente(item.mDescription);//mDescription es IdCliente
+                                                HacerCheckIn();//error
+                                                return false;
+                                        }
+                                }, mResourceProxy);
+                this.mOsmv.getOverlays().add(this.mMyLocationOverlay);
+                int nuevoTamanio=this.mOsmv.getOverlays().size();
+                if(nuevoTamanio>numLayers){
+                	this.mOsmv.getOverlays().remove(numLayers-1);
+                }                
+                mOsmv.invalidate();
+        }
+
+               
+        /////////////////////////////////////
+        
+        
+        
+        
+        
+        
         ///////////////////////////////////////////////////////////////////////timer
         mHandler.removeCallbacks(Timer_Tick);
 	    mHandler.postDelayed(Timer_Tick, 30000); //cada 30 segundos connsulta a la BD
@@ -441,8 +450,9 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	}
     
 	public void onButtonInPopup (View target) {
+		m_pw.dismiss();
 		if(primeraVez==false){
-			if(estaCerca()){
+			if(estaCerca()){				
 				actualizaIconoCliente();
 				int temp=cliente.getIdCliente();				
 			    Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
@@ -463,7 +473,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
              UbicacionCheckInActivity.this,
                     "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_LONG).show();
 		}
-	    m_pw.dismiss();
+	    
 
 	}
 
