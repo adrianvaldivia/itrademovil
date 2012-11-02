@@ -240,6 +240,7 @@ debug++;
 					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
 					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
 					listaCliente.get(i).getActivo());
+			cliente2.setActivo("A");//util para el checkin del mapa
 	        clienteDao.insert(cliente2);
 	        long temp=0;
 //	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error

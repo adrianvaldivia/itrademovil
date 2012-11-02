@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -72,7 +73,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	public int j=0;
     private MapView mOsmv;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
-    List<GeoPoint> listaGeoPoint =null;//ruta
+    List<GeoPoint> listaGeoPoint =null;// puntos para la ruta
     List<Cliente> listaCliente =null;
     
     private ResourceProxy mResourceProxy;
@@ -84,7 +85,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
   	PathOverlay myPath;
     private MapController mapController;
     private SimpleLocationOverlay posicionActualOverlay;
-    final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+    final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();//puntos del mapa
     //private Timer myTimer;
     private Handler mHandler = new Handler();
     //green dao
@@ -120,21 +121,17 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 			Bundle bundle = getIntent().getExtras();
 			idusuario = bundle.getLong("idusuario");
 			
-//			idruta = bundle.getInt("idruta");
-
 			setTitle("I Trade - Mi Ubicacion");
-            //daoPara = new DAOParadero();
-			//inicio de green Dao
+ 
 	        //inicio green Dao
 	        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
 	        db = helper.getWritableDatabase();
 	        daoMaster = new DaoMaster(db);
 	        daoSession = daoMaster.newSession();
-	        clienteDao = daoSession.getClienteDao();
-	        	        
+	        clienteDao = daoSession.getClienteDao();	        	        
 	        //fin green dao
+	        
 	        listaCliente=clienteDao.loadAll();
-//            listaCliente= daoPara.getAllParaderos(idruta);//idRuta
             listaGeoPoint=this.Convierte(listaCliente);
 
             mResourceProxy = new DefaultResourceProxyImpl(getApplicationContext());
@@ -193,7 +190,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             cargarGeoPoints();      
             if (this.listaGeoPoint!=null)
             	mapController.setCenter(gPt0);
-            mOsmv.getOverlays().add(myPath);
+//            mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
           ////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
             this.posicionActualOverlay = new SimpleLocationOverlay(this);
             mOsmv.getOverlays().add(posicionActualOverlay);
@@ -216,19 +213,10 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     // Methods from SuperClass/Interfaces
     // ===========================================================
 
-//    @Override
-//    public boolean onCreateOptionsMenu(final Menu pMenu) {
-//            pMenu.add(0, MENU_ZOOMIN_ID, Menu.NONE, "ZoomIn");
-//            pMenu.add(0, MENU_ZOOMOUT_ID, Menu.NONE, "ZoomOut");
-//
-//            return true;
-//    }
-
-
     // ===========================================================
     // Methods
     // ===========================================================
-    private void cargarGeoPoints() {
+    private void cargarGeoPoints() {//aca cargo los puntos de la ruta
 		// TODO Auto-generated method stub
     	for(int i=0;i<this.listaGeoPoint.size();i++){
     		myPath.addPoint(this.listaGeoPoint.get(i));
@@ -251,16 +239,24 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 			lista.add(aux);
 		}
 		if (!lis.isEmpty()){
-			//inicio cambios icono por defecto
-//			items.add(new OverlayItem(lis.get(0).getNombre(), "SampleDescription1", lista.get(0)));
 //	        //icono customizado        
 //	        OverlayItem olItem = new OverlayItem(lis.get(i-1).getNombre(), "SampleDescription", lista.get(i-1));
 //	        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker);
 //	        olItem.setMarker(newMarker);
 //	        items.add(olItem);
 	        //fin cambios
+			items.clear();
 			for(i=0;i<lis.size();i++){
-				items.add(new OverlayItem(lis.get(i).getRazon_Social(), ""+lis.get(i).getIdCliente(), lista.get(i)));
+				if (lis.get(i).getActivo().compareTo("A")==0){
+					items.add(new OverlayItem(lis.get(i).getRazon_Social(), ""+lis.get(i).getIdCliente(), lista.get(i)));
+				}
+				if (lis.get(i).getActivo().compareTo("C")==0){
+			        OverlayItem olItem = new OverlayItem(lis.get(i).getRazon_Social(), ""+lis.get(i).getIdCliente(), lista.get(i));
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker);
+			        olItem.setMarker(newMarker);
+			        items.add(olItem);
+				}
+				
 			}  
 		}
 
@@ -447,11 +443,12 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	public void onButtonInPopup (View target) {
 		if(primeraVez==false){
 			if(estaCerca()){
-				int temp=cliente.getIdCliente();
-			     Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
-			     intent.putExtra("idcliente", temp);
-			     intent.putExtra("idusuario", idusuario);
-			     startActivity(intent);
+				actualizaIconoCliente();
+				int temp=cliente.getIdCliente();				
+			    Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
+			    intent.putExtra("idcliente", temp);
+			    intent.putExtra("idusuario", idusuario);
+			    startActivity(intent);
 			}
 			else{
 				Toast.makeText(
@@ -469,6 +466,16 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    m_pw.dismiss();
 
 	}
+
+	private void actualizaIconoCliente() {
+		long longTemp=cliente.getId();
+		Cliente clienteTemp=clienteDao.loadByRowId(longTemp);
+		clienteTemp.setActivo("C");
+		clienteDao.deleteByKey(longTemp);
+		clienteDao.insert(clienteTemp);
+	}
+
+
 
 	public void onButtonCancelarPopup (View target) {
 	    m_pw.dismiss();
