@@ -13,6 +13,7 @@ class Payment_model extends CI_Model {
 		$this->table_marca = 'Marca';
 		$this->table_categoria = 'Categoria';
 		$this->table_periodos = 'PeriodoMeta';
+		$this->table_ubigeo = 'Ubigeo';
 		
     }	
 	
@@ -185,5 +186,45 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();
 	}
+	public function get_periodo_jeraquia_ubigeo($idjerarquia,$idubigeo){
+		$objUbigeo=$this->get_objetoubigeo($idubigeo);
+		$this->db->flush_cache(); 
+		if ($idjerarquia==1)
+			$this->db->where($this->table_ubigeo.".Pais", $objUbigeo->Pais);				
+		if ($idjerarquia==2)
+			$this->db->where($this->table_ubigeo.".Departamento", $objUbigeo->Departamento);	
+		if ($idjerarquia==3)
+			$this->db->where($this->table_ubigeo.".Distrito", $objUbigeo->Distrito);	
+		if ($idjerarquia==4)
+			$this->db->where($this->table_ubigeo.".Zona", $objUbigeo->Zona);
+		if ($idjerarquia>4)
+			return array();
+		$query = $this->db->get($this->table_ubigeo);
+		return $query->result();
+	}
+	public function get_objetoubigeo($idubigeo){
+		$this->db->flush_cache();        
+		$this->db->where($this->table_ubigeo.".IdUbigeo", $idubigeo);	
+        $query = $this->db->get($this->table_ubigeo);
+        return $query->row(0);
+    }
+	public function get_monto_zona($idzona,$idperiodo){
+		$objPeriodo=$this->get_periodo($idperiodo);
+		$query = $this->db->query("
+			Select Usuario.nombre, Pedido.MontoTotalPedido, Pedido.FechaCobranza 
+			from Pedido, Usuario,  
+			Where Pedido.idCliente=Cliente.idCliente and Cliente.idVendedor=Usuario.idUsuario and Usuario.idUbigeo='".$idzona."' and 
+			Pedido.idEstadoPedido=2 and Pedidos.FechaCobranza >= '".$objPeriodo->FechaIni."' and 
+			Pedidos.FechaCobranza <= '".$objPeriodo->FechaFin."'
+		");	
+		return $query->result();
+	}
+	
+	public function get_periodo($idperiodo){
+		$this->db->flush_cache();        
+		$this->db->where($this->table_periodos.".IdPeriodo", $idperiodo);	
+        $query = $this->db->get($this->table_periodos);
+        return $query->row(0);
+    }
 }
 ?>
