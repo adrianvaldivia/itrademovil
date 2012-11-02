@@ -166,9 +166,25 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			     /********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
 			    
 			     if (!sync.getResponse().equals("0"))
-				
+			     {
+			    	 
 			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
-			   else	
+			    	 ruc.setText("");
+			    	 rzsocial.setText("");
+			    	 direcc.setText("");
+			    	 telefcliente.setText("");
+			    	 dni.setText("");
+			    	 nombre.setText("");
+			    	 apellidopater.setText("");
+			    	 apellidomater.setText("");
+			    	 telefperson.setText("");
+			    	 fechanac.setText("");
+			    	 correo.setText("");
+			    	 cantidad.setText("");
+			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+			         startActivity(a);
+			     
+			     } else	
 				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
 			
          
