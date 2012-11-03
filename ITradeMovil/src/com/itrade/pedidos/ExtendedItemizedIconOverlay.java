@@ -109,7 +109,7 @@ public class ExtendedItemizedIconOverlay<Item extends OverlayItem> extends Itemi
 						
 			this.removeAllItems();//cambios chichan
 
-			addItem((Item)vItem);
+			addItem((Item)vItem);			
 
 			mapView.invalidate();
 

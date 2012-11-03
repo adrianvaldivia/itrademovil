@@ -3,7 +3,6 @@ package com.itrade.pedidos;
 import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.OverlayItem;
 
-import android.util.Log;
 
 public class MyItemGestureListener<T extends OverlayItem> implements OnItemGestureListener<T> {
 	
