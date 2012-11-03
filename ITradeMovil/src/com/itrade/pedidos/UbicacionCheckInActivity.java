@@ -9,6 +9,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.PathOverlay;
@@ -150,19 +151,26 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             mapController = mOsmv.getController();
             //mapController.setZoom(5);//-12.071208,-77.077569
           			
-            GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
-//            GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania  
-            mapController.setCenter(gPt0);
+//            GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
+////            GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania  
+//            mapController.setCenter(gPt0);
             mapController.setZoom(13);
             //////////////////////////////////////////////////////LAYER DE RUTA
             myPath = new PathOverlay(Color.RED, this);
             cargarGeoPointsRuta();      
-            if (this.listaGeoPoint!=null)
-            	mapController.setCenter(gPt0);
-//            mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
-          ////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
+            mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
+          ////////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
             this.posicionActualOverlay = new SimpleLocationOverlay(this);
-            mOsmv.getOverlays().add(posicionActualOverlay);   
+            mOsmv.getOverlays().add(posicionActualOverlay);               
+            ////////////////////////////////////////////////////////////LAYER DEL PUNTO ELEGIDO
+            OnItemGestureListener<OverlayItem> pOnItemGestureListener = new MyItemGestureListener<OverlayItem>();
+            List<OverlayItem> pList = new ArrayList<OverlayItem>();
+//            OverlayItem itemPrueba=new OverlayItem("PROSPECTO", "PROSPECTO",new GeoPoint(-12071208,-77077569));
+//            pList.add(itemPrueba);
+            ExtendedItemizedIconOverlay<OverlayItem> markerOverlay = new ExtendedItemizedIconOverlay<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener);
+            
+            this.mOsmv.getOverlayManager().add(markerOverlay);
+            //////////////////////////////////////////////////////////FIN LAYER PUNTO ELEGIDO
             numLayers=this.mOsmv.getOverlays().size();
             numLayers++;// sumo uno por el layer de los WayPoints
     }
@@ -182,13 +190,14 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     // ===========================================================
     private void cargarGeoPointsRuta() {//aca cargo los puntos de la ruta
 		// TODO Auto-generated method stub
-    	for(int i=0;i<this.listaGeoPoint.size();i++){
-    		myPath.addPoint(this.listaGeoPoint.get(i));
-    	}
-    	if (listaGeoPoint.isEmpty()){
-    		listaGeoPoint=null;
-    	}
-    		
+    	if (listaGeoPoint!=null){
+    		for(int i=0;i<this.listaGeoPoint.size();i++){
+        		myPath.addPoint(this.listaGeoPoint.get(i));
+        	}
+        	if (listaGeoPoint.isEmpty()){
+        		listaGeoPoint=null;
+        	}
+    	}        		
 		
 	}
 	private List<GeoPoint> Convierte() {
@@ -218,8 +227,9 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 				
 			}  
 		}
-
-
+		else
+			return null;
+					
 		return lista;
 	}
     // ===========================================================
@@ -335,7 +345,15 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                 int nuevoTamanio=this.mOsmv.getOverlays().size();
                 if(nuevoTamanio>numLayers){
                 	this.mOsmv.getOverlays().remove(numLayers-1);
-                }                
+                }
+                
+                
+                GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
+//              GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania
+                if (this.listaGeoPoint!=null)
+                	mapController.setCenter(listaGeoPoint.get(0));
+                else                	
+                	mapController.setCenter(gPt0);
                 mOsmv.invalidate();
         }
 
