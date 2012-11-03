@@ -9,18 +9,18 @@
     >
 
     <TextView
+        
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
+        android:layout_marginBottom="10dip"
+        android:textSize="20dip"
         android:text="Ingrese la cantidad" />
+    <com.itrade.pedidos.NumberPicker
+        android:id="@+id/numberpickercantidad"
+	android:layout_width="150dip"
+	android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/editTextCantidad"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:maxLength="3"
-        android:ems="3"
-        android:inputType="number" />
     
     <LinearLayout
 		    android:layout_width="wrap_content"
