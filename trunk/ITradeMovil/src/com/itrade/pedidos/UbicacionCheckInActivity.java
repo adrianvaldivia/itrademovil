@@ -16,8 +16,11 @@ import org.osmdroid.views.overlay.PathOverlay;
 import org.osmdroid.views.overlay.SimpleLocationOverlay;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -554,6 +557,32 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 		// TODO Auto-generated method stub
 		return resul;
 	}
+	
+	
+	
+	
+	@Override
+	public void onBackPressed() {
+		
+	    new AlertDialog.Builder(this)
+        .setTitle("Confirmar Ubicacion")
+        .setMessage("Desea confirmar la Ubicacion?")
+        .setNegativeButton(android.R.string.no, null)
+        .setPositiveButton("si", new OnClickListener() {
 
+            public void onClick(DialogInterface arg0, int arg1) {
+            	if (markerOverlay.size()>0){
+            		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
+            		UbicacionCheckInActivity.super.onBackPressed();
+            	}
+            	else
+            		Toast.makeText(UbicacionCheckInActivity.this,"Primero Debe seleccionar una Ubicacion", Toast.LENGTH_LONG).show();
+            }
+        }).create().show();	
+	}
+	@Override
+	public void finish(){
+		super.finish();		
+	}
 }
 
