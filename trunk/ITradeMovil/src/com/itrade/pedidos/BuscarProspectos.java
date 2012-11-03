@@ -13,6 +13,7 @@ import com.itrade.controller.pedidos.SyncronizarPedidos;
 import com.itrade.db.DAOCliente;
 import com.itrade.model.Cliente;
 import com.itrade.model.Meta;
+import com.itrade.model.Prospecto;
 import com.itrade.pedidos.RegistrarProspecto;
 
 
@@ -45,7 +46,7 @@ public class BuscarProspectos extends Activity {
 	//ArrayAdapter<Cliente> adapter;
 	//ItemProspectoAdapter adapter2;
 	ArrayAdapter<String> adapter;
-	private ArrayList<Cliente> listaProspectos;
+	private ArrayList<Prospecto> listaProspectos;
 	//private ArrayList<Meta> listameta;
 	private Meta mimeta;
 	String idusuario;
@@ -137,7 +138,7 @@ public class BuscarProspectos extends Activity {
 	    	}	   
 	    	Gson gson = new Gson();
 	    										
-	    	listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());						
+	    	listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Prospecto>>(){}.getType());						
 	    	ArrayList<String> lprospectos=new ArrayList<String>();
 	    	for(int i=0;i<listaProspectos.size();i++){
 	        	lprospectos.add(listaProspectos.get(i).getRazon_Social());	        	
