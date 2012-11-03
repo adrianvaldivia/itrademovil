@@ -85,8 +85,13 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
   	public double longitudAux=0;
   	PathOverlay myPath;
     private MapController mapController;
-    private SimpleLocationOverlay posicionActualOverlay;
+    private SimpleLocationOverlay posicionActualOverlay;    
     final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();//puntos del mapa
+    
+    private ExtendedItemizedIconOverlay<OverlayItem> markerOverlay;//layer del punto elegido del mapa
+    final List<OverlayItem> pList = new ArrayList<OverlayItem>();//punto elegido en el mapa
+    OnItemGestureListener<OverlayItem> pOnItemGestureListener = new MyItemGestureListener<OverlayItem>();//listener del punto elegido
+  
     //private Timer myTimer;
     private Handler mHandler = new Handler();
     //green dao
@@ -111,6 +116,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     Cliente cliente= new Cliente();
     private TextView txt_nombre;
     int numLayers;
+    int contadorErrores=0;
 
         
     // ===========================================================
@@ -158,21 +164,24 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             //////////////////////////////////////////////////////LAYER DE RUTA
             myPath = new PathOverlay(Color.RED, this);
             cargarGeoPointsRuta();      
-            mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
+//            mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
           ////////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
             this.posicionActualOverlay = new SimpleLocationOverlay(this);
             mOsmv.getOverlays().add(posicionActualOverlay);               
             ////////////////////////////////////////////////////////////LAYER DEL PUNTO ELEGIDO
-            OnItemGestureListener<OverlayItem> pOnItemGestureListener = new MyItemGestureListener<OverlayItem>();
-            List<OverlayItem> pList = new ArrayList<OverlayItem>();
-//            OverlayItem itemPrueba=new OverlayItem("PROSPECTO", "PROSPECTO",new GeoPoint(-12071208,-77077569));
-//            pList.add(itemPrueba);
-            ExtendedItemizedIconOverlay<OverlayItem> markerOverlay = new ExtendedItemizedIconOverlay<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener);
-            
+            markerOverlay = new ExtendedItemizedIconOverlay<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener);
             this.mOsmv.getOverlayManager().add(markerOverlay);
             //////////////////////////////////////////////////////////FIN LAYER PUNTO ELEGIDO
             numLayers=this.mOsmv.getOverlays().size();
             numLayers++;// sumo uno por el layer de los WayPoints
+            
+            ///Punto de ubicacion inicial
+            GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
+//          GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania
+            if (this.listaGeoPoint!=null)
+            	mapController.setCenter(listaGeoPoint.get(0));
+            else                	
+            	mapController.setCenter(gPt0);
     }
 
 
@@ -220,7 +229,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 				}
 				if (listaCliente.get(i).getActivo().compareTo("C")==0){
 			        OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
-			        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker);
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker5);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
 				}
@@ -242,20 +251,31 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    mOsmv.invalidate();       	  
 	    mHandler.removeCallbacks(Timer_Tick);
 	    mHandler.postDelayed(this, 4000);
+	    if (contadorErrores==20){
+		    if (mHandler!=null)
+		    	mHandler.removeCallbacks(Timer_Tick);  	
+	    }
 		}
 		
 	};
 	      
 	private void obtenerUbicacion() {
+		
 		boolean isavailable;
 		if (boolHayGPS){
 			isavailable = gpsLocationManager.isProviderEnabled(GPSPROVIDER);//error	
 		}
 		else
 			isavailable=false;
+      if(!isavailable) {
+          	this.contadorErrores++;
+//          	if(markerOverlay.size()>0)
+//          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
+          	Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS, y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
 
-        if(isavailable) {
-
+      }
+//        if(isavailable) {
+        if(gpsLocationManager!=null) {	
             Location loc = gpsLocationManager.getLastKnownLocation(GPSPROVIDER);
 
             if(loc != null) {
@@ -266,16 +286,18 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                 	posicionActualOverlay.setLocation(p);
                 	if(primeraVez){
                 		mapController.setCenter(p);
+                		mapController.setZoom(16);
                 		primeraVez=false;
                 	}        			
                     //Toast.makeText(MiUbicacionImplActivity.this,"Longitude is  "+longitude + "   Latitude is   "+latitude, Toast.LENGTH_LONG).show();
                 }                
             }
-            else
+            else{
+            	this.contadorErrores++;
             	Toast.makeText(UbicacionCheckInActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
-        }
-        else
-        	Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS, y salga fuera del edificio por favor.", Toast.LENGTH_LONG).show();
+            }
+            	
+        }        	
 	}
 
 	 private Boolean displayGpsStatus() {  
@@ -346,24 +368,13 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                 if(nuevoTamanio>numLayers){
                 	this.mOsmv.getOverlays().remove(numLayers-1);
                 }
-                
-                
-                GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
-//              GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania
-                if (this.listaGeoPoint!=null)
-                	mapController.setCenter(listaGeoPoint.get(0));
-                else                	
-                	mapController.setCenter(gPt0);
+                              
                 mOsmv.invalidate();
         }
 
                
         /////////////////////////////////////
-        
-        
-        
-        
-        
+                                        
         
         ///////////////////////////////////////////////////////////////////////timer
         mHandler.removeCallbacks(Timer_Tick);
@@ -469,7 +480,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     
 	public void onButtonInPopup (View target) {
 		m_pw.dismiss();
-		if(primeraVez==false){
+		if(hayUbicacion()){
 			if(estaCerca()){				
 				actualizaIconoCliente();
 				int temp=cliente.getIdCliente();				
@@ -494,6 +505,20 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    
 
 	}
+
+	private boolean hayUbicacion() {
+		boolean resul=false;
+		GeoPoint punto = posicionActualOverlay.getMyLocation();
+		if (punto!=null){
+			if (punto.getLatitudeE6()!=0){
+				resul=true;				
+			}
+		}                    
+		// TODO Auto-generated method stub
+		return resul;
+	}
+
+
 
 	private void actualizaIconoCliente() {
 		long longTemp=cliente.getId();

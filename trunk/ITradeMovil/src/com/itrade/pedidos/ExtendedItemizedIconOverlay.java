@@ -28,7 +28,9 @@ import android.view.MotionEvent;
  
 
 public class ExtendedItemizedIconOverlay<Item extends OverlayItem> extends ItemizedIconOverlay<Item> {
-
+	
+	private Context mContext; 
+	
 	public ExtendedItemizedIconOverlay(
 
 		Context pContext,
@@ -36,8 +38,10 @@ public class ExtendedItemizedIconOverlay<Item extends OverlayItem> extends Itemi
 		List<Item> pList,
 
 		org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener<Item> pOnItemGestureListener) {
+		
 
 		super(pContext, pList, pOnItemGestureListener);
+		this.mContext=pContext;
 
 // TODO Auto-generated constructor stub
 
@@ -98,6 +102,10 @@ public class ExtendedItemizedIconOverlay<Item extends OverlayItem> extends Itemi
 			GeoPoint mGeoPoint = (GeoPoint) pj.fromPixels(eventX, eventY);
 
 			OverlayItem vItem = new OverlayItem("PROSPECTO","PROSPECTO", mGeoPoint);
+			
+			Drawable newMarker = mContext.getResources().getDrawable(R.drawable.marker);
+			
+			vItem.setMarker(newMarker);
 						
 			this.removeAllItems();//cambios chichan
 
