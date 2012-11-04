@@ -34,12 +34,14 @@ class Credito_model extends CI_Model {
     }
 
     function accept($idcredito, $credito) {
-        $query = "UPDATE Linea_Credito SET MontoAprobado=$credito->MontoSolicitado,Activo=1 WHERE IdLinea=$idcredito";
+    $actual=($credito->MontoActual==null?0:$credito->MontoActual);
+        $query = "UPDATE Linea_Credito SET MontoActual=($credito->MontoSolicitado+$actual),MontoAprobado=$credito->MontoSolicitado,Activo=2 WHERE IdLinea=$idcredito";
         $this->db->query($query);
     }
 
-    function reject($idcredito) {
-        $query = "UPDATE Linea_Credito SET Activo=2 WHERE IdLinea=$idcredito";
+    function reject($idcredito, $credito) {
+    $actual=($credito->MontoActual==null?0:$credito->MontoActual);
+        $query = "UPDATE Linea_Credito SET Activo=3,MontoAprobado=0, MontoActual=$actual WHERE IdLinea=$idcredito";
         $this->db->query($query);
     }
 
