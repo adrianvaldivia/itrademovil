@@ -78,8 +78,9 @@ class Credito_controller extends CI_Controller {
         $data['acceso'] = $this->session->userdata('acceso');
 
 //        if (/* $this->form_validation->run() */true) {
-        $this->Credito_model->reject($idcredito);
-
+		  $credito = $this->Credito_model->get($idcredito);
+        $this->Credito_model->reject($idcredito,$credito);
+		  
         $this->session->set_flashdata('message', 'La Linea de Credito ha sido rechazada.');
         redirect('admin/credito_controller', 'refresh');
 

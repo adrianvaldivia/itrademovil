@@ -21,11 +21,12 @@
                     <th>
                         Monto Solicitado
                     </th>
-                    <th>
-                        Monto Actual
-                    </th>
+                    
                     <th>
                         Monto Aprobado
+                    </th>
+                    <th>
+                        Monto Actual
                     </th>
                     <th>
                         Estado
@@ -49,19 +50,20 @@
                         <td>
                             <div class="monto"><? echo $credito['MontoSolicitado']; ?></div>
                         </td>
-                        <td>
-                            <div class="monto"><? echo $credito['MontoActual']; ?></div>
-                        </td>
-                        <td>
+                         <td>
                             <div class="monto"><? echo $credito['MontoAprobado']; ?></div>
                         </td>
                         <td>
-                            <div class="estado"><? if($credito['Activo'] == 1)echo 'Aprobado';
-                                                if($credito['Activo'] == 0) echo 'Por Aprobar';
-                                                if($credito['Activo'] == 2) echo 'Rechazado';?>
+                            <div class="monto"><? echo $credito['MontoActual']; ?></div>
+                        </td>
+                       
+                        <td>
+                            <div class="estado"><? if($credito['Activo'] == 2)echo 'Aprobado';
+                                                if($credito['Activo'] == 1) echo 'Por Aprobar';
+                                                if($credito['Activo'] == 3) echo 'Rechazado';?>
                             </div>
                         </td>
-                        <td class="accion"><? if ($credito['Activo'] == 0) { ?>
+                        <td class="accion"><? if ($credito['Activo'] == 1) { ?>
                                 <div class="accion"><? echo anchor("admin/credito_controller/accept/" . $idlinea, 'Aceptar', array('title' => 'Aceptar')); ?></div>
 
                                 <div class="accion"><? echo anchor("admin/credito_controller/reject/" . $idlinea, 'Rechazar', array('title' => 'Rechazar')); ?></div>
