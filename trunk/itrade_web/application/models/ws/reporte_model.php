@@ -644,8 +644,7 @@ class Reporte_model extends CI_Model {
 		switch($idjerarquia){
 		case 1:
 		
-		
-		//DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+		 
 		$query = $this->db->query("		
 		
 		SELECT 	
@@ -659,9 +658,9 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Distrito` , 
 		`Ubigeo`.`Zona`,		
 		`Marca`.`IdMarca`,
-		`Marca`.`Descripcion`, 
-		`Categoria`.`IdCategoria`,
-		`Categoria`.`Descripcion`, 
+		`Marca`.`Descripcion` AS MarcaDescripcion, 
+		`Categoria`.`IdCategoria` ,
+		`Categoria`.`Descripcion` AS CategoriaDescripcion, 
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
 		FROM (`Linea_Pedido`)
@@ -675,9 +674,11 @@ class Reporte_model extends CI_Model {
 		WHERE   ".$str." and `Ubigeo`.`Pais`= '".$id."'  
 		 GROUP BY 
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
-		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , `Marca`.`Descripcion`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , 
+		`Marca`.`IdMarca`,
+		MarcaDescripcion,
 		`Categoria`.`IdCategoria`, 
-		`Categoria`.`Descripcion`
+		CategoriaDescripcion
 		");
 		break;
 		
@@ -694,11 +695,11 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Pais`, 
 		`Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , 
-		`Ubigeo`.`Zona`,	
+		`Ubigeo`.`Zona`,		
 		`Marca`.`IdMarca`,
-		`Marca`.`Descripcion`, 
-		`Categoria`.`IdCategoria`,
-		`Categoria`.`Descripcion`, 
+		`Marca`.`Descripcion` AS MarcaDescripcion, 
+		`Categoria`.`IdCategoria` ,
+		`Categoria`.`Descripcion` AS CategoriaDescripcion, 
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
 		FROM (`Linea_Pedido`)
@@ -712,14 +713,18 @@ class Reporte_model extends CI_Model {
 		WHERE   ".$str." and `Ubigeo`.`Departamento`= '".$id."'  
 		 GROUP BY 
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
-		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , `Marca`.`Descripcion`, `Categoria`.`Descripcion`
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , 
+		`Marca`.`IdMarca`,
+		MarcaDescripcion,
+		`Categoria`.`IdCategoria`, 
+		CategoriaDescripcion
 		");
 		break;
 		
 		
 		case 3:
 		
-		$query = $this->db->query("		
+				$query = $this->db->query("		
 		
 		SELECT 	
 		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
@@ -730,11 +735,11 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Pais`, 
 		`Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , 
-		`Ubigeo`.`Zona`,
+		`Ubigeo`.`Zona`,		
 		`Marca`.`IdMarca`,
-		`Marca`.`Descripcion`, 
-		`Categoria`.`IdCategoria`,
-		`Categoria`.`Descripcion`,  
+		`Marca`.`Descripcion` AS MarcaDescripcion, 
+		`Categoria`.`IdCategoria` ,
+		`Categoria`.`Descripcion` AS CategoriaDescripcion, 
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
 		FROM (`Linea_Pedido`)
@@ -748,7 +753,11 @@ class Reporte_model extends CI_Model {
 		WHERE   ".$str." and `Ubigeo`.`Distrito`= '".$id."'  
 		 GROUP BY 
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
-		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , `Marca`.`Descripcion`, `Categoria`.`Descripcion` 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , 
+		`Marca`.`IdMarca`,
+		MarcaDescripcion,
+		`Categoria`.`IdCategoria`, 
+		CategoriaDescripcion
 		");
 		break;	
 		}		
