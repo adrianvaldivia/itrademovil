@@ -694,7 +694,8 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , 
 		`Ubigeo`.`Zona`,		
-		`Marca`.`Descripcion`,
+		`Marca`.`Descripcion`, 
+		`Categoria`.`IdCategoria`,
 		`Categoria`.`Descripcion`, 
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
@@ -729,7 +730,8 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Distrito` , 
 		`Ubigeo`.`Zona`,		
 		`Marca`.`Descripcion`, 
-		`Categoria`.`Descripcion`, 
+		`Categoria`.`IdCategoria`,
+		`Categoria`.`Descripcion`,  
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
 		FROM (`Linea_Pedido`)
