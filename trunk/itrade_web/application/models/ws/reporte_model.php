@@ -370,7 +370,7 @@ class Reporte_model extends CI_Model {
 		MONTH( Pedido.FechaPedido) AS Month, 
 			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
-		SUM(`Pedido`.`MontoTotalPedido`) , SUM(`Pedido`.`MontoTotalCobrado`) 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoPedido , SUM(`Pedido`.`MontoTotalCobrado`) AS MontoCobrado
 		FROM (
 		`Pedido`
 		)
@@ -392,7 +392,7 @@ class Reporte_model extends CI_Model {
 		MONTH( Pedido.FechaPedido) AS Month, 
 			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
-		SUM(`Pedido`.`MontoTotalPedido`) , SUM(`Pedido`.`MontoTotalCobrado`) 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoPedido , SUM(`Pedido`.`MontoTotalCobrado`) AS MontoCobrado 
 		FROM (
 		`Pedido`
 		)
@@ -415,7 +415,7 @@ class Reporte_model extends CI_Model {
 		MONTH( Pedido.FechaPedido) AS Month, 
 			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
-		SUM(`Pedido`.`MontoTotalPedido`) , SUM(`Pedido`.`MontoTotalCobrado`) 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoPedido, SUM(`Pedido`.`MontoTotalCobrado`)  AS MontoCobrado
 		FROM (
 		`Pedido`
 		)
