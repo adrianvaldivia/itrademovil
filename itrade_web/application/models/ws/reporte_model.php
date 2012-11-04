@@ -658,6 +658,7 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , 
 		`Ubigeo`.`Zona`,		
+		`Marca`.`IdMarca`,
 		`Marca`.`Descripcion`, 
 		`Categoria`.`IdCategoria`,
 		`Categoria`.`Descripcion`, 
@@ -693,7 +694,8 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Pais`, 
 		`Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , 
-		`Ubigeo`.`Zona`,		
+		`Ubigeo`.`Zona`,	
+		`Marca`.`IdMarca`,
 		`Marca`.`Descripcion`, 
 		`Categoria`.`IdCategoria`,
 		`Categoria`.`Descripcion`, 
@@ -728,7 +730,8 @@ class Reporte_model extends CI_Model {
 		`Ubigeo`.`Pais`, 
 		`Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , 
-		`Ubigeo`.`Zona`,		
+		`Ubigeo`.`Zona`,
+		`Marca`.`IdMarca`,
 		`Marca`.`Descripcion`, 
 		`Categoria`.`IdCategoria`,
 		`Categoria`.`Descripcion`,  
@@ -749,7 +752,7 @@ class Reporte_model extends CI_Model {
 		");
 		break;	
 		}		
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();
 		
 	}
