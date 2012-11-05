@@ -45,6 +45,7 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 		private int month, year;
 		private final DateFormat dateFormatter = new DateFormat();
 		private static final String dateTemplate = "MMMM yyyy";
+		long idUsuario;
 
 		/** Called when the activity is first created. */
 		@Override
@@ -53,6 +54,9 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 				super.onCreate(savedInstanceState);
 				setContentView(R.layout.simple_calendar_view);
 
+				 Bundle bundle=getIntent().getExtras();
+			     idUsuario = bundle.getLong("idusuario");
+				
 				_calendar = Calendar.getInstance(Locale.getDefault());
 				month = _calendar.get(Calendar.MONTH) + 1;
 				year = _calendar.get(Calendar.YEAR);
@@ -388,10 +392,11 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 				public void onClick(View view)
 					{
 						String date_month_year = (String) view.getTag();
-						selectedDayMonthYearButton.setText("Selected: " + date_month_year);
+						selectedDayMonthYearButton.setText(""+date_month_year);
 						//
 						Intent intent = new Intent(SimpleCalendarViewActivity.this, VerDia.class); 
 						intent.putExtra("fecha", date_month_year);
+						intent.putExtra("usuario", idUsuario );
 				    	startActivity(intent);	
 						//
 						try
