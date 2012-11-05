@@ -37,44 +37,80 @@ public class MiMeta extends Activity {
         tv_periodo = (TextView) findViewById(R.id.txt_periodometa);
         tv_porcentaje = (TextView) findViewById(R.id.textView7);
         pb= (ProgressBar) findViewById(R.id.progressBar1);
+        
         Bundle bundle=getIntent().getExtras();
         long idu = bundle.getLong("idusuario");		
         idusuario= String.valueOf(idu);
+        boolean exito=bundle.getBoolean("exito");
         periodo = bundle.getString("periodo");
         metareal= bundle.getDouble("meta");
         avance= bundle.getDouble("avance");
         
-      Double decimal=avance;
-      decimal = decimal*(Math.pow(10, 2));
-      decimal = (double) Math.round(decimal);
-      decimal = decimal/Math.pow(10, 2);
-        
-        tv_avancemeta.setText(String.valueOf(decimal));
-        decimal=metareal;
-        decimal = decimal*(Math.pow(10, 2));
-        decimal = (double) Math.round(decimal);
-        decimal = decimal/Math.pow(10, 2);
-        
-        tv_metareal.setText(String.valueOf(decimal));
-        tv_periodo.setText(periodo);
+        if(exito){
+        	Double decimal;
+        	if (avance!=null){
+        	  decimal=avance;
+              decimal = decimal*(Math.pow(10, 2));
+              decimal = (double) Math.round(decimal);
+              decimal = decimal/Math.pow(10, 2);
+              
+              tv_avancemeta.setText(String.valueOf(decimal));
+        	}
+        	else {
+        		tv_avancemeta.setText("0");
+        	}
+        	if (metareal!=null){
+              decimal=metareal;
+              decimal = decimal*(Math.pow(10, 2));
+              decimal = (double) Math.round(decimal);
+              decimal = decimal/Math.pow(10, 2);
+              
+              tv_metareal.setText(String.valueOf(decimal));
+        	}
+        	else{
+        		tv_metareal.setText("No hay meta asignada");
+        		
+        	}
+        	if(periodo!=null){
+              tv_periodo.setText(periodo);
 
-        decimal=avance*100/metareal;
-        decimal = decimal*(Math.pow(10, 2));
-        decimal = (double) Math.round(decimal);
-        decimal = decimal/Math.pow(10, 2);
-        
-        tv_porcentaje.setText(String.valueOf(decimal)+"%");
-        
-        if (avance*100/metareal>=100){
-        	pb.setProgress(100);
+              decimal=avance*100/metareal;
+              decimal = decimal*(Math.pow(10, 2));
+              decimal = (double) Math.round(decimal);
+              decimal = decimal/Math.pow(10, 2);
+              
+              tv_porcentaje.setText(String.valueOf(decimal)+"%");
+        	}
+        	else {
+        		tv_periodo.setText("No tiene periodo asignado");
+        		
+        	}
+        	
+        	if(avance!=null && metareal!=null){
+              if (avance*100/metareal>=100){
+              	pb.setProgress(100);
+              	
+              }
+              else {
+              	
+              	int v =(int) Math.round(avance*100/metareal);
+              	pb.setProgress(v);
+              }
+        	}
+        	else{
+        		pb.setProgress(0);
+        		
+        	}
         	
         }
-        else {
+        else{
+        	tv_periodo.setText("");
+        	tv_metareal.setText("");
+        	tv_avancemeta.setText("");
+        	tv_porcentaje.setText("No hay meta asignada");
+        	pb.setProgress(0);
         	
-        	int v =(int) Math.round(avance*100/metareal);
-        	pb.setProgress(v);
         }
-        
         setTitle("iTrade - Mi Meta");    
         button_aceptar.setOnClickListener(new OnClickListener() {
     		public void onClick(View v) {
