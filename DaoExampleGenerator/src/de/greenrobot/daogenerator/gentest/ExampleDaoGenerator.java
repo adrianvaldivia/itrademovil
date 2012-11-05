@@ -42,8 +42,9 @@ public class ExampleDaoGenerator {
         addCategoria(schema);
         addPedidoLinea(schema);
         addElementoLista(schema);
+        addEvento(schema);
 
-        new DaoGenerator().generateAll(schema, "../ITradeMovil/src-gen");
+        new DaoGenerator().generateAll(schema, "../iTrade v2.2/src-gen");
     }
     
     private static void addElementoLista(Schema schema) {
@@ -53,6 +54,19 @@ public class ExampleDaoGenerator {
         elemento.addStringProperty("Secundario");
         elemento.addStringProperty("Terciario");
         elemento.addLongProperty("IdElemento");
+    }
+    private static void addEvento(Schema schema) {
+        Entity evento = schema.addEntity("Evento");
+        evento.addIdProperty();
+        evento.addIntProperty("IdEvento");
+        evento.addStringProperty("Creador");
+        evento.addStringProperty("Asunto");
+        evento.addStringProperty("Lugar");
+        evento.addStringProperty("Descripcion");
+        evento.addStringProperty("Fecha");
+        evento.addStringProperty("HoraInicio");
+        evento.addStringProperty("HoraFin");
+        
     }
     
     private static void addCliente(Schema schema) {
