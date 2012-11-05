@@ -32,4 +32,10 @@
     <string name="verpedidos">Ver Pedidos</string>
     <string name="nombreusuario">Nombre de Usuario</string>
     <string name="aceptar">Aceptar</string>
+    <string name="informe_agenda">Eventos del día</string>
+    <string name="asunto">Asunto</string>
+    <string name="lugar">Lugar</string>
+    <string name="descripcion">Descripción</string>
+    <string name="hora_eveto">De 8:00 a 20:00</string>
+    
 </resources>

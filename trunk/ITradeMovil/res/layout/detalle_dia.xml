@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/blanco"
+    android:orientation="vertical" >
+
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/top_control_bar">
+
+
+		<LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentRight="true"
+		    android:layout_alignParentTop="true"
+		    android:background="@color/blanco"
+		    android:orientation="vertical" >
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="35dp"
+		        android:background="@color/azul_2" >
+
+		        <TextView
+		            android:id="@+id/txtItrade"
+		            android:layout_width="246dp"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_vertical"
+		            android:layout_marginLeft="5dip"
+		            android:background="@color/azul_2"
+		            android:text="iTrade - Eventos"
+		            android:textColor="@color/grisClaro"
+		            android:textSize="20dip" />
+
+		        <ImageButton
+		            android:id="@+id/btnExplorar"
+		            android:layout_width="58dp"
+		            android:layout_height="match_parent"
+		            android:layout_weight="3"
+		            android:background="@color/azul_2"
+		            android:src="@drawable/maps" />
+		    </LinearLayout>
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="48dp"
+		        android:background="@color/azul_2" >
+
+		        <ImageButton
+		            android:id="@+id/btnCrearPedido"
+		            style="@drawable/estilo_botones"
+		            android:layout_width="53dp"
+		            android:layout_height="match_parent"
+		            android:background="@drawable/estilo_botones"
+		            android:src="@drawable/add_to_cart" />
+
+		        <ImageButton
+		            android:id="@+id/btnBuscarPedido"
+		            android:layout_width="53dp"
+		            android:layout_height="match_parent"
+		            android:background="@drawable/estilo_botones"
+		            android:src="@drawable/buscar_pedido" />
+
+		        <ImageButton
+		            android:id="@+id/btnProspectos"
+		            android:layout_width="53dp"
+		            android:layout_height="match_parent"
+		            android:background="@drawable/estilo_botones"
+		            android:src="@drawable/user_customer" />
+
+		        <ImageButton
+		            android:id="@+id/btnDirectorio"
+		            android:layout_width="53dp"
+		            android:layout_height="match_parent"
+		            android:background="@drawable/estilo_botones"
+		            android:src="@drawable/directorio" />
+
+		        <ImageButton
+		            android:id="@+id/btnCalendario"
+		            android:layout_width="53dp"
+		            android:layout_height="match_parent"
+		            android:background="@drawable/estilo_botones"
+		            android:src="@drawable/calendar" />
+
+		        <ImageButton
+		            android:id="@+id/btnMeta"
+		            android:layout_width="53dp"
+		            android:layout_height="match_parent"
+		            android:background="@drawable/estilo_botones"
+		            android:src="@drawable/excelencia" />
+		    </LinearLayout>
+		</LinearLayout>>
+
+	</RelativeLayout>
+
+
+	<LinearLayout
+	    android:id="@+id/bottom_control_bar"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true" >
+
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="0dp"
+		    android:baselineAligned="true" >
+
+		    <TextView
+		        android:id="@+id/nada"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@color/azul_2"
+		        android:text="@string/informe_agenda"
+		        android:textSize="10dp" />
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<ListView android:id="@android:id/list" android:layout_width="fill_parent"
+		android:layout_height="0dip" android:choiceMode="multipleChoice"
+		android:cacheColorHint="@android:color/transparent"
+		android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar"></ListView>
+	<TextView android:id="@android:id/empty" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/listavacia"
+		android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar" />
+</RelativeLayout>

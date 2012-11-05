@@ -89,6 +89,7 @@ public class MenuLista extends ListActivity{
      }
      if (selection.compareTo("Mi Agenda")==0){
 			Intent intent = new Intent(MenuLista.this, SimpleCalendarViewActivity.class);
+			intent.putExtra("idusuario", idusuario);
 			startActivity(intent);		
      }
      if (selection.compareTo("Prospectos")==0){
