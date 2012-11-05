@@ -101,7 +101,7 @@ public class BuscarPedidos extends ListActivity{
         setTitle("iTrade - Pedidos");
         editText = (EditText) findViewById(R.id.editTextCliente);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
-        button_clientes = (ImageButton) findViewById(R.id.btnProspectos);
+        button_clientes = (ImageButton) findViewById(R.id.btnBuscarClientes);
 	    button_buscar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 //				Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();

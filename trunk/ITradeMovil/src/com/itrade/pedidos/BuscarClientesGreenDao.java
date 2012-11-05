@@ -2,8 +2,13 @@ package com.itrade.pedidos;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.app.ListActivity;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -29,6 +33,7 @@ import android.widget.TextView.OnEditorActionListener;
 
 
 import com.itrade.db.DAOCliente;
+import com.itrade.db.DAOPedido;
 
 import com.itrade.model.Cliente;
 
@@ -40,6 +45,10 @@ import com.itrade.model.DaoSession;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.ElementoLista;
 import com.itrade.model.ElementoListaDao;
+import com.itrade.model.Pedido;
+import com.itrade.model.PedidoDao;
+import com.itrade.model.PedidoLinea;
+import com.itrade.model.PedidoLineaDao;
 import com.itrade.R;
 
 
@@ -51,6 +60,8 @@ public class BuscarClientesGreenDao extends ListActivity{
     private DaoSession daoSession;
     private ClienteDao clienteDao;
     private ElementoListaDao elementoListaDao;
+    private PedidoDao pedidoDao;
+    private PedidoLineaDao pedidoLineaDao;
 
 //    private Cursor cursor;
     private Cursor cursorElementoLista;
@@ -59,14 +70,17 @@ public class BuscarClientesGreenDao extends ListActivity{
     
     private EditText editText;
 	DAOCliente daoCliente =null;
+	DAOPedido daoPedido =null;
 	private Button button_vermapa;
 	private Button button_buscar;
 	private ImageButton  button_pedidos;
+	private ImageButton  button_prospectos;
 	Cliente cliente= new Cliente();
 	List<Cliente> listaCliente;
 	List<Cliente> listaClienteOriginal;
 	
 	public long idUsuario;
+	String nombre, apellidos;
 	InputMethodManager imm;
 
 	
@@ -84,6 +98,8 @@ public class BuscarClientesGreenDao extends ListActivity{
         daoSession = daoMaster.newSession();
         clienteDao = daoSession.getClienteDao();
         elementoListaDao = daoSession.getElementoListaDao();
+        pedidoDao = daoSession.getPedidoDao();
+        pedidoLineaDao=daoSession.getPedidoLineaDao();
         //posible error al borrar
         elementoListaDao.deleteAll();
         
@@ -105,28 +121,39 @@ public class BuscarClientesGreenDao extends ListActivity{
         
         Bundle bundle=getIntent().getExtras();
         idUsuario = bundle.getLong("idusuario");
+		nombre =bundle.getString("nombre");
+		apellidos=bundle.getString("apellidos");
+		Toast.makeText(BuscarClientesGreenDao.this, "Bienvenido, "+nombre+" "+ apellidos, Toast.LENGTH_LONG).show();
         setTitle("Clientes");
         
         button_vermapa = (Button) findViewById(R.id.buttonvermapa);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
-        button_pedidos = (ImageButton) findViewById(R.id.btnCrearPedido);
+        button_pedidos = (ImageButton) findViewById(R.id.btnBuscarPedidos);
+        button_prospectos = (ImageButton) findViewById(R.id.btnBuscarProspectos);
         editText = (EditText) findViewById(R.id.editTextCliente);
 
-	    button_vermapa.setOnClickListener(new OnClickListener() {
+	    button_vermapa.setOnClickListener(new android.view.View.OnClickListener() {
 			public void onClick(View v) {				
 				Intent intent = new Intent(BuscarClientesGreenDao.this, UbicacionCheckInActivity.class);
 				intent.putExtra("idusuario", idUsuario);
 				startActivity(intent);		
 			}
 	 	});
-	    button_pedidos.setOnClickListener(new OnClickListener() {
+	    button_pedidos.setOnClickListener(new android.view.View.OnClickListener() {
 			public void onClick(View v) {				
 				Intent intent = new Intent(BuscarClientesGreenDao.this,  BuscarPedidos.class);
 				intent.putExtra("idusuario", idUsuario);
 				startActivity(intent);		
 			}
 	 	});
-	    button_buscar.setOnClickListener(new OnClickListener() {
+	    button_prospectos.setOnClickListener(new android.view.View.OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(BuscarClientesGreenDao.this,  BuscarProspectos.class);
+				intent.putExtra("idusuario", idUsuario);
+				startActivity(intent);		
+			}
+	 	});
+	    button_buscar.setOnClickListener(new android.view.View.OnClickListener() {
 			public void onClick(View v) {
 //				Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();
 				buscarCliente();
@@ -310,5 +337,62 @@ public class BuscarClientesGreenDao extends ListActivity{
 	    super.onDestroy();
 	}
 	
+	@Override
+	public void onBackPressed() {
+				
+	    new AlertDialog.Builder(this)
+        .setTitle("Cerrar Sesion")
+        .setMessage("Desea Cerrar la Sesion y Salir?")
+        .setNegativeButton("Cancelar", null)
+        .setNeutralButton("Minimizar", new OnClickListener() {
 
+            public void onClick(DialogInterface arg0, int arg1) {
+//            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
+            	Minimizar();
+            	
+            }
+        })
+        .setPositiveButton("Salir", new OnClickListener() {
+
+            public void onClick(DialogInterface arg0, int arg1) {
+            		sincronizarBaseSubida();
+            		BuscarClientesGreenDao.super.onBackPressed();
+            	
+            }
+        }).create().show();	
+	}
+	@Override
+	public void finish(){
+		super.finish();		
+	}
+	private void Minimizar() {
+		// TODO Auto-generated method stub
+		this.moveTaskToBack(true);		
+	}
+	private void sincronizarBaseSubida() {
+		long idPedido=0;
+		long idPedidoLocal;
+		int tam=0;
+        daoPedido = new DAOPedido(BuscarClientesGreenDao.this);
+        List<Pedido> pedidosAux = pedidoDao.queryBuilder()
+        		.where(com.itrade.model.PedidoDao.Properties.NumVoucher.eq("N"))
+        		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
+        tam=pedidosAux.size();
+        for(int i=0;i<tam;i++){
+        	Pedido pedidoTemp=pedidosAux.get(i);
+        	pedidoTemp.setNumVoucher("A");;
+        	pedidoDao.deleteByKey(pedidoTemp.getId());
+        	pedidoDao.insert(pedidoTemp);
+        	idPedidoLocal=pedidoTemp.getId();
+        	idPedido=daoPedido.registrarPedido(pedidoTemp);//id de bd externa
+            List<PedidoLinea> pedidosLineaAux = pedidoLineaDao.queryBuilder()
+            		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idPedidoLocal))
+            		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
+            for(int j=0;j<pedidosLineaAux.size();j++){
+            	PedidoLinea pedidoLineaTemp=pedidosLineaAux.get(j);
+            	pedidoLineaTemp.setIdPedido(idPedido);//lo setteo con el Id de BD externa
+            	daoPedido.registrarPedidoLinea(pedidoLineaTemp);
+            }
+        }
+	}
 }

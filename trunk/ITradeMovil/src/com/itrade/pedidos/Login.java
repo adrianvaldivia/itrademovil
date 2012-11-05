@@ -192,7 +192,7 @@ public class Login extends Activity {
 		
 	private void lanzarPedidos(Usuario usuario) {
 		// TODO Auto-generated method stub
-		Intent intent = new Intent(Login.this, MenuLista.class);					
+		Intent intent = new Intent(Login.this, BuscarClientesGreenDao.class);					
 	    String nombre= usuario.getNombre();
 		String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
 		intent.putExtra("idusuario", usuario.getIdUsuario());
