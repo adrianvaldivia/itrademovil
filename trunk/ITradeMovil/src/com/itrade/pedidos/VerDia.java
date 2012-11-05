@@ -23,11 +23,13 @@ import com.itrade.model.ElementoLista;
 import com.itrade.model.ElementoListaDao;
 import com.itrade.model.Evento;
 import com.itrade.model.DaoMaster.DevOpenHelper;
+import com.itrade.model.EventoDao;
 
 public class VerDia extends ListActivity{
 	private ArrayList<Evento> eventos = new ArrayList<Evento>();
 	private String idUsuario;
 	private Date fecha;
+	Evento evento= new Evento();
 	
 	
     private SQLiteDatabase db;
@@ -35,6 +37,7 @@ public class VerDia extends ListActivity{
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private ElementoListaDao elementoListaDao;
+    private EventoDao eventoDao;
 
 //    private Cursor cursor;
     private Cursor cursorElementoLista;
@@ -51,6 +54,7 @@ public class VerDia extends ListActivity{
 	     daoMaster = new DaoMaster(db);
 	     daoSession = daoMaster.newSession();	     
 	     elementoListaDao = daoSession.getElementoListaDao();
+	     eventoDao = daoSession.getEventoDao();
 	     //posible error al borrar
 	     elementoListaDao.deleteAll();
 		        //Inicio green Dao Elementos Lista
@@ -71,11 +75,26 @@ public class VerDia extends ListActivity{
 	    protected void onListItemClick(ListView l, View v, int position, long id) {
 	     // TODO Auto-generated method stub
 	     //super.onListItemClick(l, v, position, id);
-//	     String selection = l.getItemAtPosition(position).toString();
+		 String selection="";
+	     selection = l.getItemAtPosition(position).toString();
 	     
-	    Toast.makeText(this, "Hola", Toast.LENGTH_LONG).show();
+	    //Toast.makeText(this, "Hola", Toast.LENGTH_LONG).show();
+	     
+	     Intent intent = new Intent(VerDia.this, verEvento.class); 
+	     intent.putExtra("fecha", selection);
+	     
+	     //encuentra evento
+	     this.encuentraEvento(id);
+	     //intent.putExtra("IdEvento", evento.getIdEvento());
+	     intent.putExtra("IdEvento", 1); //hardcode
+	     startActivity(intent);	
 	     
 	    }    
+	 
+	 	private void encuentraEvento(long id) {
+			ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
+			evento=eventoDao.loadByRowId(elementoAux.getIdElemento());
+		}
 	 
 		private void recuperarOriginal() {
 			elementoListaDao.deleteAll();

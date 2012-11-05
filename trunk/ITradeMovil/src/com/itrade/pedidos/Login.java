@@ -218,7 +218,7 @@ public class Login extends Activity {
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
 
-
+ // hardcode de eventos con  las dos lineas de arriba
 		
 	}
     @Override
