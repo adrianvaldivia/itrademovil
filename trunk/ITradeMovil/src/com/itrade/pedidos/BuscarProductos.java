@@ -60,7 +60,7 @@ public class BuscarProductos extends ListActivity{
 	Producto producto= new Producto();
 	long idElemento;
 	public NumberPicker textView_Cantidad;
-	public int idpedido;
+	public long idpedido;
 	Spinner spinner_categoria;
 	//Green Dao
     private SQLiteDatabase db;
@@ -120,7 +120,7 @@ public class BuscarProductos extends ListActivity{
         
         bundle = getIntent().getExtras();
         boolVer=bundle.getInt("boolVer");//booleano indica desde donde fue llamado el activity
-        idpedido=bundle.getInt("idpedido");
+        idpedido=bundle.getLong("idpedido");
 
         daoProducto = new DAOProducto(BuscarProductos.this);
         button_aceptar = (Button) findViewById(R.id.buttonaceptar);

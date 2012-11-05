@@ -1,8 +1,21 @@
 package com.itrade.pedidos;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.itrade.R;
+import com.itrade.model.PedidoLinea;
+import com.itrade.db.DAOPedido;
+import com.itrade.model.Cliente;
+import com.itrade.model.ClienteDao;
+import com.itrade.model.DaoMaster;
+import com.itrade.model.DaoSession;
+import com.itrade.model.Pedido;
+import com.itrade.model.PedidoDao;
+import com.itrade.model.UsuarioDao;
+import com.itrade.model.DaoMaster.DevOpenHelper;
+import com.itrade.model.PedidoDao.Properties;
+import com.itrade.model.PedidoLineaDao;
 import com.itrade.modelo.ItemMenu;
 
 import android.app.AlertDialog;
@@ -10,6 +23,7 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,28 +35,50 @@ import android.widget.Toast;
 
 
 public class MenuLista extends ListActivity{
-
+	DAOPedido daoPedido =null;
 	private Button button_salirmenu;
 	public Bundle bundle;// = getIntent().getExtras();
 	public String nombre="";
 	public String apellidos="";
 	public long idusuario;
 	private TextView textView_NombreUsuario;
+    //green Dao
+    private SQLiteDatabase db;
+
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
+    //fin green dao
+	private PedidoDao pedidoDao;
+	private PedidoLineaDao pedidoLineaDao;
 	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menulista);
+        
+	    //inicio green DAO 
+        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        pedidoDao = daoSession.getPedidoDao();
+        pedidoLineaDao=daoSession.getPedidoLineaDao();
+        //fin green dao
+        
+        
+        
+        
+        
         textView_NombreUsuario  = (TextView) findViewById(R.id.nombreusuario);
-//inicio cambios
+
         bundle = getIntent().getExtras();
 		idusuario=bundle.getLong("idusuario");
 		nombre =bundle.getString("nombre");
 		apellidos=bundle.getString("apellidos");
 		setTitle("iTrade - Bienvenido");
 		textView_NombreUsuario.setText(nombre+" "+apellidos);
-//fin cambios        
+    
         button_salirmenu = (Button) findViewById(R.id.salirmenu);
         
         ListView lv = getListView();
@@ -50,16 +86,6 @@ public class MenuLista extends ListActivity{
         ItemMenuAdapter adapter = new ItemMenuAdapter(this, items);        
         lv.setAdapter(adapter);
 
-//        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
-        //setListAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista)); 
-
-//	    button_salirmenu.setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-////				Toast.makeText(MenuLista.this, "Salir", Toast.LENGTH_LONG).show();
-//				MenuLista.this.finish();
-//	
-//			}
-//	 	});
 
     }
 
@@ -131,7 +157,7 @@ public class MenuLista extends ListActivity{
 	    new AlertDialog.Builder(this)
         .setTitle("Cerrar Sesion")
         .setMessage("Desea cerrar la Sesion?")
-        .setNegativeButton("No", null)
+        .setNegativeButton("Cancelar", null)
         .setNeutralButton("Minimizar", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
@@ -140,7 +166,7 @@ public class MenuLista extends ListActivity{
             	
             }
         })
-        .setPositiveButton("Si", new OnClickListener() {
+        .setPositiveButton("Cerrar Sesion", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
             		sincronizarBaseSubida();
@@ -158,6 +184,29 @@ public class MenuLista extends ListActivity{
 		this.moveTaskToBack(true);		
 	}
 	private void sincronizarBaseSubida() {
-		
+		long idPedido=0;
+		long idPedidoLocal;
+		int tam=0;
+        daoPedido = new DAOPedido(MenuLista.this);
+        List<Pedido> pedidosAux = pedidoDao.queryBuilder()
+        		.where(com.itrade.model.PedidoDao.Properties.NumVoucher.eq("N"))
+        		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
+        tam=pedidosAux.size();
+        for(int i=0;i<tam;i++){
+        	Pedido pedidoTemp=pedidosAux.get(i);
+        	pedidoTemp.setNumVoucher("A");;
+        	pedidoDao.deleteByKey(pedidoTemp.getId());
+        	pedidoDao.insert(pedidoTemp);
+        	idPedidoLocal=pedidoTemp.getId();
+        	idPedido=daoPedido.registrarPedido(pedidoTemp);//id de bd externa
+            List<PedidoLinea> pedidosLineaAux = pedidoLineaDao.queryBuilder()
+            		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idPedidoLocal))
+            		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
+            for(int j=0;j<pedidosLineaAux.size();j++){
+            	PedidoLinea pedidoLineaTemp=pedidosLineaAux.get(j);
+            	pedidoLineaTemp.setIdPedido(idPedido);//lo setteo con el Id de BD externa
+            	daoPedido.registrarPedidoLinea(pedidoLineaTemp);
+            }
+        }
 	}
 }

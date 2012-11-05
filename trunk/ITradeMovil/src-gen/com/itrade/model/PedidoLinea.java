@@ -7,7 +7,7 @@ package com.itrade.model;
 public class PedidoLinea {
 
     private Long id;
-    private Integer IdPedido;
+    private Long IdPedido;
     private Long IdPedidoLinea;
     private Integer IdProducto;
     private Double MontoLinea;
@@ -24,7 +24,7 @@ public class PedidoLinea {
         this.id = id;
     }
 
-    public PedidoLinea(Long id, Integer IdPedido, Long IdPedidoLinea, Integer IdProducto, Double MontoLinea, Double Precio, Integer Cantidad, String NombreProducto, String Marca, String Categoria) {
+    public PedidoLinea(Long id, Long IdPedido, Long IdPedidoLinea, Integer IdProducto, Double MontoLinea, Double Precio, Integer Cantidad, String NombreProducto, String Marca, String Categoria) {
         this.id = id;
         this.IdPedido = IdPedido;
         this.IdPedidoLinea = IdPedidoLinea;
@@ -45,11 +45,11 @@ public class PedidoLinea {
         this.id = id;
     }
 
-    public Integer getIdPedido() {
+    public Long getIdPedido() {
         return IdPedido;
     }
 
-    public void setIdPedido(Integer IdPedido) {
+    public void setIdPedido(Long IdPedido) {
         this.IdPedido = IdPedido;
     }
 

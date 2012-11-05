@@ -33,6 +33,7 @@ import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
+import com.itrade.model.PedidoLineaDao;
 import com.itrade.model.Persona;
 import com.itrade.model.PersonaDao;
 import com.itrade.R;
@@ -65,9 +66,11 @@ public class Login extends Activity {
     private UsuarioDao usuarioDao;
     private ClienteDao clienteDao;
     private PedidoDao pedidoDao;
+    private PedidoLineaDao pedidoLineaDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
+    Usuario ultimoUsuario = new  Usuario();
     
 
 	private EditText textView_Usuario;
@@ -92,6 +95,8 @@ public class Login extends Activity {
         usuarioDao = daoSession.getUsuarioDao();
         clienteDao = daoSession.getClienteDao();
         pedidoDao = daoSession.getPedidoDao();
+        pedidoLineaDao = daoSession.getPedidoLineaDao();
+        pedidoLineaDao.deleteAll();
         //fin green dao
 
 	    
@@ -108,53 +113,35 @@ public class Login extends Activity {
 
 	    button_Ingresar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				
+				Usuario usuarioLocal=null;
 				boolBaseLocalUsuariosVacia=false;
-		        if (usuarioDao.count()==0){
-		        	boolBaseLocalUsuariosVacia=true;
-		        }	
 				String nombreUsuario = textView_Usuario.getText().toString();
 				String password = textView_Password.getText().toString();
+		        if (usuarioDao.count()==0){//cuando esta vacia
+		        	boolBaseLocalUsuariosVacia=true;
+		        }
+		        else{//cuando hay un usuario anterior
+		        	ultimoUsuario=usuarioDao.loadByRowId(1);//
+		        	usuarioLocal=confirmarLoginLocal(nombreUsuario,password);//intento logearme localmente		        	
+		        }
+																
 				
-				int resul=1;
-				
-				
-				if (resul!=-1) {
-					
-					Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
-					if (usuario != null){
-											   
-						if (usuario.getIdPerfil()==2){//PEDIDOS
-							sincronizarBase(usuario.getIdUsuario());
-							Intent intent = new Intent(Login.this, MenuLista.class);					
-						    String nombre= usuario.getNombre();
-							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
-							intent.putExtra("idusuario", usuario.getIdUsuario());
-							intent.putExtra("nombre", nombre);
-							intent.putExtra("apellidos", apellidos);
-							//intent.putExtra("usuario", usuario);					
-							startActivity(intent);					
-							textView_Password.setText("");
-						}
-						if (usuario.getIdPerfil()==3){//Cobranza
-							Intent intent = new Intent(Login.this, ClientesListTask.class);					
-						    String nombre= usuario.getNombre();
-							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();							
-							intent.putExtra("idempleado", usuario.getIdUsuario().toString());
-							intent.putExtra("nombre", nombre);
-							intent.putExtra("apellidos", apellidos);
-							//intent.putExtra("usuario", usuario);					
-							startActivity(intent);					
-							textView_Password.setText("");
-						}
-					}else{
-						Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
-					}														    				   
+				if (usuarioLocal!=null) {//cuando se logeo localmente de manera correcta
+	    			lanzarActivitys(usuarioLocal);													    				   
 				}
-				else{
-					Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
+				else{//intentara logearse en la nube
+					Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
+			    	if (usuario != null){
+			    		usuario.setPassword(password);
+			    		sincronizarBase(usuario);//Preguntar si quiere borrar los datos del usuario logeado anteriormente
+						lanzarActivitys(usuario);			    							   
+			    	}else{
+			    		Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
+			    	}
 				}
 			}
+
+
 
 
 
@@ -185,10 +172,47 @@ public class Login extends Activity {
 
 	    
 	 }
-    
-	private void sincronizarBase(long idUsuario) {
+    private void lanzarActivitys(Usuario usuario) {
+    	//Preguntar si quiere borrar los datos del usuario logeado anteriormente	   
+    		if (usuario.getIdPerfil()==2){//PEDIDOS
+    			lanzarPedidos(usuario);
+    		}
+    		if (usuario.getIdPerfil()==3){//Cobranza
+    			Intent intent = new Intent(Login.this, ClientesListTask.class);					
+    		    String nombre= usuario.getNombre();
+    			String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();							
+    			intent.putExtra("idempleado", usuario.getIdUsuario().toString());
+    			intent.putExtra("nombre", nombre);
+    			intent.putExtra("apellidos", apellidos);
+    			//intent.putExtra("usuario", usuario);					
+    			startActivity(intent);					
+    			textView_Password.setText("");
+    		}    	    	
+    }
+		
+	private void lanzarPedidos(Usuario usuario) {
 		// TODO Auto-generated method stub
-		///////////////////////////////////////////////////Sincronizacion de Clientes
+		Intent intent = new Intent(Login.this, MenuLista.class);					
+	    String nombre= usuario.getNombre();
+		String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
+		intent.putExtra("idusuario", usuario.getIdUsuario());
+		intent.putExtra("nombre", nombre);
+		intent.putExtra("apellidos", apellidos);
+		//intent.putExtra("usuario", usuario);					
+		startActivity(intent);					
+		textView_Password.setText("");
+	}
+	
+
+    
+	private void sincronizarBase(Usuario usuario) {
+		// TODO Auto-generated method stub
+		long idUsuario=usuario.getIdUsuario();
+		usuario.setNombreReal("BDLOCAL");
+		////////////////////////////////////////////////////////////Sincronizacion de Usuarios
+		usuarioDao.deleteAll();
+		usuarioDao.insert(usuario);
+		///////////////////////////////////////////////////Sincronizacion de Clientes		
         daoCliente = new DAOCliente(this);  
         List<Cliente> listaCliente = daoCliente.getAllClientes(idUsuario); //obtiene los clientes
         //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
@@ -217,6 +241,9 @@ public class Login extends Activity {
 			pedidoDao.insert(pedido);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
+		////////////////////////////////////////////////////////Sincronizacion de pedido Linea
+//		pedidoLineaDao.deleteAll();
+		
 
  // hardcode de eventos con  las dos lineas de arriba
 		
@@ -244,31 +271,18 @@ public class Login extends Activity {
 	}
     private void cargarBaseLocal() {
   
-       //listaUsuario = daoUsu.getAllUsuarios(); //obtiene los usuarios
-        listaPersona = daoPerso.getAllPersonas(); //obtiene los usuarios
-        usuarioDao.deleteAll();
-        
-		for(int i=0;i<listaUsuario.size();i++){
-			//Usuario cliente = new Usuario(null,listaUsuario.get(i).getNombre(),listaUsuario.get(i).getPassword(),listaUsuario.get(i).getIdPerfil(),listaUsuario.get(i).getIdPersona(),listaUsuario.get(i).getActivo(),listaUsuario.get(i).getIdJerarquia(),listaUsuario.get(i).getIdZona(),listaUsuario.get(i).getIdDistrito(),listaUsuario.get(i).getIdCiudad(),listaUsuario.get(i).getIdPais());
-			//usuarioDao.insert(cliente);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}	
-		for(int i=0;i<listaPersona.size();i++){
-			//Persona persona = new Persona(null,listaPersona.get(i).getNombre(),listaPersona.get(i).getApePaterno(),listaPersona.get(i).getApeMaterno(),listaPersona.get(i).getDNI(),listaPersona.get(i).getFechNac(),listaPersona.get(i).getTelefono(),listaPersona.get(i).getEmail(),listaPersona.get(i).getActivo());
-			//personaDao.insert(persona);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
 	}
-	private int confirmarLoginLocal(String nombreUsuario,String password) {
+	private Usuario confirmarLoginLocal(String nombreUsuario,String password) {		
+
 		Query<Usuario> query = usuarioDao.queryBuilder().where(
-				Properties.Nombre.eq(nombreUsuario), Properties.Password.eq(password))
+				Properties.Username.eq(nombreUsuario), Properties.Password.eq(password))
 				.build();
 		List <Usuario> listaUsuarioAux = query.list();
 		if (listaUsuarioAux.size()>=1){
-			return safeLongToInt(listaUsuarioAux.get(0).getId());
+			return listaUsuarioAux.get(0);
 		}
 		else
-			return -1;
+			return null;
 	}
 
 	public static int safeLongToInt(long l) {
