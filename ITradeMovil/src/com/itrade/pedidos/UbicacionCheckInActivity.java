@@ -567,8 +567,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    new AlertDialog.Builder(this)
         .setTitle("Confirmar Ubicacion")
         .setMessage("Desea confirmar la Ubicacion?")
-        .setNegativeButton(android.R.string.no, null)
-        .setPositiveButton("si", new OnClickListener() {
+        .setNegativeButton("No", null)
+        .setPositiveButton("Si", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
             	if (markerOverlay.size()>0){

@@ -26,8 +26,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itrade.model.Cliente;
+import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
+import com.itrade.model.ElementoLista;
+import com.itrade.model.Pedido;
+import com.itrade.model.PedidoDao;
 import com.itrade.model.Persona;
 import com.itrade.model.PersonaDao;
 import com.itrade.R;
@@ -37,6 +42,8 @@ import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.UsuarioDao.Properties;
 import com.itrade.cobranzas.ClientesListTask;
 import com.itrade.controller.cobranza.Syncronizar;
+import com.itrade.db.DAOCliente;
+import com.itrade.db.DAOPedido;
 import com.itrade.db.DAOUsuario;
 import com.itrade.db.DAOPersona;
 
@@ -46,6 +53,8 @@ import de.greenrobot.dao.Query;
 
 public class Login extends Activity {
 	
+	DAOCliente daoCliente =null;
+	DAOPedido daoPedido =null;
     private DAOUsuario daoUsu= null;
     private DAOPersona daoPerso= null;
     //green Dao
@@ -54,7 +63,8 @@ public class Login extends Activity {
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private UsuarioDao usuarioDao;
-    private PersonaDao personaDao;
+    private ClienteDao clienteDao;
+    private PedidoDao pedidoDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
@@ -80,7 +90,8 @@ public class Login extends Activity {
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         usuarioDao = daoSession.getUsuarioDao();
-        personaDao = daoSession.getPersonaDao();
+        clienteDao = daoSession.getClienteDao();
+        pedidoDao = daoSession.getPedidoDao();
         //fin green dao
 
 	    
@@ -99,12 +110,8 @@ public class Login extends Activity {
 			public void onClick(View v) {
 				
 				boolBaseLocalUsuariosVacia=false;
-				boolBaseLocalPersonasVacia=false;
 		        if (usuarioDao.count()==0){
 		        	boolBaseLocalUsuariosVacia=true;
-		        }	
-		        if (personaDao.count()==0){
-		        	boolBaseLocalPersonasVacia=true;
 		        }	
 				String nombreUsuario = textView_Usuario.getText().toString();
 				String password = textView_Password.getText().toString();
@@ -115,9 +122,10 @@ public class Login extends Activity {
 				if (resul!=-1) {
 					
 					Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
-					if (usuario != null){											    					   					   
-					    
+					if (usuario != null){
+											   
 						if (usuario.getIdPerfil()==2){//PEDIDOS
+							sincronizarBase(usuario.getIdUsuario());
 							Intent intent = new Intent(Login.this, MenuLista.class);					
 						    String nombre= usuario.getNombre();
 							String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();				
@@ -150,7 +158,6 @@ public class Login extends Activity {
 
 
 
-
 	 	});  
 	    
 	    
@@ -178,6 +185,42 @@ public class Login extends Activity {
 
 	    
 	 }
+    
+	private void sincronizarBase(long idUsuario) {
+		// TODO Auto-generated method stub
+		///////////////////////////////////////////////////Sincronizacion de Clientes
+        daoCliente = new DAOCliente(this);  
+        List<Cliente> listaCliente = daoCliente.getAllClientes(idUsuario); //obtiene los clientes
+        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+        Double x;
+		Double y;
+		clienteDao.deleteAll();
+		for(int i=0;i<listaCliente.size();i++){
+			x=listaCliente.get(i).getLatitud();
+			y=listaCliente.get(i).getLongitud();
+			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
+					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
+					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
+					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
+					listaCliente.get(i).getActivo());
+			cliente2.setActivo("A");//util para el checkin del mapa
+	        clienteDao.insert(cliente2);
+		}
+		//////////////////////////////////////////////sincronizacion de pedidos
+		daoPedido = new DAOPedido(Login.this);
+		List<Pedido> listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
+		pedidoDao.deleteAll();        
+		for(int i=0;i<listaPedido.size();i++){
+			//numvoucher = A de antiguo
+			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),"A",listaPedido.get(i).getMontoTotal());
+			pedidoDao.insert(pedido);
+	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+		}
+
+
+		
+	}
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -204,7 +247,6 @@ public class Login extends Activity {
        //listaUsuario = daoUsu.getAllUsuarios(); //obtiene los usuarios
         listaPersona = daoPerso.getAllPersonas(); //obtiene los usuarios
         usuarioDao.deleteAll();
-        personaDao.deleteAll();
         
 		for(int i=0;i<listaUsuario.size();i++){
 			//Usuario cliente = new Usuario(null,listaUsuario.get(i).getNombre(),listaUsuario.get(i).getPassword(),listaUsuario.get(i).getIdPerfil(),listaUsuario.get(i).getIdPersona(),listaUsuario.get(i).getActivo(),listaUsuario.get(i).getIdJerarquia(),listaUsuario.get(i).getIdZona(),listaUsuario.get(i).getIdDistrito(),listaUsuario.get(i).getIdCiudad(),listaUsuario.get(i).getIdPais());
@@ -228,20 +270,7 @@ public class Login extends Activity {
 		else
 			return -1;
 	}
-	private Persona buscarDatosPersonaLocal(int idusuario) {
-		Persona persona= new Persona();
-		persona.setNombre("HardCoded");
-		Long idUsuarioTemp,idPersonaTemp;
-		idUsuarioTemp=Long.valueOf(idusuario);
-		Usuario usuario;
-		if(!boolBaseLocalUsuariosVacia){
-			usuario=usuarioDao.loadByRowId(idUsuarioTemp);
-			idPersonaTemp=Long.valueOf(usuario.getIdPersona());
-			persona=personaDao.loadByRowId(idPersonaTemp);
-		}
-		
-		return persona;
-	}
+
 	public static int safeLongToInt(long l) {
 	    return (int) Math.max(Math.min(Integer.MAX_VALUE, l), Integer.MIN_VALUE);
 	}

@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import com.itrade.R;
 import com.itrade.modelo.ItemMenu;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
 //import android.widget.Toast;
+import android.widget.Toast;
 
 
 public class MenuLista extends ListActivity{
@@ -49,13 +53,13 @@ public class MenuLista extends ListActivity{
 //        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
         //setListAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista)); 
 
-	    button_salirmenu.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-//				Toast.makeText(MenuLista.this, "Salir", Toast.LENGTH_LONG).show();
-				MenuLista.this.finish();
-	
-			}
-	 	});
+//	    button_salirmenu.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+////				Toast.makeText(MenuLista.this, "Salir", Toast.LENGTH_LONG).show();
+//				MenuLista.this.finish();
+//	
+//			}
+//	 	});
 
     }
 
@@ -99,8 +103,8 @@ public class MenuLista extends ListActivity{
 			startActivity(intent);		
      }
      if (selection.compareTo("Mi Ubicacion")==0){			
-			Intent intent = new Intent(MenuLista.this, UbicacionCheckInActivity.class);
-			intent.putExtra("idusuario", idusuario);
+			Intent intent = new Intent(MenuLista.this, Picker.class);
+//			intent.putExtra("idusuario", idusuario);
 			startActivity(intent);		
      }
     }    
@@ -120,4 +124,40 @@ public class MenuLista extends ListActivity{
     	
     	return items;
     }
+    
+	@Override
+	public void onBackPressed() {
+				
+	    new AlertDialog.Builder(this)
+        .setTitle("Cerrar Sesion")
+        .setMessage("Desea cerrar la Sesion?")
+        .setNegativeButton("No", null)
+        .setNeutralButton("Minimizar", new OnClickListener() {
+
+            public void onClick(DialogInterface arg0, int arg1) {
+//            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
+            	Minimizar();
+            	
+            }
+        })
+        .setPositiveButton("Si", new OnClickListener() {
+
+            public void onClick(DialogInterface arg0, int arg1) {
+            		sincronizarBaseSubida();
+            		MenuLista.super.onBackPressed();
+            	
+            }
+        }).create().show();	
+	}
+	@Override
+	public void finish(){
+		super.finish();		
+	}
+	private void Minimizar() {
+		// TODO Auto-generated method stub
+		this.moveTaskToBack(true);		
+	}
+	private void sincronizarBaseSubida() {
+		
+	}
 }
