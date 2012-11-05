@@ -10,6 +10,7 @@ import com.itrade.model.ElementoListaDao;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoLinea;
+import com.itrade.model.PedidoLineaDao;
 import com.itrade.model.Producto;
 import com.itrade.model.ProductoDao;
 import com.itrade.R;
@@ -40,7 +41,7 @@ public class CrearPedido extends ListActivity{
 	private TextView txt_nombre;
 	private TextView txt_ruc;
 	public Bundle bundle;
-	public int idpedido=0;
+	public long idpedido=0;
 	public String nombre="";
 	public String apellidos="";
 	public int idcliente;
@@ -61,6 +62,7 @@ public class CrearPedido extends ListActivity{
     private DaoSession daoSession;
     private ProductoDao productoDao;
     private PedidoDao pedidoDao;
+    private PedidoLineaDao pedidoLineaDao;
     private ElementoListaDao elementoListaDao;
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
@@ -79,6 +81,7 @@ public class CrearPedido extends ListActivity{
         productoDao = daoSession.getProductoDao();
         elementoListaDao = daoSession.getElementoListaDao();
         pedidoDao = daoSession.getPedidoDao();
+        pedidoLineaDao = daoSession.getPedidoLineaDao();
         elementoListaDao.deleteAll();
         //Fin configuracion green dao
         //Inicio green Dao Elementos Lista
@@ -167,6 +170,7 @@ public class CrearPedido extends ListActivity{
 		    pedidoLinea.setCantidad(listaProductoCantidad.get(i));
 		    pedidoLinea.setIdProducto(listaProductoElegido.get(i));
 		    pedidoLinea.setIdPedido(idpedido);
+		    pedidoLinea.setMarca("N");//N por ser un Nuevo Pedido Linea
 		    pedidoLinea.setMontoLinea(obtenerPrecio(pedidoLinea.getIdProducto())*pedidoLinea.getCantidad());
 			long temp=0;
 			temp=temp+listaProductoElegido.get(i);
@@ -201,8 +205,9 @@ public class CrearPedido extends ListActivity{
         pedido.setMontoTotal(montoTotal);
         pedido.setMontoSinIGV(montoTotal);
         pedido.setNumVoucher("N");//N de nuevo
-        idpedido=daoPedido.registrarPedido(pedido);
+        //idpedido=daoPedido.registrarPedido(pedido);
         pedidoDao.insert(pedido);
+        idpedido=pedidoDao.count();
 	}
 	private void procesaPedido() {//acumulador del monto Total
 		montoTotal=0.0;
@@ -218,8 +223,8 @@ public class CrearPedido extends ListActivity{
 		procesaPedidoLinea();
         daoPedido = new DAOPedido(CrearPedido.this);
         for(int i=0;i<listaPedidoLinea.size();i++){
-        	daoPedido.registrarPedidoLinea(listaPedidoLinea.get(i));
-        	
+//        	daoPedido.registrarPedidoLinea(listaPedidoLinea.get(i));
+        	pedidoLineaDao.insert(listaPedidoLinea.get(i));        	
         }
 	}
  

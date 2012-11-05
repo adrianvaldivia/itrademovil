@@ -24,7 +24,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdPedido = new Property(1, Integer.class, "IdPedido", false, "ID_PEDIDO");
+        public final static Property IdPedido = new Property(1, Long.class, "IdPedido", false, "ID_PEDIDO");
         public final static Property IdPedidoLinea = new Property(2, Long.class, "IdPedidoLinea", false, "ID_PEDIDO_LINEA");
         public final static Property IdProducto = new Property(3, Integer.class, "IdProducto", false, "ID_PRODUCTO");
         public final static Property MontoLinea = new Property(4, Double.class, "MontoLinea", false, "MONTO_LINEA");
@@ -76,7 +76,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer IdPedido = entity.getIdPedido();
+        Long IdPedido = entity.getIdPedido();
         if (IdPedido != null) {
             stmt.bindLong(2, IdPedido);
         }
@@ -133,7 +133,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     public PedidoLinea readEntity(Cursor cursor, int offset) {
         PedidoLinea entity = new PedidoLinea( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPedido
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPedido
             cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // IdPedidoLinea
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // IdProducto
             cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4), // MontoLinea
@@ -150,7 +150,7 @@ public class PedidoLineaDao extends AbstractDao<PedidoLinea, Long> {
     @Override
     public void readEntity(Cursor cursor, PedidoLinea entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setIdPedido(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setIdPedidoLinea(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setIdProducto(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setMontoLinea(cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4));
