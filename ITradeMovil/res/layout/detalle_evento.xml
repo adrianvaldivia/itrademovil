@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/bg"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/blanco"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -24,8 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:background="@color/azul_2" >
-
-
+
                 <TextView
                     android:id="@+id/txtItrade"
                     android:layout_width="246dp"
@@ -95,65 +93,107 @@
                     android:src="@drawable/excelencia" />
             </LinearLayout>
         </LinearLayout>
->
-
+>
     </RelativeLayout>
-
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/bottom_control_bar"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top_control_bar"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/selectedDayMonthYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="33dp"
-            android:layout_marginRight="33dp"
-            android:background="@drawable/calendar_top_header"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FFFFFF" />
+        android:layout_alignParentBottom="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/prevMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/calendar_left_arrow_selector" />
-
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.10" >
+
             <Button
-                android:id="@+id/currentMonth"
-                android:layout_width="wrap_content"
+                android:id="@+id/buttonvermapa"
+                style="@drawable/estilo_botones"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:background="@drawable/calendar_bar"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#FFFFFF" />
-
-            <ImageView
-                android:id="@+id/nextMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/calendar_right_arrow_selector" />
+                android:layout_weight="0.10"
+                android:background="@drawable/estilo_botones"
+                android:text="@string/aceptar"
+                android:textColor="@color/blanco" />
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_control_bar"
+        android:layout_below="@id/top_control_bar"
+        android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/calendarheader"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/blue_bg_with_text" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/hora_eveto"
+            android:textColor="@color/azul_2"
+            android:textSize="17dp" />
 
-        <GridView
-            android:id="@+id/calendar"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="7" >
-        </GridView>
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/asunto"
+            android:textColor="@color/azul_2"
+            android:textSize="17dp" />
+
+        <EditText
+            android:id="@+id/txtAsunto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/lugar"
+            android:textColor="@color/azul_2"
+            android:textSize="17dp" />
+
+        <EditText
+            android:id="@+id/txtLugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:ems="10" />
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/descripcion"
+            android:textColor="@color/azul_2"
+            android:textSize="17dp" />
+
+        <EditText
+            android:id="@+id/txtDesc"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
     </LinearLayout>
 
 </RelativeLayout>
