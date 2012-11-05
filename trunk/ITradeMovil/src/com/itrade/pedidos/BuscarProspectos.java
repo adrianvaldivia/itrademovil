@@ -100,12 +100,21 @@ public class BuscarProspectos extends Activity {
 		    										
 		    	//listameta	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Meta>>(){}.getType());			
 		    	mimeta	=	gson.fromJson(sync.getResponse(), Meta.class);
+		    	
 		    	Toast.makeText(BuscarProspectos.this, "Ok", Toast.LENGTH_LONG).show();
 				Intent i = new Intent(BuscarProspectos.this, MiMeta.class);
+				
+				if (mimeta!=null){
 				i.putExtra("idusuario", idusuario);
 				i.putExtra("periodo", mimeta.getNombre());
 				i.putExtra("meta", mimeta.getMeta());
 				i.putExtra("avance", mimeta.getSuma());
+				i.putExtra("exito", true);
+				}
+				else{
+					
+					i.putExtra("exito", false);
+				}
 				startActivity(i);
 				BuscarProspectos.this.finish();
 		    	
