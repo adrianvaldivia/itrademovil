@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ public class DetalleCliente extends ListActivity{
 
 	private Button button_verpedidos;
 	private Button button_crearpedidos;
+	private ImageButton  button_clientes;
+	private ImageButton  button_pedidos;
 	private TextView txt_nombre;
 	private TextView txt_ruc;
 	public Bundle bundle;// = getIntent().getExtras();
@@ -92,6 +95,8 @@ public class DetalleCliente extends ListActivity{
         //daoCliente = new DAOCliente();
         button_verpedidos = (Button) findViewById(R.id.buttonverpedidos);
         button_crearpedidos = (Button) findViewById(R.id.buttoncrearpedido);
+        button_clientes = (ImageButton) findViewById(R.id.btnBuscarClientes);
+        button_pedidos = (ImageButton) findViewById(R.id.btnBuscarPedidos);
         txt_nombre = (TextView) findViewById(R.id.txtnombrecliente);
         txt_ruc = (TextView) findViewById(R.id.txtruccliente);
 
@@ -123,9 +128,20 @@ public class DetalleCliente extends ListActivity{
 	
 			}
 	 	});
-        if (boolVer==0){//es decir si es que ya no necesito mostrar el cliente sino que llamar defrente a crear pedido
-        	saltarToCrearPedido();
-        }
+	    button_clientes.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(DetalleCliente.this,  BuscarClientesGreenDao.class);
+				intent.putExtra("idusuario", idusuario);
+				startActivity(intent);		
+			}
+	 	});
+	    button_pedidos.setOnClickListener(new android.view.View.OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(DetalleCliente.this,  BuscarPedidos.class);
+				intent.putExtra("idusuario", idusuario);
+				startActivity(intent);		
+			}
+	 	});
     }
 
     private void obtenerDatosCliente() {
@@ -150,15 +166,6 @@ public class DetalleCliente extends ListActivity{
 		
 	}
 
-	private void saltarToCrearPedido() {
-//	     Intent intent = new Intent(DetalleCliente.this, CrearPedido.class);
-//	     intent.putExtra("nombre", nombre);
-//	     intent.putExtra("apellidos", apellidos);
-//	     intent.putExtra("idcliente", idcliente);
-//	     intent.putExtra("idusuario", idusuario);
-//	     startActivity(intent);		
-		
-	}
 
     
 	public void Convierte(List<String> lis){

@@ -46,7 +46,7 @@
 		        android:background="@color/azul_2" >
 
 		        <ImageButton
-		            android:id="@+id/btnCrearPedido"
+		            android:id="@+id/btnBuscarPedidos"
 		            style="@drawable/estilo_botones"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
@@ -54,14 +54,14 @@
 		            android:src="@drawable/add_to_cart" />
 
 		        <ImageButton
-		            android:id="@+id/btnBuscarPedido"
+		            android:id="@+id/btnBuscarProspectos"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
 		            android:background="@drawable/estilo_botones"
 		            android:src="@drawable/buscar_pedido" />
 
 		        <ImageButton
-		            android:id="@+id/btnProspectos"
+		            android:id="@+id/btnBuscarClientes"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
 		            android:background="@drawable/estilo_botones"
