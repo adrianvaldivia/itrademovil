@@ -200,6 +200,7 @@ public class CrearPedido extends ListActivity{
         //procesaPedido();//obtiene el monto Total
         pedido.setMontoTotal(montoTotal);
         pedido.setMontoSinIGV(montoTotal);
+        pedido.setNumVoucher("N");//N de nuevo
         idpedido=daoPedido.registrarPedido(pedido);
         pedidoDao.insert(pedido);
 	}

@@ -184,8 +184,8 @@ public class BuscarClientesGreenDao extends ListActivity{
 //     String selection = l.getItemAtPosition(position).toString();
      
      //inicio cambios chichan
-int debug=0;
-debug++;
+//	 int debug=0;
+//	 debug++;
      this.encuentraCliente(id);
      int temp=cliente.getIdCliente();
 //    Toast.makeText(this, "IdCliente: "+temp, Toast.LENGTH_LONG).show();
