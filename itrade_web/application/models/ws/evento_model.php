@@ -5,6 +5,7 @@ class Evento_model extends CI_Model {
     {        
         parent::__construct();		
 		$this->table_evento = 'Evento';		
+		$this->table_evento_persona = 'PersonaXEvento';	
     }		
 	public function registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin){
 		$this->db->flush_cache();
@@ -21,5 +22,14 @@ class Evento_model extends CI_Model {
         $query = $this->db->get($this->table_evento);
         return $query->row(0)->IdEvento;
     }	
+	public function get_eventos_idusuario_month($idusuario,$month){
+		
+		$this->db->from($this->table_evento_persona);
+		$this->db->join($this->table_evento,$this->table_evento.".IdPersona =".$this->table_cliente.".IdCliente");
+		$str="month(".$this->table_evento.".FechaPedido) = ".$month;		
+		$this->db->where($str);//UBIGEO			
+		$query = $this->db->get($this->table_evento);
+		return $query->result();
+	}
 }
 ?>
