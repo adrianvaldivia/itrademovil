@@ -134,15 +134,13 @@ class Cliente_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();	
 	}
-	public function registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$email,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador){		
+	public function registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$email,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador,$latitud,$longitud){		
 		$this->db->flush_cache();
 		$idpersona=0;
-		$this->registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni,$email);
-		//echo "persona".$idpersona;
-		$idpersona=$this->get_last_idPersona();
-		//print_r($idpersona);
+		$this->registrarPersona($nombre, $apepaterno, $apematerno,$telefono,$fechanac,$dni,$email);		
+		$idpersona=$this->get_last_idPersona();		
 		if ($idpersona!=0){
-			$this->registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor,$idcobrador);
+			$this->registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor,$idcobrador,$latitud,$longitud);
 			$idcliente=$this->get_last_idCliente();	
 			if ($idcliente!=0){
 				$this->registrarLineaCredito($idcliente,$montosolicitado);
@@ -169,10 +167,10 @@ class Cliente_model extends CI_Model {
 		//return $this->db->insert_id($this->table_linea, $data);
 	}
 	
-	public function registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor,$idcobrador){
+	public function registrarProspecto($idpersona,$ruc,$razon_social,$direccion,$idvendedor,$idcobrador,$latitud,$longitud){
 		$this->db->flush_cache();
 		$idcliente=$this->get_last_idCliente();
-		$data=array("IdCliente"=>$idcliente+1,"IdPersona"=>$idpersona,"Razon_Social"=>$razon_social,"RUC"=>$ruc,"Direccion"=>$direccion,"IdVendedor"=>$idvendedor,"IdCobrador"=>$idcobrador,"IdEstado"=>1);	
+		$data=array("IdCliente"=>$idcliente+1,"IdPersona"=>$idpersona,"Razon_Social"=>$razon_social,"RUC"=>$ruc,"Direccion"=>$direccion,"IdVendedor"=>$idvendedor,"IdCobrador"=>$idcobrador,"IdEstado"=>1,"Latitud"=>$latitud,"Longitud"=>$longitud);	
 		$this->db->insert($this->table_cliente, $data);
 		//return $this->db->insert_id($this->table_cliente, $data);
 		return $this->get_last_idCliente();
