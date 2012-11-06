@@ -14,8 +14,7 @@ class Eventos extends CI_Controller {
 		echo "Controlador Pedido";			
 	}	
 	
-	public function registrar_evento($idcreador_w='',$descripcion_w='',$fecha_w='',$horaini_w='',$horafin_w=''){
-		
+	public function registrar_evento($idcreador_w='',$descripcion_w='',$fecha_w='',$horaini_w='',$horafin_w=''){	
 		$idcreador=$this->input->post('idcreador');
 		$descripcion=$this->input->post('descripcion');
 		$fecha=$this->input->post('fecha');
@@ -29,6 +28,16 @@ class Eventos extends CI_Controller {
 			$horafin=$horafin_w;
 		}
 		$result=$this->Evento_model->registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin);
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+	}
+	public function get_eventos_idusuario_month($idusuario_w='',$month_w=''){
+		$idusuario=$this->input->post('idusuario');
+		$month=$this->input->post('month');	
+		if (isset($idusuario_w)&& $idusuario_w!="" && isset($month_w)&& $month_w!=""  ){
+			$idusuario=$idusuario_w;
+			$month=$month_w;
+		}
+		$result=$this->Evento_model->get_eventos_idusuario_month($idusuario,$month);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 	}
 }

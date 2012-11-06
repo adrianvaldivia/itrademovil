@@ -165,12 +165,11 @@ class Pedido extends CI_Controller {
 		$idzona=$this->input->post('idzona');
 		$idperiodo=$this->input->post('idperiodo');
 		if ($idzona_w!='' && isset($idzona_w) && $idperiodo_w!='' && $idperiodo_w){
-			$idzona=$idperiodo_w;
+			$idzona=$idzona_w;
 			$idperiodo=$idperiodo_w;
 		}
 		$result=$this->Payment_model->get_monto_zona($idzona,$idperiodo);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-	}
-	
+	}	
 }
 
