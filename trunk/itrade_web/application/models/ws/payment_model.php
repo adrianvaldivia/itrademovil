@@ -211,12 +211,16 @@ class Payment_model extends CI_Model {
 	public function get_monto_zona($idzona,$idperiodo){
 		$objPeriodo=$this->get_periodo($idperiodo);
 		$this->db->flush_cache();    
-		$query = $this->db->query("
-			Select Usuario.nombre, Pedido.MontoTotalPedido, Pedido.FechaCobranza 
-			from Pedido   
-			Where Pedido.idCliente=Cliente.idCliente and Cliente.idVendedor=Usuario.idUsuario and Usuario.idUbigeo='".$idzona."' and 
-			Pedido.idEstadoPedido=2 and Pedidos.FechaCobranza >= '".$objPeriodo->FechaIni."' and 
-			Pedidos.FechaCobranza <= '".$objPeriodo->FechaFin."'
+		$query = $this->db->query("					
+			SELECT Usuario.Nombre, Pedido.MontoTotalPedido, Pedido.FechaCobranza
+			FROM PeriodoMeta, Pedido, Cliente, Usuario
+			WHERE Pedido.IdCliente = Cliente.IdCliente
+			AND Cliente.IdVendedor = Usuario.IdUsuario
+			AND Usuario.IdUbigeo ='".$idzona."' 
+			AND Pedido.IdEstadoPedido = '2'
+			AND PeriodoMeta.IdPeriodo ='".$idperiodo." '
+			AND '".$objPeriodo->FechaIni."' <= Pedido.FechaCobranza
+			AND '".$objPeriodo->FechaFin."' >= Pedido.FechaCobranza			
 		");	
 		return $query->result();
 	}
