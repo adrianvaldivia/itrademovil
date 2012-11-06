@@ -139,8 +139,8 @@ class Pedido extends CI_Controller {
 		}				
 		//var_dump($suma);
 		foreach($suma as $elem){
-			echo "yaoming!!!!!!!!!!!!!!>>>>>".$elem->montototal."#$$$$$$$$$$$$$";exit;
-			$nume=($elem->montototal+="")?$elem->montototal:0;
+			
+			$nume=($elem->montototal!=null)?$elem->montototal:0;
 			
 			$numeout="$nume";
 			$this->output->set_content_type('application/json')->set_output(json_encode(array("suma"=>$numeout,"fechini"=>$fechaini,"fechafin"=>$fechafin,"meta"=>$metaout,"nombre"=>$nombre)));
