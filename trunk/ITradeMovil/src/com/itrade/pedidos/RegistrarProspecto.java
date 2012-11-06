@@ -36,6 +36,8 @@ import android.widget.ViewFlipper;
 public class RegistrarProspecto extends Activity implements OnClickListener{
     /** Called when the activity is first created. */
 	
+	EmailValidator validador = new EmailValidator();
+	
 	ViewFlipper vf;
 	
 	EditText ruc,rzsocial,direcc,telefcliente,dni,nombre,apellidopater,apellidomater,telefperson,fechanac,correo,cantidad;
@@ -95,7 +97,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     		public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-    			bandera = isEmailValid(correo.getText().toString());
+    			bandera = validador.validate(correo.getText().toString());
     			
     			
     			if ((!ruc.getText().toString().trim().equals("")) &&
@@ -119,7 +121,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     		}
     				else 
     				{
-    		if (bandera=false)
+    		if (bandera==false)
     		    			Toast.makeText(RegistrarProspecto.this, "Por favor Revisar el Correo ingresado", Toast.LENGTH_SHORT).show();
     		else	
     		{	
@@ -204,10 +206,13 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			    	 fechanac.setText("");
 			    	 correo.setText("");
 			    	 cantidad.setText("");
-			    //	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
-			      //   startActivity(a);
+			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+			    	 a.putExtra("idusuario", idusuario);
+			    	 startActivity(a);
 			     
-			     } else	
+			     } 
+			     
+			     else	
 				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
 			
          
