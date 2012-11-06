@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -43,9 +45,15 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	Cliente client;
 	Persona person;
 	Credito cred;
-		
+	
+	boolean bandera=false;
 	String idusuario;
 	String idu;
+	
+/*****************HARDCODEANDOLOS*******************/	
+	Double latitud=-12.070251702786596;
+	Double longitud=-77.07409143447876;
+/****************************************************/
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +95,9 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     		public void onClick(View v) {
 				// TODO Auto-generated method stub
 
+    			bandera = isEmailValid(correo.getText().toString());
+    			
+    			
     			if ((!ruc.getText().toString().trim().equals("")) &&
                   (!rzsocial.getText().toString().trim().equals("")) &&
                   (!direcc.getText().toString().trim().equals("")) &&
@@ -94,43 +105,54 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                   (!dni.getText().toString().trim().equals("")) &&
                   (!nombre.getText().toString().trim().equals("")) &&
                   (!apellidopater.getText().toString().trim().equals("")) &&
+                  (!fechanac.getText().toString().trim().equals("")) &&
+                  (!correo.getText().toString().trim().equals("")) &&
                   (!apellidomater.getText().toString().trim().equals("")) &&
                  (!cantidad.getText().toString().trim().equals(""))) 
             		  
-         {           //  (!fechanac.getText().toString().trim().equals("")) &&
-                    //(!correo.getText().toString().trim().equals("")) &&
+         {             
                     		
     
-    				if ((ruc.length()!=11) || (dni.length()!=8) || (Integer.parseInt(cantidad.getText().toString().trim()) < 1))
-    				
+    		if ((ruc.length()!=11) || (dni.length()!=8) || (Integer.parseInt(cantidad.getText().toString().trim()) < 1))
+    		{
     				Toast.makeText(RegistrarProspecto.this, "Revisar valores de DNI, RUC y Cantidad", Toast.LENGTH_SHORT).show();
-    		
+    		}
     				else 
-    					
-            	  client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), null, null, direcc.getText().toString().trim(), null, null, null); 
+    				{
+    		if (bandera=false)
+    		    			Toast.makeText(RegistrarProspecto.this, "Por favor Revisar el Correo ingresado", Toast.LENGTH_SHORT).show();
+    		else	
+    		{	
+            	  client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), latitud, longitud, direcc.getText().toString().trim(), null, null, null); 
 
-    SimpleDateFormat formato = new SimpleDateFormat("yyyy-mm-dd");
-    String strFecha = fechanac.getText().toString();
-    
-    Date fecha = null;
-    
-    try {
-   	      
-    	fecha = formato.parse(strFecha);
-		
-	} catch (ParseException e) {
-		// TODO Auto-generated catch block
-	    e.printStackTrace();
-    }
-
+            	  
+   String  strFecha = fechanac.getText().toString();
+//    SimpleDateFormat formato = new SimpleDateFormat("yyyy-mm-dd");
+//    String strFecha = fechanac.getText().toString();
+//    
+//    Date fecha = null; 
+//    
+//    try {
+//   	      
+//    	fecha = formato.parse(strFecha);
+//		
+//	} catch (ParseException e) {
+//		// TODO Auto-generated catch block
+//	    e.printStackTrace();
+//    }
+//
+//   strFecha = fecha;
    
+   Log.v("XXXX", "aa "+strFecha+" aaa");
+    
     person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), strFecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
 
   String valor = cantidad.getText().toString().trim();
   cred = new Credito(Integer.parseInt(valor)); 
 
    /***************Falta Ingresar los idsssss de las tablas **************/
- 
+  				
+  
                  Syncronizar sync = new Syncronizar(RegistrarProspecto.this);
                  List<NameValuePair> param = new ArrayList <NameValuePair>();
                  param.add(new BasicNameValuePair("idvendedor", idu));
@@ -140,12 +162,14 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                  param.add(new BasicNameValuePair("apepaterno", person.getApePaterno()));
                  param.add(new BasicNameValuePair("apematerno", person.getApeMaterno()));
                  param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
-            //     param.add(new BasicNameValuePair("correo",  person.getEmail()));
-             //    param.add(new BasicNameValuePair("fechanac",  fecha.toString())); // Revisar Nombre de FechaNac
+                 param.add(new BasicNameValuePair("email",  person.getEmail()));
+                 param.add(new BasicNameValuePair("fechanac", strFecha)); // Revisar Nombre de FechaNac
             
                  param.add(new BasicNameValuePair("ruc", client.getRUC()));
                  param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
                  param.add(new BasicNameValuePair("direccion", client.getDireccion()));
+                 param.add(new BasicNameValuePair("latitud", client.getLatitud().toString() ));
+                 param.add(new BasicNameValuePair("longitud", client.getLongitud().toString()));
                 
                  //String monto = cred.getCantidad()+"";
                 // int valor = Integer.parseInt(cantidad.getText().toString());
@@ -172,7 +196,6 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			    	 ruc.setText("");
 			    	 rzsocial.setText("");
 			    	 direcc.setText("");
-			    	 telefcliente.setText("");
 			    	 dni.setText("");
 			    	 nombre.setText("");
 			    	 apellidopater.setText("");
@@ -181,15 +204,16 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			    	 fechanac.setText("");
 			    	 correo.setText("");
 			    	 cantidad.setText("");
-			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
-			         startActivity(a);
+			    //	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+			      //   startActivity(a);
 			     
 			     } else	
 				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
 			
          
          }// fin de mi IF true
-      
+    			}
+         }
     		else 
     		{
     			Toast.makeText(RegistrarProspecto.this, "Todos los Campos son obligatorios", Toast.LENGTH_SHORT).show();
@@ -358,6 +382,27 @@ public class ListenerTouchViewFlipper extends Activity implements View.OnTouchLi
 		return outtoRight;
 	}
 
+	public boolean isEmailValid(String email)
+    {
+         String regExpn =
+             "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                 +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                   +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                   +"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                   +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+                   +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
+
+     CharSequence inputStr = email;
+
+     Pattern pattern = Pattern.compile(regExpn,Pattern.CASE_INSENSITIVE);
+     Matcher matcher = pattern.matcher(inputStr);
+
+     if(matcher.matches())
+        return true;
+     else
+        return false;
+}
+	
 	
 }
 
