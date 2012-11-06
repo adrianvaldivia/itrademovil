@@ -6,6 +6,6 @@
         android:title="Opcion 2"
         android:icon="@drawable/icon"  />
     <item android:id="@+id/opcion3"
-        android:title="Opcion 3"
+        android:title="Cerrar Sesion"
         android:icon="@android:drawable/ic_lock_power_off" />
 </menu>
