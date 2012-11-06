@@ -39,10 +39,9 @@ class Clientes extends CI_Controller {
 		}
 				
 	}
-	//public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor,$email)
+	//public function registrar_prospecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$fechanac,$dni,$montosolicitado,$idvendedor,$email,$latitud,$longitud)
 	public function registrar_prospecto()
 	{		
-	
 		$ruc=$this->input->post('ruc');				
 		$razon_social=$this->input->post('razon_social');				
 		$direccion=$this->input->post('direccion');				
@@ -54,13 +53,13 @@ class Clientes extends CI_Controller {
 		$email=$this->input->post('email');
 		$dni=$this->input->post('dni');
 		$montosolicitado=$this->input->post('montosolicitado');
-		$idvendedor=$this->input->post('idvendedor');		
-		
-		$idcobrador=$this->Cliente_model->buscador_cobrador_por_vendedor($idvendedor);
+		$idvendedor=$this->input->post('idvendedor');
+		$latitud=$this->input->post('latitud');
+		$longitud=$this->input->post('longitud');				
+		$idcobrador=$this->Cliente_model->buscador_cobrador_por_vendedor($idvendedor);		
 		if ($idcobrador!=0){			
-			if (isset($idvendedor)&& $idvendedor!=""){
-				$result=$this->Cliente_model->registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$email,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador);
-				//$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+			if (isset($idvendedor)&& $idvendedor!=""){				
+				$result=$this->Cliente_model->registrerProspecto($ruc,$razon_social,$direccion,$nombre,$apepaterno,$apematerno,$telefono,$email,$fechanac,$dni,$montosolicitado,$idvendedor,$idcobrador,$latitud,$longitud);				
 				$this->output->set_content_type('application/json')->set_output($result);					
 			}else{
 				$this->output->set_content_type('application/json')->set_output(json_encode(0));
