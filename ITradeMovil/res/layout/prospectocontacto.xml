@@ -236,37 +236,7 @@
 
         </LinearLayout>
                 
-      <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/correo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingrese el Correo"
-                android:layout_marginTop="1dp"
-                android:ems="10" />
-
-        </LinearLayout>
-      
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-
-            <EditText
-                android:id="@+id/pcumple"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingrese el Cumpleaños Año-Mes-Día"
-                android:maxLength="10"
-                android:layout_marginTop="1dp"
-                android:ems="10" />
-
-        </LinearLayout>
         
         </LinearLayout>
         

@@ -103,7 +103,63 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical" >
+            
+<!-- ****************************************************************** -->
+                    <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
+                <TextView
+                    android:id="@+id/TextView1"
+                    android:layout_width="222dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Contacto"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/azul_2" />
+
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:src="@drawable/contacts" />
+
+            </LinearLayout>
+        
+                  <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese el Correo"
+                android:layout_marginTop="1dp"
+                android:ems="10" />
+
+        </LinearLayout>
+      
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+
+
+            <EditText
+                android:id="@+id/pcumple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese el Cumpleaños Año-Mes-Día"
+                android:maxLength="10"
+                android:layout_marginTop="1dp"
+                android:ems="10" />
+
+        </LinearLayout>
+   <!-- ****************************************************************** -->         
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -142,20 +198,9 @@
                 android:hint="Ingrese el RUC"
                 android:maxLength="11"
                 android:inputType="number"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:ems="10" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/TextView04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -170,7 +215,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Ingrese la Razón Social"
                 android:layout_marginLeft="1dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:ems="10" />
 
             <LinearLayout
@@ -178,17 +223,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
