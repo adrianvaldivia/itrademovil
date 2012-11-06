@@ -9,7 +9,7 @@ class Cliente_model extends CI_Model {
 		$this->table_pedido = 'Pedido';
 		$this->table_estado_pedido = 'EstadoPedido';
 		$this->table_linea = 'Linea_Credito';
-		$this->table_usuario = 'Usuario';
+		$this->table_usuario = 'Usuario';		
     }	
 	
 	public function get_clients_by_idvendedor($idvendedor){				
@@ -25,11 +25,13 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".Direccion, ".
 						$this->table_cliente.".IdCobrador, ".
 						$this->table_persona.".Email, ".
+						$this->table_linea.".MontoAprobado, ".
 						$this->table_persona.".ApeMaterno ");
 						
 		$this->db->from($this->table_pedido);
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");				
 		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
+		$this->db->join($this->table_linea,$this->table_cliente.".IdCliente =".$this->table_linea.".IdCliente");				
 		//Restriccion del día de hoy				
 		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
 		$this->db->where($dates);		
@@ -54,10 +56,12 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
 						$this->table_cliente.".IdCobrador, ".
+						$this->table_linea.".MontoAprobado, ".
 						$this->table_persona.".ApeMaterno ");
 						
 		$this->db->from($this->table_cliente);					
-		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");									
+		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");
+		$this->db->join($this->table_linea,$this->table_cliente.".IdCliente =".$this->table_linea.".IdCliente");
 		//Restriccion de un solo vendedor
 		$this->db->where($this->table_cliente.".IdVendedor", $idvendedor);					
 		//Restriccion de pedidos en estado pendiente		
@@ -95,10 +99,12 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
 						$this->table_cliente.".IdCobrador, ".
+						$this->table_linea.".MontoAprobado, ".
 						$this->table_persona.".ApeMaterno ");
 						
 		$this->db->from($this->table_cliente);				
-		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
+		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");
+		$this->db->join($this->table_linea,$this->table_cliente.".IdCliente =".$this->table_linea.".IdCliente");		
 		//Restriccion del día de hoy							
 		//Restriccion de un solo vendedor
 		$this->db->where($this->table_cliente.".IdCliente", $idcliente);	
