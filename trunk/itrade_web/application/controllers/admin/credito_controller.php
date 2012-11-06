@@ -53,8 +53,11 @@ class Credito_controller extends CI_Controller {
 //        if ($this->form_validation->run()) {
         $credito = $this->Credito_model->get($idcredito);
 
-        print_r($this->Credito_model->accept($idcredito,$credito));
-
+        // print_r($credito);
+		// exit;
+		$this->Credito_model->accept($idcredito,$credito);
+		$this->Cliente_model->updateIdEstado($credito->IdCliente,2);
+		
         //mensaje de verificacion
         $this->session->set_flashdata('message', 'La Linea de Credito ha sido aprobada.');
 
@@ -80,6 +83,7 @@ class Credito_controller extends CI_Controller {
 //        if (/* $this->form_validation->run() */true) {
 		  $credito = $this->Credito_model->get($idcredito);
         $this->Credito_model->reject($idcredito,$credito);
+		$this->Cliente_model->updateIdEstado($credito->IdCliente,3);
 		  
         $this->session->set_flashdata('message', 'La Linea de Credito ha sido rechazada.');
         redirect('admin/credito_controller', 'refresh');
@@ -161,6 +165,7 @@ class Credito_controller extends CI_Controller {
 
         $this->Meta_model->edit($idmeta, $data['Meta']);
 
+
         $this->session->set_flashdata('message', 'Los datos del usuarios han sido modificados correctamente.');
         redirect('admin/Credito_controller/metas_user/' . $idusuario, 'refresh');
 
@@ -195,14 +200,14 @@ class Credito_controller extends CI_Controller {
 // if(count($credits)>0)
 /* ($this->Credito_model->get_cliente_idCredito($credit['IdLinea'])==false)?array():$this->Credito_model->get_cliente_idCredito($credit['IdLinea']); */
         foreach ($credits as $credit) {
-		// print('a'.$credit['IdLinea']);
+		// print_r($credit); exit;
             $creditos[$credit['IdLinea']]['IdLinea'] = $credit['IdLinea'];
             $creditos[$credit['IdLinea']]['Cliente'] =$this->Credito_model->get_cliente_idCredito($credit['IdLinea']);// array();
             $creditos[$credit['IdLinea']]['MontoSolicitado'] = $credit['MontoSolicitado'];
             $creditos[$credit['IdLinea']]['MontoActual'] = $credit['MontoActual'];
             $creditos[$credit['IdLinea']]['MontoAprobado'] = $credit['MontoAprobado'];
             $creditos[$credit['IdLinea']]['IdCliente'] = $credit['IdCliente'];
-            $creditos[$credit['IdLinea']]['Activo'] = $credit['Activo'];
+            $creditos[$credit['IdLinea']]['Activo'] = $credit['IdEstado'];
         }
 		// exit;
         return $creditos;
