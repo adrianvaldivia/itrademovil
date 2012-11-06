@@ -245,7 +245,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
 	                            break;
 	        case R.id.opcion3: {
-	        	Toast.makeText(this, "Cerrando Sesion!", Toast.LENGTH_LONG).show();
+//	        	Toast.makeText(this, "Cerrando Sesion!", Toast.LENGTH_LONG).show();
 	        	cerrarSesion();
 	        }
 	                            break;
@@ -333,16 +333,16 @@ public class BuscarClientesGreenDao extends ListActivity{
         .setTitle("Cerrar Sesion")
         .setMessage("Debe tener conexion, para sincroninzar" +
         		"los datos. Realmente Desea Cerrar la Sesion?")
-        .setNegativeButton("Cancelar", null)
-        .setNeutralButton("Minimizar", new OnClickListener() {
+        .setNegativeButton("No", null)
+        .setNeutralButton("Solo Salir", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
 //            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
-            	Minimizar();
+        		BuscarClientesGreenDao.super.onBackPressed();
             	
             }
         })
-        .setPositiveButton("Salir", new OnClickListener() {
+        .setPositiveButton("Si", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
             		sincronizarBaseSubida();
@@ -357,7 +357,9 @@ public class BuscarClientesGreenDao extends ListActivity{
 	protected void onRestart() {
 		super.onRestart();
 //		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
-		recuperarOriginal();			    
+		recuperarOriginal();	
+        imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
 	}
 	
 	@Override
@@ -371,27 +373,6 @@ public class BuscarClientesGreenDao extends ListActivity{
 	@Override
 	public void onBackPressed() {
 		Minimizar();
-//				
-//	    new AlertDialog.Builder(this)
-//        .setTitle("Cerrar Sesion")
-//        .setMessage("Desea Cerrar la Sesion y Salir?")
-//        .setNegativeButton("Cancelar", null)
-//        .setNeutralButton("Minimizar", new OnClickListener() {
-//
-//            public void onClick(DialogInterface arg0, int arg1) {
-////            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
-//            	Minimizar();
-//            	
-//            }
-//        })
-//        .setPositiveButton("Salir", new OnClickListener() {
-//
-//            public void onClick(DialogInterface arg0, int arg1) {
-//            		sincronizarBaseSubida();
-//            		BuscarClientesGreenDao.super.onBackPressed();
-//            	
-//            }
-//        }).create().show();	
 	}
 	
 	@Override
