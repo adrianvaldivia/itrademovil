@@ -4,7 +4,7 @@ class Cliente_model extends CI_Model {
     function __construct()
     {        
         parent::__construct();
-		$this->tablename = 'cliente';	
+		$this->tablename = 'Cliente';	
     }
 	
 	function get_all_clients(){		
@@ -42,5 +42,14 @@ class Cliente_model extends CI_Model {
         return $query->row_array();
     }
     
+	function updateIdEstado($idcliente,$idestado){
+		$query = "UPDATE Cliente SET IdEstado=$idestado WHERE IdCliente=$idcliente";
+        $this->db->query($query);
+		// print_r($this->db->last_query());
+		// exit;
+		// $data=array('IdEstado'=>$idestado);
+		// $this->db->where('IdCliente', $idcliente);
+        // return $this->db->update($this->tablename, $data);
+	}
 }
 ?>

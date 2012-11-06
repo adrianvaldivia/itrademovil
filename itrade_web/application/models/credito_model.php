@@ -11,37 +11,41 @@ class Credito_model extends CI_Model {
 
     function get_all_creditos() {
 	$this->db->flush_cache();
-        $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename.Activo");
-        $this->db->from($this->tablename);
-        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
-        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona');
-        $query = $this->db->get();
+		$query="SELECT `Linea_Credito`.`IdLinea`, `Linea_Credito`.`MontoSolicitado`, `Linea_Credito`.`MontoActual`, `Linea_Credito`.`MontoAprobado`, `Linea_Credito`.`IdCliente`, C2.`IdEstado` FROM `Linea_Credito`,`Cliente` C2,`Persona` WHERE  `C2`.`IdCliente`=`Linea_Credito`.`IdCliente` AND `C2`.`IdPersona`=`Persona`.`IdPersona`";
+        // $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename2.IdEstado");
+        // $this->db->from($this->tablename);
+        // $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
+        // $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona');
+        $result = $this->db->query($query);
         $this->db->close();
-		// print_r($this->db);
+		// print_r($this->db->last_query());
 		// exit;
-        return $query->result_array();
+        return $result->result_array();
     }
 
     function get($idcredito) {
-        $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename.Activo");
-        $this->db->from($this->tablename);
-        $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
-        $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona');
-        $this->db->where($this->tablename . ".IdLinea", $idcredito);
-        $query = $this->db->get();
+			$query="SELECT `Linea_Credito`.`IdLinea`, `Linea_Credito`.`MontoSolicitado`, `Linea_Credito`.`MontoActual`, `Linea_Credito`.`MontoAprobado`, `Linea_Credito`.`IdCliente`, C2.`IdEstado` FROM `Linea_Credito`,`Cliente` C2,`Persona` WHERE  `C2`.`IdCliente`=`Linea_Credito`.`IdCliente` AND `C2`.`IdPersona`=`Persona`.`IdPersona` AND `Linea_Credito`.`IdLinea` = $idcredito";
+        // $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename2.IdEstado");
+        // $this->db->from($this->tablename);
+        // $this->db->join($this->tablename2 . " C2", " C2" . '.IdCliente=' . $this->tablename . '.IdCliente');
+        // $this->db->join($this->tablename3, " C2" . '.IdPersona=' . $this->tablename3 . '.IdPersona');
+        // $this->db->where($this->tablename . ".IdLinea", $idcredito);
+         $result = $this->db->query($query);
+		 	// print_r($this->db->last_query());
+		// exit;
         $this->db->close();
-        return $query->row(0);
+        return $result->row(0);
     }
 
     function accept($idcredito, $credito) {
     $actual=($credito->MontoActual==null?0:$credito->MontoActual);
-        $query = "UPDATE Linea_Credito SET MontoActual=($credito->MontoSolicitado+$actual),MontoAprobado=$credito->MontoSolicitado,Activo=2 WHERE IdLinea=$idcredito";
+        $query = "UPDATE Linea_Credito SET MontoActual=($credito->MontoSolicitado+$actual),MontoAprobado=$credito->MontoSolicitado,Activo=1 WHERE IdLinea=$idcredito";
         $this->db->query($query);
     }
 
     function reject($idcredito, $credito) {
     $actual=($credito->MontoActual==null?0:$credito->MontoActual);
-        $query = "UPDATE Linea_Credito SET Activo=3,MontoAprobado=0, MontoActual=$actual WHERE IdLinea=$idcredito";
+        $query = "UPDATE Linea_Credito SET Activo=0,MontoAprobado=0, MontoActual=$actual WHERE IdLinea=$idcredito";
         $this->db->query($query);
     }
 
