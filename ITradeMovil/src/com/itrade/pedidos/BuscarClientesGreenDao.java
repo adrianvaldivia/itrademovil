@@ -244,12 +244,17 @@ public class BuscarClientesGreenDao extends ListActivity{
 	                           }
 	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
 	                            break;
-	        case R.id.opcion3: Toast.makeText(this, "Presionaste Opcion 3!", Toast.LENGTH_LONG).show();
+	        case R.id.opcion3: {
+	        	Toast.makeText(this, "Cerrando Sesion!", Toast.LENGTH_LONG).show();
+	        	cerrarSesion();
+	        }
 	                            break;
 	    }
 	    return true;
 	}
-    private void cargarBaseLocal() {
+
+
+	private void cargarBaseLocal() {
         daoCliente = new DAOCliente(this);  
         listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
         //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
@@ -322,27 +327,12 @@ public class BuscarClientesGreenDao extends ListActivity{
 		
 	}
 	
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-//		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
-		recuperarOriginal();			    
-	}
-	
-	@Override
-	protected void onDestroy() {
-		recuperarOriginal();		
-		db.close();
-		cursorElementoLista.close();
-	    super.onDestroy();
-	}
-	
-	@Override
-	public void onBackPressed() {
-				
+    private void cerrarSesion() {
+		// TODO Auto-generated method stub
 	    new AlertDialog.Builder(this)
         .setTitle("Cerrar Sesion")
-        .setMessage("Desea Cerrar la Sesion y Salir?")
+        .setMessage("Debe tener conexion, para sincroninzar" +
+        		"los datos. Realmente Desea Cerrar la Sesion?")
         .setNegativeButton("Cancelar", null)
         .setNeutralButton("Minimizar", new OnClickListener() {
 
@@ -360,7 +350,50 @@ public class BuscarClientesGreenDao extends ListActivity{
             	
             }
         }).create().show();	
+		
 	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+//		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
+		recuperarOriginal();			    
+	}
+	
+	@Override
+	protected void onDestroy() {
+		recuperarOriginal();		
+		db.close();
+		cursorElementoLista.close();
+	    super.onDestroy();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		Minimizar();
+//				
+//	    new AlertDialog.Builder(this)
+//        .setTitle("Cerrar Sesion")
+//        .setMessage("Desea Cerrar la Sesion y Salir?")
+//        .setNegativeButton("Cancelar", null)
+//        .setNeutralButton("Minimizar", new OnClickListener() {
+//
+//            public void onClick(DialogInterface arg0, int arg1) {
+////            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
+//            	Minimizar();
+//            	
+//            }
+//        })
+//        .setPositiveButton("Salir", new OnClickListener() {
+//
+//            public void onClick(DialogInterface arg0, int arg1) {
+//            		sincronizarBaseSubida();
+//            		BuscarClientesGreenDao.super.onBackPressed();
+//            	
+//            }
+//        }).create().show();	
+	}
+	
 	@Override
 	public void finish(){
 		super.finish();		
