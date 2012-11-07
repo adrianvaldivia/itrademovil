@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itrade.model.Categoria;
+import com.itrade.model.CategoriaDao;
 import com.itrade.model.Cliente;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
@@ -39,6 +41,8 @@ import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoLineaDao;
 import com.itrade.model.Persona;
 import com.itrade.model.PersonaDao;
+import com.itrade.model.Producto;
+import com.itrade.model.ProductoDao;
 import com.itrade.R;
 import com.itrade.model.Usuario;
 import com.itrade.model.UsuarioDao;
@@ -48,6 +52,7 @@ import com.itrade.cobranzas.ClientesListTask;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.db.DAOCliente;
 import com.itrade.db.DAOPedido;
+import com.itrade.db.DAOProducto;
 import com.itrade.db.DAOUsuario;
 import com.itrade.db.DAOPersona;
 
@@ -59,8 +64,8 @@ public class Login extends Activity {
 	
 	DAOCliente daoCliente =null;
 	DAOPedido daoPedido =null;
+	DAOProducto daoProducto =null;
     private DAOUsuario daoUsu= null;
-    private DAOPersona daoPerso= null;
     //green Dao
     private SQLiteDatabase db;
 
@@ -70,6 +75,8 @@ public class Login extends Activity {
     private ClienteDao clienteDao;
     private PedidoDao pedidoDao;
     private PedidoLineaDao pedidoLineaDao;
+    private ProductoDao productoDao;
+    private CategoriaDao categoriaDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
@@ -99,13 +106,15 @@ public class Login extends Activity {
         clienteDao = daoSession.getClienteDao();
         pedidoDao = daoSession.getPedidoDao();
         pedidoLineaDao = daoSession.getPedidoLineaDao();
+        productoDao = daoSession.getProductoDao();
+        categoriaDao = daoSession.getCategoriaDao();
+        
         pedidoLineaDao.deleteAll();
         //fin green dao
 
 	    
 	    
 	    daoUsu = new DAOUsuario(Login.this);
-	    daoPerso = new DAOPersona();
     
 	    
 	    textView_Usuario  = (EditText) findViewById(R.id.loginUser);
@@ -221,6 +230,25 @@ public class Login extends Activity {
 		////////////////////////////////////////////////////////////Sincronizacion de Usuarios
 		usuarioDao.deleteAll();
 		usuarioDao.insert(usuario);
+		////////////////////////////////////////////////////////Sincronizacion de Productos
+		daoProducto = new DAOProducto(Login.this);
+		List<Producto> listaProducto = daoProducto.getAllProductos(); //obtiene los productos
+		List<Categoria> listaCategoria=daoProducto.getAllCategorias();
+       
+		productoDao.deleteAll();
+		categoriaDao.deleteAll();
+		
+        
+		for(int i=0;i<listaProducto.size();i++){
+			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());		
+			productoDao.insert(productoAux);				    
+		}
+		for(int i=0;i<listaCategoria.size();i++){
+			Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
+			categoriaDao.insert(categoria);
+		}
+
+		
 		///////////////////////////////////////////////////Sincronizacion de Clientes		
         daoCliente = new DAOCliente(this);  
         List<Cliente> listaCliente = daoCliente.getAllClientes(idUsuario); //obtiene los clientes

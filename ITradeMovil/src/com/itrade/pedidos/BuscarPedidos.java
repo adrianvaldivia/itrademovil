@@ -227,23 +227,23 @@ public class BuscarPedidos extends ListActivity{
 	}
 
 	private void cargarBaseLocal() {
-    	daoPedido = new DAOPedido(BuscarPedidos.this);
-    	listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
-
-		pedidoDao.deleteAll();
-		elementoListaDao.deleteAll();
-        
-		for(int i=0;i<listaPedido.size();i++){
-			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),listaPedido.get(i).getNumVoucher(),listaPedido.get(i).getMontoTotal());
-			pedidoDao.insert(pedido);
-			long longTemp=0;
-			longTemp=longTemp+listaPedido.get(i).getIdCliente();
-			Cliente clienteTemp= this.encuentraCliente(longTemp);
-			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+listaPedido.get(i).getMontoSinIGV(),null,listaPedido.get(i).getId());
-			elementoListaDao.insert(elemento);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-        cursorElementoLista.requery();		
+//    	daoPedido = new DAOPedido(BuscarPedidos.this);
+//    	listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
+//
+//		pedidoDao.deleteAll();
+//		elementoListaDao.deleteAll();
+//        
+//		for(int i=0;i<listaPedido.size();i++){
+//			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),listaPedido.get(i).getNumVoucher(),listaPedido.get(i).getMontoTotal());
+//			pedidoDao.insert(pedido);
+//			long longTemp=0;
+//			longTemp=longTemp+listaPedido.get(i).getIdCliente();
+//			Cliente clienteTemp= this.encuentraCliente(longTemp);
+//			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+listaPedido.get(i).getMontoSinIGV(),null,listaPedido.get(i).getId());
+//			elementoListaDao.insert(elemento);
+//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//		}
+//        cursorElementoLista.requery();
 	}
     
     private void guardaListaOriginal() {

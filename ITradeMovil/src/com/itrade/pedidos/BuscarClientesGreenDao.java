@@ -256,34 +256,34 @@ public class BuscarClientesGreenDao extends ListActivity{
 
 
 	private void cargarBaseLocal() {
-        daoCliente = new DAOCliente(this);  
-        listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        Double x;
-		Double y;
-		clienteDao.deleteAll();
-		elementoListaDao.deleteAll();
-        
-		for(int i=0;i<listaCliente.size();i++){
-			x=listaCliente.get(i).getLatitud();
-			y=listaCliente.get(i).getLongitud();
-			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
-					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
-					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
-					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
-					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
-					listaCliente.get(i).getActivo());
-			cliente2.setActivo("A");//util para el checkin del mapa
-	        clienteDao.insert(cliente2);
-	        long temp=0;
-//	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
-	        temp=temp+i+1;//aca tambien habia error
-			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
-			elementoListaDao.insert(elemento);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-        cursorElementoLista.requery();		
-        guardaListaOriginal();
+//        daoCliente = new DAOCliente(this);  
+//        listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//        Double x;
+//		Double y;
+//		clienteDao.deleteAll();
+//		elementoListaDao.deleteAll();
+//        
+//		for(int i=0;i<listaCliente.size();i++){
+//			x=listaCliente.get(i).getLatitud();
+//			y=listaCliente.get(i).getLongitud();
+//			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
+//					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+//					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
+//					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
+//					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
+//					listaCliente.get(i).getActivo());
+//			cliente2.setActivo("A");//util para el checkin del mapa
+//	        clienteDao.insert(cliente2);
+//	        long temp=0;
+////	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
+//	        temp=temp+i+1;//aca tambien habia error
+//			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
+//			elementoListaDao.insert(elemento);
+//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//		}
+//        cursorElementoLista.requery();		
+//        guardaListaOriginal();
 	}
 
 	private void buscarCliente() {
