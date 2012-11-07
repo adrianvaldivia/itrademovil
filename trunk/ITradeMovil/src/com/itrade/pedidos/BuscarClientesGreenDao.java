@@ -8,10 +8,13 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.app.ListActivity;
 import android.app.Service;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -345,9 +348,13 @@ public class BuscarClientesGreenDao extends ListActivity{
         .setPositiveButton("Si", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
-            		sincronizarBaseSubida();
-            		BuscarClientesGreenDao.super.onBackPressed();
-            	
+            		if (haveNetworkConnection()){
+            			sincronizarBaseSubida();
+            		}
+            		else{
+                    	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
+            		}
+        	  		BuscarClientesGreenDao.super.onBackPressed();
             }
         }).create().show();	
 		
@@ -383,6 +390,23 @@ public class BuscarClientesGreenDao extends ListActivity{
 		// TODO Auto-generated method stub
 		this.moveTaskToBack(true);		
 	}
+	private boolean haveNetworkConnection() {
+	    boolean haveConnectedWifi = false;
+	    boolean haveConnectedMobile = false;
+
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+	    for (NetworkInfo ni : netInfo) {
+	        if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+	            if (ni.isConnected())
+	                haveConnectedWifi = true;
+	        if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+	            if (ni.isConnected())
+	                haveConnectedMobile = true;
+	    }
+	    return haveConnectedWifi || haveConnectedMobile;
+	}
+	
 	private void sincronizarBaseSubida() {
 		long idPedido=0;
 		long idPedidoLocal;
