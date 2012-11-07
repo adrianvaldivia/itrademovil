@@ -5,24 +5,16 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.ResourceProxy;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
+import org.osmdroid.views.overlay.PathOverlay;
+import org.osmdroid.views.overlay.SimpleLocationOverlay;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,167 +22,383 @@ import com.itrade.R;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
 
-public class MapaClientes extends Activity {
-	private MapView myOpenMapView;
-	private  MapController myMapController;
-	private  String IdVendedor; 
-	private Location loc;
-	private Geocoder geoCoder;
-	private LocationManager locationManager;
-	private LocationListener myLocationListener;
-	private ArrayList<OverlayItem> anotherOverlayItemArray;
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
-	  
-	  @Override    
-public void onCreate(Bundle savedInstanceState) {        
-	super.onCreate(savedInstanceState); 
-	setContentView(R.layout.c_mapa);    //mapa ca,biar por c_mapa    
-	Intent i = getIntent();                
-	
-	   myLocationListener = new LocationListener(){		   
-		   public void onLocationChanged(Location location) {
-		    // TODO Auto-generated method stub
-		    updateLoc(location);
-		   }
-		   
-		   public void onProviderDisabled(String provider) {
-		    // TODO Auto-generated method stub
-		    
-		   }
-		   
-		   public void onProviderEnabled(String provider) {
-		    // TODO Auto-generated method stub
-		    
-		   }
-		   
-		   public void onStatusChanged(String provider, int status, Bundle extras) {
-		    // TODO Auto-generated method stub
-		    
-		   }
-		      
-	    };
-	
-	  IdVendedor=(String)i.getSerializableExtra("idempleado");
-	  Syncronizar sync = new Syncronizar(MapaClientes.this);
-		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		param.add(new BasicNameValuePair("idvendedor", IdVendedor));	
-			//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
-			String route="ws/clientes/get_clients_by_idvendedor_p";
-		    sync.conexion(param,route);
-		    try {
-				sync.getHilo().join();			
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	    	    
-			Log.d("ClienteeeEder", "hhahahhahahhah");
-		    Gson gson = new Gson();
-			ArrayList<Cliente> cliList = new ArrayList<Cliente>();							
-			cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
-			
-			
-   
+public class MapaClientes  extends Activity implements LocationListener {
 
-	myOpenMapView = (MapView) findViewById(R.id.openmaptotal);       
-	myOpenMapView.setTileSource(TileSourceFactory.MAPNIK);
-	myOpenMapView.setBuiltInZoomControls(true);       
-	myMapController = myOpenMapView.getController();        
-	myMapController.setZoom(10);  
+    // ===========================================================
+    // Constants
+    // ===========================================================
 
-	anotherOverlayItemArray = new ArrayList<OverlayItem>();
-	   
-    locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//    private static final int MENU_ZOOMIN_ID = 10;
+//    private static final int MENU_ZOOMOUT_ID = MENU_ZOOMIN_ID + 1;
+
+    // ===========================================================
+    // Fields
+    // ===========================================================
+	public int j=0;
+    private MapView mOsmv;
+    private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
+    List<GeoPoint> listaGeoPoint =null;//ruta
+    List<Cliente> listaCliente =null;
     
-    //for demo, getLastKnownLocation from GPS only, not from NETWORK
-    Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    Log.d("GPSSSSS", "N"+lastLocation);
-    if(lastLocation != null){
-    	Log.d("GPSSSSS", "ENtroGPSSSS");
-     updateLoc(lastLocation);
-    }
+    private ResourceProxy mResourceProxy;
+    private final double factor=1000000;
+  	public int posxint,posyint;
+  	public double posxdouble,posydouble;
+  	public double latitudAux=0;
+  	public double longitudAux=0;
+  	
+    private MapController mapController;
+    private SimpleLocationOverlay posicionActualOverlay;
+    final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+    //private Timer myTimer;
+    private Handler mHandler = new Handler();
+    //green dao
+    
+    // fin de green dao
+
+    String GPSPROVIDER = LocationManager.GPS_PROVIDER;
+    private  static final long MIN_GEOGRAPHIC_POOLING_TIME_PERIOD = 10000;
+    private  static final float MIN_GEOGRAPHIC_POOLING_DISTANCE = (float)5.0;
+    public LocationManager gpsLocationManager;
+    static Context context = null;
+    boolean primeraVez=false;
+    boolean boolHayGPS=true;
+
+        
+    // ===========================================================
+    // Constructors
+    // ===========================================================
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState); 
+    	setContentView(R.layout.c_mapa);        
+    	Intent i = getIntent();  			
+			
+//			idruta = bundle.getInt("idruta");
+
+			setTitle("I Trade - Mi Ubicacion");
+            //daoPara = new DAOParadero();
+			//inicio de green Dao
+	        //inicio green Dao
+			 
+			String Idvendedor=(String)i.getSerializableExtra("idempleado"); 
+			  Syncronizar sync = new Syncronizar(MapaClientes.this);
+				List<NameValuePair> param = new ArrayList<NameValuePair>();								
+				param.add(new BasicNameValuePair("idvendedor", Idvendedor));	
+					//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
+					String route="ws/clientes/get_clientes_by_vendedor/";
+				    sync.conexion(param,route);
+				    try {
+						sync.getHilo().join();			
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	    	    
+					Log.d("ClienteeeEder", "hhahahhahahhah1");
+				    Gson gson = new Gson();
+										
+				    listaCliente	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
+				    Log.d("ClienteeeEder", "hhahahhahahhah1"+listaCliente);
+	        	        
+	        //fin green dao
+	       // listaCliente=
+//            listaCliente= daoPara.getAllParaderos(idruta);//idRuta
+            listaGeoPoint=this.Convierte(listaCliente);
+            Log.d("ClienteeeEder", "hhahahhahahhah2");
+            mResourceProxy = new DefaultResourceProxyImpl(getApplicationContext());
+
+            final RelativeLayout rl = new RelativeLayout(this);
+
+            this.mOsmv = new MapView(this, 256);
+            rl.addView(this.mOsmv, new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
+                            LayoutParams.FILL_PARENT));
+
+            /* Itemized Overlay */
+            {
+                    /* Create a static ItemizedOverlay showing a some Markers on some cities. */
 
 
-	
-    if (cliList!= null) {
-    	for(int ii=0;ii <  cliList.size()-1;ii++){
-		Log.d("ClienteeeEder", cliList+"jahhaha");
-	    Double Longitud = cliList.get(ii).getLongitud();
-	    Double Latitud = cliList.get(ii).getLatitud();
-		setTitle("I Trade - Mi Ubicacion");
-		
-		GeoPoint geo=new GeoPoint(Latitud,Longitud);
-		anotherOverlayItemArray.add(new OverlayItem("Cliente", cliList.get(0).getNombre()+" "+cliList.get(0).getApeMaterno(), geo));}
-    }
-//	anotherOverlayItemArray.add(new OverlayItem("0, 0", "0, 0", new GeoPoint(0, 0)));
+                    /* OnTapListener for the Markers, shows a simple Toast. */
+                    this.mMyLocationOverlay = new ItemizedIconOverlay<OverlayItem>(items,
+                                    new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                              				//single tap
+                                            public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                                                    Toast.makeText(
+                                                                    MapaClientes.this,
+                                                                    item.mTitle , Toast.LENGTH_LONG).show();
+                                                    return true; // We 'handled' this event.
+                                            }
+
+                                            //long pressed
+                                            public boolean onItemLongPress(final int index, final OverlayItem item) {
+                                                   
+                                                    return false;
+                                            }
+                                    }, mResourceProxy);
+                    this.mOsmv.getOverlays().add(this.mMyLocationOverlay);
+            }
+
+            this.setContentView(rl);
+            mOsmv.setBuiltInZoomControls(true);
+            mOsmv.setMultiTouchControls(true);
   
-	//anotherOverlayItemArray.add(new OverlayItem("Peru", "Lima", new GeoPoint(loc.getAltitude(),loc.getLongitude()))); 
-//	Log.d("Latituddd", ""+loc.getLatitude());
+            mapController = mOsmv.getController();
+            //mapController.setZoom(5);//-12.071208,-77.077569
+          			
+            GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
+//            GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania  
+         //   mapController.setCenter(gPt0);
+            mapController.setZoom(13);
+            //////////////////////////////////////////////////////LAYER DE RUTA
+   //         myPath = new PathOverlay(Color.RED, this);
+         //   cargarGeoPoints();      
+            if (this.listaGeoPoint!=null)
+            	mapController.setCenter(gPt0);
+         //   mOsmv.getOverlays().add(myPath);
+          ////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
+            this.posicionActualOverlay = new SimpleLocationOverlay(this);
+            mOsmv.getOverlays().add(posicionActualOverlay);
+//            if (this.listaGeoPoint!=null)
+//            	posicionActualOverlay.setLocation(gPt0);
+//            ///////////////////////////////////////////////////////////////////////timer
+//            mHandler.removeCallbacks(Timer_Tick);
+//		    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
+//    		//////////////////////////////////////////////////////////// fin timer
+                     
+    }
 
-/*	anotherOverlayItemArray.add(new OverlayItem("US", "US", new GeoPoint(38.883333, -77.016667)));
-	anotherOverlayItemArray.add(new OverlayItem("China", "China", new GeoPoint(39.916667, 116.383333)));
-	anotherOverlayItemArray.add(new OverlayItem("United Kingdom", "United Kingdom", new GeoPoint(51.5, -0.116667)));
-	anotherOverlayItemArray.add(new OverlayItem("Germany", "Germany", new GeoPoint(52.516667, 13.383333)));
-	anotherOverlayItemArray.add(new OverlayItem("Korea", "Korea", new GeoPoint(38.316667, 127.233333)));
-	anotherOverlayItemArray.add(new OverlayItem("India", "India", new GeoPoint(28.613333, 77.208333)));
-	anotherOverlayItemArray.add(new OverlayItem("Russia", "Russia", new GeoPoint(55.75, 37.616667)));
-	anotherOverlayItemArray.add(new OverlayItem("France", "France", new GeoPoint(48.856667, 2.350833)));
-	anotherOverlayItemArray.add(new OverlayItem("Canada", "Canada", new GeoPoint(45.4, -75.666667))); */
+
+
+	// ===========================================================
+    // Getter & Setter
+    // ===========================================================
+
+    // ===========================================================
+    // Methods from SuperClass/Interfaces
+    // ===========================================================
+
+//    @Override
+//    public boolean onCreateOptionsMenu(final Menu pMenu) {
+//            pMenu.add(0, MENU_ZOOMIN_ID, Menu.NONE, "ZoomIn");
+//            pMenu.add(0, MENU_ZOOMOUT_ID, Menu.NONE, "ZoomOut");
+//
+//            return true;
+//    }
+
+    @Override
+    public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
+//            switch (item.getItemId()) {
+//            case 0:
+//                    this.mOsmv.getController().zoomIn();
+//                    return true;
+//
+//            case 1:
+//                    this.mOsmv.getController().zoomOut();
+//                    return true;
+//            }
+            return false;
+    }
+
+    // ===========================================================
+    // Methods
+    // ===========================================================
+   
+    		
 	
-	OnItemGestureListener<OverlayItem> myOnItemGestureListener = new OnItemGestureListener<OverlayItem>() {    
-		  
-		public boolean onItemLongPress(int arg0, OverlayItem arg1) {       
-			// TODO Auto-generated method stub        
-			return false;    }    
-		
-			   
-			public boolean onItemSingleTapUp(int index, OverlayItem item) {  
-				Toast.makeText( MapaClientes.this,            
-						item.mDescription + "\n" + item.mTitle + "\n"      
-				+ item.mGeoPoint.getLatitudeE6() + " : "                
-								+ item.mGeoPoint.getLongitudeE6(),       
-					Toast.LENGTH_LONG).show();                     return true;    
-					} };
-					ItemizedOverlayWithFocus<OverlayItem> anotherItemizedIconOverlay = new ItemizedOverlayWithFocus<OverlayItem>(this, anotherOverlayItemArray, myOnItemGestureListener);
-					myOpenMapView.getOverlays().add(anotherItemizedIconOverlay);
+	private List<GeoPoint> Convierte(List<Cliente> lis) {
+		List<GeoPoint> lista=new ArrayList<GeoPoint>();;
+		int i;
+		for(i=0;i<lis.size();i++){
+			posxdouble=lis.get(i).getLatitud()*factor;
+			posydouble=lis.get(i).getLongitud()*factor;
+			posxint=(int)posxdouble;
+			posyint=(int)posydouble;
+			 Log.d("ClienteeeEderXXX", ""+posxint); 
+			 Log.d("ClienteeeEderYYY", ""+posyint);
+			GeoPoint aux = new GeoPoint(posxint,posyint);
+			lista.add(aux);
 		}
-	  
-	  private void updateLoc(Location loc){
-		     GeoPoint locGeoPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
-		     anotherOverlayItemArray.add(new OverlayItem("GPS", "GPS", locGeoPoint));  
-		     Log.d("GPSSSSS", "ENtroGPSSSS"+loc.getLatitude());
-		     myMapController.setCenter(locGeoPoint);
-		     myOpenMapView.invalidate();
-	   }
-	  
-	   @Override	   
-	   protected void onResume() {
-	    // TODO Auto-generated method stub
-	    super.onResume();
-	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, myLocationListener);
-	    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, myLocationListener);
-	   }
-	   
-	   @Override
-	   protected void onPause() {
-	    // TODO Auto-generated method stub
-	    super.onPause();
-	    locationManager.removeUpdates(myLocationListener);
-	   }
-	   
-	  
-	
-	    
-	   
-	    
-	    
-	    
+		if (!lis.isEmpty()){
+			//inicio cambios icono por defecto
+//			items.add(new OverlayItem(lis.get(0).getNombre(), "SampleDescription1", lista.get(0)));
+//	        //icono customizado        
+//	        OverlayItem olItem = new OverlayItem(lis.get(i-1).getNombre(), "SampleDescription", lista.get(i-1));
+//	        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker);
+//	        olItem.setMarker(newMarker);
+//	        items.add(olItem);
+	        //fin cambios
+			for(i=0;i<lis.size();i++){
+				items.add(new OverlayItem(lis.get(i).getNombre()+" "+lis.get(i).getApePaterno(), "Cliente", lista.get(i)));
+			}  
+		}
+
+
+		return lista;
+	}
+    // ===========================================================
+    // Inner and Anonymous Classes
+
+	private Runnable Timer_Tick = new Runnable() {
+		public void run() {
+		//Do something to the UI thread here
+		obtenerUbicacion();
+	    mOsmv.invalidate();       	  
+	    mHandler.removeCallbacks(Timer_Tick);
+	    mHandler.postDelayed(this, 4000);
+		}
+		
+	};
+	      
+	private void obtenerUbicacion() {
+		boolean isavailable;
+		if (boolHayGPS){
+			isavailable = gpsLocationManager.isProviderEnabled(GPSPROVIDER);//error	
+		}
+		else
+			isavailable=false;
+
+        if(isavailable) {
+
+            Location loc = gpsLocationManager.getLastKnownLocation(GPSPROVIDER);
+
+            if(loc != null) {
+                double latitude = loc.getLatitude();
+                double longitude = loc.getLongitude();
+                if (latitude!=0){
+                	GeoPoint p = new GeoPoint((int) (latitude * 1000000), (int) (longitude * 1000000));
+                	posicionActualOverlay.setLocation(p);
+                	if(primeraVez){
+                		mapController.setCenter(p);
+                		primeraVez=false;
+                	}        			
+                    //Toast.makeText(MiUbicacionImplActivity.this,"Longitude is  "+longitude + "   Latitude is   "+latitude, Toast.LENGTH_LONG).show();
+                }                
+            }
+            else
+            	Toast.makeText(MapaClientes.this,"Error GPS", Toast.LENGTH_LONG).show();
+        }
+        else
+        	Toast.makeText(MapaClientes.this,"Encienda el GPS, y salga fuera del edificio por favor.", Toast.LENGTH_LONG).show();
+	}
+
+	 private Boolean displayGpsStatus() {  
+		  ContentResolver contentResolver = getBaseContext()  
+		  .getContentResolver();  
+		  boolean gpsStatus = Settings.Secure  
+		  .isLocationProviderEnabled(contentResolver,   
+		  LocationManager.GPS_PROVIDER);  
+		  if (gpsStatus) {  
+		   return true;  
+		  
+		  } else {  
+		   return false;  
+		  }  
+	} 
+
+
 	 
-	    
+
+	 
+	@Override
+	protected void onDestroy() {
+		//cursor.close();
+	
+		super.onDestroy();
+		mHandler.removeCallbacks(Timer_Tick);
+	}
+
+	@Override
+	public void onResume() {
+	    super.onResume();
+        ///////////////////////////////////////////////////////////////////////timer
+        mHandler.removeCallbacks(Timer_Tick);
+	    mHandler.postDelayed(Timer_Tick, 30000); //cada 30 segundos connsulta a la BD
+		//////////////////////////////////////////////////////////// fin timer
+	    primeraVez=true;
+	    if(displayGpsStatus()){
+	        context = this;
+	       
+	        /*Start Location Service for GPS*/
+	        gpsLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);	       
+
+	        /*Register GPS listener with Location Manager*/
+	        gpsLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 2, this);
+
+	    }
+	    else{
+	    	Toast.makeText(MapaClientes.this, "GPS no encendido", Toast.LENGTH_LONG).show();
+	    	boolHayGPS=false;
+	    }
+
+	}
+    // ===========================================================
+	
+	@Override
+	  public void onPause() {
+//	    myLocation.cancelTimer();
+	    super.onPause();
+	    if (mHandler!=null)
+	    	mHandler.removeCallbacks(Timer_Tick);
+	    if (gpsLocationManager!=null)
+	    	gpsLocationManager.removeUpdates(this);
+	  }
+
+
+
+	public void onLocationChanged(Location loc) {
+		// TODO Auto-generated method stub
+		if (loc!=null){
+			double lati = loc.getLatitude();
+			double longi = loc.getLongitude();
+	        GeoPoint p = new GeoPoint((int) (lati * 1000000), (int) (longi * 1000000));
+	    	posicionActualOverlay.setLocation(p);
+	    	if (primeraVez){
+	    		mapController.setCenter(p);
+	    		primeraVez=false;
+	    	}			
+			Log.e("cambio pos","lat:" +lati+" "+ longi);
+		}				
+	}
+
+
+
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
-		     
-		     
-
-
-	  
-
-
