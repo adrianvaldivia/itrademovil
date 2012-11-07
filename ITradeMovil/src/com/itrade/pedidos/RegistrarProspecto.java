@@ -2,6 +2,7 @@ package com.itrade.pedidos;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,10 +63,12 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 /******************************************************/
 	Calendar cal;
 
-	int year;
-	int month;
-	int day;
+	int year, yearactual;
+	int month, monthactual;
+	int day, dayactual;
  
+	int ingresarfecha=0;
+	float anhos=0;
 	
 	static final int DATE_DIALOG_ID = 999;
 /******************************************************/
@@ -76,74 +79,75 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         setContentView(R.layout.mainprospecto);
 
   /*LOS LINKS DE LOS BOTONES*******************************************************************/      
-        bclientes = (Button) findViewById(R.id.btnCrearPedido);
-        bclientes.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-//				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
+//        bclientes = (Button) findViewById(R.id.btnCrearPedido);
+//        bclientes.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+////				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
+////				/*********ENVIAR INFO A LA VENTANA***********/
+////				startActivity(a);
+//			}
+//		});
+//        
+//        dprospectos = (Button) findViewById(R.id.btnBuscarPedido);
+//        dprospectos.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				limpiarProspecto();
+//				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
 //				/*********ENVIAR INFO A LA VENTANA***********/
-//				startActivity(a);
-			}
-		});
-        
-        dprospectos = (Button) findViewById(R.id.btnBuscarPedido);
-        dprospectos.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
-				/*********ENVIAR INFO A LA VENTANA***********/
-				b.putExtra("idusuario", idusuario);
-				startActivity(b);
-			}
-		});
-        
-        hpedidos = (Button) findViewById(R.id.btnProspectos); 
-        hpedidos.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-//				Intent c = new Intent(RegistrarProspecto.this, CrearPedido.class);
-//				/*********ENVIAR INFO A LA VENTANA***********/
-//				startActivity(c);
-			}
-		});
-        
-        vdirectorio = (Button) findViewById(R.id.btnDirectorio);
-        vdirectorio.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
-//				Intent d = new Intent(RegistrarProspecto.this, .class);
-//				/*********ENVIAR INFO A LA VENTANA***********/
-//				startActivity(d);
-			}
-		});
-        
-        aagenda = (Button) findViewById(R.id.btnCalendario);
-        aagenda.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
-//				Intent e = new Intent(RegistrarProspecto.this, x.class);
-//				/*********ENVIAR INFO A LA VENTANA***********/
-//				startActivity(e);
-			}
-		});
-        
-        rmetas = (Button) findViewById(R.id.btnMeta);
-        rmetas.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-//				Intent f = new Intent(RegistrarProspecto.this, MiMeta.class);
-//				/*********ENVIAR INFO A LA VENTANA***********/
-//				startActivity(f);
-			}
-		});
+//				b.putExtra("idusuario", idusuario);
+//				startActivity(b);
+//			}
+//		});
+//        
+//        hpedidos = (Button) findViewById(R.id.btnProspectos); 
+//        hpedidos.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+////				Intent c = new Intent(RegistrarProspecto.this, CrearPedido.class);
+////				/*********ENVIAR INFO A LA VENTANA***********/
+////				startActivity(c);
+//			}
+//		});
+//        
+//        vdirectorio = (Button) findViewById(R.id.btnDirectorio);
+//        vdirectorio.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
+////				Intent d = new Intent(RegistrarProspecto.this, .class);
+////				/*********ENVIAR INFO A LA VENTANA***********/
+////				startActivity(d);
+//			}
+//		});
+//        
+//        aagenda = (Button) findViewById(R.id.btnCalendario);
+//        aagenda.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
+////				Intent e = new Intent(RegistrarProspecto.this, x.class);
+////				/*********ENVIAR INFO A LA VENTANA***********/
+////				startActivity(e);
+//			}
+//		});
+//        
+//        rmetas = (Button) findViewById(R.id.btnMeta);
+//        rmetas.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+////				Intent f = new Intent(RegistrarProspecto.this, MiMeta.class);
+////				/*********ENVIAR INFO A LA VENTANA***********/
+////				startActivity(f);
+//			}
+//		});
   /********************************************************************************************/      
         cal = Calendar.getInstance();
 
@@ -151,6 +155,9 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     	month=cal.get(Calendar.MONTH);
     	day=cal.get(Calendar.DAY_OF_MONTH);
 
+    	yearactual=cal.get(Calendar.YEAR);
+    	monthactual=cal.get(Calendar.MONTH);
+    	dayactual =cal.get(Calendar.DAY_OF_MONTH);
         
         vf = (ViewFlipper) findViewById(R.id.viewFlipper);
         
@@ -185,7 +192,23 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				ingresarfecha=1;
 				showDialog(DATE_DIALOG_ID);
+				
+			//	Date b1 = new Date(yearactual, monthactual, dayactual); // fecha hoy
+			//	Date b2 = new Date(year, month, day);	// fecha ingresada
+				Calendar date1 = Calendar.getInstance();
+		        Calendar date2 = Calendar.getInstance();
+
+		        date1.clear();
+		        date1.set(yearactual, monthactual, dayactual);
+		        date2.clear();
+		        date2.set(year, month, day);
+
+		        long diff = date2.getTimeInMillis() - date1.getTimeInMillis();
+
+		        anhos = (float) diff / (24 * 60 * 60 * 1000 * 365);
+		        Log.d("XXXX", "Cuantos son "+anhos+" "+date1.getTime()+" "+date2.getTime());
 			}
 		});
     	
@@ -205,7 +228,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         
     	btnregistrar.setOnClickListener(new OnClickListener() {
 			
-		
+	/****************************EL CLICK PARA REGISTRAR PROSPECTO*****************************/	
+    		
     		public void onClick(View v) {
 				// TODO Auto-generated method stub
 
@@ -222,7 +246,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                   (!fechanac.getText().toString().trim().equals("")) &&
                   (!correo.getText().toString().trim().equals("")) &&
                   (!apellidomater.getText().toString().trim().equals("")) &&
-                 (!cantidad.getText().toString().trim().equals(""))) 
+                  (!cantidad.getText().toString().trim().equals(""))) 
             		  
          {             
                     		
@@ -237,7 +261,20 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     		    			Toast.makeText(RegistrarProspecto.this, "Por favor Revisar el Correo ingresado", Toast.LENGTH_SHORT).show();
     		else	
     		{	
-            	  client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), latitud, longitud, direcc.getText().toString().trim(), null, null, null); 
+    			if (ingresarfecha==0)
+        		{
+        				Toast.makeText(RegistrarProspecto.this, "Por Favor Ingrese una Fecha Válida", Toast.LENGTH_SHORT).show();
+        		}
+        				else 
+        				{
+        					if (anhos == 1000)
+        	        		{
+        	        				Toast.makeText(RegistrarProspecto.this, "Su posible cliente debe ser mayor a 18 años", Toast.LENGTH_SHORT).show();
+        	        		}
+        	        				else 
+        	        				{
+    			
+    			client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), latitud, longitud, direcc.getText().toString().trim(), null, null, null); 
 
             	  
    String  strFecha = fechanac.getText().toString();
@@ -322,6 +359,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
          
          }// fin de mi IF true
     			}
+         }
+         	}
          }
     		else 
     		{
