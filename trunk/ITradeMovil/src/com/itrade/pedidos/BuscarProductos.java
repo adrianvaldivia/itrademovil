@@ -1,6 +1,7 @@
 package com.itrade.pedidos;
 
 import android.app.ListActivity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -59,6 +60,7 @@ public class BuscarProductos extends ListActivity{
 	ArrayList <String> listaProductoNombre= new ArrayList<String>();//lista de arreglo de nombres
 	Producto producto= new Producto();
 	long idElemento;
+	public boolean boolBarraBusqueda=false;
 	public NumberPicker textView_Cantidad;
 	public long idpedido;
 	Spinner spinner_categoria;
@@ -82,7 +84,7 @@ public class BuscarProductos extends ListActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buscarproductosfusion);
-        setTitle("iTrade - Productos");
+        setTitle("iTrade - Productos");      
         
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -151,6 +153,9 @@ public class BuscarProductos extends ListActivity{
 			public void onNothingSelected(AdapterView<?> parent) {
 	        }
 	    });
+        /////////////////////////////////////barra de busqueda
+        handleIntent(getIntent());
+        //////////////////////////////////////////barra de busqueda  
 
     }
 
@@ -317,7 +322,11 @@ public class BuscarProductos extends ListActivity{
 	        	cargarBaseLocal();	        	
 	                            break;
 	                           }
-	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
+	        case R.id.opcion2:{
+	        	onSearchRequested();  
+//	        	mostrarBarraBusqueda();
+//	        	Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
+	        }
 	                            break;
 	        case R.id.opcion3: Toast.makeText(this, "Presionaste Opcion 3!", Toast.LENGTH_LONG).show();
 	                            break;
@@ -326,45 +335,48 @@ public class BuscarProductos extends ListActivity{
 	}
 	
     private void filtrarLista(long id) {
-    	recuperarOriginal();
-    	if (id!=0){// cuando el Id es cero muestro todos
-//    		String str=String.valueOf(id);
-    		Categoria categoriaTemp =categoriaDao.loadByRowId(id);
-    		String str=String.valueOf(categoriaTemp.getIdCategoria());
-    		
-        	
-            List<Producto> productosAux = productoDao.queryBuilder()
-            		.where(Properties.IdCategoria.eq(str))
-            		.orderAsc(Properties.Id).list();
+    	if (!boolBarraBusqueda){// pregunto si hubo una busqueda de texto primero
+        	recuperarOriginal();
+        	if (id!=0){// cuando el Id es cero muestro todos
+//        		String str=String.valueOf(id);
+        		Categoria categoriaTemp =categoriaDao.loadByRowId(id);
+        		String str=String.valueOf(categoriaTemp.getIdCategoria());
+        		
+            	
+                List<Producto> productosAux = productoDao.queryBuilder()
+                		.where(Properties.IdCategoria.eq(str))
+                		.orderAsc(Properties.Id).list();
 
-            elementoListaDao.deleteAll();
-    	
-    		for(int i=0;i<productosAux.size();i++){
-    			String strCantidad="";
-    			int cantidadAux=encuentraElegido(productosAux.get(i).getId());
-    			if (cantidadAux!=-1){
-    				strCantidad="Cantidad: "+cantidadAux;
-    			}
-    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),strCantidad,productosAux.get(i).getId());
-    			elementoListaDao.insert(elemento);
-    	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-    		}
-    		cursorElementoLista.requery();	
-    	}
-    	else{    		        	
-            List<Producto> productosAux = productoDao.loadAll();
-            elementoListaDao.deleteAll();
-            
-    		for(int i=0;i<productosAux.size();i++){
-    			String strCantidad="";
-    			int cantidadAux=encuentraElegido(productosAux.get(i).getId());
-    			if (cantidadAux!=-1){//cuando la cantidad es menos uno significa que no fue encontrado
-    				strCantidad="Cantidad: "+cantidadAux;
-    			}
-    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),strCantidad,productosAux.get(i).getId());
-    			elementoListaDao.insert(elemento);
-    		}
-    		cursorElementoLista.requery();    		
+                elementoListaDao.deleteAll();
+        	
+        		for(int i=0;i<productosAux.size();i++){
+        			String strCantidad="";
+        			int cantidadAux=encuentraElegido(productosAux.get(i).getId());
+        			if (cantidadAux!=-1){
+        				strCantidad="Cantidad: "+cantidadAux;
+        			}
+        			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),strCantidad,productosAux.get(i).getId());
+        			elementoListaDao.insert(elemento);
+        	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+        		}
+        		cursorElementoLista.requery();	
+        	}
+        	else{    		        	
+                List<Producto> productosAux = productoDao.loadAll();
+                elementoListaDao.deleteAll();
+                
+        		for(int i=0;i<productosAux.size();i++){
+        			String strCantidad="";
+        			int cantidadAux=encuentraElegido(productosAux.get(i).getId());
+        			if (cantidadAux!=-1){//cuando la cantidad es menos uno significa que no fue encontrado
+        				strCantidad="Cantidad: "+cantidadAux;
+        			}
+        			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),strCantidad,productosAux.get(i).getId());
+        			elementoListaDao.insert(elemento);
+        		}
+        		cursorElementoLista.requery();    		
+        	}
+        	boolBarraBusqueda=false;
     	}
 	}
 	
@@ -446,6 +458,44 @@ public class BuscarProductos extends ListActivity{
     	setListAdapter(adapterElementoLista);
     	spinner_categoria.setAdapter(adapterSpinner);
 	}
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            this.boolBarraBusqueda=true;
+            BuscaPorNombre(query);
+        }
+    }
+	private void BuscaPorNombre(String query) {
+		// TODO Auto-generated method stub
+//    	recuperarOriginal();
+    	if (query.length()!=0){    		
+            List<Producto> productosAux = productoDao.queryBuilder()
+            		.where(Properties.Descripcion.like("%"+query+"%"))
+            		.orderAsc(Properties.Id).list();
+
+            elementoListaDao.deleteAll();
+    	
+    		for(int i=0;i<productosAux.size();i++){
+    			String strCantidad="";
+    			int cantidadAux=encuentraElegido(productosAux.get(i).getId());
+    			if (cantidadAux!=-1){
+    				strCantidad="Cantidad: "+cantidadAux;
+    			}
+    			ElementoLista elemento = new ElementoLista(null,productosAux.get(i).getDescripcion(),"Precio: "+productosAux.get(i).getPrecio(),strCantidad,productosAux.get(i).getId());
+    			elementoListaDao.insert(elemento);
+    		}
+    		cursorElementoLista.requery();	
+    	}
+    	    		
+    }
+
+
 	@Override
 	protected void onDestroy() { 
 		recuperarOriginal();
