@@ -260,8 +260,10 @@ public class BuscarPedidos extends ListActivity{
 			long longTemp=0;
 			longTemp=longTemp+listaPedidoOriginal.get(i).getIdCliente();
 			Cliente clienteTemp= this.encuentraCliente(longTemp);
-			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+listaPedidoOriginal.get(i).getMontoSinIGV(),null,listaPedidoOriginal.get(i).getId());
-			elementoListaDao.insert(elemento);
+			if (clienteTemp!=null){
+				ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+listaPedidoOriginal.get(i).getMontoSinIGV(),null,listaPedidoOriginal.get(i).getId());
+				elementoListaDao.insert(elemento);
+			}			
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
         cursorElementoLista.requery();	

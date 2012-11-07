@@ -323,6 +323,8 @@ public class BuscarProductos extends ListActivity{
 	                            break;
 	                           }
 	        case R.id.opcion2:{
+	    		int tam=spinner_categoria.getCount();
+	    		spinner_categoria.setSelection(tam-1);
 	        	onSearchRequested();  
 //	        	mostrarBarraBusqueda();
 //	        	Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
@@ -375,9 +377,11 @@ public class BuscarProductos extends ListActivity{
         			elementoListaDao.insert(elemento);
         		}
         		cursorElementoLista.requery();    		
-        	}
-        	boolBarraBusqueda=false;
+        	}        	
     	}
+    	else{
+    		boolBarraBusqueda=false;
+    	}    		
 	}
 	
     private int encuentraElegido(Long id) {
@@ -417,14 +421,11 @@ public class BuscarProductos extends ListActivity{
 	}
 	private void recuperarOriginal() {
 		elementoListaDao.deleteAll();
-//		productoDao.deleteAll();
+
 		for(int i=0;i<listaProductoOriginal.size();i++){
 
-//			Producto productoAux = new Producto(null,listaProductoOriginal.get(i).getDescripcion(),listaProductoOriginal.get(i).getPrecio(),listaProductoOriginal.get(i).getStock(),listaProductoOriginal.get(i).getActivo(),listaProductoOriginal.get(i).getIdCategoria(),listaProductoOriginal.get(i).getIdMarca());
 			ElementoLista elemento = new ElementoLista(null,listaProductoOriginal.get(i).getDescripcion(),"Precio: "+listaProductoOriginal.get(i).getPrecio(),null,listaProductoOriginal.get(i).getId());
 			elementoListaDao.insert(elemento);
-//			productoDao.insert(productoAux);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
 		cursorElementoLista.requery();
 	}
@@ -492,7 +493,7 @@ public class BuscarProductos extends ListActivity{
     		}
     		cursorElementoLista.requery();	
     	}
-    	    		
+    	boolBarraBusqueda=false;		
     }
 
 
