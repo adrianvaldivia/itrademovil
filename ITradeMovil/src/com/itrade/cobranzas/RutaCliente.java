@@ -73,8 +73,7 @@ public class RutaCliente  extends Activity implements LocationListener {
     final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
     //private Timer myTimer;
     private Handler mHandler = new Handler();
-    //green dao
-    private SQLiteDatabase db;
+    //green dao    
 
     SimpleCursorAdapter adapter;
     // fin de green dao
@@ -332,7 +331,6 @@ public class RutaCliente  extends Activity implements LocationListener {
 	@Override
 	protected void onDestroy() {
 		//cursor.close();
-		db.close();
 		super.onDestroy();
 		mHandler.removeCallbacks(Timer_Tick);
 	}
