@@ -12,7 +12,8 @@
         <include layout="@layout/prospectocontacto"/>
         <include layout="@layout/prospectoempresa"/>
         <include layout="@layout/prospectocreditofusion"/>
-
+		<include layout="@layout/agregarubicacion"/>
+		
     </ViewFlipper>
 
 </LinearLayout>
