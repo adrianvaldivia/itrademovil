@@ -22,13 +22,24 @@ class Evento_model extends CI_Model {
         $query = $this->db->get($this->table_evento);
         return $query->row(0)->IdEvento;
     }	
-	public function get_eventos_idusuario_month($idusuario,$month){
-		
+	// or month(".$this->table_evento.".Fecha) = '". $month+1 ."' )";		
+	public function get_eventos_idusuario_month($idusuario,$year,$month){			
 		$this->db->from($this->table_evento_persona);
-		$this->db->join($this->table_evento,$this->table_evento.".IdPersona =".$this->table_cliente.".IdCliente");
-		$str="month(".$this->table_evento.".FechaPedido) = ".$month;		
-		$this->db->where($str);//UBIGEO			
-		$query = $this->db->get($this->table_evento);
+		$this->db->join($this->table_evento,$this->table_evento.".IdEvento =".$this->table_evento_persona.".IdEvento");
+		//$str="( month(".$this->table_evento.".Fecha) = '11' )" ;
+		$month2=$month+1;		
+		$year2=$year;
+		if($month==12){
+			$month2=1;
+			$year2=$year+1;
+		}
+		$str="( ( ( month(".$this->table_evento.".Fecha) = '".$month."' ) and ( year(".$this->table_evento.".Fecha) = '".$year."'  ) )
+		or ( ( month(".$this->table_evento.".Fecha) = '".$month2."' ) and ( year(".$this->table_evento.".Fecha) = '".$year2."'  ) ) )" ;				 
+		$this->db->where($str);
+		$this->db->where($this->table_evento_persona.".IdPersona", $idusuario);	
+		$this->db->where($this->table_evento_persona.".Asistir", '1');	
+		$query = $this->db->get();
+		//echo $this->db->last_query();
 		return $query->result();
 	}
 }
