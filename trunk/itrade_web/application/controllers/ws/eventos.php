@@ -30,14 +30,15 @@ class Eventos extends CI_Controller {
 		$result=$this->Evento_model->registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 	}
-	public function get_eventos_idusuario_month($idusuario_w='',$month_w=''){
+	public function get_eventos_idusuario_month($idusuario_w='',$fecha_w=''){
 		$idusuario=$this->input->post('idusuario');
-		$month=$this->input->post('month');	
-		if (isset($idusuario_w)&& $idusuario_w!="" && isset($month_w)&& $month_w!=""  ){
+		$fecha=$this->input->post('fecha');	
+		if (isset($idusuario_w)&& $idusuario_w!="" && isset($fecha_w)&& $fecha_w!=""  ){
 			$idusuario=$idusuario_w;
-			$month=$month_w;
+			$fecha=$fecha_w;			
 		}
-		$result=$this->Evento_model->get_eventos_idusuario_month($idusuario,$month);
+		list($year, $month, $day) = explode("-", $fecha);
+		$result=$this->Evento_model->get_eventos_idusuario_month($idusuario,$year,$month);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 	}
 }
