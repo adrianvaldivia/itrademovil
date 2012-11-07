@@ -76,6 +76,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	private Button button_buscar;
 	private ImageButton  button_pedidos;
 	private ImageButton  button_prospectos;
+	private ImageButton  button_agenda;
 	Cliente cliente= new Cliente();
 	List<Cliente> listaCliente;
 	List<Cliente> listaClienteOriginal;
@@ -131,6 +132,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
         button_pedidos = (ImageButton) findViewById(R.id.btnBuscarPedidos);
         button_prospectos = (ImageButton) findViewById(R.id.btnBuscarProspectos);
+        button_agenda = (ImageButton) findViewById(R.id.btnCalendario);
         editText = (EditText) findViewById(R.id.editTextCliente);
 
 	    button_vermapa.setOnClickListener(new android.view.View.OnClickListener() {
@@ -150,6 +152,13 @@ public class BuscarClientesGreenDao extends ListActivity{
 	    button_prospectos.setOnClickListener(new android.view.View.OnClickListener() {
 			public void onClick(View v) {				
 				Intent intent = new Intent(BuscarClientesGreenDao.this,  BuscarProspectos.class);
+				intent.putExtra("idusuario", idUsuario);
+				startActivity(intent);		
+			}
+	 	});
+	    button_agenda.setOnClickListener(new android.view.View.OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(BuscarClientesGreenDao.this,  SimpleCalendarViewActivity.class);
 				intent.putExtra("idusuario", idUsuario);
 				startActivity(intent);		
 			}
