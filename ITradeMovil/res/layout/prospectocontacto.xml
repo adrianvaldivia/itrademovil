@@ -77,54 +77,54 @@
                     android:background="@color/azul_2"
                     android:orientation="vertical" >
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@color/azul_2" >
+                <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/azul_2" >
 
-                        <ImageButton
-                            android:id="@+id/ImageButton04"
-                            style="@drawable/estilo_botones"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/user_customer" />
+            <ImageButton
+                android:id="@+id/btnCrearPedido"
+                style="@drawable/estilo_botones"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/add_to_cart" />
 
-                        <ImageButton
-                            android:id="@+id/ImageButton07"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/e_mail" />
+            <ImageButton
+                android:id="@+id/btnBuscarPedido"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/buscar_pedido" />
 
-                        <ImageButton
-                            android:id="@+id/ImageButton05"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/users_search" />
+            <ImageButton
+                android:id="@+id/btnProspectos"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/user_customer" />
 
-                        <ImageButton
-                            android:id="@+id/ImageButton02"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/emblem_money" />
+            <ImageButton
+                android:id="@+id/btnDirectorio"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/directorio" />
 
-                        <ImageButton
-                            android:id="@+id/ImageButton01"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/directorio" />
+            <ImageButton
+                android:id="@+id/btnCalendario"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/calendar" />
 
-                        <ImageButton
-                            android:id="@+id/ImageButton03"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/calendar" />
-                    </LinearLayout>
+            <ImageButton
+                android:id="@+id/btnMeta"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/excelencia" />
+        </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
