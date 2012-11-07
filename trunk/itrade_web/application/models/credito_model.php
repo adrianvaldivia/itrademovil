@@ -10,7 +10,7 @@ class Credito_model extends CI_Model {
     }
 
     function get_all_creditos() {
-	$this->db->flush_cache();
+		$this->db->flush_cache();
 		$query="SELECT `Linea_Credito`.`IdLinea`, `Linea_Credito`.`MontoSolicitado`, `Linea_Credito`.`MontoActual`, `Linea_Credito`.`MontoAprobado`, `Linea_Credito`.`IdCliente`, C2.`IdEstado` FROM `Linea_Credito`,`Cliente` C2,`Persona` WHERE  `C2`.`IdCliente`=`Linea_Credito`.`IdCliente` AND `C2`.`IdPersona`=`Persona`.`IdPersona`";
         // $this->db->select($this->tablename . ".IdLinea, $this->tablename.MontoSolicitado,$this->tablename.MontoActual	, $this->tablename.MontoAprobado, $this->tablename.IdCliente, $this->tablename2.IdEstado");
         // $this->db->from($this->tablename);
