@@ -65,7 +65,13 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:name=".pedidos.UbicacionCheckInActivity"
            android:configChanges="keyboardHidden|orientation" 
-           />
+           />        
+        <activity android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:name=".pedidos.UbicacionProspectoActivity"
+           android:configChanges="keyboardHidden|orientation" 
+        />
+        
          <activity android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar"
             android:name=".pedidos.VerDia"
