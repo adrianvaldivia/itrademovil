@@ -33,12 +33,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 
 public class RegistrarProspecto extends Activity implements OnClickListener{
     /** Called when the activity is first created. */
+	private static final int REQUEST_CODE=10;
 	
 	EmailValidator validador = new EmailValidator();
 	
@@ -51,6 +53,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	Cliente client;
 	Persona person;
 	Credito cred;
+	
+	Button ubic;
 	
 	boolean bandera=false;
 	String idusuario;
@@ -167,6 +171,17 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         idu = bundle.getString("idusuario");
         //idusuario= String.valueOf(idu);
   /*************************************************************/
+        
+        ubic = (Button)findViewById(R.id.ubicar);
+        ubic.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RegistrarProspecto.this, UbicacionProspectoActivity.class);
+				intent.putExtra("idusuario", idusuario);
+				startActivityForResult(intent,REQUEST_CODE);
+			}
+		});
         
         /*Contacto = Persona ****************************************************************/
     	dni = (EditText) findViewById(R.id.pdni);
@@ -556,6 +571,22 @@ public void limpiarProspecto(){
 		fechanac.setText("");
 		correo.setText("");
 		cantidad.setText("");}	
-	
+
+	@Override
+	protected void onActivityResult(int requestCode,int resultCode, Intent pData)           
+	{
+    if ( requestCode == REQUEST_CODE )//Si el código de respuesta es igual al requestCode
+        {
+        if (resultCode == RESULT_OK )//Si resultCode es igual a ok
+            {
+//        		pruebaPaso = pData.getExtras().getString("lista" );//Obtengo el string de la subactividad
+        		this.latitud=pData.getExtras().getDouble("latitud");//Obtengo el string de la subactividad
+        		this.longitud=pData.getExtras().getDouble("longitud");
+        		Toast.makeText(RegistrarProspecto.this,""+latitud+" "+longitud, Toast.LENGTH_LONG).show();
+                //Aquí se hara lo que se desee con el valor recuperado                    
+            }
+        }
 }
+}
+
 
