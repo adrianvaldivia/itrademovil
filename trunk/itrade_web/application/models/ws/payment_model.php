@@ -231,5 +231,10 @@ class Payment_model extends CI_Model {
         $query = $this->db->get($this->table_periodos);
         return $query->row(0);
     }
+	public function get_pedidos_detail($ides){		
+		$this->db->where_in($this->table_pedido_linea.'.IdPedido', $ides);
+		$query = $this->db->get($this->table_pedido_linea);        
+		return $query->result();
+	}
 }
 ?>
