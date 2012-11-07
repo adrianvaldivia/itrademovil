@@ -69,12 +69,82 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	
 	static final int DATE_DIALOG_ID = 999;
 /******************************************************/
-	
+	Button bclientes, dprospectos, hpedidos, vdirectorio, aagenda, rmetas;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainprospecto);
 
+  /*LOS LINKS DE LOS BOTONES*******************************************************************/      
+        bclientes = (Button) findViewById(R.id.btnCrearPedido);
+        bclientes.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+//				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
+//				/*********ENVIAR INFO A LA VENTANA***********/
+//				startActivity(a);
+			}
+		});
+        
+        dprospectos = (Button) findViewById(R.id.btnBuscarPedido);
+        dprospectos.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+				/*********ENVIAR INFO A LA VENTANA***********/
+				b.putExtra("idusuario", idusuario);
+				startActivity(b);
+			}
+		});
+        
+        hpedidos = (Button) findViewById(R.id.btnProspectos); 
+        hpedidos.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+//				Intent c = new Intent(RegistrarProspecto.this, CrearPedido.class);
+//				/*********ENVIAR INFO A LA VENTANA***********/
+//				startActivity(c);
+			}
+		});
+        
+        vdirectorio = (Button) findViewById(R.id.btnDirectorio);
+        vdirectorio.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
+//				Intent d = new Intent(RegistrarProspecto.this, .class);
+//				/*********ENVIAR INFO A LA VENTANA***********/
+//				startActivity(d);
+			}
+		});
+        
+        aagenda = (Button) findViewById(R.id.btnCalendario);
+        aagenda.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
+//				Intent e = new Intent(RegistrarProspecto.this, x.class);
+//				/*********ENVIAR INFO A LA VENTANA***********/
+//				startActivity(e);
+			}
+		});
+        
+        rmetas = (Button) findViewById(R.id.btnMeta);
+        rmetas.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+//				Intent f = new Intent(RegistrarProspecto.this, MiMeta.class);
+//				/*********ENVIAR INFO A LA VENTANA***********/
+//				startActivity(f);
+			}
+		});
+  /********************************************************************************************/      
         cal = Calendar.getInstance();
 
     	year=cal.get(Calendar.YEAR);
@@ -266,28 +336,6 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     	
     	 
         
-    	
-
-//        Button bt1 = (Button) findViewById(R.id.buttonUno);
-//        bt1.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//
-//				vf.showNext();
-//			}
-//		});
-//
-//        Button bt2 = (Button) findViewById(R.id.buttondos);
-//        bt2.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//
-//				vf.showPrevious();
-//			}
-//		});
-
         vf.setOnTouchListener(new ListenerTouchViewFlipper());
 
     }
@@ -338,42 +386,6 @@ public class ListenerTouchViewFlipper extends Activity implements View.OnTouchLi
 	
 	
 }
-
-//public class ViewflipperBlogActivity extends Activity implements OnClickListener{
-//    public float init_x;
-//	private ViewFlipper vf;
-//
-//	/** Called when the activity is first created. */
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.main);
-//
-//        vf = (ViewFlipper) findViewById(R.id.viewFlipper);
-//
-////        Button bt1 = (Button) findViewById(R.id.buttonUno);
-////        bt1.setOnClickListener(new OnClickListener() {
-////
-////			@Override
-////			public void onClick(View v) {
-////
-////				vf.showNext();
-////			}
-////		});
-////
-////        Button bt2 = (Button) findViewById(R.id.buttondos);
-////        bt2.setOnClickListener(new OnClickListener() {
-////
-////			@Override
-////			public void onClick(View v) {
-////
-////				vf.showPrevious();
-////			}
-////		});
-//
-//        vf.setOnTouchListener(new ListenerTouchViewFlipper());
-//
-//    }
 
 
     private Animation inFromRightAnimation() {
