@@ -72,6 +72,7 @@
             ?>
 
             <div class="contenido_principal" style="width:70%; height:100%;  min-width:650px; max-width:650px;">
+  
                 <?= form_open("admin/usuario_controller/new_meta/" . $idusuario, array('id' => 'userForm')); ?>
 
                 <fieldset class="left">

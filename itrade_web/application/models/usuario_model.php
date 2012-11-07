@@ -7,6 +7,7 @@ class Usuario_model extends CI_Model {
         $this->tablename = 'Usuario';
         $this->table_perfil = 'Perfil';
         $this->tablename2 = 'Persona';
+        $this->table_jerarquia = 'Jerarquia';
     }
 
     function get_all_users() {
@@ -70,6 +71,15 @@ class Usuario_model extends CI_Model {
         $this->db->close();
         return $query->row(0)->Descripcion;
     }
+    
+    function get_all_jerarquias() {
+        $query = $this->db->get($this->table_jerarquia);
+        $rows = $query->result();
+        $this->db->close();
+        return $query->result_array();
+    }
+
+    
 
 }
 

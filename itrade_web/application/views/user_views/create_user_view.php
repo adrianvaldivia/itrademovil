@@ -131,6 +131,10 @@
                     <?= form_dropdown('perfil_id', $perfiles) ?>
                 </p>	
                 <p>
+                    <label>Jerarquia <span class="mandatory">(*)</span></label>
+                    <?= form_dropdown('jerarquia_id', $jerarquias) ?>
+                </p>	
+                <p>
                     <label>Ubigeo <span class="mandatory">(*)</span></label>
                     <?= form_dropdown('ubigeo_id', $ubigeo) ?>
                 </p>	
