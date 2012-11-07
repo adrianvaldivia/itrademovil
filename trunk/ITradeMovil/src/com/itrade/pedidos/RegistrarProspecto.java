@@ -1,9 +1,7 @@
 package com.itrade.pedidos;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,16 +16,21 @@ import com.itrade.model.Credito;
 import com.itrade.model.Persona;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -53,14 +56,32 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	String idu;
 	
 /*****************HARDCODEANDOLOS*******************/	
-	Double latitud=-12.070251702786596;
-	Double longitud=-77.07409143447876;
+	Double latitud=-17.3879;
+	Double longitud=-66.1051;
 /****************************************************/
+/******************************************************/
+	Calendar cal;
+
+	int year;
+	int month;
+	int day;
+ 
+	
+	static final int DATE_DIALOG_ID = 999;
+/******************************************************/
+	
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainprospecto);
 
+        cal = Calendar.getInstance();
+
+    	year=cal.get(Calendar.YEAR);
+    	month=cal.get(Calendar.MONTH);
+    	day=cal.get(Calendar.DAY_OF_MONTH);
+
+        
         vf = (ViewFlipper) findViewById(R.id.viewFlipper);
         
  /****************************************************/
@@ -77,12 +98,33 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     	apellidomater = (EditText) findViewById(R.id.papellidomat);
     	telefperson =(EditText) findViewById(R.id.telefono);
     	fechanac = (EditText) findViewById(R.id.pcumple);
+    	
+    	fechanac.setOnTouchListener(new OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				 int inType = fechanac.getInputType(); // backup the input type
+				    fechanac.setInputType(InputType.TYPE_NULL); // disable soft input
+				    fechanac.onTouchEvent(event); // call native handler
+				    fechanac.setInputType(inType); // restore input type
+				    return true; // consume touch even
+			}
+		});
+    	
+    	fechanac.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				showDialog(DATE_DIALOG_ID);
+			}
+		});
+    	
     	correo = (EditText) findViewById(R.id.correo);
 
         /*Empresa = Cliente ****************************************************************/
     	ruc = (EditText) findViewById(R.id.pruc);
     	rzsocial = (EditText) findViewById(R.id.prazonsocial);
-    	direcc =(EditText) findViewById(R.id.pdirecc);
+    	direcc =(EditText) findViewById(R.id.pdireccion);
     	//telefcliente = (EditText) findViewById(R.id.ptelefempre);
     
         /*Linea_Credito = Linea Credito ****************************************************************/
@@ -195,17 +237,9 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			     {
 			    	 
 			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
-			    	 ruc.setText("");
-			    	 rzsocial.setText("");
-			    	 direcc.setText("");
-			    	 dni.setText("");
-			    	 nombre.setText("");
-			    	 apellidopater.setText("");
-			    	 apellidomater.setText("");
-			    	 telefperson.setText("");
-			    	 fechanac.setText("");
-			    	 correo.setText("");
-			    	 cantidad.setText("");
+			    	 
+			    	 limpiarProspecto();
+			    	 
 			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
 			    	 a.putExtra("idusuario", idusuario);
 			    	 startActivity(a);
@@ -259,6 +293,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     }
 
 
+	
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		
@@ -408,6 +443,68 @@ public class ListenerTouchViewFlipper extends Activity implements View.OnTouchLi
         return false;
 }
 	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DATE_DIALOG_ID:
+		   // set date picker as current date
+		   return new DatePickerDialog(RegistrarProspecto.this, datePickerListener, 
+                         year, month,day);
+		}
+		return null;
+	}
+ 
+	private DatePickerDialog.OnDateSetListener datePickerListener 
+                = new DatePickerDialog.OnDateSetListener() {
+ 
+		// when dialog box is closed, below method will be called.
+		public void onDateSet(DatePicker view, int selectedYear,
+				int selectedMonth, int selectedDay) {
+			year = selectedYear;
+			month = selectedMonth;
+			day = selectedDay;
+ 
+			// set selected date into textview
+			if ((month<10) && (day<10)) 
+			{
+			fechanac.setText(new StringBuilder().append(year)
+					   .append("-0").append(month + 1).append("-0").append(day)
+					   .append(" "));
+			}
+			if ((month>9) && (day>9))
+			{
+				fechanac.setText(new StringBuilder().append(year)
+						   .append("-").append(month + 1).append("-").append(day)
+						   .append(" "));
+			}
+			if ((month>9) && (day<10))
+			{
+				fechanac.setText(new StringBuilder().append(year)
+						   .append("-").append(month + 1).append("-0").append(day)
+						   .append(" "));
+			}
+			if ((month<10) && (day>9))
+			{
+				fechanac.setText(new StringBuilder().append(year)
+						   .append("-0").append(month + 1).append("-").append(day)
+						   .append(" "));
+			}
+		 
+		}
+	};
+	
+public void limpiarProspecto(){
+		ruc.setText("");
+		rzsocial.setText("");
+		direcc.setText("");
+		dni.setText("");
+		nombre.setText("");
+		apellidopater.setText("");
+		apellidomater.setText("");
+		telefperson.setText("");
+		fechanac.setText("");
+		correo.setText("");
+		cantidad.setText("");}	
 	
 }
 
