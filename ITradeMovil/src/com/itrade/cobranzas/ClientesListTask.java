@@ -1,14 +1,17 @@
 package com.itrade.cobranzas;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.xml.sax.Parser;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
+import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
@@ -58,13 +61,16 @@ public class ClientesListTask extends Activity {
 	private ImageView btnCalendario;
 	private ImageView btnMapa;
 	private ImageView btnMapaTotal;
+	private SyncPedidos sincPedidos;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_lista_clientes);                       
-        Intent i = getIntent();                
+        Intent i = getIntent();                       
 		idusuario=(String)i.getSerializableExtra("idempleado");
+		sqlite();
 		/*BTN clientes*/
 		btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
 		btnClientes.setOnClickListener(new OnClickListener() {			
@@ -91,7 +97,7 @@ public class ClientesListTask extends Activity {
 						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,int id) {														
 								dialog.cancel();
-								
+								//verificar si tiene internet o no <--------------------------
 								Syncronizar sync = new Syncronizar(ClientesListTask.this);
 								List<NameValuePair> param = new ArrayList<NameValuePair>();
 								param.add(new BasicNameValuePair("idcobrador", idusuario));
@@ -187,18 +193,24 @@ public class ClientesListTask extends Activity {
 								public void onClick(DialogInterface dialog,int id) {														
 									dialog.cancel();
 									
-									Syncronizar sync = new Syncronizar(ClientesListTask.this);
-									List<NameValuePair> param = new ArrayList<NameValuePair>();
-									param.add(new BasicNameValuePair("idpedido", idpedido));
-									String route2="/ws/pedido/cancelar_pedido/";
-									sync.conexion(param,route2);
-									try {
-										sync.getHilo().join();
-									} catch (InterruptedException e) {
-										  // TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									
+									// AQUI SI NO TiENE CONEXION
+									sincPedidos= new SyncPedidos(ClientesListTask.this);
+									if (!sincPedidos.networkAvailable()){									
+										Integer numreg = sincPedidos.eliminarPedido(idpedido);
+										Log.d("LONGCLICK","Se elimino ="+numreg.toString());		
+									}else{//Si es que tiene conexion
+										Syncronizar sync = new Syncronizar(ClientesListTask.this);
+										List<NameValuePair> param = new ArrayList<NameValuePair>();
+										param.add(new BasicNameValuePair("idpedido", idpedido));
+										String route2="/ws/pedido/cancelar_pedido/";
+										sync.conexion(param,route2);
+										try {
+											sync.getHilo().join();
+										} catch (InterruptedException e) {
+											  // TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}	
 									
 									Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
 									intent.putExtra("idempleado", idusuario);
@@ -222,22 +234,23 @@ public class ClientesListTask extends Activity {
 			}
         });
         //WEBSERVICE LLENA ARREGLO DE CLIENTES
-        
+/*        antes de
         Syncronizar sync = new Syncronizar(ClientesListTask.this);
 		List<NameValuePair> param = new ArrayList<NameValuePair>();								
 		param.add(new BasicNameValuePair("idvendedor", idusuario));		
-		//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
 		String route="/ws/clientes/get_clientes_by_vendedor/";
 	    sync.conexion(param,route);
 	    try {
 			sync.getHilo().join();			
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	    	    
 	    Gson gson = new Gson();
 		ArrayList<Cliente> cliList = new ArrayList<Cliente>();							
-		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());						
+
+		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());	
+	*/		
+        List<Cliente> cliList = sincPedidos.getListaCliente();
 	    ArrayList<String> idClientes = new ArrayList<String>();
 	    ArrayList<String> nombresClientes = new ArrayList<String>();
 		for(Cliente cli: cliList){
@@ -247,22 +260,23 @@ public class ClientesListTask extends Activity {
         adapter = new ExpandableListAdapter(getBaseContext(), idClientes,nombresClientes, new ArrayList<ArrayList<Pedido>>());
         CargarLista();
         // Set this blank adapter to the list view
-        listView.setAdapter(adapter);                       
+        listView.setAdapter(adapter); 
+        //No olvidar de esto en todos los activities
+        sincPedidos.closeDB();
     }
     
-  
+
   private void CargarLista() {	 		  	 	  	
-	  //CONSULTAR WEBSERVICE Y LLENAR ARREGLO DE PEDIDOS	 	  	 
+	  //CONSULTAR WEBSERVICE Y LLENAR ARREGLO DE PEDIDOS
+	  /*Antes de
 	  Syncronizar sync2 = new Syncronizar(ClientesListTask.this);
 	  List<NameValuePair> param2 = new ArrayList<NameValuePair>();								
 	  param2.add(new BasicNameValuePair("idvendedor", idusuario));		
-	  //String route="dp2/itrade/ws/pedido/get_pedidos_by_idvendedor/";
 	  String route2="/ws/pedido/get_pedidos_by_idvendedor/";
 	  sync2.conexion(param2,route2);
 	  try {
 		  sync2.getHilo().join();			
 	  } catch (InterruptedException e) {
-		  // TODO Auto-generated catch block
 		  e.printStackTrace();
 	  }	    	  
 	  Gson gson = new Gson();  
@@ -271,10 +285,19 @@ public class ClientesListTask extends Activity {
 	  pedList=	gson.fromJson(sync2.getResponse(), new TypeToken<List<Pedido>>(){}.getType());	  
 	  for(Pedido ped: pedList ){
 		  adapter.addItem(ped);
-	  }		
+	  }
+	  */
+	  //Esta jalando los pedidos de Hoy
+	  List<Pedido> pedList= sincPedidos.getPedidosHoy();
+	  for(Pedido ped: pedList ){
+		  adapter.addItem(ped);
+	  }
+	  
+	  
+	  
 	}
 
-private Handler handler = new Handler()
+  	private Handler handler = new Handler()
      {
          @Override
          public void handleMessage(Message msg)
@@ -283,5 +306,17 @@ private Handler handler = new Handler()
              super.handleMessage(msg);
          }
      };
+     
+     private void sqlite(){
+		sincPedidos= new SyncPedidos(ClientesListTask.this); 
+		
+		//Integer numePed = sincPedidos.cargarClientes(idusuario);
+		//Integer numeCli = sincPedidos.cargarPedidos(idusuario);
+		Integer numreg = sincPedidos.syncBDToSqlite(idusuario);
+		Log.d("RESULTADOS","numeros ="+numreg.toString());		
+	   	//Log.d("RESULTADOS","fecha ="+today.toString());
+	   	//List<Pedido> listaPedi =sincPedidos.getPedidos(Integer.parseInt(idusuario));
+		//Log.d("pEDIDOS","cantidad ="+listaPedi.size());
+     }
 }
 
