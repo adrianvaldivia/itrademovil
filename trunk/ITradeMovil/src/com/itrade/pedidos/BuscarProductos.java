@@ -430,34 +430,34 @@ public class BuscarProductos extends ListActivity{
 		cursorElementoLista.requery();
 	}
     private void cargarBaseLocal() {
-        daoProducto = new DAOProducto(BuscarProductos.this);
-        listaProducto = daoProducto.getAllProductos(); //obtiene los clientes
-        listaCategoria=daoProducto.getAllCategorias();
-       
-		productoDao.deleteAll();
-		categoriaDao.deleteAll();
-		elementoListaDao.deleteAll();
-		
-        
-		for(int i=0;i<listaProducto.size();i++){
-
-			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());
-			ElementoLista elemento = new ElementoLista(null,listaProducto.get(i).getDescripcion(),"Precio: "+listaProducto.get(i).getPrecio(),null,listaProducto.get(i).getId());
-			elementoListaDao.insert(elemento);
-			productoDao.insert(productoAux);			
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-		for(int i=0;i<listaCategoria.size();i++){
-			Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
-			categoriaDao.insert(categoria);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-		guardaListaOriginal();
-		cursorSpinner.requery();
-		cursorElementoLista.requery();
-//        cursor.requery();
-    	setListAdapter(adapterElementoLista);
-    	spinner_categoria.setAdapter(adapterSpinner);
+//        daoProducto = new DAOProducto(BuscarProductos.this);
+//        listaProducto = daoProducto.getAllProductos(); //obtiene los clientes
+//        listaCategoria=daoProducto.getAllCategorias();
+//       
+//		productoDao.deleteAll();
+//		categoriaDao.deleteAll();
+//		elementoListaDao.deleteAll();
+//		
+//        
+//		for(int i=0;i<listaProducto.size();i++){
+//
+//			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());
+//			ElementoLista elemento = new ElementoLista(null,listaProducto.get(i).getDescripcion(),"Precio: "+listaProducto.get(i).getPrecio(),null,listaProducto.get(i).getId());
+//			elementoListaDao.insert(elemento);
+//			productoDao.insert(productoAux);			
+//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//		}
+//		for(int i=0;i<listaCategoria.size();i++){
+//			Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
+//			categoriaDao.insert(categoria);
+//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//		}
+//		guardaListaOriginal();
+//		cursorSpinner.requery();
+//		cursorElementoLista.requery();
+////        cursor.requery();
+//    	setListAdapter(adapterElementoLista);
+//    	spinner_categoria.setAdapter(adapterSpinner);
 	}
     
     @Override
