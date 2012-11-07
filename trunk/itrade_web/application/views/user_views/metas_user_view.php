@@ -87,7 +87,10 @@
                                     Periodo
                                 </th>
                                 <th>
-                                    Fecha Inicio -  Fecha Fin
+                                    Fecha Inicio
+                                </th>
+                                <th>
+                                    Fecha Fin
                                 </th>
                                 <th>
                                     Monto
@@ -109,7 +112,10 @@
                                         <div class="nombre"><? echo $meta['Periodo']; ?></div>
                                     </td>
                                     <td>
-                                        <div class="perfil"><? echo $meta['FechaIni']." - ".$meta['FechaFin']; ?></div>
+                                        <div class="perfil"><? echo $meta['FechaIni']; ?></div>
+                                    </td>
+                                    <td>
+                                        <div class="perfil"><? echo $meta['FechaFin']; ?></div>
                                     </td>
                                     <td>
                                         <div class="estado"><? echo $meta['Monto']; ?></div>

@@ -78,7 +78,9 @@
                     <legend>Datos Generales</legend>
                     <p>
                     		<label>Periodo: <span class="mandatory">(*)</span> </label>
-                    		<?= form_dropdown('idperiodo', $periodos,$meta->IdPeriodo-1); ?>
+                    		<?$js = 'disabled="disabled";'// onChange="some_function();"';?>
+                    		<?= form_dropdown('idperiodo', $periodos,$meta->IdPeriodo-1,$js); ?><br />
+                    		<span style="font-size: 10px;">Los periodos no son editables.<span>
                     </p>
                     <p>
                         <label>Monto: <span class="mandatory">(*)</span></label>

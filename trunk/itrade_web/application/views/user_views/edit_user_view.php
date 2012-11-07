@@ -145,6 +145,10 @@
                     echo form_checkbox('activo', $persona->Activo, $usuario->Activo);
                     ?>
                 </p>
+                                <p>
+                    <label>Jerarquia <span class="mandatory">(*)</span></label>
+                    <?= form_dropdown('jerarquia_id', $jerarquias,$usuario->IdJerarquia-1) ?>
+                </p>	
                 <p>
                     <label>Ubigeo <span class="mandatory">(*)</span></label>
                     <?= form_dropdown('ubigeo_id', $ubigeo, $usuario->IdUbigeo) ?>

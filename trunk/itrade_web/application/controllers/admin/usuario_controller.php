@@ -51,7 +51,7 @@ class Usuario_controller extends CI_Controller {
         $data['ubigeo'] = $this->get_all_ubigeos();
         $data['usuario'] = $this->Usuario_model->get($idcontact);
         $data['persona'] = $this->Persona_model->get($number);
-
+			$data['jerarquias']=$this->get_all_jerarquias(); 
         $this->load->vars($data);
         $this->load->view('user_views/edit_user_view');
         //echo "<script languaje='javascript'>alert('Index')</script>";
@@ -87,7 +87,7 @@ class Usuario_controller extends CI_Controller {
         $data['acceso'] = $this->session->userdata('acceso');
         $data['perfiles'] = $this->get_all_profile();
         $data['ubigeo'] = $this->get_all_ubigeos();
-
+$data['jerarquias']=$this->get_all_jerarquias(); 
         $this->load->vars($data);
         $this->load->view('user_views/create_user_view');
     }
@@ -100,7 +100,7 @@ class Usuario_controller extends CI_Controller {
         $data['acceso'] = $this->session->userdata('acceso');
         $data['idusuario'] = $idusuario;
         $data['periodos']=$this->get_all_periodos();
-
+$data['message']='';
         $this->load->vars($data);
         $this->load->view('user_views/create_meta_user_view');
     }
@@ -113,8 +113,6 @@ class Usuario_controller extends CI_Controller {
         $data['acceso'] = $this->session->userdata('acceso');
         $data['metas'] = $this->get_metas_usuario($idusuario);
         $data['idusuario'] = $idusuario;
-    
-//        print_r($data['metas']);
 
         $this->load->vars($data);
         $this->load->view('user_views/metas_user_view');
@@ -128,7 +126,7 @@ class Usuario_controller extends CI_Controller {
         $data['name'] = $this->session->userdata('name');
         $data['acceso'] = $this->session->userdata('acceso');
         $data['periodos']=$this->get_all_periodos();
-                 
+                
         //OBTENIENDO DATA PARA PERFILES
         $data['meta'] = $this->Meta_model->get($idusuario,$idperiodo);
 
@@ -174,9 +172,11 @@ class Usuario_controller extends CI_Controller {
             'IdPerfil' => xss_clean($this->input->post('perfil_id')),
             'IdPersona' => $idPersona,
             'Activo' => 1,
-            'IdJerarquia' => 1,
+            'IdJerarquia' =>  xss_clean($this->input->post('jerarquia_id'))+1,
             'IdUbigeo' => $this->input->post('ubigeo_id')
         );
+       // if(xss_clean($this->input->post('perfil_id'))==2 || xss_clean($this->input->post('perfil_id'))==3)
+		  //   $data['Usuario'] ['IdJerarquia']=5;
 
         //crea el usuario
         $this->Usuario_model->create($data['Usuario']);
@@ -221,7 +221,7 @@ class Usuario_controller extends CI_Controller {
             'Nombre' => xss_clean($this->input->post('username')),
             'IdPerfil' => xss_clean($this->input->post('perfil_id')),
             'Activo' => $this->input->post('activo'),
-            'IdJerarquia' => 1,
+            'IdJerarquia' =>  xss_clean($this->input->post('jerarquia_id'))+1,
             'IdUbigeo' => $this->input->post('ubigeo_id')
         );
         echo '<pre>';
@@ -257,7 +257,8 @@ class Usuario_controller extends CI_Controller {
         //Parametro para setear reglas del create
         $rules_create = 0;
         $this->set_validation_rules($rules_create);
-
+		  $data['message']='';
+		  
 //        if ($this->form_validation->run()) {
 
                
@@ -267,6 +268,12 @@ class Usuario_controller extends CI_Controller {
             'IdUsuario' => $idusuario,
             'Monto' => xss_clean($this->input->post('monto')),
         );
+        
+//        $data['periodos_usuario']=$this->get_periodo_usuario($idusuario,xss_clean($this->input->post('idperiodo'))+1);
+			if($this->periodo_exist($idusuario,xss_clean($this->input->post('idperiodo'))+1)){
+				$this->session->set_flashdata('error', 'El periodo seleccionado ya esta registrado para este usuario');
+		       redirect('admin/usuario_controller/create_meta/' . $idusuario, 'refresh');
+			}
 
         //crea el usuario
         $this->Meta_model->create($data['Meta']);
@@ -369,6 +376,16 @@ class Usuario_controller extends CI_Controller {
         return $periodos;
     }
     
+   function get_all_jerarquias() {
+        $jerarquias = array();
+        $alljerarquiass = $this->Usuario_model->get_all_jerarquias();
+     
+        foreach ($alljerarquiass as $jerarquia) {
+            $jerarquias[] = $jerarquia['Descripcion'];
+        }
+        return $jerarquias;
+    }
+    
     function get_all_ubigeos() {
         $ubigeos = array();
         $allubigeos = $this->Ubigeo_model->get_all_ubigeos();
@@ -378,6 +395,16 @@ class Usuario_controller extends CI_Controller {
         return $ubigeos;
     }
 
+	function periodo_exist($idusuario,$idperiodo){
+       $periodos = array();
+        $allperiodos = $this->Meta_model->get_periodo_by_user($idusuario);
+     
+        foreach ($allperiodos as $periodo) {
+	        if($periodo['IdPeriodo']==$idperiodo)
+				return true;
+        }
+        return false;
+	}
 }
 
 ?>

@@ -70,7 +70,20 @@ class Meta_model extends CI_Model {
         $this->db->close();
         return $query->result_array();
     }
+    
 
+	function get_periodo_by_user($idusuario){
+	 $this->db->select($this->tablename3 . ".IdPeriodo IdPeriodo");
+        $this->db->from($this->tablename3);
+        $this->db->where($this->tablename . ".IdUsuario",$idusuario);
+        $this->db->join($this->tablename, $this->tablename . '.IdPeriodo=' . $this->tablename3 . '.IdPeriodo');
+        $this->db->join($this->tablename2, $this->tablename2 . '.IdUsuario=' . $this->tablename . '.IdUsuario');
+        $query = $this->db->get();
+        //print_r($this->db->last_query());
+       // exit;
+        $this->db->close();
+        return $query->result_array();
+	}
 }
 
 ?>
