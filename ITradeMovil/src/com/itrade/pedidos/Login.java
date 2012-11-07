@@ -36,6 +36,8 @@ import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
+import com.itrade.model.Evento;
+import com.itrade.model.EventoDao;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoLineaDao;
@@ -77,6 +79,7 @@ public class Login extends Activity {
     private PedidoLineaDao pedidoLineaDao;
     private ProductoDao productoDao;
     private CategoriaDao categoriaDao;
+    private EventoDao eventoDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
@@ -108,6 +111,7 @@ public class Login extends Activity {
         pedidoLineaDao = daoSession.getPedidoLineaDao();
         productoDao = daoSession.getProductoDao();
         categoriaDao = daoSession.getCategoriaDao();
+        eventoDao = daoSession.getEventoDao();
         
         pedidoLineaDao.deleteAll();
         //fin green dao
@@ -280,10 +284,15 @@ public class Login extends Activity {
 		}
 		////////////////////////////////////////////////////////Sincronizacion de pedido Linea
 //		pedidoLineaDao.deleteAll();
-		
-
- // hardcode de eventos con  las dos lineas de arriba
-		
+		/////////////////////////////////////////////Sincronizacion eventos
+		// hardcode de eventos
+		eventoDao.deleteAll();
+		Evento evento1=new Evento(null,1,"HardCreador","Reunion de Jefes","el parque","ninguna1","2012/11/07","6:OO PM","7:00 PM");
+		Evento evento2=new Evento(null,1,"HardCreador","Reunion de Vendedores","la calle","ninguna2","2012/11/07","8:OO PM","9:00 PM");
+		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012/11/08","4:OO PM","5:00 PM");
+		eventoDao.insert(evento1);
+		eventoDao.insert(evento2);
+		eventoDao.insert(evento3);				
 	}
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
