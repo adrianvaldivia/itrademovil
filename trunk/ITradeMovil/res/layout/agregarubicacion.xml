@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/blanco"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/azul_2" >
+
+            <TextView
+                android:id="@+id/txtItrade"
+                android:layout_width="246dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dip"
+                android:background="@color/azul_2"
+                android:text="iTrade"
+                android:textColor="@color/grisClaro"
+                android:textSize="20dip" />
+
+            <ImageButton
+                android:id="@+id/btnExplorar"
+                android:layout_width="58dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/azul_2"
+                android:src="@drawable/maps" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/azul_2" >
+
+            <ImageButton
+                android:id="@+id/btnCrearPedido"
+                style="@drawable/estilo_botones"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/add_to_cart" />
+
+            <ImageButton
+                android:id="@+id/btnBuscarPedido"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/buscar_pedido" />
+
+            <ImageButton
+                android:id="@+id/btnProspectos"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/user_customer" />
+
+            <ImageButton
+                android:id="@+id/btnDirectorio"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/directorio" />
+
+            <ImageButton
+                android:id="@+id/btnCalendario"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/calendar" />
+
+            <ImageButton
+                android:id="@+id/btnMeta"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/estilo_botones"
+                android:src="@drawable/excelencia" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" >
+            
+<!-- ****************************************************************** -->
+                    <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/TextView1"
+                    android:layout_width="222dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Empresa"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/azul_2" />
+
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:src="@drawable/company" />
+
+            </LinearLayout>
+        
+                  <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/prazonsocial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese la Razón Social"
+                android:layout_marginTop="1dp"
+                android:ems="10" />
+
+        </LinearLayout>
+      
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+
+
+
+            <EditText
+                android:id="@+id/pdireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese la Dirección"
+                android:maxLength="10"
+                android:layout_marginTop="1dp"
+                android:ems="10" />
+
+        </LinearLayout>
+   <!-- ****************************************************************** -->         
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/TextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1.00"
+                    android:gravity="center"
+                    android:text="Línea Crédito"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/azul_2"
+                    android:textSize="24dp" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="170dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_weight="0.75"
+                    android:src="@drawable/credit_cards" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/pcantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Línea de Crédito (S/.)"
+                android:maxLength="11"
+                android:inputType="number"
+                android:layout_marginTop="1dp"
+                android:ems="10" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    	<LinearLayout
+	    android:id="@+id/bottom_control_bar"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true" >
+
+
+		<LinearLayout
+		    android:id="@+id/abajo"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="0dp"
+		    android:layout_weight="0.10" >
+
+		    
+		    
+            <Button
+                android:id="@+id/pregistraprospecto"
+                style="@drawable/estilo_botones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="195dp"
+                android:background="@drawable/estilo_botones"
+                android:text="Registrar"
+                android:textColor="@color/blanco" />
+	
+            
+            	</LinearLayout>
+	
+
+		
+	
+	</LinearLayout>
+    
+</RelativeLayout>
