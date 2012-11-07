@@ -146,15 +146,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/blanco" >
-
+
                     <TextView
                         android:id="@+id/txtCliente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:layout_weight="0.03"
                         android:text="Cliente : Cliente 1"
-                        android:textColor="@color/azul_2" />
+                        android:textColor="@color/azul_2"
+                        android:textSize="18dip" />
 
                 </LinearLayout>
 
@@ -163,45 +164,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@color/blanco" >
-
+
                     <TextView
                         android:id="@+id/txtpedido"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="0.03"
-                        android:text="Pedidos hasta:"
-                        android:textColor="@color/azul_2" />
-
-                    <EditText
-                        android:id="@+id/editnumdias"
-                        android:layout_width="54dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.01"
-                        android:ems="10" />
-
-                    <TextView
-                        android:id="@+id/txtdias"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="0.10"
-                        android:text="días."
-                        android:textColor="@color/azul_2" />
+                        android:text="Pedidos hasta: X días"
+                        android:textColor="@color/azul_2"
+                        android:textSize="10dip" />
 
                 </LinearLayout>
             </LinearLayout>
-
+
             <TextView
                 android:id="@+id/txtpedidos"
-                android:layout_width="144dp"
+                android:layout_width="166dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_gravity="left|center"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
-                android:layout_weight="1.08"
                 android:gravity="center"
                 android:text="Pedidos pendientes"
                 android:textColor="@color/azul_2"
+                android:textSize="16dip"
                 android:textStyle="bold" />
 
             <TextView
