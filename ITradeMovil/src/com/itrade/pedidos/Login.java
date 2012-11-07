@@ -9,8 +9,11 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -130,14 +133,20 @@ public class Login extends Activity {
 	    			lanzarActivitys(usuarioLocal);													    				   
 				}
 				else{//intentara logearse en la nube
-					Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
-			    	if (usuario != null){
-			    		usuario.setPassword(password);
-			    		sincronizarBase(usuario);//Preguntar si quiere borrar los datos del usuario logeado anteriormente
-						lanzarActivitys(usuario);			    							   
-			    	}else{
-			    		Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
-			    	}
+					if (haveNetworkConnection()){
+						Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
+				    	if (usuario != null){
+				    		usuario.setPassword(password);
+				    		sincronizarBase(usuario);//Preguntar si quiere borrar los datos del usuario logeado anteriormente
+							lanzarActivitys(usuario);			    							   
+				    	}
+				    	else{
+				    		Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
+				    	}						
+					}
+					else{
+						Toast.makeText(getBaseContext(), "Intente nuevamente. No Hay Conexion a Internet!", Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 
@@ -283,6 +292,22 @@ public class Login extends Activity {
 		}
 		else
 			return null;
+	}
+	private boolean haveNetworkConnection() {
+	    boolean haveConnectedWifi = false;
+	    boolean haveConnectedMobile = false;
+
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+	    for (NetworkInfo ni : netInfo) {
+	        if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+	            if (ni.isConnected())
+	                haveConnectedWifi = true;
+	        if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+	            if (ni.isConnected())
+	                haveConnectedMobile = true;
+	    }
+	    return haveConnectedWifi || haveConnectedMobile;
 	}
 
 	public static int safeLongToInt(long l) {
