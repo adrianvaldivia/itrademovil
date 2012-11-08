@@ -231,11 +231,15 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 			items.clear();
 			for(i=0;i<listaCliente.size();i++){
 				if (listaCliente.get(i).getActivo().compareTo("A")==0){
-					items.add(new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i)));
+//					items.add(new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i)));
+					OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.greenmarker3);
+			        olItem.setMarker(newMarker);
+			        items.add(olItem);
 				}
 				if (listaCliente.get(i).getActivo().compareTo("C")==0){
 			        OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
-			        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker5);
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker3);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
 				}

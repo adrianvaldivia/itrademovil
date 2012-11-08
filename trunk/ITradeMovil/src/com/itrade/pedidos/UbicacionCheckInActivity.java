@@ -172,8 +172,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             this.posicionActualOverlay = new SimpleLocationOverlay(this);
             mOsmv.getOverlays().add(posicionActualOverlay);               
             ////////////////////////////////////////////////////////////LAYER DEL PUNTO ELEGIDO
-            markerOverlay = new ExtendedItemizedIconOverlay<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener);
-            this.mOsmv.getOverlayManager().add(markerOverlay);
+//            markerOverlay = new ExtendedItemizedIconOverlay<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener);
+//            this.mOsmv.getOverlayManager().add(markerOverlay);
             //////////////////////////////////////////////////////////FIN LAYER PUNTO ELEGIDO
             numLayers=this.mOsmv.getOverlays().size();
             numLayers++;// sumo uno por el layer de los WayPoints
@@ -228,11 +228,15 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 			items.clear();
 			for(i=0;i<listaCliente.size();i++){
 				if (listaCliente.get(i).getActivo().compareTo("A")==0){
-					items.add(new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i)));
+//					items.add(new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i)));
+					OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.greenmarker3);
+			        olItem.setMarker(newMarker);
+			        items.add(olItem);
 				}
 				if (listaCliente.get(i).getActivo().compareTo("C")==0){
 			        OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
-			        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker5);
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker3);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
 				}
@@ -563,22 +567,22 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	
 	@Override
 	public void onBackPressed() {
-		
-	    new AlertDialog.Builder(this)
-        .setTitle("Confirmar Ubicacion")
-        .setMessage("Desea confirmar la Ubicacion?")
-        .setNegativeButton("No", null)
-        .setPositiveButton("Si", new OnClickListener() {
-
-            public void onClick(DialogInterface arg0, int arg1) {
-            	if (markerOverlay.size()>0){
-            		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
-            		UbicacionCheckInActivity.super.onBackPressed();
-            	}
-            	else
-            		Toast.makeText(UbicacionCheckInActivity.this,"Primero Debe seleccionar una Ubicacion", Toast.LENGTH_LONG).show();
-            }
-        }).create().show();	
+		UbicacionCheckInActivity.super.onBackPressed();
+//	    new AlertDialog.Builder(this)
+//        .setTitle("Confirmar Ubicacion")
+//        .setMessage("Desea confirmar la Ubicacion?")
+//        .setNegativeButton("No", null)
+//        .setPositiveButton("Si", new OnClickListener() {
+//
+//            public void onClick(DialogInterface arg0, int arg1) {
+//            	if (markerOverlay.size()>0){
+//            		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
+//            		UbicacionCheckInActivity.super.onBackPressed();
+//            	}
+//            	else
+//            		Toast.makeText(UbicacionCheckInActivity.this,"Primero Debe seleccionar una Ubicacion", Toast.LENGTH_LONG).show();
+//            }
+//        }).create().show();	
 	}
 	@Override
 	public void finish(){

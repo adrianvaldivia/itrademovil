@@ -2,6 +2,7 @@ package com.itrade.pedidos;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 import android.app.ListActivity;
@@ -26,7 +27,8 @@ import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.EventoDao;
 
 public class VerDia extends ListActivity{
-	private ArrayList<Evento> eventos = new ArrayList<Evento>();
+	String strFecha;
+	private List<Evento> eventos = new ArrayList<Evento>();
 	private String idUsuario;
 	private Date fecha;
 	Evento evento= new Evento();
@@ -45,8 +47,10 @@ public class VerDia extends ListActivity{
 	
 	 public void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
-
 		 setContentView(R.layout.detalle_dia);
+		 Bundle bundle=getIntent().getExtras();
+		 strFecha=bundle.getString("fecha");
+		    Toast.makeText(this, "F: "+strFecha, Toast.LENGTH_LONG).show();
 		 
 	     //inicio green Dao
 	     DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -57,16 +61,17 @@ public class VerDia extends ListActivity{
 	     eventoDao = daoSession.getEventoDao();
 	     //posible error al borrar
 	     elementoListaDao.deleteAll();
-		        //Inicio green Dao Elementos Lista
-	     String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
-	     String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
-	     cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
-	     String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-	     int[] toElementoLista = { R.id.text1, R.id.text2 };
-	     adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
-	      		toElementoLista);    
-	        //fin green Day de Elementos Lista
+	        //Inicio green Dao Elementos Lista
+	        String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
+	        String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
+	        cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
+	        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName,ElementoListaDao.Properties.Terciario.columnName };
+	        int[] toElementoLista = { R.id.text1, R.id.text2,R.id.text3 };
+	        adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
+	        		toElementoLista);    
+	        //fin green Day de Elementos Lista 
 	     setListAdapter(adapterElementoLista);
+	     guardaListaOriginal();
 	     recuperarOriginal();
 		 
 	 }
@@ -95,17 +100,19 @@ public class VerDia extends ListActivity{
 			ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
 			evento=eventoDao.loadByRowId(elementoAux.getIdElemento());
 		}
+	    private void guardaListaOriginal() {
+			// TODO Auto-generated method stub
+	    	this.eventos=eventoDao.loadAll();
+			
+		}
 	 
 		private void recuperarOriginal() {
-			elementoListaDao.deleteAll();
-	        long temp2=1;
-			ElementoLista elemento2 = new ElementoLista(null,"HARDCODED","HARDCODED",null,temp2);
-			elementoListaDao.insert(elemento2);
-	        
+			elementoListaDao.deleteAll();	        
 			for(int i=0;i<eventos.size();i++){
 		        long temp=0;
 		        temp=temp+eventos.get(i).getId();
-				ElementoLista elemento = new ElementoLista(null,eventos.get(i).getAsunto(),"RUC: "+eventos.get(i).getHoraInicio(),null,temp);
+				ElementoLista elemento = new ElementoLista(null,eventos.get(i).getAsunto(),"Inicio: "
+						+eventos.get(i).getHoraInicio(),"Fin: "+eventos.get(i).getHoraFin(),temp);
 				elementoListaDao.insert(elemento);
 		        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 			}
