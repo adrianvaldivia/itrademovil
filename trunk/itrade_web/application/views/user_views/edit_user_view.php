@@ -20,6 +20,7 @@
         <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
         <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+		<script src="<?php echo base_url() ?>js/jquery.validate.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             //<![CDATA[
@@ -29,9 +30,10 @@
     </head>
     <body>
         <script type="text/javascript">
-            $(function() {
-                $( "#birthdate" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
-            });
+            $(document).ready(function() {
+                $("#birthdate" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
+				$("#userForm").validate();
+			});
         </script>
         <div id="header">
             <!--            <div id="title">iTRADE</div>-->
@@ -76,18 +78,18 @@
 
 
                 <p>
-                    <label>Nombres: <span class="mandatory">(*)</span> </label>
-                    <?php $firstname = array('name' => 'firstname', 'id' => 'firstname', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el nombre', 'value' => $persona->Nombre); ?>
+                    <label>Nombres: <span class="required">(*)</span> </label>
+                    <?php $firstname = array('name' => 'firstname', 'id' => 'firstname', 'size' => 15, 'class' => 'required', 'title' => 'Por favor ingrese el nombre', 'value' => $persona->Nombre); ?>
                     <?= form_input($firstname) ?>
                 </p>
                 <p>
-                    <label>Apellido Paterno: <span class="mandatory">(*)</span></label>
-                    <?php $lastname1 = array('name' => 'lastname1', 'id' => 'lastname', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el primer apellido', 'value' => $persona->ApePaterno); ?>
+                    <label>Apellido Paterno: <span class="required">(*)</span></label>
+                    <?php $lastname1 = array('name' => 'lastname1', 'id' => 'lastname', 'size' => 15, 'class' => 'required', 'title' => 'Por favor ingrese el primer apellido', 'value' => $persona->ApePaterno); ?>
                     <?= form_input($lastname1) ?>
                 </p>
                 <p>
-                    <label>Apellido Materno: <span class="mandatory">(*)</span></label>
-                    <?php $lastname2 = array('name' => 'lastname2', 'id' => 'lastname2', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el segundo apellido', 'value' => $persona->ApeMaterno); ?>
+                    <label>Apellido Materno: <span class="required">(*)</span></label>
+                    <?php $lastname2 = array('name' => 'lastname2', 'id' => 'lastname2', 'size' => 15, 'class' => 'required', 'title' => 'Por favor ingrese el segundo apellido', 'value' => $persona->ApeMaterno); ?>
                     <?= form_input($lastname2) ?>
                 </p>
                 <p>
@@ -96,18 +98,18 @@
                     <?= form_input($phone) ?>
                 </p>
                 <p>
-                    <label>Email: <span class="mandatory">(*)</span></label>
-                    <?php $email = array('name' => 'email', 'id' => 'm', 'size' => 15, 'class' => 'mandatory email', 'title' => 'Por favor ingrese un email valido.', 'value' => $persona->Email); ?>
+                    <label>Email: <span class="required">(*)</span></label>
+                    <?php $email = array('name' => 'email', 'id' => 'm', 'size' => 15, 'class' => 'required email', 'title' => 'Por favor ingrese un email valido.', 'value' => $persona->Email); ?>
                     <?= form_input($email) ?>
                 </p
                 <p>
-                    <label>DNI: <span class="mandatory">(*)</span></label>
-                    <?php $dni = array('name' => 'dni', 'id' => 'dni', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese su DNI', 'maxlength' => '8', 'value' => $persona->DNI); ?>
+                    <label>DNI: <span class="required">(*)</span></label>
+                    <?php $dni = array('name' => 'dni', 'id' => 'dni', 'size' => 15, 'class' => 'required', 'title' => 'Por favor ingrese su DNI', 'maxlength' => '8', 'value' => $persona->DNI); ?>
                     <?= form_input($dni) ?>
                 </p>
                 <p>
                     <label>Fecha de Nacimiento:</label>
-                    <?php $birthdate = array('name' => 'birthdate', 'id' => 'birthdate', 'size' => 15, 'class' => 'mandatory dateISO', 'title' => 'Por favor ingrese una fecha', 'value' => date($persona->FechNac)); ?>
+                    <?php $birthdate = array('name' => 'birthdate', 'id' => 'birthdate', 'size' => 15, 'class' => 'required dateISO', 'title' => 'Por favor ingrese una fecha', 'value' => date($persona->FechNac)); ?>
                     <?= form_input($birthdate) ?>
                 </p>
 
@@ -121,22 +123,22 @@
                 <?= form_hidden($idUsuario); ?>
 
                 <p>
-                    <label>Usuario: <span class="mandatory">(*)</span></label>
-                    <?php $username = array('name' => 'username', 'id' => 'u', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el nombre de usuario', 'value' => $usuario->Nombre); ?>
+                    <label>Usuario: <span class="required">(*)</span></label>
+                    <?php $username = array('name' => 'username', 'id' => 'u', 'size' => 15, 'class' => 'required', 'title' => 'Por favor ingrese el nombre de usuario', 'value' => $usuario->Nombre); ?>
                     <?= form_input($username) ?>
                 </p>
                 <p>
-                    <label>Password: <span class="mandatory">(*)</span></label>
-                    <?php $password = array('name' => 'password', 'id' => 'password', 'size' => 15, 'class' => 'mandatory', 'disabled' => 'disabled', 'minlength' => '5', 'title' => 'Por favor ingrese un password (al menos 5 letras) ', 'value' => 'xxxxxxxx'); ?>
+                    <label>Password: <span class="required">(*)</span></label>
+                    <?php $password = array('name' => 'password', 'id' => 'password', 'size' => 15, 'class' => 'required', 'disabled' => 'disabled', 'minlength' => '5', 'title' => 'Por favor ingrese un password (al menos 5 letras) ', 'value' => 'xxxxxxxx'); ?>
                     <?= form_password($password) ?>
                 </p>
                 <p>
-                    <label>Repetir Password: <span class="mandatory">(*)</span></label>
+                    <label>Repetir Password: <span class="required">(*)</span></label>
                     <?php $passwordrepeat = array('name' => 'passwordrepeat', 'id' => 'pr', 'size' => 15, 'equalTo' => '#password', 'disabled' => 'disabled', 'title' => 'Por favor ingrese el mismo valor que el campo password', 'value' => 'xxxxxxxx'); ?>
                     <?= form_password($passwordrepeat) ?>
                 </p>
                 <p>
-                    <label>Perfil <span class="mandatory">(*)</span></label>
+                    <label>Perfil <span class="required">(*)</span></label>
                     <?= form_dropdown('perfil_id', $perfiles, $usuario->IdPerfil) ?>				
                 </p>
                 <p>  
@@ -146,11 +148,11 @@
                     ?>
                 </p>
                                 <p>
-                    <label>Jerarquia <span class="mandatory">(*)</span></label>
+                    <label>Jerarquia <span class="required">(*)</span></label>
                     <?= form_dropdown('jerarquia_id', $jerarquias,$usuario->IdJerarquia-1) ?>
                 </p>	
                 <p>
-                    <label>Ubigeo <span class="mandatory">(*)</span></label>
+                    <label>Ubigeo <span class="required">(*)</span></label>
                     <?= form_dropdown('ubigeo_id', $ubigeo, $usuario->IdUbigeo) ?>
                 </p>	
             </fieldset>

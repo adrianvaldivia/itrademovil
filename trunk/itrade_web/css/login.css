@@ -73,6 +73,10 @@ height: 50px;
   /*  height: 10em;*/
 	border: 0;
 }
+img{
+
+	border: 0;
+}
 #content{
     height: 100%;
     max-height: 250px;
@@ -139,4 +143,26 @@ width: 70px;
 display:inline;
 }
 th {
+}
+
+table.usuario td{
+text-align:right;
+}
+
+input.error { 
+	border: 1px solid red; 
+}
+
+label.error {
+	padding-left: 16px;
+	margin-left: .3em;
+	color: red;
+	font-size: 10px;
+}
+
+label.valid {
+	display: block;
+	width: 16px;
+	height: 16px;
+
 }
