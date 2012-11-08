@@ -20,6 +20,7 @@
         <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
         <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+		<script src="<?php echo base_url() ?>js/jquery.validate.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             //<![CDATA[
@@ -32,7 +33,7 @@
             $(function() {
                 $( "#fechaini" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
                 $( "#fechafin" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
-                
+                $("#userForm").validate();
             });
         </script>
         <div id="header">
@@ -77,14 +78,14 @@
                 <fieldset class="left">
                     <legend>Datos Generales</legend>
                     <p>
-                    		<label>Periodo: <span class="mandatory">(*)</span> </label>
+                    		<label>Periodo: <span class="required">(*)</span> </label>
                     		<?$js = 'disabled="disabled";'// onChange="some_function();"';?>
                     		<?= form_dropdown('idperiodo', $periodos,$meta->IdPeriodo-1,$js); ?><br />
                     		<span style="font-size: 10px;">Los periodos no son editables.<span>
                     </p>
                     <p>
-                        <label>Monto: <span class="mandatory">(*)</span></label>
-                        <?php $monto = array('name' => 'monto', 'id' => 'monto', 'size' => 15, 'class' => 'mandatory', 'title' => 'Por favor ingrese el monto', 'value' => $meta->Monto); ?>
+                        <label>Monto: <span class="required">(*)</span></label>
+                        <?php $monto = array('name' => 'monto', 'id' => 'monto', 'size' => 15, 'class' => 'required number', 'title' => 'Por favor ingrese el monto', 'value' => $meta->Monto); ?>
                         <?= form_input($monto) ?>
                     </p>
 

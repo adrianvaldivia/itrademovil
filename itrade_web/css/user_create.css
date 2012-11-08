@@ -24,7 +24,7 @@ fieldset p {
     margin-bottom:20px;
 }
 
-span.mandatory{
+span.required{
     color:red;
     font-size: 10px;
     vertical-align: text-top;
