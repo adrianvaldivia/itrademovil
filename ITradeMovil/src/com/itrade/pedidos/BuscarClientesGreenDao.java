@@ -50,6 +50,7 @@ import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoLinea;
 import com.itrade.model.PedidoLineaDao;
+import com.itrade.model.UsuarioDao;
 import com.itrade.R;
 
 
@@ -63,6 +64,7 @@ public class BuscarClientesGreenDao extends ListActivity{
     private ElementoListaDao elementoListaDao;
     private PedidoDao pedidoDao;
     private PedidoLineaDao pedidoLineaDao;
+    private UsuarioDao usuarioDao;
 
 //    private Cursor cursor;
     private Cursor cursorElementoLista;
@@ -102,6 +104,7 @@ public class BuscarClientesGreenDao extends ListActivity{
         elementoListaDao = daoSession.getElementoListaDao();
         pedidoDao = daoSession.getPedidoDao();
         pedidoLineaDao=daoSession.getPedidoLineaDao();
+        usuarioDao=daoSession.getUsuarioDao();
         //posible error al borrar
         elementoListaDao.deleteAll();
         
@@ -415,6 +418,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	}
 	
 	private void sincronizarBaseSubida() {
+		usuarioDao.deleteAll();
 		long idPedido=0;
 		long idPedidoLocal;
 		int tam=0;

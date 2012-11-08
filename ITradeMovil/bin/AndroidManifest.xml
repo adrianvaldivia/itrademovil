@@ -59,7 +59,10 @@
         <activity android:label="@string/app_name"
             android:name=".pedidos.BuscarProspectosGreenDao" android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:label="@string/app_name" android:name=".pedidos.MiMeta"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.SimpleCalendarViewActivity"/>
+        <activity android:label="@string/app_name"
+            	  android:theme="@android:style/Theme.NoTitleBar"	
+            	  android:configChanges="keyboardHidden|orientation" 
+            	  android:name=".pedidos.SimpleCalendarViewActivity"/>
         <activity android:label="@string/app_name" android:name=".pedidos.MiUbicacionActivity"/>
         <activity android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar"

@@ -103,7 +103,7 @@ public class ExtendedItemizedIconOverlay<Item extends OverlayItem> extends Itemi
 
 			OverlayItem vItem = new OverlayItem("PROSPECTO","PROSPECTO", mGeoPoint);
 			
-			Drawable newMarker = mContext.getResources().getDrawable(R.drawable.marker);
+			Drawable newMarker = mContext.getResources().getDrawable(R.drawable.bluemarker3);
 			
 			vItem.setMarker(newMarker);
 						
