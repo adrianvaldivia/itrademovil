@@ -186,6 +186,7 @@
                 android:layout_marginLeft="1dp"
                 android:hint="Ingrese el Nombre"
                 android:layout_marginTop="1dp"
+                android:inputType="textNoSuggestions"
                 android:ems="10" />
 
         </LinearLayout>
@@ -201,6 +202,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Ingrese Apellido Paterno"
                 android:layout_marginTop="1dp"
+                android:inputType="textNoSuggestions"
                 android:ems="10" />
 
         </LinearLayout>
@@ -216,6 +218,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Ingrese Apellido Materno"
                 android:layout_marginTop="1dp"
+                android:inputType="textNoSuggestions"
                 android:ems="10" />
 
         </LinearLayout>
