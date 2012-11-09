@@ -284,9 +284,8 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
       	  	  contadorErrores==2)//con cero o un errores aumento el contador
       	  			this.contadorErrores++;            	
           if(contadorErrores==1||contadorErrores==2)
-            		Toast.makeText(UbicacionProspectoActivity.this,"Encienda el GPS," +
-            				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
-
+        	  Toast.makeText(UbicacionProspectoActivity.this,"Asegurese de tener el " +
+        	  		"GPS Encendido", Toast.LENGTH_LONG).show();            	
       }
 //        if(isavailable) {
         if(gpsLocationManager!=null) {	
@@ -308,7 +307,8 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
             }
             else{
             	this.contadorErrores++;
-            	Toast.makeText(UbicacionProspectoActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
+            	Toast.makeText(UbicacionProspectoActivity.this,"Encienda el GPS," +
+        				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
             }
             	
         }        	
