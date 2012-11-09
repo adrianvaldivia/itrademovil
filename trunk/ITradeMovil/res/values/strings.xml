@@ -36,6 +36,6 @@
     <string name="asunto">Asunto</string>
     <string name="lugar">Lugar</string>
     <string name="descripcion">Descripción</string>
+    <string name="nombreproductobuscar">Nombre del Producto</string>
     <string name="hora_eveto">De 8:00 a 20:00</string>
-    
 </resources>
