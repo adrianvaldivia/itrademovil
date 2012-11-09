@@ -283,7 +283,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 //          	if(markerOverlay.size()>0)
 //          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
           	if(contadorErrores==1||contadorErrores==2)
-          		Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS, y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
+          		Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS," +
+          				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
 
       }
 //        if(isavailable) {
@@ -296,7 +297,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                 if (latitude!=0){
                 	GeoPoint p = new GeoPoint((int) (latitude * 1000000), (int) (longitude * 1000000));
                 	posicionActualOverlay.setLocation(p);
-                	Toast.makeText(UbicacionCheckInActivity.this,"capture la posicion", Toast.LENGTH_SHORT).show();
+//                	Toast.makeText(UbicacionCheckInActivity.this,"capture la posicion", Toast.LENGTH_SHORT).show();
                 	if(primeraVez){
                 		mapController.setCenter(p);
                 		mapController.setZoom(16);
