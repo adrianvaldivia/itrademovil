@@ -279,12 +279,13 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 		else
 			isavailable=false;
       if(!isavailable) {
-          	this.contadorErrores++;
-//          	if(markerOverlay.size()>0)
-//          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
-          	if(contadorErrores<=MAXERRORES)
-          		Toast.makeText(UbicacionProspectoActivity.this,"Encienda el GPS," +
-          				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
+    	  if (contadorErrores==0||
+      	  	  contadorErrores==1||
+      	  	  contadorErrores==2)//con cero o un errores aumento el contador
+      	  			this.contadorErrores++;            	
+          if(contadorErrores==1||contadorErrores==2)
+            		Toast.makeText(UbicacionProspectoActivity.this,"Encienda el GPS," +
+            				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
 
       }
 //        if(isavailable) {
