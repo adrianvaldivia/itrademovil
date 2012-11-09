@@ -73,7 +73,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 //	private final Double  TOLERANCIA = 0.0004;
 	private final Double  TOLERANCIA = 0.004;
 	private final Double  FACTOR = 1000000.0;
-	private final int  MAXERRORES = 4;
+	private final int  MAXERRORES = 5;
 	PopupWindow m_pw;
 	public int j=0;
     private MapView mOsmv;
@@ -276,10 +276,13 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 		else
 			isavailable=false;
       if(!isavailable) {
-          	this.contadorErrores++;
+    	  	if (contadorErrores==0||
+    	  		contadorErrores==1||
+    	  		contadorErrores==2)//con cero o un errores aumento el contador
+    	  		this.contadorErrores++;          	
 //          	if(markerOverlay.size()>0)
 //          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
-          	if(contadorErrores<=MAXERRORES)
+          	if(contadorErrores==1||contadorErrores==2)
           		Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS, y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
 
       }
@@ -293,6 +296,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                 if (latitude!=0){
                 	GeoPoint p = new GeoPoint((int) (latitude * 1000000), (int) (longitude * 1000000));
                 	posicionActualOverlay.setLocation(p);
+                	Toast.makeText(UbicacionCheckInActivity.this,"capture la posicion", Toast.LENGTH_SHORT).show();
                 	if(primeraVez){
                 		mapController.setCenter(p);
                 		mapController.setZoom(16);
@@ -573,21 +577,6 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	@Override
 	public void onBackPressed() {
 		UbicacionCheckInActivity.super.onBackPressed();
-//	    new AlertDialog.Builder(this)
-//        .setTitle("Confirmar Ubicacion")
-//        .setMessage("Desea confirmar la Ubicacion?")
-//        .setNegativeButton("No", null)
-//        .setPositiveButton("Si", new OnClickListener() {
-//
-//            public void onClick(DialogInterface arg0, int arg1) {
-//            	if (markerOverlay.size()>0){
-//            		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
-//            		UbicacionCheckInActivity.super.onBackPressed();
-//            	}
-//            	else
-//            		Toast.makeText(UbicacionCheckInActivity.this,"Primero Debe seleccionar una Ubicacion", Toast.LENGTH_LONG).show();
-//            }
-//        }).create().show();	
 	}
 	@Override
 	public void finish(){
