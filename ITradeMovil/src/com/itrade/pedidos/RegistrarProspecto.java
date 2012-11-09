@@ -33,13 +33,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 
+
 public class RegistrarProspecto extends Activity implements OnClickListener{
-    /** Called when the activity is first created. */
+  
+	/** Called when the activity is first created. */
 	private static final int REQUEST_CODE=10;
 	
 	EmailValidator validador = new EmailValidator();
@@ -73,6 +74,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
  
 	int ingresarfecha=0;
 	float anhos=0;
+	int days=0;
 	
 	static final int DATE_DIALOG_ID = 999;
 /******************************************************/
@@ -208,22 +210,10 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				ingresarfecha=1;
+				
 				showDialog(DATE_DIALOG_ID);
 				
-			//	Date b1 = new Date(yearactual, monthactual, dayactual); // fecha hoy
-			//	Date b2 = new Date(year, month, day);	// fecha ingresada
-				Calendar date1 = Calendar.getInstance();
-		        Calendar date2 = Calendar.getInstance();
-
-		        date1.clear();
-		        date1.set(yearactual, monthactual, dayactual);
-		        date2.clear();
-		        date2.set(year, month, day);
-
-		        long diff = date2.getTimeInMillis() - date1.getTimeInMillis();
-
-		        anhos = (float) diff / (24 * 60 * 60 * 1000 * 365);
-		        Log.d("XXXX", "Cuantos son "+anhos+" "+date1.getTime()+" "+date2.getTime());
+				
 			}
 		});
     	
@@ -251,17 +241,17 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     			bandera = validador.validate(correo.getText().toString());
     			
     			
-    			if ((!ruc.getText().toString().trim().equals("")) &&
-                  (!rzsocial.getText().toString().trim().equals("")) &&
-                  (!direcc.getText().toString().trim().equals("")) &&
-                  (!telefperson.getText().toString().trim().equals("")) &&
-                  (!dni.getText().toString().trim().equals("")) &&
-                  (!nombre.getText().toString().trim().equals("")) &&
-                  (!apellidopater.getText().toString().trim().equals("")) &&
-                  (!fechanac.getText().toString().trim().equals("")) &&
-                  (!correo.getText().toString().trim().equals("")) &&
-                  (!apellidomater.getText().toString().trim().equals("")) &&
-                  (!cantidad.getText().toString().trim().equals(""))) 
+    			if ((ruc.getText().toString().trim().equals("")) ||
+                  (rzsocial.getText().toString().trim().equals("")) ||
+                  (direcc.getText().toString().trim().equals("")) ||
+                  (telefperson.getText().toString().trim().equals("")) ||
+                  (dni.getText().toString().trim().equals("")) ||
+                  (nombre.getText().toString().trim().equals("")) ||
+                  (apellidopater.getText().toString().trim().equals("")) ||
+                  (fechanac.getText().toString().trim().equals("")) ||
+                  (correo.getText().toString().trim().equals("")) ||
+                  (apellidomater.getText().toString().trim().equals("")) ||
+                  (cantidad.getText().toString().trim().equals(""))) 
             		  
          {             
                     		
@@ -281,8 +271,18 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         				Toast.makeText(RegistrarProspecto.this, "Por Favor Ingrese una Fecha Válida", Toast.LENGTH_SHORT).show();
         		}
         				else 
-        				{
-        					if (anhos == 1000)
+        				{ /***********************************************/
+        					Date b1 = new Date(yearactual, monthactual, dayactual); // fecha hoy
+        					Date b2 = new Date(year, month, day);	// fecha ingresada
+        					
+        					long diferencia= (b1.getTime() - b2.getTime());
+
+        			        String dias = String.valueOf(diferencia/(1000*60*60*24));
+        				    anhos = ((int)(Integer.parseInt(dias)/365));
+        			        Log.d("DDD", "Los dias son "+dias+" "+anhos);
+        			        
+        			       /**************************************************/ 
+        					if (anhos < 17)
         	        		{
         	        				Toast.makeText(RegistrarProspecto.this, "Su posible cliente debe ser mayor a 18 años", Toast.LENGTH_SHORT).show();
         	        		}
@@ -531,25 +531,25 @@ public class ListenerTouchViewFlipper extends Activity implements View.OnTouchLi
 			day = selectedDay;
  
 			// set selected date into textview
-			if ((month<10) && (day<10)) 
+			if ((month<9) && (day<10)) 
 			{
 			fechanac.setText(new StringBuilder().append(year)
 					   .append("-0").append(month + 1).append("-0").append(day)
 					   .append(" "));
 			}
-			if ((month>9) && (day>9))
+			if ((month>8) && (day>9))
 			{
 				fechanac.setText(new StringBuilder().append(year)
 						   .append("-").append(month + 1).append("-").append(day)
 						   .append(" "));
 			}
-			if ((month>9) && (day<10))
+			if ((month>8) && (day<10))
 			{
 				fechanac.setText(new StringBuilder().append(year)
 						   .append("-").append(month + 1).append("-0").append(day)
 						   .append(" "));
 			}
-			if ((month<10) && (day>9))
+			if ((month<9) && (day>9))
 			{
 				fechanac.setText(new StringBuilder().append(year)
 						   .append("-0").append(month + 1).append("-").append(day)
