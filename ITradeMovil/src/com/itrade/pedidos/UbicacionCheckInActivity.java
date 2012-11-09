@@ -73,6 +73,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 //	private final Double  TOLERANCIA = 0.0004;
 	private final Double  TOLERANCIA = 0.004;
 	private final Double  FACTOR = 1000000.0;
+	private final int  MAXERRORES = 4;
 	PopupWindow m_pw;
 	public int j=0;
     private MapView mOsmv;
@@ -258,7 +259,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    mOsmv.invalidate();       	  
 	    mHandler.removeCallbacks(Timer_Tick);
 	    mHandler.postDelayed(this, 4000);
-	    if (contadorErrores==20){
+	    if (contadorErrores==MAXERRORES){
 		    if (mHandler!=null)
 		    	mHandler.removeCallbacks(Timer_Tick);  	
 	    }
@@ -278,7 +279,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
           	this.contadorErrores++;
 //          	if(markerOverlay.size()>0)
 //          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
-          	Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS, y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
+          	if(contadorErrores<=MAXERRORES)
+          		Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS, y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
 
       }
 //        if(isavailable) {
@@ -384,8 +386,11 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                                         
         
         ///////////////////////////////////////////////////////////////////////timer
-        mHandler.removeCallbacks(Timer_Tick);
-	    mHandler.postDelayed(Timer_Tick, 30000); //cada 30 segundos connsulta a la BD
+//        if (contadorErrores<=10){
+        	mHandler.removeCallbacks(Timer_Tick);
+    	    mHandler.postDelayed(Timer_Tick, 30000); //cada 30 segundos connsulta a la BD
+//        }
+        
 		//////////////////////////////////////////////////////////// fin timer
 	    primeraVez=true;
 	    if(displayGpsStatus()){

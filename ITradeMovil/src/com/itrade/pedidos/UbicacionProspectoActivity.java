@@ -73,6 +73,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 //	private final Double  TOLERANCIA = 0.0004;
 	private final Double  TOLERANCIA = 0.004;
 	private final Double  FACTOR = 1000000.0;
+	private final int  MAXERRORES = 4;
 	PopupWindow m_pw;
 	public int j=0;
     private MapView mOsmv;
@@ -261,7 +262,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 	    mOsmv.invalidate();       	  
 	    mHandler.removeCallbacks(Timer_Tick);
 	    mHandler.postDelayed(this, 4000);
-	    if (contadorErrores==20){
+	    if (contadorErrores==MAXERRORES){
 		    if (mHandler!=null)
 		    	mHandler.removeCallbacks(Timer_Tick);  	
 	    }
@@ -269,7 +270,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 		
 	};
 	      
-	private void obtenerUbicacion() {
+	private void obtenerUbicacion() {//metodo que ejecuta el timer cada cierto tiempo
 		
 		boolean isavailable;
 		if (boolHayGPS){
@@ -281,7 +282,9 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
           	this.contadorErrores++;
 //          	if(markerOverlay.size()>0)
 //          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
-          	Toast.makeText(UbicacionProspectoActivity.this,"Encienda el GPS, y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
+          	if(contadorErrores<=MAXERRORES)
+          		Toast.makeText(UbicacionProspectoActivity.this,"Encienda el GPS," +
+          				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
 
       }
 //        if(isavailable) {
