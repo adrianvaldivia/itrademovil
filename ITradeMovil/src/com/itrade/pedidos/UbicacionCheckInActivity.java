@@ -283,9 +283,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 //          	if(markerOverlay.size()>0)
 //          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
           	if(contadorErrores==1||contadorErrores==2)
-          		Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS," +
-          				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();
-
+          		Toast.makeText(UbicacionCheckInActivity.this,"No se detecta el GPS", Toast.LENGTH_LONG).show();
       }
 //        if(isavailable) {
         if(gpsLocationManager!=null) {	
@@ -308,7 +306,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             }
             else{
             	this.contadorErrores++;
-            	Toast.makeText(UbicacionCheckInActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
+            	Toast.makeText(UbicacionCheckInActivity.this,"Encienda el GPS," +
+          				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();            	
             }
             	
         }
