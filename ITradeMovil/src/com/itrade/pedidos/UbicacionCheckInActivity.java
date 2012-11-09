@@ -311,7 +311,11 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             	Toast.makeText(UbicacionCheckInActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
             }
             	
-        }        	
+        }
+        else{
+        	this.contadorErrores++;
+        	Toast.makeText(UbicacionCheckInActivity.this,"Error GPS", Toast.LENGTH_LONG).show();
+        }
 	}
 
 	 private Boolean displayGpsStatus() {  
