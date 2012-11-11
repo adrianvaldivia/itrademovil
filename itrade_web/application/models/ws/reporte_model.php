@@ -908,5 +908,142 @@ class Reporte_model extends CI_Model {
 	}
 	
 	
+	public function reporte_rechazo_sinc($anho,$idjerarquia,$idubigeo,$id){
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		switch($idjerarquia){
+		case 1:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month,
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		
+		COUNT(`Pedido`.`IdPedido`) AS CANTPEDIDO,
+		SUM(`Pedido`.`MontoTotalPedido`) AS VENTAPEDIDO,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Pais`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month,
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		case 2:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month, 
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		
+		COUNT(`Pedido`.`IdPedido`) AS CANTPEDIDO,
+		SUM(`Pedido`.`MontoTotalPedido`) AS VENTAPEDIDO,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Departamento`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month, 
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,
+		`D`.`Pais`, 
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		case 3:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month, 
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		
+		COUNT(`Pedido`.`IdPedido`) AS CANTPEDIDO,
+		SUM(`Pedido`.`MontoTotalPedido`) AS VENTAPEDIDO,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Distrito`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month, 
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		
+		}
+		//echo $this->db->last_query();
+		return $query->result();
+	}
+	
+	
 }
 ?>
