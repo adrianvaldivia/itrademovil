@@ -63,14 +63,18 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 				Log.d(tag, "Calendar Instance:= " + "Month: " + month + " " + "Year: " + year);
 
 				selectedDayMonthYearButton = (Button) this.findViewById(R.id.selectedDayMonthYear);
-				selectedDayMonthYearButton.setText("Selected: ");
+				selectedDayMonthYearButton.setText("Seleccion: ");
 
 				prevMonth = (ImageView) this.findViewById(R.id.prevMonth);
 				prevMonth.setOnClickListener(this);
 
 				currentMonth = (Button) this.findViewById(R.id.currentMonth);
-				currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
-
+				//Cambios chichan
+//				currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
+				String strMes =(String) dateFormatter.format(dateTemplate, _calendar.getTime());
+				String resul= this.traduceMes(strMes);
+				currentMonth.setText(resul);
+				// fin cambios chichan
 				nextMonth = (ImageView) this.findViewById(R.id.nextMonth);
 				nextMonth.setOnClickListener(this);
 
@@ -91,7 +95,12 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 			{
 				adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
 				_calendar.set(year, month - 1, _calendar.get(Calendar.DAY_OF_MONTH));
-				currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
+				//cambios chichan
+//				currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));	
+				String strMes =(String) dateFormatter.format(dateTemplate, _calendar.getTime());
+				String resul= this.traduceMes(strMes);
+				currentMonth.setText(resul);
+				//fin cambios chichan
 				adapter.notifyDataSetChanged();
 				calendarView.setAdapter(adapter);
 			}
@@ -145,8 +154,8 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 
 				private final List<String> list;
 				private static final int DAY_OFFSET = 1;
-				private final String[] weekdays = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-				private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+				private final String[] weekdays = new String[]{"Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"};
+				private final String[] months = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"};
 				private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 				private final int month, year;
 				private int daysInMonth, prevMonthDays;
@@ -156,6 +165,7 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 				private TextView num_events_per_day;
 				private final HashMap eventsPerMonthMap;
 				private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
+				private final SimpleDateFormat dateFormatter2 = new SimpleDateFormat("yyy-MM-dd");
 
 				// Days in Current Month
 				public GridCellAdapter(Context context, int textViewResourceId, int month, int year)
@@ -372,7 +382,15 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 
 						// Set the Day GridCell
 						gridcell.setText(theday);
-						gridcell.setTag(theday + "-" + themonth + "-" + theyear);
+
+						//inicio camnbios chichan
+						String strMonth="";						
+						strMonth=convierteMesaNumero(themonth);
+						
+						gridcell.setTag(theyear + "-" + strMonth + "-" + theday);
+						//fin cambios chichan
+//						gridcell.setTag(theday + "-" + themonth + "-" + theyear);
+																	
 						Log.d(tag, "Setting GridCell " + theday + "-" + themonth + "-" + theyear);
 
 						if (day_color[1].equals("GREY"))
@@ -389,6 +407,7 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 							}
 						return row;
 					}
+
 				public void onClick(View view)
 					{
 						String date_month_year = (String) view.getTag();
@@ -401,7 +420,7 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 						//
 						try
 							{
-								Date parsedDate = dateFormatter.parse(date_month_year);
+								Date parsedDate = dateFormatter2.parse(date_month_year);
 								Log.d(tag, "Parsed Date: " + parsedDate.toString());
 
 							}
@@ -428,6 +447,74 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 					{
 						return currentWeekDay;
 					}
-			}
+			}//fin del inner class
+		
+		private String convierteMesaNumero(String themonth) {
+			// TODO Auto-generated method stub
+			String resul="";
+			if (themonth.compareTo("Enero")==0)
+				resul="01";
+			if (themonth.compareTo("Febrero")==0)
+				resul="02";
+			if (themonth.compareTo("Marzo")==0)
+				resul="03";
+			if (themonth.compareTo("Abril")==0)
+				resul="04";
+			if (themonth.compareTo("Mayo")==0)
+				resul="05";
+			if (themonth.compareTo("Junio")==0)
+				resul="06";
+			if (themonth.compareTo("Julio")==0)
+				resul="07";
+			if (themonth.compareTo("Agosto")==0)
+				resul="08";
+			if (themonth.compareTo("Setiembre")==0)
+				resul="09";
+			if (themonth.compareTo("Octubre")==0)
+				resul="10";
+			if (themonth.compareTo("Noviembre")==0)
+				resul="11";
+			if (themonth.compareTo("Diciembre")==0)
+				resul="12";
+			return resul;
+		}
+		private String traduceMes(String fecha) {
+			int tam=fecha.length();
+			String anhio=""+fecha;
+			anhio=" "+anhio.substring(tam-4, tam);			
+			String themonth=""+fecha;
+			themonth=themonth.substring(0, tam-5);//5 por el espacio en blanco entre mes y anhio
+
+			
+			
+			
+			// TODO Auto-generated method stub
+			String resul="";
+			if (themonth.compareTo("January")==0)
+				resul="Enero"+anhio;
+			if (themonth.compareTo("February")==0)
+				resul="Febrero"+anhio;
+			if (themonth.compareTo("March")==0)
+				resul="Marzo"+anhio;
+			if (themonth.compareTo("April")==0)
+				resul="Abril"+anhio;
+			if (themonth.compareTo("May")==0)
+				resul="Mayo"+anhio;
+			if (themonth.compareTo("June")==0)
+				resul="Junio"+anhio;
+			if (themonth.compareTo("July")==0)
+				resul="Julio"+anhio;
+			if (themonth.compareTo("August")==0)
+				resul="Agosto"+anhio;
+			if (themonth.compareTo("September")==0)
+				resul="Setiembre"+anhio;
+			if (themonth.compareTo("October")==0)
+				resul="Octubre"+anhio;
+			if (themonth.compareTo("November")==0)
+				resul="Noviembre"+anhio;
+			if (themonth.compareTo("December")==0)
+				resul="Diciembre"+anhio;
+			return resul;
+		}
 	}
 

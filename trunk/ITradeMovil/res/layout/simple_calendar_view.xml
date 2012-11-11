@@ -141,11 +141,13 @@
                 android:src="@drawable/calendar_right_arrow_selector" />
 
         </LinearLayout>
-
-        <ImageView
+        <ImageView
             android:id="@+id/calendarheader"
-            android:layout_width="fill_parent"
+            android:layout_width="fill_parent"     
             android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
             android:src="@drawable/blue_bg_with_text" />
 
         <GridView
