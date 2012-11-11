@@ -37,10 +37,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class CrearPedido extends ListActivity{
+public class DetallePedido extends ListActivity{
 	DAOPedido daoPedido =null;
-	private Button button_agregarproducto;
-	private Button button_registrarpedido;
 	private TextView txt_nombre;
 	private TextView txt_ruc;
 	public Bundle bundle;
@@ -49,6 +47,7 @@ public class CrearPedido extends ListActivity{
 	public String apellidos="";
 	public int idcliente;
 	public long idusuario;
+	public Double monto;
 	public String pruebaPaso;
 	private static final int REQUEST_CODE=10;
 	List<PedidoLinea> listaPedidoLinea=new ArrayList<PedidoLinea>();
@@ -99,17 +98,16 @@ public class CrearPedido extends ListActivity{
         
         setListAdapter(adapterElementoLista);
         
-        setContentView(R.layout.crearpedidofusion);
+        setContentView(R.layout.detallepedidofusion);
 	    bundle = getIntent().getExtras();	
 		nombre = bundle.getString("nombre");
 		apellidos = bundle.getString("apellidos");
 		idcliente = bundle.getInt("idcliente");
 		idusuario = bundle.getLong("idusuario");
+		monto = bundle.getDouble("monto");
 //		guardarPedido();
         setTitle("iTrade - Crear Pedido");
 
-        button_agregarproducto = (Button) findViewById(R.id.buttonagregarproducto);
-        button_registrarpedido = (Button) findViewById(R.id.buttonregistrarpedido);
         txt_nombre = (TextView) findViewById(R.id.txtnombrecliente);
         txt_ruc = (TextView) findViewById(R.id.txtruccliente);
 
@@ -121,25 +119,6 @@ public class CrearPedido extends ListActivity{
 //        ListView lv = getListView(); 
 //        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
 
-	    button_agregarproducto.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-//				Toast.makeText(CrearPedido.this, "pruebaa", Toast.LENGTH_LONG).show();
-//				Bundle bundle = getIntent().getExtras();
-				listaPedidoLinea.clear();//posible error
-				Intent intent = new Intent(CrearPedido.this, BuscarProductos.class);
-				intent.putExtra("boolVer", 1);//booleano para ver o no ver el popup
-				intent.putExtra("idpedido", idpedido);
-				startActivityForResult(intent,REQUEST_CODE);	
-			}
-	 	});
-	    button_registrarpedido.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Toast.makeText(CrearPedido.this, "Pedido Registrado Exitosamente", Toast.LENGTH_LONG).show();
-				guardarPedido();
-				guardarDetallePedido();
-				CrearPedido.this.finish();
-			}
-	 	});
 
     }
 
@@ -154,13 +133,13 @@ public class CrearPedido extends ListActivity{
 	public List<String> Convierte(List<String> lis){
 		List<String> lista=new ArrayList<String>();
 		this.txt_nombre.setText(this.nombre);
-		this.txt_ruc.setText("Monto S/.");
+		this.txt_ruc.setText("Monto S/. "+monto);
 //		lista.add("Nombre: "+this.nombre);
 //		lista.add("RUC: "+this.apellidos);
 //		lista.add("Lista de Productos:");
 		return lista;
 	}
-	public List<String> ConvierteAlVolver(List<String> lis){
+	public List<String> ConvierteAlVolver(List<String> lis){//PROGRAMAR ACA
 		List<String> lista=new ArrayList<String>();
 		elementoListaDao.deleteAll();
 //		lista.add("Nombre: "+this.nombre);
@@ -201,7 +180,7 @@ public class CrearPedido extends ListActivity{
 	}
 
 	public void guardarPedido(){
-        daoPedido = new DAOPedido(CrearPedido.this);
+        daoPedido = new DAOPedido(DetallePedido.this);
         Pedido pedido= new Pedido();
         pedido.setIdCliente(idcliente);
         //procesaPedido();//obtiene el monto Total
@@ -224,14 +203,11 @@ public class CrearPedido extends ListActivity{
 
 	public void guardarDetallePedido(){
 		procesaPedidoLinea();
-        daoPedido = new DAOPedido(CrearPedido.this);
+        daoPedido = new DAOPedido(DetallePedido.this);
         for(int i=0;i<listaPedidoLinea.size();i++){
 //        	daoPedido.registrarPedidoLinea(listaPedidoLinea.get(i));
         	pedidoLineaDao.insert(listaPedidoLinea.get(i));        	
         }
-		if (haveNetworkConnection()){
-			sincronizarBaseSubida();
-		}
 	}
  
 	private void procesaPedidoLinea() {
@@ -273,48 +249,8 @@ public class CrearPedido extends ListActivity{
                 }
             }
     }
-	private boolean haveNetworkConnection() {
-	    boolean haveConnectedWifi = false;
-	    boolean haveConnectedMobile = false;
 
-	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-	    for (NetworkInfo ni : netInfo) {
-	        if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-	            if (ni.isConnected())
-	                haveConnectedWifi = true;
-	        if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-	            if (ni.isConnected())
-	                haveConnectedMobile = true;
-	    }
-	    return haveConnectedWifi || haveConnectedMobile;
-	}
-	private void sincronizarBaseSubida() {	
-		long idPedidoTemp=0;
-		long idPedidoLocal;
-		int tam=0;
-        daoPedido = new DAOPedido(CrearPedido.this);
-        List<Pedido> pedidosAux = pedidoDao.queryBuilder()
-        		.where(com.itrade.model.PedidoDao.Properties.NumVoucher.eq("N"))
-        		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
-        tam=pedidosAux.size();
-        for(int i=0;i<tam;i++){
-        	Pedido pedidoTemp=pedidosAux.get(i);
-        	pedidoTemp.setNumVoucher("A");;
-        	pedidoDao.deleteByKey(pedidoTemp.getId());
-        	pedidoDao.insert(pedidoTemp);
-        	idPedidoLocal=pedidoTemp.getId();
-        	idPedidoTemp=daoPedido.registrarPedido(pedidoTemp);//id de bd externa
-            List<PedidoLinea> pedidosLineaAux = pedidoLineaDao.queryBuilder()
-            		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idPedidoLocal))
-            		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
-            for(int j=0;j<pedidosLineaAux.size();j++){
-            	PedidoLinea pedidoLineaTemp=pedidosLineaAux.get(j);
-            	pedidoLineaTemp.setIdPedido(idPedidoTemp);//lo setteo con el Id de BD externa
-            	daoPedido.registrarPedidoLinea(pedidoLineaTemp);
-            }
-        }
-	}
+
 	@Override
 	protected void onDestroy() { 		
 		db.close();

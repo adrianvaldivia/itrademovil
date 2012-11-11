@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class BuscarPedidos extends ListActivity{
 	
     List<Pedido> listaPedido;  
     List<Pedido> listaPedidoOriginal;  
+    Pedido pedido= new Pedido();
 	List<String> lista = new ArrayList<String>();
 	DAOPedido daoPedido =null;
 //	private Button button_cearpedido;
@@ -159,6 +161,32 @@ public class BuscarPedidos extends ListActivity{
             }
         });        
     }
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+    	this.encuentraPedido(id);
+    	long longTemp=0;
+    	Cliente clienteTemp=null;
+    	if (pedido!=null){
+    		longTemp=longTemp+pedido.getIdCliente();
+    		clienteTemp= this.encuentraCliente(longTemp);
+    	}		
+    	Intent intent = new Intent(BuscarPedidos.this, DetallePedido.class);
+    	if (clienteTemp!=null && pedido!=null){
+    		intent.putExtra("nombre", clienteTemp.getRazon_Social());
+   	     	intent.putExtra("apellidos", clienteTemp.getRUC());
+   	     	intent.putExtra("idcliente", clienteTemp.getIdCliente());
+   	     	intent.putExtra("idusuario", idUsuario );
+   	     	intent.putExtra("monto", pedido.getMontoSinIGV() );
+   	     	startActivity(intent);
+    	}
+    }
+	private void encuentraPedido(long id) {
+		ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
+		pedido=pedidoDao.loadByRowId(elementoAux.getIdElemento());
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void buscarPedido() {
         String texto = editText.getText().toString();
         ArrayList<String> listaGenerica = encuentraIdCliente(texto);//lista con los Ids de los clientes encontrados

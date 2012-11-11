@@ -251,7 +251,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Cargando BD!", Toast.LENGTH_LONG).show();
+	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	cargarBaseLocal();	        	
 	                            break;
 	                           }
@@ -268,34 +268,34 @@ public class BuscarClientesGreenDao extends ListActivity{
 
 
 	private void cargarBaseLocal() {
-//        daoCliente = new DAOCliente(this);  
-//        listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-//        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-//        Double x;
-//		Double y;
-//		clienteDao.deleteAll();
-//		elementoListaDao.deleteAll();
-//        
-//		for(int i=0;i<listaCliente.size();i++){
-//			x=listaCliente.get(i).getLatitud();
-//			y=listaCliente.get(i).getLongitud();
-//			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
-//					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
-//					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
-//					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
-//					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
-//					listaCliente.get(i).getActivo());
-//			cliente2.setActivo("A");//util para el checkin del mapa
-//	        clienteDao.insert(cliente2);
-//	        long temp=0;
-////	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
-//	        temp=temp+i+1;//aca tambien habia error
-//			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
-//			elementoListaDao.insert(elemento);
-//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-//		}
-//        cursorElementoLista.requery();		
-//        guardaListaOriginal();
+        daoCliente = new DAOCliente(this);  
+        listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+        Double x;
+		Double y;
+		clienteDao.deleteAll();
+		elementoListaDao.deleteAll();
+        
+		for(int i=0;i<listaCliente.size();i++){
+			x=listaCliente.get(i).getLatitud();
+			y=listaCliente.get(i).getLongitud();
+			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
+					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
+					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
+					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
+					listaCliente.get(i).getActivo());
+			cliente2.setActivo("A");//util para el checkin del mapa
+	        clienteDao.insert(cliente2);
+	        long temp=0;
+//	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
+	        temp=temp+i+1;//aca tambien habia error
+			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
+			elementoListaDao.insert(elemento);
+	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+		}
+        cursorElementoLista.requery();		
+        guardaListaOriginal();
 	}
 
 	private void buscarCliente() {
@@ -344,14 +344,20 @@ public class BuscarClientesGreenDao extends ListActivity{
 		// TODO Auto-generated method stub
 	    new AlertDialog.Builder(this)
         .setTitle("Cerrar Sesion")
-        .setMessage("Debe tener conexion, para sincroninzar" +
-        		"los datos. Realmente Desea Cerrar la Sesion?")
+        .setMessage("Debe contar con Internet, para sincroninzar" +
+        		"los datos. Realmente desea cerrar la Sesion?")
         .setNegativeButton("No", null)
         .setNeutralButton("Solo Salir", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
 //            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
-        		BuscarClientesGreenDao.super.onBackPressed();
+        		if (haveNetworkConnection()){
+        			sincronizarBaseSubida();
+        		}
+        		else{
+                	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
+        		}
+    	  		BuscarClientesGreenDao.super.onBackPressed();
             	
             }
         })
@@ -359,6 +365,7 @@ public class BuscarClientesGreenDao extends ListActivity{
 
             public void onClick(DialogInterface arg0, int arg1) {
             		if (haveNetworkConnection()){
+            			usuarioDao.deleteAll();
             			sincronizarBaseSubida();
             		}
             		else{
@@ -418,7 +425,6 @@ public class BuscarClientesGreenDao extends ListActivity{
 	}
 	
 	private void sincronizarBaseSubida() {
-		usuarioDao.deleteAll();
 		long idPedido=0;
 		long idPedidoLocal;
 		int tam=0;

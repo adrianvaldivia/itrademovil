@@ -93,6 +93,9 @@ public class ExampleDaoGenerator {
 		prospecto.addIdProperty();
 		prospecto.addIntProperty("IdPersona");
 		prospecto.addIntProperty("IdProspecto");
+		prospecto.addStringProperty("Nombre");
+		prospecto.addStringProperty("ApePaterno");
+		prospecto.addStringProperty("ApeMaterno");
 		prospecto.addStringProperty("Razon_Social").notNull();
 		prospecto.addStringProperty("RUC");
 		prospecto.addDoubleProperty("Latitud");
