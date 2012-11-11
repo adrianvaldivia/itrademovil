@@ -364,8 +364,8 @@ public class BuscarClientesGreenDao extends ListActivity{
         .setPositiveButton("Si", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
-            		if (haveNetworkConnection()){
-            			usuarioDao.deleteAll();
+            		usuarioDao.deleteAll();
+            		if (haveNetworkConnection()){            			
             			sincronizarBaseSubida();
             		}
             		else{
