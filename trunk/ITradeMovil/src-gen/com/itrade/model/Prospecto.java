@@ -9,6 +9,9 @@ public class Prospecto {
     private Long id;
     private Integer IdPersona;
     private Integer IdProspecto;
+    private String Nombre;
+    private String ApePaterno;
+    private String ApeMaterno;
     /** Not-null value. */
     private String Razon_Social;
     private String RUC;
@@ -26,10 +29,13 @@ public class Prospecto {
         this.id = id;
     }
 
-    public Prospecto(Long id, Integer IdPersona, Integer IdProspecto, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
+    public Prospecto(Long id, Integer IdPersona, Integer IdProspecto, String Nombre, String ApePaterno, String ApeMaterno, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.IdProspecto = IdProspecto;
+        this.Nombre = Nombre;
+        this.ApePaterno = ApePaterno;
+        this.ApeMaterno = ApeMaterno;
         this.Razon_Social = Razon_Social;
         this.RUC = RUC;
         this.Latitud = Latitud;
@@ -62,6 +68,30 @@ public class Prospecto {
 
     public void setIdProspecto(Integer IdProspecto) {
         this.IdProspecto = IdProspecto;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
+
+    public String getApePaterno() {
+        return ApePaterno;
+    }
+
+    public void setApePaterno(String ApePaterno) {
+        this.ApePaterno = ApePaterno;
+    }
+
+    public String getApeMaterno() {
+        return ApeMaterno;
+    }
+
+    public void setApeMaterno(String ApeMaterno) {
+        this.ApeMaterno = ApeMaterno;
     }
 
     /** Not-null value. */

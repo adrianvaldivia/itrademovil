@@ -26,14 +26,17 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property IdPersona = new Property(1, Integer.class, "IdPersona", false, "ID_PERSONA");
         public final static Property IdProspecto = new Property(2, Integer.class, "IdProspecto", false, "ID_PROSPECTO");
-        public final static Property Razon_Social = new Property(3, String.class, "Razon_Social", false, "RAZON__SOCIAL");
-        public final static Property RUC = new Property(4, String.class, "RUC", false, "RUC");
-        public final static Property Latitud = new Property(5, Double.class, "Latitud", false, "LATITUD");
-        public final static Property Longitud = new Property(6, Double.class, "Longitud", false, "LONGITUD");
-        public final static Property Direccion = new Property(7, String.class, "Direccion", false, "DIRECCION");
-        public final static Property IdCobrador = new Property(8, Integer.class, "IdCobrador", false, "ID_COBRADOR");
-        public final static Property IdUsuario = new Property(9, Integer.class, "IdUsuario", false, "ID_USUARIO");
-        public final static Property Activo = new Property(10, String.class, "Activo", false, "ACTIVO");
+        public final static Property Nombre = new Property(3, String.class, "Nombre", false, "NOMBRE");
+        public final static Property ApePaterno = new Property(4, String.class, "ApePaterno", false, "APE_PATERNO");
+        public final static Property ApeMaterno = new Property(5, String.class, "ApeMaterno", false, "APE_MATERNO");
+        public final static Property Razon_Social = new Property(6, String.class, "Razon_Social", false, "RAZON__SOCIAL");
+        public final static Property RUC = new Property(7, String.class, "RUC", false, "RUC");
+        public final static Property Latitud = new Property(8, Double.class, "Latitud", false, "LATITUD");
+        public final static Property Longitud = new Property(9, Double.class, "Longitud", false, "LONGITUD");
+        public final static Property Direccion = new Property(10, String.class, "Direccion", false, "DIRECCION");
+        public final static Property IdCobrador = new Property(11, Integer.class, "IdCobrador", false, "ID_COBRADOR");
+        public final static Property IdUsuario = new Property(12, Integer.class, "IdUsuario", false, "ID_USUARIO");
+        public final static Property Activo = new Property(13, String.class, "Activo", false, "ACTIVO");
     };
 
 
@@ -52,14 +55,17 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'ID_PERSONA' INTEGER," + // 1: IdPersona
                 "'ID_PROSPECTO' INTEGER," + // 2: IdProspecto
-                "'RAZON__SOCIAL' TEXT NOT NULL ," + // 3: Razon_Social
-                "'RUC' TEXT," + // 4: RUC
-                "'LATITUD' REAL," + // 5: Latitud
-                "'LONGITUD' REAL," + // 6: Longitud
-                "'DIRECCION' TEXT," + // 7: Direccion
-                "'ID_COBRADOR' INTEGER," + // 8: IdCobrador
-                "'ID_USUARIO' INTEGER," + // 9: IdUsuario
-                "'ACTIVO' TEXT);"); // 10: Activo
+                "'NOMBRE' TEXT," + // 3: Nombre
+                "'APE_PATERNO' TEXT," + // 4: ApePaterno
+                "'APE_MATERNO' TEXT," + // 5: ApeMaterno
+                "'RAZON__SOCIAL' TEXT NOT NULL ," + // 6: Razon_Social
+                "'RUC' TEXT," + // 7: RUC
+                "'LATITUD' REAL," + // 8: Latitud
+                "'LONGITUD' REAL," + // 9: Longitud
+                "'DIRECCION' TEXT," + // 10: Direccion
+                "'ID_COBRADOR' INTEGER," + // 11: IdCobrador
+                "'ID_USUARIO' INTEGER," + // 12: IdUsuario
+                "'ACTIVO' TEXT);"); // 13: Activo
     }
 
     /** Drops the underlying database table. */
@@ -87,41 +93,56 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         if (IdProspecto != null) {
             stmt.bindLong(3, IdProspecto);
         }
-        stmt.bindString(4, entity.getRazon_Social());
+ 
+        String Nombre = entity.getNombre();
+        if (Nombre != null) {
+            stmt.bindString(4, Nombre);
+        }
+ 
+        String ApePaterno = entity.getApePaterno();
+        if (ApePaterno != null) {
+            stmt.bindString(5, ApePaterno);
+        }
+ 
+        String ApeMaterno = entity.getApeMaterno();
+        if (ApeMaterno != null) {
+            stmt.bindString(6, ApeMaterno);
+        }
+        stmt.bindString(7, entity.getRazon_Social());
  
         String RUC = entity.getRUC();
         if (RUC != null) {
-            stmt.bindString(5, RUC);
+            stmt.bindString(8, RUC);
         }
  
         Double Latitud = entity.getLatitud();
         if (Latitud != null) {
-            stmt.bindDouble(6, Latitud);
+            stmt.bindDouble(9, Latitud);
         }
  
         Double Longitud = entity.getLongitud();
         if (Longitud != null) {
-            stmt.bindDouble(7, Longitud);
+            stmt.bindDouble(10, Longitud);
         }
  
         String Direccion = entity.getDireccion();
         if (Direccion != null) {
-            stmt.bindString(8, Direccion);
+            stmt.bindString(11, Direccion);
         }
  
         Integer IdCobrador = entity.getIdCobrador();
         if (IdCobrador != null) {
-            stmt.bindLong(9, IdCobrador);
+            stmt.bindLong(12, IdCobrador);
         }
  
         Integer IdUsuario = entity.getIdUsuario();
         if (IdUsuario != null) {
-            stmt.bindLong(10, IdUsuario);
+            stmt.bindLong(13, IdUsuario);
         }
  
         String Activo = entity.getActivo();
         if (Activo != null) {
-            stmt.bindString(11, Activo);
+            stmt.bindString(14, Activo);
         }
     }
 
@@ -138,14 +159,17 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPersona
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdProspecto
-            cursor.getString(offset + 3), // Razon_Social
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // RUC
-            cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // Latitud
-            cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6), // Longitud
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // Direccion
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // IdCobrador
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // IdUsuario
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // Activo
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Nombre
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // ApePaterno
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // ApeMaterno
+            cursor.getString(offset + 6), // Razon_Social
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // RUC
+            cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8), // Latitud
+            cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9), // Longitud
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // Direccion
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // IdCobrador
+            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // IdUsuario
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // Activo
         );
         return entity;
     }
@@ -156,14 +180,17 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setIdPersona(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setIdProspecto(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setRazon_Social(cursor.getString(offset + 3));
-        entity.setRUC(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setLatitud(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));
-        entity.setLongitud(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));
-        entity.setDireccion(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setIdCobrador(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setIdUsuario(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setActivo(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setNombre(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setApePaterno(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setApeMaterno(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setRazon_Social(cursor.getString(offset + 6));
+        entity.setRUC(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setLatitud(cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8));
+        entity.setLongitud(cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9));
+        entity.setDireccion(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setIdCobrador(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setIdUsuario(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
+        entity.setActivo(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     /** @inheritdoc */
