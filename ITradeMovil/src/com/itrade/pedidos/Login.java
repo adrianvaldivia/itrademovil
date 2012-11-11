@@ -287,9 +287,9 @@ public class Login extends Activity {
 		/////////////////////////////////////////////Sincronizacion eventos
 		// hardcode de eventos
 		eventoDao.deleteAll();
-		Evento evento1=new Evento(null,1,"HardCreador","Reunion de Jefes","el parque","ninguna1","2012/11/07","6:OO PM","7:00 PM");
-		Evento evento2=new Evento(null,1,"HardCreador","Reunion de Vendedores","la calle","ninguna2","2012/11/07","8:OO PM","9:00 PM");
-		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012/11/08","4:OO PM","5:00 PM");
+		Evento evento1=new Evento(null,1,"HardCreador","Reunion de Jefes","el parque","ninguna1","2012-11-10","6:OO PM","7:00 PM");
+		Evento evento2=new Evento(null,1,"HardCreador","Reunion de Vendedores","la calle","ninguna2","2012-11-10","8:OO PM","9:00 PM");
+		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012-11-10","4:OO PM","5:00 PM");
 		eventoDao.insert(evento1);
 		eventoDao.insert(evento2);
 		eventoDao.insert(evento3);				
