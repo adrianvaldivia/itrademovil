@@ -351,12 +351,12 @@ public class BuscarClientesGreenDao extends ListActivity{
 
             public void onClick(DialogInterface arg0, int arg1) {
 //            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
-        		if (haveNetworkConnection()){
+//        		if (haveNetworkConnection()){
         			sincronizarBaseSubida();
-        		}
-        		else{
-                	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
-        		}
+//        		}
+//        		else{
+//                	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
+//        		}
     	  		BuscarClientesGreenDao.super.onBackPressed();
             	
             }
@@ -365,12 +365,12 @@ public class BuscarClientesGreenDao extends ListActivity{
 
             public void onClick(DialogInterface arg0, int arg1) {
             		usuarioDao.deleteAll();
-            		if (haveNetworkConnection()){            			
+//            		if (haveNetworkConnection()){            			
             			sincronizarBaseSubida();
-            		}
-            		else{
-                    	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
-            		}
+//            		}
+//            		else{
+//                    	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
+//            		}
         	  		BuscarClientesGreenDao.super.onBackPressed();
             }
         }).create().show();	
@@ -433,21 +433,30 @@ public class BuscarClientesGreenDao extends ListActivity{
         		.where(com.itrade.model.PedidoDao.Properties.NumVoucher.eq("N"))
         		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
         tam=pedidosAux.size();
-        for(int i=0;i<tam;i++){
-        	Pedido pedidoTemp=pedidosAux.get(i);
-        	pedidoTemp.setNumVoucher("A");;
-        	pedidoDao.deleteByKey(pedidoTemp.getId());
-        	pedidoDao.insert(pedidoTemp);
-        	idPedidoLocal=pedidoTemp.getId();
-        	idPedido=daoPedido.registrarPedido(pedidoTemp);//id de bd externa
-            List<PedidoLinea> pedidosLineaAux = pedidoLineaDao.queryBuilder()
-            		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idPedidoLocal))
-            		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
-            for(int j=0;j<pedidosLineaAux.size();j++){
-            	PedidoLinea pedidoLineaTemp=pedidosLineaAux.get(j);
-            	pedidoLineaTemp.setIdPedido(idPedido);//lo setteo con el Id de BD externa
-            	daoPedido.registrarPedidoLinea(pedidoLineaTemp);
-            }
+        if (tam>0){
+        	if (haveNetworkConnection()){
+                for(int i=0;i<tam;i++){
+                	Pedido pedidoTemp=pedidosAux.get(i);
+                	pedidoTemp.setNumVoucher("A");;
+                	pedidoDao.deleteByKey(pedidoTemp.getId());
+                	pedidoDao.insert(pedidoTemp);
+                	idPedidoLocal=pedidoTemp.getId();
+                	idPedido=daoPedido.registrarPedido(pedidoTemp);//id de bd externa
+                    List<PedidoLinea> pedidosLineaAux = pedidoLineaDao.queryBuilder()
+                    		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idPedidoLocal))
+                    		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
+                    for(int j=0;j<pedidosLineaAux.size();j++){
+                    	PedidoLinea pedidoLineaTemp=pedidosLineaAux.get(j);
+                    	pedidoLineaTemp.setIdPedido(idPedido);//lo setteo con el Id de BD externa
+                    	daoPedido.registrarPedidoLinea(pedidoLineaTemp);
+                    }
+                }        		
+        	}
+        	else
+            	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();
         }
+             
+        
+
 	}
 }

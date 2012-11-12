@@ -89,7 +89,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener,
         }
     };
 
-    private final EditText mText;
+    public final EditText mText;
     private final InputFilter mNumberInputFilter;
 
     private String[] mDisplayedValues;

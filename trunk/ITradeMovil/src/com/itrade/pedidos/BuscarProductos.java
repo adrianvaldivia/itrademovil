@@ -61,7 +61,7 @@ public class BuscarProductos extends ListActivity{
 	Producto producto= new Producto();
 	long idElemento;
 	public boolean boolBarraBusqueda=false;
-	public NumberPicker textView_Cantidad;
+	public NumberPicker picker_Cantidad;
 	public long idpedido;
 	Spinner spinner_categoria;
 	//Green Dao
@@ -190,7 +190,7 @@ public class BuscarProductos extends ListActivity{
          this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     	 View layout = inflater.inflate(R.layout.mypopup,
     	 (ViewGroup) findViewById(R.id.MyLinearLayout));
-    	 textView_Cantidad  = (NumberPicker) layout.findViewById(R.id.numberpickercantidad);
+    	 picker_Cantidad  = (NumberPicker) layout.findViewById(R.id.numberpickercantidad);
     	 m_pw = new PopupWindow( layout,  350,  250,  true);
     	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
     	 //fin del popup    	 
@@ -246,7 +246,9 @@ public class BuscarProductos extends ListActivity{
 	}
 
 	public void onButtonInPopup (View target) {
-		String strCantidad = ""+textView_Cantidad.mCurrent;
+//		String strCantidad = ""+picker_Cantidad.mCurrent;
+//		String strCantidad = ""+picker_Cantidad.getCurrent();
+		String strCantidad = ""+picker_Cantidad.mText.getText().toString();
 //	    String strCantidad = textView_Cantidad.getText().toString();
 	    Long idProductoAux=producto.getIdProducto();//cambios chichan antes getId();
 	    int intAux= safeLongToInt(idProductoAux);//idProducto
