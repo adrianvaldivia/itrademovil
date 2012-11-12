@@ -290,7 +290,6 @@ public class Login extends Activity {
 		////////////////////////////////////////////////////////Sincronizacion de pedido Linea
 //		pedidoLineaDao.deleteAll();
 		/////////////////////////////////////////////Sincronizacion eventos
-		// hardcode de eventos
 		eventoDao.deleteAll();
 		daoEvento = new DAOEvento(Login.this);
 //		String fechaEvento="2012-10-12";
@@ -302,6 +301,7 @@ public class Login extends Activity {
 			eventoDao.insert(evento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
+//		hardcode de eventos
 //		Evento evento1=new Evento(null,1,"HardCreador","Reunion de Jefes","el parque","ninguna1","2012-11-10","6:OO PM","7:00 PM");
 //		Evento evento2=new Evento(null,1,"HardCreador","Reunion de Vendedores","la calle","ninguna2","2012-11-10","8:OO PM","9:00 PM");
 //		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012-11-10","4:OO PM","5:00 PM");
@@ -310,9 +310,6 @@ public class Login extends Activity {
 //		eventoDao.insert(evento3);				
 	}
     private String getFechaActual() {
-		// TODO Auto-generated method stub
-//		DateFormat dateFormatter = new DateFormat();
-//		String dateTemplate = "MMMM yyyy";
     	String resul;
 		Calendar _calendar;
 		int month, year;
@@ -344,13 +341,11 @@ public class Login extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Cargando DB!", Toast.LENGTH_LONG).show();
+	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	cargarBaseLocal();	        	
 	                            break;
 	                           }
 	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
-	                            break;
-	        case R.id.opcion3: Toast.makeText(this, "Presionaste Opcion 3!", Toast.LENGTH_LONG).show();
 	                            break;
 	    }
 	    return true;

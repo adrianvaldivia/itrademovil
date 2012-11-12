@@ -12,15 +12,25 @@ import java.util.List;
 import java.util.Locale;
 
 import com.itrade.R;
+import com.itrade.db.DAOEvento;
+import com.itrade.model.DaoMaster;
+import com.itrade.model.DaoSession;
+import com.itrade.model.Evento;
+import com.itrade.model.EventoDao;
+import com.itrade.model.DaoMaster.DevOpenHelper;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -29,6 +39,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SimpleCalendarViewActivity extends Activity implements OnClickListener
 	{
@@ -46,6 +57,15 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 		private final DateFormat dateFormatter = new DateFormat();
 		private static final String dateTemplate = "MMMM yyyy";
 		long idUsuario;
+		//green dao
+	    private SQLiteDatabase db;
+
+	    private DaoMaster daoMaster;
+	    private DaoSession daoSession;
+	    private EventoDao eventoDao;
+	    ///fin green dao
+	    DAOEvento daoEvento =null;
+
 
 		/** Called when the activity is first created. */
 		@Override
@@ -53,6 +73,12 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 			{
 				super.onCreate(savedInstanceState);
 				setContentView(R.layout.simple_calendar_view);
+				//inicio green DAO 
+		        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
+		        db = helper.getWritableDatabase();
+		        daoMaster = new DaoMaster(db);
+		        daoSession = daoMaster.newSession();
+		        eventoDao = daoSession.getEventoDao();
 
 				 Bundle bundle=getIntent().getExtras();
 			     idUsuario = bundle.getLong("idusuario");
@@ -527,6 +553,61 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 			if (themonth.compareTo("December")==0)
 				resul="Diciembre"+anhio;
 			return resul;
+		}
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+		    MenuInflater inflater = getMenuInflater();
+		    inflater.inflate(R.menu.menuagenda, menu);
+		    return true;
+		}
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+		    switch (item.getItemId()) {
+		        case R.id.opcion1:{
+		        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
+		        	cargarBaseLocal();	        	
+		                            break;
+		                           }	      
+		    }
+		    return true;
+		}
+
+		private void cargarBaseLocal() {
+			// TODO Auto-generated method stub
+			eventoDao.deleteAll();
+			daoEvento = new DAOEvento(SimpleCalendarViewActivity.this);
+//			String fechaEvento="2012-10-12";
+			String fechaEvento=getFechaActual();
+			List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
+			for(int i=0;i<listaEvento.size();i++){
+				//numvoucher = A de antiguo
+				Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
+				eventoDao.insert(evento);
+		        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+			}
+			
+		}
+	    private String getFechaActual() {
+	    	String resul;
+			Calendar _calendar;
+			int month, year;
+	    	_calendar = Calendar.getInstance(Locale.getDefault());
+	    	year = _calendar.get(Calendar.YEAR);
+			month = _calendar.get(Calendar.MONTH) + 1;
+			String strMonth=""+month;
+			strMonth=agregaCeroMes(strMonth);		
+			resul=""+year+"-"+strMonth+"-01";		
+			return resul;
+		}
+		private String agregaCeroMes(String themonth) {
+			String resul="";
+			if (themonth.length()==1)
+				resul="0"+themonth;
+			else
+				resul=""+themonth;
+				
+			return resul;
+			
 		}
 	}
 

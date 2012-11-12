@@ -165,8 +165,6 @@ public class BuscarProspectosGreenDao extends ListActivity{
 	                           }
 	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
 	                            break;
-	        case R.id.opcion3: Toast.makeText(this, "Presionaste Opcion 3!", Toast.LENGTH_LONG).show();
-	                            break;
 	    }
 	    return true;
 	}
