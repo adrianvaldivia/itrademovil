@@ -3,6 +3,9 @@
         android:title="Sincronizar"
         android:icon="@android:drawable/ic_popup_sync"  />
     <item android:id="@+id/opcion2"
+        android:title="Preferencias"
+        android:icon="@android:drawable/ic_menu_preferences" />
+    <item android:id="@+id/opcion3"
         android:title="Cerrar Sesion"
         android:icon="@android:drawable/ic_lock_power_off" />
 </menu>

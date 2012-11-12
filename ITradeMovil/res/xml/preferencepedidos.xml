@@ -1,0 +1,11 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory 
+        android:title="Preferencias de la Sesion"
+        android:key="pref_key_storage_settings">
+        <CheckBoxPreference
+            android:key="pref_key_auto_delete"
+            android:summary="Limpia los datos al cerrar la Sesion"
+            android:title="Eliminar Datos"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>
