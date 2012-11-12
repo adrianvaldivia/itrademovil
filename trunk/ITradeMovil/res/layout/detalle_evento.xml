@@ -31,7 +31,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dip"
                     android:background="@color/azul_2"
-                    android:text="iTrade - Detalle"
+                    android:text="iTrade - Evento"
                     android:textColor="@color/grisClaro"
                     android:textSize="20dip" />
 
@@ -120,51 +120,31 @@
 
         </LinearLayout>
     </LinearLayout>
-
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_control_bar"
         android:layout_below="@id/top_control_bar"
+        android:focusable="true"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/TextView01"
+            android:id="@+id/txtHora"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:text="@string/hora_eveto"
-            android:textColor="@color/azul_2"
+            android:textColor="@color/OrangeRed"
             android:textSize="17dp" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="14dp"
-            android:text="@string/asunto"
-            android:textColor="@color/azul_2"
-            android:textSize="17dp" />
-
-        <EditText
-            android:id="@+id/txtAsunto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:ems="10" >
-
-            <requestFocus />
-        </EditText>
 
         <TextView
             android:id="@+id/TextView02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="5dp"
             android:text="@string/lugar"
             android:textColor="@color/azul_2"
             android:textSize="17dp" />
@@ -175,6 +155,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:ems="10" />
 
         <TextView
@@ -182,16 +165,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:text="@string/descripcion"
             android:textColor="@color/azul_2"
             android:textSize="17dp" />
-
+
         <EditText
             android:id="@+id/txtDesc"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:inputType="textMultiLine" />
 
     </LinearLayout>
