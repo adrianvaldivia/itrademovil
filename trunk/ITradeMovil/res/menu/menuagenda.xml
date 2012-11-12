@@ -2,7 +2,4 @@
     <item android:id="@+id/opcion1"
         android:title="Sincronizar"
         android:icon="@android:drawable/ic_popup_sync"  />
-    <item android:id="@+id/opcion2"
-        android:title="Cerrar Sesion"
-        android:icon="@android:drawable/ic_lock_power_off" />
 </menu>
