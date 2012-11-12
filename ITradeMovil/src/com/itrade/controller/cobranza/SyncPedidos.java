@@ -65,11 +65,11 @@ public class SyncPedidos {
 		param.add(new BasicNameValuePair("idvendedor", idusuario));	
 		sync.conexion(param,"/ws/pedido/get_pedidos_by_idvendedor/");
 		try {
-			sync.getHilo().join();			
+			sync.getHilo().join();
 		} catch (InterruptedException e) {
 			//TODO Auto-generated catch block
 			e.printStackTrace();
-		}	    	  
+		}
 		ArrayList<Pedido> pedList = new ArrayList<Pedido>();			 
 		//Log.d("Pedido", sync.getResponse());
 		pedList=gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());	  
@@ -280,6 +280,36 @@ public class SyncPedidos {
 		ped.setIdEstadoPedido(3);
 		pedidoDao.update(ped);		
 		return 1;
+	}
+
+	public Integer pagarPedido(String idpedido) {
+		// TODO Auto-generated method stub
+		List<Pedido> pedTemp=pedidoDao.queryBuilder()
+				.where(Properties.IdPedido.eq(idpedido))
+				.list();
+		Pedido ped=pedTemp.get(0);
+		ped.setIdEstadoPedido(2);
+		pedidoDao.update(ped);		
+		return 1;
+	}
+
+	public Cliente buscarCliente(String idcliente) {
+		// TODO Auto-generated method stub
+		
+		List<Cliente> clie=clienteDao.queryBuilder()
+				.where(Properties.IdCliente.eq(idcliente))
+				.list();
+		Cliente cliente=clie.get(0);
+		return cliente;
+	}
+
+	public Pedido buscarPedido(String idpedido) {
+		// TODO Auto-generated method stub
+		List<Pedido> pedTemp=pedidoDao.queryBuilder()
+				.where(Properties.IdPedido.eq(idpedido))
+				.list();
+		Pedido ped=pedTemp.get(0);
+		return ped;
 	}
     
 }

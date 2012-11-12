@@ -1,6 +1,7 @@
 package com.itrade.cobranzas;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.itrade.R;
 import com.itrade.model.PedidoLinea;
@@ -16,12 +17,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 class PedidoLineaAdapter extends BaseAdapter {
-	private ArrayList<com.itrade.cobranzas.PedidoLinea> items;
+	private List<com.itrade.model.PedidoLinea> items;
 	private Context context;
 	private LayoutInflater inflater;
 	private int resource;
 	
-    public PedidoLineaAdapter(Context context, int textViewResourceId, ArrayList<com.itrade.cobranzas.PedidoLinea> items) {
+    public PedidoLineaAdapter(Context context, int textViewResourceId, List<com.itrade.model.PedidoLinea> items) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.context=context;		
@@ -49,7 +50,7 @@ class PedidoLineaAdapter extends BaseAdapter {
         }
         
         // pull out the object
-        com.itrade.cobranzas.PedidoLinea item = this.items.get(position);
+        com.itrade.model.PedidoLinea item = this.items.get(position);
         
         TextView tprodid = (TextView) view.findViewById(R.id.tvProdId);
         TextView tprodcant = (TextView) view.findViewById(R.id.tvProdCant);
