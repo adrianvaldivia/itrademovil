@@ -86,6 +86,12 @@
             		android:name=".pedidos.DetallePedido"
            			android:configChanges="keyboardHidden|orientation" 
            />
+          <activity android:label="@string/app_name"
+              		android:launchMode="singleTask"
+            		android:theme="@android:style/Theme.NoTitleBar"
+            		android:name=".pedidos.verEvento"
+           			android:configChanges="keyboardHidden|orientation" 
+           />
         
          <activity android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar"
