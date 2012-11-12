@@ -5,14 +5,14 @@
         <!-- Meta -->
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8"> 
             <!-- End of Meta -->
-
+				<link rel="icon" type="image/ico" href="<?php echo base_url() ?>images/logicon.png"/>
             <title><?php echo $title; ?></title>   
 
             <!--styleshets CSS-->
-        <!--  <link href="<?php echo base_url() ?>css/tripoli.simple.css" rel="stylesheet" />
-            <link href="<?php echo base_url() ?>css/layout.css" rel="stylesheet" />		-->
-            <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />
-             <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	  
+          	<link href="<?php echo base_url() ?>css/styles.css" rel="stylesheet" />	
+            <!--<link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />	 -->
+             <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	 
+             	  
 
             <!--scripts js-->
             <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.2.3.pack.js"></script>
@@ -24,7 +24,7 @@
                 base_url = '<?php echo base_url(); ?>';
                 //]]>
             </script>
-
+  				
             <!--[if IE]>
             <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/ie.css" media="screen, projection, print" />
     <![endif]-->
@@ -40,57 +40,33 @@
 
     </head>
     <body>
-      <!--  <div id="header">
-            <div class="container content">
-                <h1><a href="<? echo base_url() ?>home" title="Back to home">i-Trade</a></h1>
-
-                <? if ($this->session->userdata('logged_in') && (isset($username) && isset($name))) { ?>
-                    <div class="loginInfos"> You're logged in as <strong><? echo trim($username); ?></strong>.  <? echo anchor(base_url() . 'home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?> </div>
-                <? } else { ?>
-                    <? //si entra un usuario logueado al home ?>
-                <? } ?>
-
-            </div>
-        </div>--> 
-
-                
-               <div id="header">
-                          
-                    <div id="logo">
-                        <a href="<? echo base_url() ?>home"> <img src="<?php echo base_url() ?>images/logo.png"/></a>
-                    </div>
+       <div id="header">
+			<div id="logo">
+				<a href="<? echo base_url() ?>home"> <img src="<?php echo base_url() ?>images/logo.png"/></a>
+         </div>
+         
         <? if ($this->session->userdata('logged_in') && (isset($username) && isset($name))) { ?>
-                            <div class="header_left"  >
-                                <span class="bienvenido">Bienvenido <span class="user"><? echo trim($username); ?></span></span>
-                                <span class="nombre"><? echo trim($name); ?>
-                                </span>
-                            </div>
-                            <div class="header_right" >
-                                <a href="<? echo base_url() ?>home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
+         <div class="header_left"  >
+	          <span class="bienvenido">Bienvenido <span class="user"><? echo trim($username); ?></span></span>
+             <span class="nombre"><? echo trim($name); ?></span>
+         </div>
+         <div class="header_right" >
+             <a href="<? echo base_url() ?>home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
             <? echo anchor(base_url() . 'home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?>
-                            </div>
-                                <script type="text/javascript">
-                                $('#header .header_right').click(function (){
-                                    $(this).children('a').each(function(){
-                                       $(this).click();
-                                    });
-                                });
-                            </script> 
-        <? } else { ?>
-            <? //si entra un usuario logueado al home ?>
-        <? } ?></div> 
-                <div id="content">
-                   <div id="contenido_principal" style="width:100%; height:100%;" >
-
+         </div>
+         <script type="text/javascript">
+             $('#header .header_right').click(function (){
+                 $(this).children('a').each(function(){
+                 $(this).click();
+               });
+	           });
+   	   </script> 
+        <? } ?>
+      </div> 
+        
         <?php
-//print($main);
         $this->load->view($main);
         ?>
 
-                    </div>
-               </div>
-        <!--        <div id="footer">
-                    <div>2012 - i-Trade</div>
-                </div>-->
-    </body>
+   </body>
 </html>

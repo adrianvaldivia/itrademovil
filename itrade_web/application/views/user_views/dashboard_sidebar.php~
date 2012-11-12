@@ -1,0 +1,10 @@
+<div id="sidebar" class="threecol"> <!--3-->
+            		<ul id="navigation"> 
+                  	<li class="first">
+                  		<a href="dashboard.html">Dashboard <span class="icon-dashboard"></span> </a>
+                  	</li> 
+                   	<li>
+                   		<a href="charts.html">Charts <span class="icon-charts"></span></a>
+                   	</li> 
+                  </ul> 
+</div>

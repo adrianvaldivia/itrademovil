@@ -4,62 +4,60 @@
     <head>
         <!-- Meta -->
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8"> 
-        <!-- End of Meta -->
+            <!-- End of Meta -->
 
-        <title><?php echo $title; ?></title>   
+            <title><?php echo $title; ?></title>   
+            <link rel="icon" type="image/ico" href="<?php echo base_url() ?>images/logicon.png"/>
+            <!--styleshets CSS
+            <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
+            <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />-->
+            <link href="<?php echo base_url() ?>css/styles.css" rel="stylesheet" />
+            <link href="<?php echo base_url() ?>css/1140.css" rel="stylesheet" />
 
-        <!--styleshets CSS-->
-        <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
-        <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />	
+            <!--scripts js-->
+            <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.2.3.pack.js"></script>
+            <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.js"></script>
+            <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.min.js"></script>
 
-        <!--scripts js-->
-        <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.2.3.pack.js"></script>
-        <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.js"></script>
-        <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.min.js"></script>
-
-        <script type="text/javascript">
-            //<![CDATA[
-            base_url = '<?php echo base_url(); ?>';
-            //]]>
-        </script>
+            <script type="text/javascript">
+                //<![CDATA[
+                base_url = '<?php echo base_url(); ?>';
+                //]]>
+            </script>
     </head>
-    <body class="user">
-
-        <div id="header">
-            <!--            <div id="title">iTRADE</div>-->
-            <div id="logo">
-               <a href="<?echo base_url()?>home"> <img src="<?php echo base_url() ?>images/logo.png"/></a>
-            </div>
-            <?
-            if ($this->session->userdata('logged_in')) {
-
-                if ((isset($username) && isset($name))) {
-                    ?>
-
-                    <div class="header_left"  >
-                        <span class="bienvenido">Bienvenido <span class="user"><? echo trim($username); ?></span></span>
-                        <span class="nombre"><? echo trim($name); ?>
-                        </span>
-                    </div>
-                <? } ?>
-                <div class="header_right" >
-                    <a href="<?echo base_url()?>home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
-                    <? echo anchor(base_url().'home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?>
-                </div>
-
-            <? } else { ?>
-                <? //si entra un usuario logueado al home ?>
-            <? } ?>
-        </div>
-        <div id="content">
-            <div id="contenido_principal" style="width:100%; height:100%;" >
-                <?php 
-				// echo $main;
-				$this->load->view($main); ?>
-            </div>
-        </div>
-<!--        <div id="footer">
-            <div>2012 - i-Trade</div>
-        </div>-->
-    </body>
+    <body>  
+        <div id="header-wrapper" class="container"> 
+            <div id="user-options" class="row"> 
+            	<div class="threecol">
+            		<a href="<? echo base_url() ?>home">
+            			<img src="<?php echo base_url() ?>images/logo.png"/>
+            		</a>
+            </div> 
+            	
+                                                        
+            <div id="user-account" class="row"> 
+						<div class="ninecol last"> 
+							<a href="<? echo base_url() ?>home/logout">Logout</a> 
+							<?
+               if ($this->session->userdata('logged_in')) {
+						if ((isset($username) && isset($name))) {
+					?><span>|</span> 
+							<span>Bienvenido, <strong><? echo trim($username); ?></strong></span> 
+							<? } ?> 
+   	         <? } ?> 
+						</div> 
+   	       </div>
+             <div class="ninecol last fixed"></div> 
+          </div>
+        </div>  
+         
+         <div class="container"> <!--1-->
+         	<div class="row">  <!--2-->
+        		 <?php $this->load->view("user_views/dashboard_sidebar"); ?> 
+               <div id="content" class="ninecol last">   <!--4-->
+               	 <?php $this->load->view($main);   ?>
+               </div><!--4-->
+        		</div><!--2-->                                                      
+    		</div><!--1-->
+	</body>
 </html>

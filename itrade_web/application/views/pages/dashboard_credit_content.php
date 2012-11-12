@@ -1,21 +1,22 @@
-<div class="contenido_principal" style="width:70%; height:100%;  min-width:650px; max-width:650px;">
+<div class="accion"></div>
 
-    <?
-    // print_r($creditos);
+<div class="panel-wrapper"> <!--5-->
+               		<div class="panel"> <!--6-->
+               			<!--<div class="title"><!--7--> <!--<h4><? echo anchor('admin/usuario_controller/create_user', 'Nuevo Usuario', array('title' => 'Nuevo Usuario')); ?></h4> 
+                        	<!--<div class="collapse">collapse</div>8--> 
+                        <!--</div><!--7--> 
+                            <?
     if (count($creditos) == 0) {
         ?>
         <? echo "Por el momento no hay solicitudes de credito disponibles."; ?>
 
     <? } else {
         ?>
-                        <!--    <div class="accion"><? // echo anchor('admin/credito_controller/create_user', 'Nuevo Usuario', array('title' => 'Nuevo Usuario'));        ?></div>-->
-
-        <!--    <br/>-->
-
-        <table>
-            <thead>
-                <tr>
-                    <th>
+                        <div class="content"> <!--9-->
+                           	<table id="sample-table" class=""> 
+                              	<thead> 
+                              		<tr> 
+                              			<th>
                         Razon Social
                     </th>
                     <th>
@@ -34,12 +35,10 @@
                     <th>
                         Acciones
                     </th>
-
-                </tr>
-            </thead>
-            <tbody>
-
-                <?
+                							</tr>
+                						</thead> 
+                              	<tbody> 
+                             <?
                 foreach ($creditos as $credito) {
                     $idlinea = $credito['IdLinea'];
                     ?>
@@ -64,17 +63,23 @@
                             </div>
                         </td>
                         <td class="accion"><? if ($credito['Activo'] == 1) { ?>
-                                <div class="accion"><? echo anchor("admin/credito_controller/accept/" . $idlinea, 'Aceptar', array('title' => 'Aceptar')); ?></div>
-
-                                <div class="accion"><? echo anchor("admin/credito_controller/reject/" . $idlinea, 'Rechazar', array('title' => 'Rechazar')); ?></div>
+                                <div class="accion">
+                                <a class="icon" href="<?php echo base_url() ?>admin/credito_controller/accept/<?php echo $idlinea ?>"><img alt="" src="<?php echo base_url() ?>/images/icon-archive.png"></a>
+                               
+                                <a class="icon" href="<?php echo base_url() ?>admin/credito_controller/reject/<?php echo  $idlinea ?>"><img alt="" src="<?php echo base_url() ?>/images/icon-cancel.png"></a></div>
                             <? } else { ?>
                                 <div class="accion"><? echo"-"; ?></div>
                             <? } ?>
                         </td>
                     </tr>
                 <? } ?>
-            </tbody>
-        </table>
-    <? }
-    ?>
-</div>
+                						</tbody> 
+			                    </table> 
+			                      <? }
+    ?> 
+                        </div> <!--9-->
+                      </div><!--6-->  
+                      <div class="shadow"></div> <!--10-->
+</div><!--5-->
+                   
+   

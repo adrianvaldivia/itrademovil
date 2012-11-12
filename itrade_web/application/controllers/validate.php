@@ -10,7 +10,7 @@ class Validate extends CI_Controller {
 
     public function index() {
         //cargar las noticias                
-        $data['title'] = "Itrade Mantenimientos!!!";
+        $data['title'] = "Itrade";
         $data['main'] = "login/login_box.php"; //RUTA			           			
         $this->load->vars($data);
         $this->load->view('login/login');
