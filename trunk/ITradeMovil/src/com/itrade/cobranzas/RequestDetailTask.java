@@ -9,6 +9,8 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
+import com.itrade.controller.cobranza.SyncDetallePedido;
+import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
@@ -43,7 +45,7 @@ public class RequestDetailTask extends Activity {
 	private String idempleado;
 	private Cliente clienteSelected;
 	private Pedido pedidoSelected;
-	private ArrayList<com.itrade.cobranzas.PedidoLinea> detallePedido;
+	private List<com.itrade.model.PedidoLinea> detallePedido;
 	private PedidoLineaAdapter pedidosAdapter;
 	private Button buttonCobrar;
 	private Button buttonRuta;
@@ -55,6 +57,8 @@ public class RequestDetailTask extends Activity {
 	private ImageView btnDirectorio;
 	private ImageView btnCalendario;
 	private ImageView btnMapa;
+	private SyncDetallePedido syncDetalle;
+	private SyncPedidos syncPedido;
 	
 	public PedidoLineaAdapter getPedidosAdapter() {
 		return pedidosAdapter;
@@ -65,12 +69,23 @@ public class RequestDetailTask extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// TODO Put your code here		      
-        setContentView(R.layout.c_detalle_pedido);          
+		// TODO Put your code here
+        setContentView(R.layout.c_detalle_pedido);        
         getParamsIntent();
+        sqlite();
         fillValues();               
-        setValues();        
+        setValues();
+        syncDetalle.closeDB();
+        syncPedido.closeDB();
         
+	}
+	private void sqlite() {
+		// TODO Auto-generated method stub
+		syncDetalle=new SyncDetallePedido(RequestDetailTask.this);
+		syncPedido=new SyncPedidos(RequestDetailTask.this);
+		Integer numreg = syncDetalle.syncBDToSqlite(idpedido);
+		Log.d("RESULTADOS","numeros ="+numreg.toString());	
+		
 	}
 	public void setValues(){
 		Log.d("tag", "LLEGO1");
@@ -152,66 +167,71 @@ public class RequestDetailTask extends Activity {
 	}
 	public void fillValues(){
 		//Get Cliente
-		Log.d("tag", "LLEGO6");
-		Syncronizar sync2 = new Syncronizar(RequestDetailTask.this);
-		List<NameValuePair> param2 = new ArrayList<NameValuePair>();								
-		param2.add(new BasicNameValuePair("idcliente", idcliente));		
-		String route2="/ws/clientes/get_cliente_by_id/";
-		sync2.conexion(param2,route2);
-		try {
-			sync2.getHilo().join();			
-		} catch (InterruptedException e) {
-			  // TODO Auto-generated catch block
-			e.printStackTrace();
-		}	    	  
-		Log.d("tag", "LLEGO7");
-		Gson gson = new Gson();  
-		ArrayList<Cliente> cliList = new ArrayList<Cliente>();			
-		cliList=gson.fromJson(sync2.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
-		if (cliList.size()>0){
-			this.clienteSelected=cliList.get(0);
-		}else{
-			finish();
-		}
-		//GET Pedido Linea
-		Log.d("tag", "LLEGO8");
-		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		param.add(new BasicNameValuePair("idpedido", idpedido));				
-		sync2.conexion(param,"/ws/pedido/get_detail_by_idpedido/");
-		try {
-			sync2.getHilo().join();			
-		} catch (InterruptedException e) {
-			  // TODO Auto-generated catch block
-			e.printStackTrace();
-		}	    	  		
-		Log.d("tag", "LLEGO9");
-		ArrayList<com.itrade.cobranzas.PedidoLinea> linPedList = new ArrayList<com.itrade.cobranzas.PedidoLinea>();			
-		linPedList=gson.fromJson(sync2.getResponse(), new TypeToken<List<com.itrade.cobranzas.PedidoLinea>>(){}.getType());		
-		if (cliList.size()>0){
-			this.detallePedido=linPedList;
-			Log.d("size","elementos="+this.detallePedido.get(0).getMarca());
-		}else{
-			finish();
-		}
+		Log.d("tag", "llenando valores");
 		
-		//GET Pedido
-		Log.d("tag", "LLEGO10");
-		List<NameValuePair> param3 = new ArrayList<NameValuePair>();								
-		param3.add(new BasicNameValuePair("idpedido", idpedido));				
-		sync2.conexion(param3,"/ws/pedido/consultar_pedido/");
-		try {
-			sync2.getHilo().join();			
-		} catch (InterruptedException e) {
-			  // TODO Auto-generated catch block
-			e.printStackTrace();
-		}	    	  		
-		ArrayList<Pedido> pedList = new ArrayList<Pedido>();			
-		pedList=gson.fromJson(sync2.getResponse(), new TypeToken<List<Pedido>>(){}.getType());		
-		if (cliList.size()>0){
-			this.pedidoSelected=pedList.get(0);			
-		}else{
-			finish();
-		}			
+		clienteSelected=syncPedido.buscarCliente(idcliente);
+		pedidoSelected=syncPedido.buscarPedido(idpedido);
+		detallePedido=syncDetalle.buscarLineaPedidos(idpedido);
+		
+//		Syncronizar sync2 = new Syncronizar(RequestDetailTask.this);
+//		List<NameValuePair> param2 = new ArrayList<NameValuePair>();								
+//		param2.add(new BasicNameValuePair("idcliente", idcliente));		
+//		String route2="/ws/clientes/get_cliente_by_id/";
+//		sync2.conexion(param2,route2);
+//		try {
+//			sync2.getHilo().join();			
+//		} catch (InterruptedException e) {
+//			  // TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}	    	  
+//		Log.d("tag", "LLEGO7");
+//		Gson gson = new Gson();  
+//		ArrayList<Cliente> cliList = new ArrayList<Cliente>();			
+//		cliList=gson.fromJson(sync2.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
+//		if (cliList.size()>0){
+//			this.clienteSelected=cliList.get(0);
+//		}else{
+//			finish();
+//		}
+		//GET Pedido Linea
+//		Log.d("tag", "LLEGO8");
+//		List<NameValuePair> param = new ArrayList<NameValuePair>();								
+//		param.add(new BasicNameValuePair("idpedido", idpedido));				
+//		sync2.conexion(param,"/ws/pedido/get_detail_by_idpedido/");
+//		try {
+//			sync2.getHilo().join();			
+//		} catch (InterruptedException e) {
+//			  // TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}	    	  		
+//		Log.d("tag", "LLEGO9");
+//		ArrayList<com.itrade.cobranzas.PedidoLinea> linPedList = new ArrayList<com.itrade.cobranzas.PedidoLinea>();			
+//		linPedList=gson.fromJson(sync2.getResponse(), new TypeToken<List<com.itrade.cobranzas.PedidoLinea>>(){}.getType());		
+//		if (cliList.size()>0){
+//			this.detallePedido=linPedList;
+//			Log.d("size","elementos="+this.detallePedido.get(0).getMarca());
+//		}else{
+//			finish();
+//		}
+		
+//		//GET Pedido
+//		Log.d("tag", "LLEGO10");
+//		List<NameValuePair> param3 = new ArrayList<NameValuePair>();								
+//		param3.add(new BasicNameValuePair("idpedido", idpedido));				
+//		sync2.conexion(param3,"/ws/pedido/consultar_pedido/");
+//		try {
+//			sync2.getHilo().join();			
+//		} catch (InterruptedException e) {
+//			  // TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}	    	  		
+//		ArrayList<Pedido> pedList = new ArrayList<Pedido>();			
+//		pedList=gson.fromJson(sync2.getResponse(), new TypeToken<List<Pedido>>(){}.getType());		
+//		if (cliList.size()>0){
+//			this.pedidoSelected=pedList.get(0);			
+//		}else{
+//			finish();
+//		}			
 		Log.d("tag", "LLEGO10");
 	}
 	public void sendSms(){

@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
+import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.jsonParser.WBhelper;
 import com.itrade.model.Cliente;
@@ -61,6 +62,7 @@ public class PaymentTask extends Activity {
 	private Cliente clienteSelected;
 	private ArrayList<Pedido> requestList = new ArrayList<Pedido>();
 	private ArrayList<Pedido> payReqtList = new ArrayList<Pedido>();
+	private SyncPedidos sincPedidos;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class PaymentTask extends Activity {
         btnPagar = (Button)findViewById(R.id.btnPagar);
         btnDetalle = (Button)findViewById(R.id.btnDetalle);        
         editNumVoucher = (EditText)findViewById(R.id.editTxtTransaccion);
+        sincPedidos= new SyncPedidos(PaymentTask.this);
         
 		getParamsIntent();
         fillValues();          
@@ -133,6 +136,10 @@ public class PaymentTask extends Activity {
 				Gson gson = new Gson();  
 				ArrayList<Pedido> listaPayments = new ArrayList<Pedido>();
 				listaPayments = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
+				
+				Integer numreg = sincPedidos.pagarPedido(idpedido);
+				Log.d("SQL","Se pago ="+numreg.toString()+" pedidos");
+				
 				String titulo="";
 				String mensaje=""; 
 				if (listaPayments.size()>0){
@@ -155,8 +162,8 @@ public class PaymentTask extends Activity {
 								dialog.cancel();
 								//finish();
 								Intent intent = new Intent(PaymentTask.this, ClientesListTask.class); 													
-								intent.putExtra("idpedido", idpedido);
-								intent.putExtra("idcliente", idcliente);	
+//								intent.putExtra("idpedido", idpedido);
+//								intent.putExtra("idcliente", idcliente);	
 								intent.putExtra("idempleado", idempleado);
 								startActivity(intent);
 							}

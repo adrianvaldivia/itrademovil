@@ -215,6 +215,7 @@ public class ClientesListTask extends Activity {
 									Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
 									intent.putExtra("idempleado", idusuario);
 									startActivity(intent);
+									finish();
 								}
 					});		
 					AlertDialog alertDialog = alertDialogBuilder.create();		 
