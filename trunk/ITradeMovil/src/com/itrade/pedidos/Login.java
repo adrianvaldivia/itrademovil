@@ -2,7 +2,9 @@ package com.itrade.pedidos;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -15,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -290,7 +293,8 @@ public class Login extends Activity {
 		// hardcode de eventos
 		eventoDao.deleteAll();
 		daoEvento = new DAOEvento(Login.this);
-		String fechaEvento="2012-10-12";
+//		String fechaEvento="2012-10-12";
+		String fechaEvento=getFechaActual();
 		List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
 		for(int i=0;i<listaEvento.size();i++){
 			//numvoucher = A de antiguo
@@ -305,7 +309,32 @@ public class Login extends Activity {
 //		eventoDao.insert(evento2);
 //		eventoDao.insert(evento3);				
 	}
-    @Override
+    private String getFechaActual() {
+		// TODO Auto-generated method stub
+//		DateFormat dateFormatter = new DateFormat();
+//		String dateTemplate = "MMMM yyyy";
+    	String resul;
+		Calendar _calendar;
+		int month, year;
+    	_calendar = Calendar.getInstance(Locale.getDefault());
+    	year = _calendar.get(Calendar.YEAR);
+		month = _calendar.get(Calendar.MONTH) + 1;
+		String strMonth=""+month;
+		strMonth=agregaCeroMes(strMonth);		
+		resul=""+year+"-"+strMonth+"-01";		
+		return resul;
+	}
+	private String agregaCeroMes(String themonth) {
+		String resul="";
+		if (themonth.length()==1)
+			resul="0"+themonth;
+		else
+			resul=""+themonth;
+			
+		return resul;
+		
+	}
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
