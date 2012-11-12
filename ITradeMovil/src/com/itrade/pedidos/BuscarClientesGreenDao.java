@@ -254,10 +254,8 @@ public class BuscarClientesGreenDao extends ListActivity{
 	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	cargarBaseLocal();	        	
 	                            break;
-	                           }
-	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
-	                            break;
-	        case R.id.opcion3: {
+	                           }	        
+	        case R.id.opcion2: {
 //	        	Toast.makeText(this, "Cerrando Sesion!", Toast.LENGTH_LONG).show();
 	        	cerrarSesion();
 	        }

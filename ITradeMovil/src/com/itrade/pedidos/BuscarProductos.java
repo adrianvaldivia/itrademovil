@@ -313,27 +313,25 @@ public class BuscarProductos extends ListActivity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
+	    inflater.inflate(R.menu.menuproductos, menu);
 	    return true;
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Cargando BD!", Toast.LENGTH_LONG).show();
+	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	cargarBaseLocal();	        	
-	                            break;
-	                           }
+	            break;
+	        }
 	        case R.id.opcion2:{
 	    		int tam=spinner_categoria.getCount();
 	    		spinner_categoria.setSelection(tam-1);
-	        	onSearchRequested();  
+	        	onSearchRequested();
+	            break;
 //	        	mostrarBarraBusqueda();
 //	        	Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
 	        }
-	                            break;
-	        case R.id.opcion3: Toast.makeText(this, "Presionaste Opcion 3!", Toast.LENGTH_LONG).show();
-	                            break;
 	    }
 	    return true;
 	}
