@@ -7,7 +7,7 @@
         <!-- End of Meta -->
 
         <title><?php echo $title; ?></title>   
-
+<link rel="icon" type="image/ico" href="<?php echo base_url() ?>images/logicon.png"/>
         <!--styleshets CSS-->
         <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
         <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />	

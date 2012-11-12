@@ -27,7 +27,7 @@ class Usuario_controller extends CI_Controller {
     public function index() {
 
         //cargar las noticias               
-        $data['title'] = "Itrade Mantenimientos";
+        $data['title'] = "Itrade - Administración";
         $data['main'] = "pages/dashboard_content.php"; //RUTA		
         $data['usuarios'] = $this->list_all_users();
 

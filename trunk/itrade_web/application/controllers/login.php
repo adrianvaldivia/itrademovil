@@ -8,7 +8,7 @@ class Login extends CI_Controller {
 	public function index()
 	{
         //cargar las noticias                
-        $data['title']="Itrade Mantenimientos - login";             
+        $data['title']="Itrade - Login";             
         $data['main']="login/login_box.php";//RUTA			           			
         
         $this->load->vars($data);

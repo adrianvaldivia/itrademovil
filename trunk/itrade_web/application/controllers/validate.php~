@@ -27,7 +27,7 @@ class Validate extends CI_Controller {
             $pw = $this->input->post('password');
             //Verificacion de un unico usuario
             if (!$this->Usuario_model->verify_user($u, $pw)) {
-                $this->session->set_flashdata('error', substr(do_hash('1234'), 0, 50));
+                $this->session->set_flashdata('error', "Por favor verifique sus datos");
                 redirect('login', 'refresh');
             }
             //
