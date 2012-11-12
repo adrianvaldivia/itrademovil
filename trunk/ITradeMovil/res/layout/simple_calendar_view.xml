@@ -107,8 +107,8 @@
 
         <Button
             android:id="@+id/selectedDayMonthYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
             android:layout_marginLeft="33dp"
             android:layout_marginRight="33dp"
             android:background="@drawable/calendar_top_header"
@@ -144,10 +144,10 @@
         <ImageView
             android:id="@+id/calendarheader"
             android:layout_width="wrap_content"     
-            android:layout_height="55dp"
+            android:layout_height="35dp"
             android:scaleType="fitXY"
-            android:layout_marginRight="28dp"
-            android:layout_marginLeft="27dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginLeft="28dp"
             android:src="@drawable/blue_bg_with_text2" />
 
         <GridView
