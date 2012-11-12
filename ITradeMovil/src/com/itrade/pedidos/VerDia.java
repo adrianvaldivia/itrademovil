@@ -51,7 +51,7 @@ public class VerDia extends ListActivity{
 		 setContentView(R.layout.detalle_dia);
 		 Bundle bundle=getIntent().getExtras();
 		 strFecha=bundle.getString("fecha");
-		    Toast.makeText(this, "Fecha: "+strFecha, Toast.LENGTH_LONG).show();
+//		    Toast.makeText(this, "Fecha: "+strFecha, Toast.LENGTH_LONG).show();
 		    
 		 
 	     //inicio green Dao
@@ -74,9 +74,10 @@ public class VerDia extends ListActivity{
 	        		toElementoLista);    
 	        //fin green Day de Elementos Lista 
 	     setListAdapter(adapterElementoLista);
-	     guardaListaOriginal();
+	     guardaListaOriginal();	
 	     filtraLista();
-	     recuperarOriginal();	    		
+	     mostrarLista();
+	         		
 	 }
 	 
 
@@ -84,18 +85,15 @@ public class VerDia extends ListActivity{
 	    protected void onListItemClick(ListView l, View v, int position, long id) {
 	     // TODO Auto-generated method stub
 	     //super.onListItemClick(l, v, position, id);
-		 String selection="";
-	     selection = l.getItemAtPosition(position).toString();
+//		 String selection="";
+//	     selection = l.getItemAtPosition(position).toString();
 	     
 	    //Toast.makeText(this, "Hola", Toast.LENGTH_LONG).show();
-	     
+		 this.encuentraEvento(id);//encuentra evento
 	     Intent intent = new Intent(VerDia.this, verEvento.class); 
-	     intent.putExtra("fecha", selection);
-	     
-	     //encuentra evento
-	     this.encuentraEvento(id);
+	     	     	    
 	     //intent.putExtra("IdEvento", evento.getIdEvento());
-	     intent.putExtra("IdEvento", 1); //hardcode
+	     intent.putExtra("idevento",evento.getIdEvento()); //hardcode
 	     startActivity(intent);	
 	     
 	    }    
@@ -114,24 +112,33 @@ public class VerDia extends ListActivity{
 			this.eventos=eventoDao.queryBuilder()
 			             .where(Properties.Fecha.eq(strFecha))
 			        	 .orderAsc(Properties.Id).list();
+//			Toast.makeText(this, "filtrado", Toast.LENGTH_LONG).show();
 			}
-		private void recuperarOriginal() {
+		private void mostrarLista() {
 			elementoListaDao.deleteAll();	        
 			for(int i=0;i<eventos.size();i++){
 		        long temp=0;
 		        temp=temp+eventos.get(i).getId();
-				ElementoLista elemento = new ElementoLista(null,eventos.get(i).getAsunto(),"Inicio: "
-						+eventos.get(i).getHoraInicio(),"Fin: "+eventos.get(i).getHoraFin(),temp);
+				ElementoLista elemento = new ElementoLista(null,eventos.get(i).getDescripcion(),"Inicio: "
+						+remueveCerosDerecha(eventos.get(i).getHoraInicio()),"Fin: "+remueveCerosDerecha(eventos.get(i).getHoraFin()),temp);
 				elementoListaDao.insert(elemento);
 		        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 			}
 	        cursorElementoLista.requery();	
 			
 		}
+		private String remueveCerosDerecha(String horaInicio) {
+			// TODO Auto-generated method stub
+			int tam=horaInicio.length();
+			String resul="";
+			resul=resul+horaInicio;
+			resul=resul.substring(0, tam-3);	
+			return resul;
+		}
 		
 		@Override
 		protected void onDestroy() {
-			recuperarOriginal();		
+//			recuperarOriginal();		
 			db.close();
 			cursorElementoLista.close();
 		    super.onDestroy();

@@ -53,6 +53,7 @@ import com.itrade.model.UsuarioDao.Properties;
 import com.itrade.cobranzas.ClientesListTask;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.db.DAOCliente;
+import com.itrade.db.DAOEvento;
 import com.itrade.db.DAOPedido;
 import com.itrade.db.DAOProducto;
 import com.itrade.db.DAOUsuario;
@@ -66,6 +67,7 @@ public class Login extends Activity {
 	
 	DAOCliente daoCliente =null;
 	DAOPedido daoPedido =null;
+	DAOEvento daoEvento =null;
 	DAOProducto daoProducto =null;
     private DAOUsuario daoUsu= null;
     //green Dao
@@ -287,12 +289,21 @@ public class Login extends Activity {
 		/////////////////////////////////////////////Sincronizacion eventos
 		// hardcode de eventos
 		eventoDao.deleteAll();
-		Evento evento1=new Evento(null,1,"HardCreador","Reunion de Jefes","el parque","ninguna1","2012-11-10","6:OO PM","7:00 PM");
-		Evento evento2=new Evento(null,1,"HardCreador","Reunion de Vendedores","la calle","ninguna2","2012-11-10","8:OO PM","9:00 PM");
-		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012-11-10","4:OO PM","5:00 PM");
-		eventoDao.insert(evento1);
-		eventoDao.insert(evento2);
-		eventoDao.insert(evento3);				
+		daoEvento = new DAOEvento(Login.this);
+		String fechaEvento="2012-10-12";
+		List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
+		for(int i=0;i<listaEvento.size();i++){
+			//numvoucher = A de antiguo
+			Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
+			eventoDao.insert(evento);
+	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+		}
+//		Evento evento1=new Evento(null,1,"HardCreador","Reunion de Jefes","el parque","ninguna1","2012-11-10","6:OO PM","7:00 PM");
+//		Evento evento2=new Evento(null,1,"HardCreador","Reunion de Vendedores","la calle","ninguna2","2012-11-10","8:OO PM","9:00 PM");
+//		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012-11-10","4:OO PM","5:00 PM");
+//		eventoDao.insert(evento1);
+//		eventoDao.insert(evento2);
+//		eventoDao.insert(evento3);				
 	}
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {

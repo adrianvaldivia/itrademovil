@@ -386,8 +386,11 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 						//inicio camnbios chichan
 						String strMonth="";						
 						strMonth=convierteMesaNumero(themonth);
+						String strDay="";
+						strDay=agregaCeroDia(theday);
 						
-						gridcell.setTag(theyear + "-" + strMonth + "-" + theday);
+						
+						gridcell.setTag(theyear + "-" + strMonth + "-" + strDay);
 						//fin cambios chichan
 //						gridcell.setTag(theday + "-" + themonth + "-" + theyear);
 																	
@@ -448,7 +451,16 @@ public class SimpleCalendarViewActivity extends Activity implements OnClickListe
 						return currentWeekDay;
 					}
 			}//fin del inner class
-		
+		private String agregaCeroDia(String theday) {
+			String resul="";
+			if (theday.length()==1)
+				resul="0"+theday;
+			else
+				resul=""+theday;
+				
+			return resul;
+			
+		}
 		private String convierteMesaNumero(String themonth) {
 			// TODO Auto-generated method stub
 			String resul="";

@@ -134,7 +134,7 @@ public class BuscarProductos extends ListActivity{
                
 	    button_aceptar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Toast.makeText(BuscarProductos.this, "Ok", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(BuscarProductos.this, "Ok", Toast.LENGTH_SHORT).show();
 				BuscarProductos.this.finish();
 			}
 	 	});
