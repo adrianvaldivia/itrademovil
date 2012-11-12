@@ -54,7 +54,7 @@ height: 50px;
     position: absolute;
     right: 1em;
     text-align: center;
-    top: 5%;
+    top: 10%;
     width: 70px;
     cursor:pointer;
 }
@@ -73,6 +73,10 @@ height: 50px;
   /*  height: 10em;*/
 	border: 0;
 }
+img{
+
+	border: 0;
+}
 #content{
     height: 100%;
     max-height: 250px;
@@ -80,7 +84,24 @@ height: 50px;
     padding: 20px;
     position: relative;
 }
-
+.user #contenido_principal{
+  position: relative;   
+}
+.user  #contenido_principal table{
+ top:170%;
+ left:40%;
+ margin-left:-300px;
+ position: absolute;
+}
+.credit #contenido_principal{
+  position: relative;   
+}
+.credit  #contenido_principal table{
+ top:2em;
+ left:17%;
+ margin-left:-300px;
+ position: absolute;
+}
 #footer div {
     color: white;
     font-family: Arial;
@@ -98,4 +119,50 @@ height: 50px;
 /*login form*/
 #loginForm{
 width:400px;
+}
+
+td  div{
+width: 150px;
+}
+td {
+width: 200px;
+}
+td.nombre div {
+text-align: left;
+width: 400px;
+}
+td.razon div {
+text-align: center;
+width: 400px;
+}
+td  div{
+text-align: center;
+}
+td.accion  div a{
+width: 70px;
+display:inline;
+}
+th {
+}
+
+table.usuario td{
+text-align:right;
+}
+
+input.error { 
+	border: 1px solid red; 
+}
+
+label.error {
+	padding-left: 16px;
+	margin-left: .3em;
+	color: red;
+	font-size: 10px;
+}
+
+label.valid {
+	display: block;
+	width: 16px;
+	height: 16px;
+
 }

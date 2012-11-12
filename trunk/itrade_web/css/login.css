@@ -116,7 +116,7 @@ img{
     background-color: #0E64B5;
 }
 
-/*login form*/
+/*login form
 #loginForm{
 width:400px;
 }
@@ -148,7 +148,7 @@ th {
 table.usuario td{
 text-align:right;
 }
-
+*/
 input.error { 
 	border: 1px solid red; 
 }
