@@ -70,13 +70,12 @@
 		            android:layout_height="match_parent"
 		            android:background="@drawable/estilo_botones"
 		            android:src="@drawable/user_customer" />
-
-
+
 		        <ImageButton
 		            android:id="@+id/btnDirectorio"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
-		            android:background="@color/DeepSkyBlue"
+		            android:background="@drawable/estilo_resaltado"
 		            android:src="@drawable/directorio" />
 
 		        <ImageButton

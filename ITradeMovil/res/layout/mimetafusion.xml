@@ -80,13 +80,14 @@
 		            android:layout_height="match_parent"
 		            android:background="@drawable/estilo_botones"
 		            android:src="@drawable/calendar" />
-
+
 		        <ImageButton
 		            android:id="@+id/btnMeta"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
-		            android:background="@drawable/estilo_botones"
+		            android:background="@drawable/estilo_resaltado"
 		            android:src="@drawable/excelencia" />
+
 		    </LinearLayout>
 		</LinearLayout>>
 

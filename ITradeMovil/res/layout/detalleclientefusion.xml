@@ -62,12 +62,12 @@
 		            android:layout_height="match_parent"
 		            android:background="@drawable/estilo_botones"
 		            android:src="@drawable/buscar_pedido" />
-
+
 		        <ImageButton
 		            android:id="@+id/btnBuscarClientes"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
-		            android:background="@drawable/estilo_botones"
+		            android:background="@drawable/estilo_resaltado"
 		            android:src="@drawable/user_customer" />
 
 		        <ImageButton
