@@ -181,5 +181,10 @@ class Pedido extends CI_Controller {
 		$result=$this->Payment_model->get_pedidos_detail($ides);		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
+	
+	public function get_estadoPedido(){
+		$result=$this->Payment_model->get_estadoPedido();	
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}	
 }
 
