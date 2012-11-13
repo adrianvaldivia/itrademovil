@@ -50,6 +50,8 @@ import com.itrade.model.Persona;
 import com.itrade.model.PersonaDao;
 import com.itrade.model.Producto;
 import com.itrade.model.ProductoDao;
+import com.itrade.model.Prospecto;
+import com.itrade.model.ProspectoDao;
 import com.itrade.R;
 import com.itrade.model.Usuario;
 import com.itrade.model.UsuarioDao;
@@ -61,6 +63,7 @@ import com.itrade.db.DAOCliente;
 import com.itrade.db.DAOEvento;
 import com.itrade.db.DAOPedido;
 import com.itrade.db.DAOProducto;
+import com.itrade.db.DAOProspecto;
 import com.itrade.db.DAOUsuario;
 import com.itrade.db.DAOPersona;
 
@@ -74,6 +77,7 @@ public class Login extends Activity {
 	DAOPedido daoPedido =null;
 	DAOEvento daoEvento =null;
 	DAOProducto daoProducto =null;
+	DAOProspecto daoProspecto =null;
     private DAOUsuario daoUsu= null;
     //green Dao
     private SQLiteDatabase db;
@@ -88,6 +92,7 @@ public class Login extends Activity {
     private CategoriaDao categoriaDao;
     private EventoDao eventoDao;
     private MetaDao metaDao;
+    private ProspectoDao prospectoDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
@@ -304,19 +309,32 @@ public class Login extends Activity {
 			Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
 			eventoDao.insert(evento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-//		hardcode de eventos
-//		Evento evento1=new Evento(null,1,"HardCreador","Reunion de Jefes","el parque","ninguna1","2012-11-10","6:OO PM","7:00 PM");
-//		Evento evento2=new Evento(null,1,"HardCreador","Reunion de Vendedores","la calle","ninguna2","2012-11-10","8:OO PM","9:00 PM");
-//		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012-11-10","4:OO PM","5:00 PM");
-//		eventoDao.insert(evento1);
-//		eventoDao.insert(evento2);
-//		eventoDao.insert(evento3);		
-		
+		}		
 		//sincronizacion de metas
 		metaDao.deleteAll();
 		Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
 		metaDao.insert(meta);
+		//sincronizacion de prospectos
+		prospectoDao.deleteAll();   	
+		daoProspecto = new DAOProspecto(this);
+		List<Prospecto> listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idUsuario,"");
+        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+        Double xx;
+		Double yy;
+
+        
+		for(int i=0;i<listaProspecto.size();i++){
+			xx=listaProspecto.get(i).getLatitud();
+			yy=listaProspecto.get(i).getLongitud();
+			Prospecto prospecto2 = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getIdProspecto(),
+					listaProspecto.get(i).getNombre(),listaProspecto.get(i).getApePaterno(),
+					listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
+					listaProspecto.get(i).getRUC(),xx,yy,listaProspecto.get(i).getDireccion(),
+					listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
+					listaProspecto.get(i).getActivo());
+			prospecto2.setActivo("A");//util para la sincronizacion de prospectos
+	        prospectoDao.insert(prospecto2);	        	        
+		}
 	}
     private String getFechaActual() {
     	String resul;
