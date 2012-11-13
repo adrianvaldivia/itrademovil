@@ -236,5 +236,13 @@ class Payment_model extends CI_Model {
 		$query = $this->db->get($this->table_pedido_linea);        
 		return $query->result();
 	}
+	public function checkin($idcliente){
+		$this->db->set('CheckIn', 1);	
+		$this->db->where('IdCliente', $idcliente);
+		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
+		$this->db->where($dates);
+		//$this->db->update($this->table_pedido);
+		return $this->db->update($this->table_pedido);		
+	}
 }
 ?>
