@@ -76,12 +76,12 @@
 		            android:layout_height="match_parent"
 		            android:background="@drawable/estilo_botones"
 		            android:src="@drawable/directorio" />
-
+
 		        <ImageButton
 		            android:id="@+id/btnCalendario"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
-		            android:background="@drawable/estilo_botones"
+		            android:background="@drawable/estilo_resaltado"
 		            android:src="@drawable/calendar" />
 
 		        <ImageButton

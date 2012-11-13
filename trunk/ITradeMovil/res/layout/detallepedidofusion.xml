@@ -44,13 +44,13 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="48dp"
 		        android:background="@color/azul_2" >
-
+
 		        <ImageButton
 		            android:id="@+id/btnCrearPedido"
 		            style="@drawable/estilo_botones"
 		            android:layout_width="53dp"
 		            android:layout_height="match_parent"
-		            android:background="@drawable/estilo_botones"
+		            android:background="@drawable/estilo_resaltado"
 		            android:src="@drawable/add_to_cart" />
 
 		        <ImageButton
