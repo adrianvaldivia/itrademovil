@@ -244,5 +244,12 @@ class Payment_model extends CI_Model {
 		//$this->db->update($this->table_pedido);
 		return $this->db->update($this->table_pedido);		
 	}
+	
+	public function get_estadoPedido(){
+		$this->db->from($this->table_estado_pedido);				
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		return $query->result();
+	}
 }
 ?>
