@@ -258,14 +258,16 @@ public class BuscarClientesGreenDao extends ListActivity {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
 	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
-	        	cargarBaseLocal();	        	
-	                  
+	        	if (haveNetworkConnection()){
+	        		cargarBaseLocal();
+	        	}
+	        	else
+	        		Toast.makeText(this, "No hay conexion a Internet!", Toast.LENGTH_SHORT).show();	        		                  
 	        }	      
 	        break;
 	        case R.id.opcion3: {
 //	        	Toast.makeText(this, "Cerrando Sesion!", Toast.LENGTH_LONG).show();
-	        	cerrarSesion();
-                
+	        	cerrarSesion();                
 	        }	
 	        break;
 	        case R.id.opcion2:{
