@@ -3,14 +3,14 @@
 
 	<style name="PreferencesTheme"
     	   parent="@android:style/Theme.Black.NoTitleBar">
-    	   <item name="android:windowBackground">@color/AntiqueWhite</item>
+    	   <item name="android:windowBackground">@color/White</item>
     		<item name="android:textColor">@color/azul_2</item>
     		<item name="android:listViewStyle">@style/listViewPrefs</item>
 	</style>
 
 	<style name="listViewPrefs" 
 	       parent="@android:style/Widget.ListView">
-    	   <item name="android:background">@color/AntiqueWhite</item>
+    	   <item name="android:background">@color/White</item>
     	   <item name="android:cacheColorHint">@android:color/transparent</item>
 	</style>
 </resources>
