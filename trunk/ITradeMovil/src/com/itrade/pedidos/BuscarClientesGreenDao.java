@@ -257,7 +257,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
+//	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	if (haveNetworkConnection()){
 	        		cargarBaseLocal();
 	        	}
@@ -282,6 +282,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 
 
 	private void cargarBaseLocal() {
+		sincronizarBaseSubida();
         daoCliente = new DAOCliente(this);  
         listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
         //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
@@ -309,7 +310,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
         cursorElementoLista.requery();		
-        guardaListaOriginal();
+        guardaListaOriginal();        
 	}
 
 	private void buscarCliente() {
