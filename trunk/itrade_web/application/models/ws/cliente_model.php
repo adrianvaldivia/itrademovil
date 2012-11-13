@@ -25,7 +25,7 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".Direccion, ".
 						$this->table_cliente.".IdCobrador, ".
 						$this->table_persona.".Email, ".
-						$this->table_linea.".MontoAprobado, ".
+						$this->table_linea.".MontoActual, ".
 						$this->table_persona.".ApeMaterno ");
 						
 		$this->db->from($this->table_pedido);
@@ -56,7 +56,7 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
 						$this->table_cliente.".IdCobrador, ".
-						$this->table_linea.".MontoAprobado, ".
+						$this->table_linea.".MontoActual, ".
 						$this->table_persona.".ApeMaterno ");
 						
 		$this->db->from($this->table_cliente);					
@@ -99,7 +99,7 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
 						$this->table_cliente.".IdCobrador, ".
-						$this->table_linea.".MontoAprobado, ".
+						$this->table_linea.".MontoActual, ".
 						$this->table_persona.".ApeMaterno ");
 						
 		$this->db->from($this->table_cliente);				
