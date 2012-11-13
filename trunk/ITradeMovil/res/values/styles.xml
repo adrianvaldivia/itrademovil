@@ -11,6 +11,6 @@
 	<style name="listViewPrefs" 
 	       parent="@android:style/Widget.ListView">
     	   <item name="android:background">@color/AntiqueWhite</item>
-    	   <item name="android:cacheColorHint">@color/DarkBlue</item>
+    	   <item name="android:cacheColorHint">@android:color/transparent</item>
 	</style>
 </resources>
