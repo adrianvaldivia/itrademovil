@@ -126,6 +126,7 @@ public class Login extends Activity {
         categoriaDao = daoSession.getCategoriaDao();
         eventoDao = daoSession.getEventoDao();
         metaDao = daoSession.getMetaDao();
+        prospectoDao = daoSession.getProspectoDao();
         
         pedidoLineaDao.deleteAll();
         //fin green dao

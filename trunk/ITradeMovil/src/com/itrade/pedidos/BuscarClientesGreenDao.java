@@ -396,23 +396,7 @@ public class BuscarClientesGreenDao extends ListActivity {
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
 	}
 	
-	@Override
-	protected void onDestroy() {
-		recuperarOriginal();		
-		db.close();
-		cursorElementoLista.close();
-	    super.onDestroy();
-	}
-	
-	@Override
-	public void onBackPressed() {
-		Minimizar();
-	}
-	
-	@Override
-	public void finish(){
-		super.finish();		
-	}
+
 	private void Minimizar() {
 		// TODO Auto-generated method stub
 		this.moveTaskToBack(true);		
@@ -465,8 +449,23 @@ public class BuscarClientesGreenDao extends ListActivity {
         	else
             	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();
         }
-             
-        
-
+	}
+	
+	@Override
+	protected void onDestroy() {
+		recuperarOriginal();		
+		db.close();
+		cursorElementoLista.close();
+	    super.onDestroy();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		Minimizar();
+	}
+	
+	@Override
+	public void finish(){
+		super.finish();		
 	}
 }

@@ -173,7 +173,7 @@ public class MiMeta extends Activity {
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
+	    inflater.inflate(R.menu.menuagenda, menu);
 	    return true;
 	}
 	@Override
@@ -182,10 +182,10 @@ public class MiMeta extends Activity {
 	        case R.id.opcion1:{
 	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	cargarBaseLocal();	        	
-	                            break;
-	                           }
-	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
-	                            break;
+
+	        }
+            break;
+
 	    }
 	    return true;
 	}
@@ -196,6 +196,12 @@ public class MiMeta extends Activity {
 		daometa= new DAOMeta(this);
 		Meta metaAux	=	daometa.buscarMetaxVendedor(idusuario);
 		metaDao.insert(metaAux);
+	}
+	
+	@Override
+	protected void onDestroy() {	
+		db.close();
+	    super.onDestroy();
 	}
 
 }
