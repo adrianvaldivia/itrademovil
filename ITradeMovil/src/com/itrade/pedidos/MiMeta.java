@@ -2,20 +2,38 @@ package com.itrade.pedidos;
 
 
 import com.itrade.R;
+import com.itrade.db.DAOMeta;
+import com.itrade.model.DaoMaster;
+import com.itrade.model.DaoSession;
 import com.itrade.model.Meta;
 import com.itrade.model.MetaDao;
+import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.MetaDao.Properties;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.lang.Math;
 
 public class MiMeta extends Activity {
+	//green Dao
+    private SQLiteDatabase db;
+
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
+    private MetaDao metaDao;
+    //fin green dao
+	
     private Button button_aceptar;
     private TextView tv_avancemeta;
     private TextView tv_metareal;
@@ -26,8 +44,9 @@ public class MiMeta extends Activity {
     private Double metareal;
     private Double avance;
     private ProgressBar pb;
-    private MetaDao metaDao;
+    
     boolean exito;
+    DAOMeta daometa;
 
 	/** Called when the activity is first created. */
     @Override
@@ -36,6 +55,14 @@ public class MiMeta extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.mimetafusion);
+      //inicio green DAO 
+        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        metaDao = daoSession.getMetaDao();
+        
+        
         button_aceptar = (Button) findViewById(R.id.btn_aceptarmeta);
         tv_avancemeta = (TextView) findViewById(R.id.txt_avancemeta);
         tv_metareal = (TextView) findViewById(R.id.txt_metareal);
@@ -141,6 +168,34 @@ public class MiMeta extends Activity {
         metareal=metav.getMeta();
     	
 		
+	}
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.opcion1:{
+	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
+	        	cargarBaseLocal();	        	
+	                            break;
+	                           }
+	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
+	                            break;
+	    }
+	    return true;
+	}
+
+	private void cargarBaseLocal() {
+		// TODO Auto-generated method stub
+		metaDao.deleteAll();
+		daometa= new DAOMeta(this);
+		Meta metaAux	=	daometa.buscarMetaxVendedor(idusuario);
+		metaDao.insert(metaAux);
 	}
 
 }

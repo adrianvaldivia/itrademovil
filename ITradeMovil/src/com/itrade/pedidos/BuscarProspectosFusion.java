@@ -22,6 +22,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class BuscarProspectosFusion extends ListActivity{
     DAOProspecto daoProspecto=null;
 	private Button button_agregar;
 	private Button button_buscar;
+	private ImageButton button_meta;
 	Prospecto prospecto= new Prospecto();
 	List<Prospecto> listaProspecto;
 	
@@ -102,6 +104,7 @@ public class BuscarProspectosFusion extends ListActivity{
         button_agregar = (Button) findViewById(R.id.buttonvermapa);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
         editText = (EditText) findViewById(R.id.editTextCliente);
+        button_meta = (ImageButton) findViewById(R.id.btnMeta);
 //        editText.setInputType(InputType.TYPE_NULL);
 
 
@@ -119,6 +122,14 @@ public class BuscarProspectosFusion extends ListActivity{
 				BuscarProspectosFusion.this.finish();
 			}
 	 	});
+	    button_meta.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){					    			    
+				Intent i = new Intent(BuscarProspectosFusion.this, MiMeta.class);								
+				i.putExtra("idusuario", idusuario);								
+				startActivity(i);		    	
+			}
+			
+		});
 	    button_buscar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				buscarProspecto();
@@ -235,7 +246,7 @@ public class BuscarProspectosFusion extends ListActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Cargando BD!", Toast.LENGTH_LONG).show();
+	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_SHORT).show();
 	        	cargarBaseLocal();	        	
 	        
 	        }
