@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -54,7 +56,7 @@ import com.itrade.model.UsuarioDao;
 import com.itrade.R;
 
 
-public class BuscarClientesGreenDao extends ListActivity{
+public class BuscarClientesGreenDao extends ListActivity {
 	
     private SQLiteDatabase db;
 
@@ -94,6 +96,10 @@ public class BuscarClientesGreenDao extends ListActivity{
 //        Toast.makeText(BuscarClientesGreenDao.this, "Createando", Toast.LENGTH_LONG).show();
         setContentView(R.layout.buscarclientesfusion);
         imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+//        //preferencias
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//        boolean boolBorrarDatos = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_SYNC_CONN, false);
+//        //fin preferencias
 
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -253,13 +259,21 @@ public class BuscarClientesGreenDao extends ListActivity{
 	        case R.id.opcion1:{
 	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	cargarBaseLocal();	        	
-	                            break;
-	                           }	        
-	        case R.id.opcion2: {
+	                  
+	        }	      
+	        break;
+	        case R.id.opcion3: {
 //	        	Toast.makeText(this, "Cerrando Sesion!", Toast.LENGTH_LONG).show();
 	        	cerrarSesion();
-	        }
-	                            break;
+                
+	        }	
+	        break;
+	        case R.id.opcion2:{
+//	        	Toast.makeText(this, "Preferencias!", Toast.LENGTH_SHORT).show(); 
+	        	Intent i= new Intent(getBaseContext(), PreferencePedidos.class);
+	            startActivity(i);	                  
+	        }	      
+	        break;
 	    }
 	    return true;
 	}
@@ -340,35 +354,30 @@ public class BuscarClientesGreenDao extends ListActivity{
 	
     private void cerrarSesion() {
 		// TODO Auto-generated method stub
+      //preferencias
+      SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+      final boolean boolBorrarDatos = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_SYNC_CONN, false);
+      //fin preferencias
 	    new AlertDialog.Builder(this)
         .setTitle("Cerrar Sesion")
         .setMessage("Debe contar con Internet, para sincroninzar" +
         		"los datos. Realmente desea cerrar la Sesion?")
         .setNegativeButton("No", null)
-        .setNeutralButton("Solo Salir", new OnClickListener() {
+        .setNeutralButton("Minimizar", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
-//            	Toast.makeText(MenuLista.this, "Yaaaa", Toast.LENGTH_SHORT).show();
-//        		if (haveNetworkConnection()){
         			sincronizarBaseSubida();
-//        		}
-//        		else{
-//                	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
-//        		}
-    	  		BuscarClientesGreenDao.super.onBackPressed();
+        			Minimizar();
+//        			BuscarClientesGreenDao.super.onBackPressed();
             	
             }
         })
         .setPositiveButton("Si", new OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
-            		usuarioDao.deleteAll();
-//            		if (haveNetworkConnection()){            			
-            			sincronizarBaseSubida();
-//            		}
-//            		else{
-//                    	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();            			
-//            		}
+            		if (boolBorrarDatos) 
+            			usuarioDao.deleteAll();            			
+            		sincronizarBaseSubida();
         	  		BuscarClientesGreenDao.super.onBackPressed();
             }
         }).create().show();	
