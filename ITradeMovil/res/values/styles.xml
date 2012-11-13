@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<style name="PreferencesTheme">
-    <item name="android:windowBackground">@drawable/bg</item>
-    <item name="android:background">"@color/AntiqueWhite"</item>
-</style>
+	<style name="PreferencesTheme"
+    	   parent="@android:style/Theme.Black.NoTitleBar">
+    	   <item name="android:windowBackground">@color/AntiqueWhite</item>
+    		<item name="android:textColor">@color/azul_2</item>
+    		<item name="android:listViewStyle">@style/listViewPrefs</item>
+	</style>
+
+	<style name="listViewPrefs" 
+	       parent="@android:style/Widget.ListView">
+    	   <item name="android:background">@color/AntiqueWhite</item>
+    	   <item name="android:cacheColorHint">@color/DarkBlue</item>
+	</style>
 </resources>
