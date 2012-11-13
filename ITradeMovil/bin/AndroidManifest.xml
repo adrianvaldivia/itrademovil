@@ -46,9 +46,13 @@
         
         <activity android:label="@string/app_name" android:name=".pedidos.BuscarClientes"/>
         <activity android:label="@string/app_name"
-            android:name=".pedidos.DetalleCliente" android:theme="@android:style/Theme.NoTitleBar"/>
+            android:name=".pedidos.DetalleCliente" 
+            android:configChanges="keyboardHidden|orientation" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:label="@string/app_name"
-            android:name=".pedidos.CrearPedido" android:theme="@android:style/Theme.NoTitleBar"/>
+            android:name=".pedidos.CrearPedido"
+            android:configChanges="keyboardHidden|orientation"  
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:label="@string/app_name"
             android:name=".pedidos.BuscarProspectos" android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:label="@string/app_name" android:name=".pedidos.MenuLista"/>
@@ -58,7 +62,9 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:label="@string/app_name"
             android:name=".pedidos.BuscarProspectosGreenDao" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.MiMeta"/>
+        <activity android:label="@string/app_name" 
+            android:name=".pedidos.MiMeta"
+            android:configChanges="keyboardHidden|orientation" />
         <activity android:label="@string/app_name"
             	  android:theme="@android:style/Theme.NoTitleBar"	
             	  android:configChanges="keyboardHidden|orientation" 
@@ -98,6 +104,12 @@
             android:name=".pedidos.Picker"
            android:configChanges="keyboardHidden|orientation" 
            />
+        <activity android:label="@string/app_name" 
+            	  android:name=".pedidos.PreferencePedidos"
+        		  android:theme="@style/PreferencesTheme">
+        		  <intent-filter>                                
+        		  </intent-filter>
+    	</activity>
         <activity android:label="@string/app_name" 
             android:name=".pedidos.MiUbicacionImplActivity"/>
         <activity android:label="@string/app_name" android:name=".pedidos.RegistrarProspecto"/>

@@ -11,6 +11,8 @@ import com.google.gson.reflect.TypeToken;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.controller.pedidos.SyncronizarPedidos;
 import com.itrade.db.DAOCliente;
+import com.itrade.db.DAOMeta;
+import com.itrade.db.DAOProspecto;
 import com.itrade.model.Cliente;
 import com.itrade.model.Meta;
 import com.itrade.model.Prospecto;
@@ -42,11 +44,14 @@ public class BuscarProspectos extends Activity {
 	private ImageButton button_meta;
 	private Button button_agregar;
 	private ListView list_prospectos;
+	DAOProspecto daoprospecto;
+	DAOMeta daometa;
 	
 	//ArrayAdapter<Cliente> adapter;
 	//ItemProspectoAdapter adapter2;
 	ArrayAdapter<String> adapter;
-	private ArrayList<Prospecto> listaProspectos;
+	//private ArrayList<Prospecto> listaProspectos;
+	private List<Prospecto> listaProspectos;
 	//private ArrayList<Meta> listameta;
 	private Meta mimeta;
 	String idusuario;
@@ -79,27 +84,28 @@ public class BuscarProspectos extends Activity {
 		
 		button_meta.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				//WEBSERVICE LLENA ARREGLO DE meta
-    	        
-		    	Syncronizar sync = new Syncronizar(BuscarProspectos.this);
-		    	List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		    	param.add(new BasicNameValuePair("idvendedor", idusuario));	
-		    	
-		    	
-		    	//poner ruta real para meta
-		    	///dp2/itrade/ws/pedido/meta_periodo/
-		    	String route="/ws/pedido/meta_periodo/";
-		    	sync.conexion(param,route);
-		    	try {
-		    		sync.getHilo().join();			
-		    	} catch (InterruptedException e) {
-		    		// TODO Auto-generated catch block
-		    		e.printStackTrace();
-		    	}	   
-		    	Gson gson = new Gson();
+//				//WEBSERVICE LLENA ARREGLO DE meta
+//    	        
+//		    	Syncronizar sync = new Syncronizar(BuscarProspectos.this);
+//		    	List<NameValuePair> param = new ArrayList<NameValuePair>();								
+//		    	param.add(new BasicNameValuePair("idvendedor", idusuario));	
+//		    	
+//		    	
+//		    	//poner ruta real para meta
+//		    	///dp2/itrade/ws/pedido/meta_periodo/
+//		    	String route="/ws/pedido/meta_periodo/";
+//		    	sync.conexion(param,route);
+//		    	try {
+//		    		sync.getHilo().join();			
+//		    	} catch (InterruptedException e) {
+//		    		// TODO Auto-generated catch block
+//		    		e.printStackTrace();
+//		    	}	   
+//		    	Gson gson = new Gson();
 		    										
 		    	//listameta	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Meta>>(){}.getType());			
-		    	mimeta	=	gson.fromJson(sync.getResponse(), Meta.class);
+		    	//mimeta	=	gson.fromJson(sync.getResponse(), Meta.class);
+				mimeta	=	daometa.buscarMetaxVendedor(idusuario);
 		    	
 		    	Toast.makeText(BuscarProspectos.this, "Ok", Toast.LENGTH_LONG).show();
 				Intent i = new Intent(BuscarProspectos.this, MiMeta.class);
@@ -126,28 +132,29 @@ public class BuscarProspectos extends Activity {
 		button_buscar.setOnClickListener(new OnClickListener() {
 	    public void onClick(View v) {
 
-	    	//WEBSERVICE LLENA ARREGLO DE CLIENTES
-	    	        
-	    	Syncronizar sync = new Syncronizar(BuscarProspectos.this);
-	    	List<NameValuePair> param = new ArrayList<NameValuePair>();								
-	    	param.add(new BasicNameValuePair("idvendedor", idusuario));	
-	    	
-	    	razonSocial= textView_razonSocial.getText().toString();	
-	    	
-	    	param.add(new BasicNameValuePair("razon_social", razonSocial));
-	    	
-	    	//http://200.16.7.111/dp2/itrade/ws/clientes/get_prospecto_by_vendedor/
-	    	String route="/ws/clientes/get_prospecto_by_vendedor/";
-	    	sync.conexion(param,route);
-	    	try {
-	    		sync.getHilo().join();			
-	    	} catch (InterruptedException e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	}	   
-	    	Gson gson = new Gson();
+//	    	//WEBSERVICE LLENA ARREGLO DE CLIENTES
+//	    	        
+//	    	Syncronizar sync = new Syncronizar(BuscarProspectos.this);
+//	    	List<NameValuePair> param = new ArrayList<NameValuePair>();								
+//	    	param.add(new BasicNameValuePair("idvendedor", idusuario));	
+//	    	
+//	    	razonSocial= textView_razonSocial.getText().toString();	
+//	    	
+//	    	param.add(new BasicNameValuePair("razon_social", razonSocial));
+//	    	
+//	    	//http://200.16.7.111/dp2/itrade/ws/clientes/get_prospecto_by_vendedor/
+//	    	String route="/ws/clientes/get_prospecto_by_vendedor/";
+//	    	sync.conexion(param,route);
+//	    	try {
+//	    		sync.getHilo().join();			
+//	    	} catch (InterruptedException e) {
+//	    		// TODO Auto-generated catch block
+//	    		e.printStackTrace();
+//	    	}	   
+//	    	Gson gson = new Gson();
 	    										
-	    	listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Prospecto>>(){}.getType());						
+	    	//listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Prospecto>>(){}.getType());
+	    	listaProspectos	= daoprospecto.buscarProspectosxVendedor(idusuario,razonSocial);
 	    	ArrayList<String> lprospectos=new ArrayList<String>();
 	    	for(int i=0;i<listaProspectos.size();i++){
 	        	lprospectos.add(listaProspectos.get(i).getRazon_Social());	        	

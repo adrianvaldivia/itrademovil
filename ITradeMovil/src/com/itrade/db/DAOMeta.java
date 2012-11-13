@@ -1,0 +1,71 @@
+package com.itrade.db;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+
+import com.google.gson.Gson;
+import com.itrade.controller.cobranza.Syncronizar;
+import com.itrade.model.Meta;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+
+public class DAOMeta {
+
+	private Activity window;
+	
+    JSONArray clientes = null;
+    
+    String idusuario;
+	
+	public DAOMeta(Activity window){
+		super();
+		this.window=window;
+	}
+
+	public Meta buscarMetaxVendedor(String idusuario) {
+		
+		//List<Prospecto> listaProspectos = new ArrayList<Prospecto>();
+		Meta metav= new Meta();
+		
+		Intent i = this.window.getIntent();                
+		//idusuario=String.valueOf(idUsuario);	
+		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
+		
+		/*****ws****/
+		
+		
+		Syncronizar sync = new Syncronizar(window);
+		List<NameValuePair> param = new ArrayList<NameValuePair>();	
+		param.add(new BasicNameValuePair("idvendedor", idusuario));
+		//param.add(new BasicNameValuePair("razon_social", razonSocial));
+		
+//		String route="dp2/itrade/ws/cobranza/get_all_products";
+		//String route="/ws/clientes/get_clients_by_idvendedor_p/";
+		//String route="/ws/clientes/get_prospecto_by_vendedor/";
+		String route="/ws/pedido/meta_periodo/";
+		
+		sync.conexion(param,route);
+		
+		try {
+			sync.getHilo().join();
+			Log.d("TAG","LLEGA PRIMERO AKI");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Log.d("TAG","LLEGA SEGUNDO AKI");
+	    Gson gson = new Gson();
+							
+		Log.e("log_tag", "se cayo5" );
+		metav	=	gson.fromJson(sync.getResponse(), Meta.class);				    
+
+		    /*****************************WEBSERVICE END**********************************/				
+		return metav;
+	}
+}
