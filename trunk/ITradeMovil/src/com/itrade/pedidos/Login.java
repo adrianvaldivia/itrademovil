@@ -41,6 +41,8 @@ import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
 import com.itrade.model.Evento;
 import com.itrade.model.EventoDao;
+import com.itrade.model.Meta;
+import com.itrade.model.MetaDao;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoLineaDao;
@@ -85,6 +87,7 @@ public class Login extends Activity {
     private ProductoDao productoDao;
     private CategoriaDao categoriaDao;
     private EventoDao eventoDao;
+    private MetaDao metaDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
@@ -117,6 +120,7 @@ public class Login extends Activity {
         productoDao = daoSession.getProductoDao();
         categoriaDao = daoSession.getCategoriaDao();
         eventoDao = daoSession.getEventoDao();
+        metaDao = daoSession.getMetaDao();
         
         pedidoLineaDao.deleteAll();
         //fin green dao
@@ -307,7 +311,12 @@ public class Login extends Activity {
 //		Evento evento3=new Evento(null,1,"HardCreador","Reunion de Cobradores","la esquina","ninguna3","2012-11-10","4:OO PM","5:00 PM");
 //		eventoDao.insert(evento1);
 //		eventoDao.insert(evento2);
-//		eventoDao.insert(evento3);				
+//		eventoDao.insert(evento3);		
+		
+		//sincronizacion de metas
+		metaDao.deleteAll();
+		Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
+		metaDao.insert(meta);
 	}
     private String getFechaActual() {
     	String resul;
