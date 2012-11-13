@@ -8,4 +8,17 @@
             android:title="Eliminar Datos"
             android:defaultValue="false"/>
     </PreferenceCategory>
+	<PreferenceCategory 
+        android:title="Preferencias de Unidades"
+        android:key="pref_key_units_settings">
+     	<ListPreference
+  			android:title="Moneda"
+  			android:summary="Seleccione un tipo de moneda"
+  			android:key="listPref"
+  			android:entries="@array/listDisplayMoneda"
+  			android:entryValues="@array/listReturnValue" />
+     	
+    </PreferenceCategory>    
+
+    
 </PreferenceScreen>
