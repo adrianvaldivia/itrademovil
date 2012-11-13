@@ -2,6 +2,9 @@ package com.itrade.pedidos;
 
 
 import com.itrade.R;
+import com.itrade.model.Meta;
+import com.itrade.model.MetaDao;
+import com.itrade.model.MetaDao.Properties;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -23,6 +26,8 @@ public class MiMeta extends Activity {
     private Double metareal;
     private Double avance;
     private ProgressBar pb;
+    private MetaDao metaDao;
+    boolean exito;
 
 	/** Called when the activity is first created. */
     @Override
@@ -41,10 +46,13 @@ public class MiMeta extends Activity {
         Bundle bundle=getIntent().getExtras();
         long idu = bundle.getLong("idusuario");		
         idusuario= String.valueOf(idu);
-        boolean exito=bundle.getBoolean("exito");
-        periodo = bundle.getString("periodo");
-        metareal= bundle.getDouble("meta");
-        avance= bundle.getDouble("avance");
+        
+        obtenerMetaVendedor();
+        
+//        boolean exito=bundle.getBoolean("exito");
+//        periodo = bundle.getString("periodo");
+//        metareal= bundle.getDouble("meta");
+//        avance= bundle.getDouble("avance");
         
         if(exito){
         	Double decimal;
@@ -119,5 +127,20 @@ public class MiMeta extends Activity {
     		}
      	});
     }
+    
+    private void obtenerMetaVendedor() {
+		// TODO Auto-generated method stub
+		String str="";
+		//Producto productoAux=productoDao.loadByRowId(idProducto);
+		str=str+idusuario;
+        Meta metav= metaDao.loadByRowId(1);
+        if (metav==null) exito=false;
+        else exito=true;
+        periodo= metav.getNombre();
+        avance=metav.getSuma();
+        metareal=metav.getMeta();
+    	
+		
+	}
 
 }
