@@ -57,11 +57,14 @@ public class DAOUsuario {
 		listausuario	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Usuario>>(){}.getType());				    
 
 		    /*****************************WEBSERVICE END**********************************/		
-		
-		if (listausuario.size()>0) 
-			return listausuario.get(0);
-		else 
-			return null;
+		if(listausuario!=null){
+			if (listausuario.size()>0) 
+				return listausuario.get(0);
+			else 
+				return null;
+		}
+		else
+			return null;		
     }
 	
 }

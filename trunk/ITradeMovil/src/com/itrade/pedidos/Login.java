@@ -283,7 +283,7 @@ public class Login extends Activity {
 					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
 					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
 					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
-					listaCliente.get(i).getActivo());
+					listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
 			cliente2.setActivo("A");//util para el checkin del mapa
 	        clienteDao.insert(cliente2);
 		}
@@ -315,7 +315,7 @@ public class Login extends Activity {
 		metaDao.deleteAll();
 		Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
 		metaDao.insert(meta);
-		//sincronizacion de prospectos
+		///////////////////////////////////////////////////sincronizacion de prospectos
 		prospectoDao.deleteAll();   	
 		daoProspecto = new DAOProspecto(this);
 		List<Prospecto> listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idUsuario,"");

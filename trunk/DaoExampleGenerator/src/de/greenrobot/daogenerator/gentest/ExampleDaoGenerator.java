@@ -96,6 +96,7 @@ public class ExampleDaoGenerator {
 		cliente.addIntProperty("IdCobrador");
 		cliente.addIntProperty("IdUsuario");
 		cliente.addStringProperty("Activo");
+		cliente.addDoubleProperty("MontoActual");
 	}
 
 	private static void addProspecto(Schema schema) {
