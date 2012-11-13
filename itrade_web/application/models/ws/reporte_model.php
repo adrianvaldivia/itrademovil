@@ -1044,6 +1044,93 @@ class Reporte_model extends CI_Model {
 		return $query->result();
 	}
 	
+	public function usuarios_resumido_sinc($anho,$idjerarquia,$idubigeo,$id){				
+		
+		//trabajo del arrego $anho
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		
+		switch($idjerarquia){
+		case 1:
+		
+		
+		//DATE_FORMAT( Pedido.FechaPedido,  '%M' ) AS Monthname, 
+		$query = $this->db->query("
+		
+		
+		SELECT `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`, `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
+		FROM ( 
+		`Usuario`
+		)
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
+		WHERE  `Ubigeo`.`Pais`= '".$id."' and `Usuario`.`IdJerarquia`= 4 
+		
+		");
+		break;
+		
+		case 2:
+		
+		$query = $this->db->query("
+		
+		
+		SELECT `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
+		FROM ( 
+		`Usuario`
+		)
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
+		WHERE  `Ubigeo`.`Departamento`= '".$id."' and `Usuario`.`IdJerarquia`= 4  
+		
+		");
+		break;
+		
+		
+		case 3:
+		
+		$query = $this->db->query("
+		
+		
+		SELECT `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
+		FROM ( 
+		`Usuario`
+		)
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
+		WHERE   ".$str." and `Ubigeo`.`Distrito`= '".$id."' and `Usuario`.`IdJerarquia`= 4  
+		
+		");
+		break;	
+		}		
+		//echo $this->db->last_query();
+		return $query->result();
+		
+	}
+	
 	
 }
 ?>
