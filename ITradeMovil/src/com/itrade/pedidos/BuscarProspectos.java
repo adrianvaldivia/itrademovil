@@ -78,7 +78,7 @@ public class BuscarProspectos extends Activity {
 		button_agregar = (Button) findViewById(R.id.buttonvermapa);
 		button_meta = (ImageButton) findViewById(R.id.btnMeta);
 		list_prospectos = (ListView) findViewById(R.id.list);
-		
+		daoprospecto= new DAOProspecto(this);
 			
 		
 		
@@ -153,7 +153,7 @@ public class BuscarProspectos extends Activity {
 //	    	}	   
 //	    	Gson gson = new Gson();
 	    										
-	    	//listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Prospecto>>(){}.getType());
+	    	//listaProspectos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Prospecto>>(){}.getType());	    	
 	    	listaProspectos	= daoprospecto.buscarProspectosxVendedor(idusuario,razonSocial);
 	    	ArrayList<String> lprospectos=new ArrayList<String>();
 	    	for(int i=0;i<listaProspectos.size();i++){

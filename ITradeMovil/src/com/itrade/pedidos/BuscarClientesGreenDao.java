@@ -160,7 +160,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	 	});
 	    button_prospectos.setOnClickListener(new android.view.View.OnClickListener() {
 			public void onClick(View v) {				
-				Intent intent = new Intent(BuscarClientesGreenDao.this,  BuscarProspectos.class);
+				Intent intent = new Intent(BuscarClientesGreenDao.this,  BuscarProspectosFusion.class);
 				intent.putExtra("idusuario", idUsuario);
 				startActivity(intent);		
 			}

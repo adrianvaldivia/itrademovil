@@ -4,80 +4,103 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView.OnEditorActionListener;
 
-import com.itrade.db.DAOCliente;
+import com.itrade.db.DAOProspecto;
 
 
-import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
+import com.itrade.model.ElementoLista;
+import com.itrade.model.ElementoListaDao;
 import com.itrade.model.Prospecto;
 import com.itrade.model.ProspectoDao;
 import com.itrade.R;
+import com.itrade.model.ProspectoDao.Properties;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 
 public class BuscarProspectosFusion extends ListActivity{
+	InputMethodManager imm;
 	
     private SQLiteDatabase db;
 
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private ProspectoDao prospectoDao;
+    private ElementoListaDao elementoListaDao;
+    private Cursor cursorElementoLista;
+    SimpleCursorAdapter adapterElementoLista;
 
     private Cursor cursor;
     SimpleCursorAdapter adapter;
     
     private EditText editText;
-	DAOCliente daoCliente =null;
-	private Button button_vermapa;
-	private Button button_registrar;
+    DAOProspecto daoProspecto=null;
+	private Button button_agregar;
+	private Button button_buscar;
 	Prospecto prospecto= new Prospecto();
 	List<Prospecto> listaProspecto;
 	
 	public long idusuario;
+	List<Prospecto> listaProspectoOriginal;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buscarprospectosfusion);
+        imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+        
+        Bundle bundle=getIntent().getExtras();
+        idusuario = bundle.getLong("idusuario");
+        setTitle("I Trade - Prospectos");
+        
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         prospectoDao = daoSession.getProspectoDao();
+        elementoListaDao = daoSession.getElementoListaDao();
         
-        // Segunda parte
-        String textColumn = ClienteDao.Properties.Razon_Social.columnName;
-        String orderBy = textColumn + " COLLATE LOCALIZED ASC";
-        cursor = db.query(prospectoDao.getTablename(), prospectoDao.getAllColumns(), null, null, null, null, orderBy);
-        String[] from = { textColumn, ClienteDao.Properties.RUC.columnName };
-        int[] to = { android.R.id.text1, android.R.id.text2 };
-        adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, from,
-                to);
-        setListAdapter(adapter);
-        // Fin green Day
-        Bundle bundle=getIntent().getExtras();
-        idusuario = bundle.getLong("idusuario");
-        setTitle("I Trade - Prospectos");                             
+        //Inicio green Dao Elementos Lista
+        String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
+        String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
+        cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
+        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
+        int[] toElementoLista = { R.id.text1, R.id.text2 };
+        adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
+        		toElementoLista);    
+        //fin green Day de Elementos Lista
+        setListAdapter(adapterElementoLista);
+        guardaListaOriginal();
+        recuperarOriginal();
         
-        button_vermapa = (Button) findViewById(R.id.buttonvermapa);
-        button_registrar = (Button) findViewById(R.id.buttonbuscar);
+                          
+        
+        button_agregar = (Button) findViewById(R.id.buttonvermapa);
+        button_buscar = (Button) findViewById(R.id.buttonbuscar);
         editText = (EditText) findViewById(R.id.editTextCliente);
 //        editText.setInputType(InputType.TYPE_NULL);
 
@@ -88,30 +111,83 @@ public class BuscarProspectosFusion extends ListActivity{
 //        lista= this.Convierte();
 //        ListView lv = getListView(); 
 //        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
-	    button_vermapa.setOnClickListener(new OnClickListener() {
+	    button_agregar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-//				Toast.makeText(BuscarClientesGreenDao.this, "pruebaa", Toast.LENGTH_LONG).show();
-//				Bundle bundle = getIntent().getExtras();
-				
-				Intent intent = new Intent(BuscarProspectosFusion.this, VerMapaActivity.class);
-				
-				intent.putExtra("idruta", 0);
-				intent.putExtra("idunidad", 0);
-				
-				startActivity(intent);		
-			}
-	 	});
-	    button_registrar.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				
 				Intent i = new Intent(BuscarProspectosFusion.this, RegistrarProspecto.class);
+				i.putExtra("idusuario", idusuario);
 				startActivity(i);
-				Toast.makeText(BuscarProspectosFusion.this, "Agregar", Toast.LENGTH_LONG).show();
-				addCliente();
+				BuscarProspectosFusion.this.finish();
 			}
 	 	});
-    }
+	    button_buscar.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				buscarProspecto();
+				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); 
+			}
 
+
+	 	});
+	    addUiListeners();
+    }
+    
+    protected void addUiListeners() {
+        editText.setOnEditorActionListener(new OnEditorActionListener() {
+
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                	buscarProspecto();
+                	imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        final View button = findViewById(R.id.buttonbuscar);
+        button.setEnabled(false);
+        
+        editText.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                boolean enable = s.length() != 0;//habilita o deshabilita el boton segun sea el caso
+                button.setEnabled(enable);
+                if (enable==false){
+                	recuperarOriginal();
+                }
+                else
+                	buscarProspecto();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            	Log.d("Before", "Before: ");
+            	//Toast.makeText(NoteActivity.this, "Before", Toast.LENGTH_LONG).show();
+            }
+
+            public void afterTextChanged(Editable s) {
+//            	Log.d("After", "After: ");
+            	//Toast.makeText(NoteActivity.this, "After", Toast.LENGTH_LONG).show();
+            }
+        });        
+    }
+    
+	private void buscarProspecto() {
+        String texto = editText.getText().toString();
+//        editText.setText("");
+        List<Prospecto> prospectosAux = prospectoDao.queryBuilder()
+        		.where(Properties.Razon_Social.like("%"+texto+"%"))
+        		.orderAsc(Properties.Id).list();
+//        Double x;
+//		Double y;
+//		clienteDao.deleteAll();
+		elementoListaDao.deleteAll();
+        
+		for(int i=0;i<prospectosAux.size();i++){
+			ElementoLista elemento = new ElementoLista(null,prospectosAux.get(i).getRazon_Social(),"RUC: "+prospectosAux.get(i).getRUC(),null,prospectosAux.get(i).getId());
+			elementoListaDao.insert(elemento);
+	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+		}
+        cursorElementoLista.requery();	                
+    }
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
      // TODO Auto-generated method stub
@@ -152,7 +228,7 @@ public class BuscarProspectosFusion extends ListActivity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
+	    inflater.inflate(R.menu.menuagenda, menu);
 	    return true;
 	}
 	@Override
@@ -161,53 +237,69 @@ public class BuscarProspectosFusion extends ListActivity{
 	        case R.id.opcion1:{
 	        	Toast.makeText(this, "Cargando BD!", Toast.LENGTH_LONG).show();
 	        	cargarBaseLocal();	        	
-	                            break;
-	                           }
-	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
-	                            break;
-	        case R.id.opcion3: Toast.makeText(this, "Presionaste Opcion 3!", Toast.LENGTH_LONG).show();
-	                            break;
+	        
+	        }
+            break;
 	    }
 	    return true;
 	}
     private void cargarBaseLocal() {
-//        daoCliente = new DAOCliente();  
-//        listaProspecto = daoCliente.getAllClientes(0); //obtiene los clientes
-//        Double x;
-//		Double y;
-//		prospectoDao.deleteAll();
-//        
-//		for(int i=0;i<listaProspecto.size();i++){
-//			x=listaProspecto.get(i).getLatitud();
-//			y=listaProspecto.get(i).getLongitud();
-//			Prospecto prospectoAux = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRUC(),x,y,listaProspecto.get(i).getDireccion(),listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),listaProspecto.get(i).getActivo());
-//	        prospectoDao.insert(prospectoAux);
-//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-//		}
-//        cursor.requery();
-//    	setListAdapter(adapter);
+    	daoProspecto = new DAOProspecto(this);
+    	listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idusuario,"");
+        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+        Double x;
+		Double y;
+		prospectoDao.deleteAll();
+		elementoListaDao.deleteAll();
+        
+		for(int i=0;i<listaProspecto.size();i++){
+			x=listaProspecto.get(i).getLatitud();
+			y=listaProspecto.get(i).getLongitud();
+			Prospecto prospecto2 = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getIdProspecto(),
+					listaProspecto.get(i).getNombre(),listaProspecto.get(i).getApePaterno(),
+					listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
+					listaProspecto.get(i).getRUC(),x,y,listaProspecto.get(i).getDireccion(),
+					listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
+					listaProspecto.get(i).getActivo());
+			prospecto2.setActivo("A");//util para el checkin del mapa
+	        prospectoDao.insert(prospecto2);
+	        long temp=0;
+//	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
+	        temp=temp+i+1;//aca tambien habia error
+			ElementoLista elemento = new ElementoLista(null,listaProspecto.get(i).getRazon_Social(),"RUC: "+listaProspecto.get(i).getRUC(),null,temp);
+			elementoListaDao.insert(elemento);
+	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+		}
+        cursorElementoLista.requery();		
+        guardaListaOriginal();
+		
+	}
+    private void guardaListaOriginal() {
+		// TODO Auto-generated method stub
+    	this.listaProspectoOriginal=prospectoDao.loadAll();
+		
+	}
+	private void recuperarOriginal() {
+		elementoListaDao.deleteAll();
+        
+		for(int i=0;i<listaProspectoOriginal.size();i++){
+	        long temp=0;
+	        temp=temp+listaProspectoOriginal.get(i).getId();
+			ElementoLista elemento = new ElementoLista(null,listaProspectoOriginal.get(i).getRazon_Social(),"RUC: "+listaProspectoOriginal.get(i).getRUC(),null,temp);
+			elementoListaDao.insert(elemento);
+	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+		}
+        cursorElementoLista.requery();	
 		
 	}
 
-	private void addCliente() {
-        String texto = editText.getText().toString();
-        editText.setText("");
-        double i,j;
-        i=(double) 55.12;
-        j=(double) 33.12;
-        Prospecto prospectoAux = new Prospecto (null,null,1,texto,"HardCoded",texto, texto, texto, i,j,"HardCoded",1,1,"1");
-        prospectoDao.insert(prospectoAux);
-        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-
-        cursor.requery();
-    }
 	public static int safeLongToInt(long l) {
 	    return (int) Math.max(Math.min(Integer.MAX_VALUE, l), Integer.MIN_VALUE);
 	}
 	@Override
 	protected void onDestroy() { 
 		db.close();
-		cursor.close();
+		cursorElementoLista.close();
 	    super.onDestroy();
 	}
 
