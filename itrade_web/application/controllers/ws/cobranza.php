@@ -7,6 +7,7 @@ class Cobranza extends CI_Controller {
         parent::__construct();
 		$this->load->model('ws/Product_model');
 		$this->load->model('ws/Cliente_model');
+		$this->load->model('ws/Payment_model');
 		$this->load->library('email');
     }	
 
@@ -89,6 +90,15 @@ class Cobranza extends CI_Controller {
 			echo $this->email->print_debugger();
             return "error";
         }
+	}
+	
+	public function checkin($idcliente_w=''){
+		$idcliente=$this->input->post('idcliente');
+		if ($idcliente_w!=''){
+			$idcliente=$idcliente_w;
+		}
+		$result=$this->Payment_model->checkin($idcliente);		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));		
 	}
 }
 
