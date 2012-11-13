@@ -104,7 +104,12 @@
             android:name=".pedidos.Picker"
            android:configChanges="keyboardHidden|orientation" 
            />
-         <activity android:label="@string/app_name" android:name=".pedidos.PreferencePedidos"/>
+        <activity android:label="@string/app_name" 
+            	  android:name=".pedidos.PreferencePedidos"
+        		  android:theme="@style/PreferencesTheme">
+        		  <intent-filter>                                
+        		  </intent-filter>
+    	</activity>
         <activity android:label="@string/app_name" 
             android:name=".pedidos.MiUbicacionImplActivity"/>
         <activity android:label="@string/app_name" android:name=".pedidos.RegistrarProspecto"/>
