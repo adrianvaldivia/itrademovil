@@ -43,6 +43,7 @@ public class ExampleDaoGenerator {
 		addPedidoLinea(schema);
 		addElementoLista(schema);
 		addEvento(schema);
+		addMeta(schema);
 
 		new DaoGenerator().generateAll(schema, "../ITradeMovil/src-gen");
 	}
@@ -67,7 +68,16 @@ public class ExampleDaoGenerator {
 		evento.addStringProperty("Fecha");
 		evento.addStringProperty("HoraInicio");
 		evento.addStringProperty("HoraFin");
-
+	}
+	private static void addMeta(Schema schema) {
+		Entity meta = schema.addEntity("Meta");
+		meta.addIdProperty();
+		meta.addLongProperty("IdMeta");
+		meta.addDoubleProperty("Suma");
+		meta.addStringProperty("Fechini");
+		meta.addStringProperty("Fechafin");
+		meta.addDoubleProperty("Meta");
+		meta.addStringProperty("Nombre");		
 	}
 
 	private static void addCliente(Schema schema) {
