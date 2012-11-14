@@ -1126,7 +1126,7 @@ class Reporte_model extends CI_Model {
 		");
 		break;	
 		}		
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();
 		
 	}
