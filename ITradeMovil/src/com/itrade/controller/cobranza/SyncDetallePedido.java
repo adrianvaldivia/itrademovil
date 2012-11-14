@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -108,6 +109,9 @@ public class SyncDetallePedido {
 			//}    	
 			}
 		}
+		else{
+			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
+		}
 		
 		return registros;
 	}
@@ -151,13 +155,6 @@ public class SyncDetallePedido {
 		}
 		
 		return listaPedTemp.size();
-	}
-
-	private Integer cargarPedido(String idpedido) {
-		// TODO Auto-generated method stub
-				
-		
-		return null;
 	}
 
 	public List<PedidoLinea> buscarLineaPedidos(String idpedido) {

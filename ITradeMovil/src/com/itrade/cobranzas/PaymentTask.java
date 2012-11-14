@@ -78,12 +78,12 @@ public class PaymentTask extends Activity {
         btnPagar = (Button)findViewById(R.id.btnPagar);
         btnDetalle = (Button)findViewById(R.id.btnDetalle);        
         editNumVoucher = (EditText)findViewById(R.id.editTxtTransaccion);
-        sincPedidos= new SyncPedidos(PaymentTask.this);
-        
+                
 		getParamsIntent();
+		sqlite();
         fillValues();          
         setValues(); 
-				    
+        		    
         //Elementos del XML DE COBRANZA       
        
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.tipoPago,android.R.layout.simple_spinner_item);
@@ -115,35 +115,38 @@ public class PaymentTask extends Activity {
         });
         btnPagar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Syncronizar sync = new Syncronizar(PaymentTask.this);
-				List<NameValuePair> param = new ArrayList<NameValuePair>();	
-				String numVoucher= editNumVoucher.getText().toString();
-				param.add(new BasicNameValuePair("idpedido", idpedido));
-				param.add(new BasicNameValuePair("montocobrado", pedidoSelected.getMontoTotalPedido().toString()));			
-				if (spinTipo.getSelectedItem().toString().toLowerCase()!="efectivo"){
-					param.add(new BasicNameValuePair("numVoucher", numVoucher));
-				}else{
-					param.add(new BasicNameValuePair("numVoucher", ""));
+				sincPedidos=new SyncPedidos(PaymentTask.this);
+				if (sincPedidos.networkAvailable()){
+					Syncronizar sync = new Syncronizar(PaymentTask.this);
+					List<NameValuePair> param = new ArrayList<NameValuePair>();	
+					String numVoucher= editNumVoucher.getText().toString();
+					param.add(new BasicNameValuePair("idpedido", idpedido));
+					param.add(new BasicNameValuePair("montocobrado", pedidoSelected.getMontoTotalPedido().toString()));			
+					if (spinTipo.getSelectedItem().toString().toLowerCase()!="efectivo"){
+						param.add(new BasicNameValuePair("numVoucher", numVoucher));
+					}else{
+						param.add(new BasicNameValuePair("numVoucher", ""));
+					}
+					String route2="/ws/pedido/pagar_pedido/";
+					sync.conexion(param,route2);
+					try {
+						sync.getHilo().join();			
+					} catch (InterruptedException e) {
+						  // TODO Auto-generated catch block
+						e.printStackTrace();
+					}	    	  
+					Gson gson = new Gson();  
+					ArrayList<Pedido> listaPayments = new ArrayList<Pedido>();
+					listaPayments = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
 				}
-				String route2="/ws/pedido/pagar_pedido/";
-				sync.conexion(param,route2);
-				try {
-					sync.getHilo().join();			
-				} catch (InterruptedException e) {
-					  // TODO Auto-generated catch block
-					e.printStackTrace();
-				}	    	  
-				Gson gson = new Gson();  
-				ArrayList<Pedido> listaPayments = new ArrayList<Pedido>();
-				listaPayments = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
 				
 				Integer numreg = sincPedidos.pagarPedido(idpedido);
 				Log.d("SQL","Se pago ="+numreg.toString()+" pedidos");
 				
 				String titulo="";
 				String mensaje=""; 
-				if (listaPayments.size()>0){
-					Pedido pedido = listaPayments.get(0);
+				if (numreg>0){
+					Pedido pedido = sincPedidos.buscarPedido(idpedido);
 					titulo="Pago exitoso"; 
 					mensaje="Se registro el pago del pedido Nro: "+pedido.getIdPedido().toString()+
 							" La fecha del registro fue: "+pedido.getFechaCobranza(); 
@@ -170,6 +173,8 @@ public class PaymentTask extends Activity {
 				});		
 				AlertDialog alertDialog = alertDialogBuilder.create();		 
 				alertDialog.show();	
+				
+				sincPedidos.closeDB();
 			}
 	 	});
         btnDetalle.setOnClickListener(new OnClickListener() {			
@@ -230,8 +235,16 @@ public class PaymentTask extends Activity {
 					startActivity(intent);									
 				}
 		 });
+	     
+	     sincPedidos.closeDB();
 	}	
 	
+	private void sqlite() {
+		// TODO Auto-generated method stub
+		sincPedidos=new SyncPedidos(PaymentTask.this);
+		
+	}
+
 	public void getParamsIntent(){
 		Intent i = getIntent();   		
         this.idpedido = (String)i.getSerializableExtra("idpedido");
@@ -248,45 +261,49 @@ public class PaymentTask extends Activity {
 	}
 	
 	public void fillValues(){
+		
+		pedidoSelected=sincPedidos.buscarPedido(idpedido);
+		clienteSelected=sincPedidos.buscarCliente(idcliente);
+		Log.d("sqlite","esta jalando de bd movil");
 		//Get Pedido Data
-		Syncronizar sync = new Syncronizar(PaymentTask.this);
-		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		param.add(new BasicNameValuePair("idpedido", this.idpedido));		
-		String route2="/ws/pedido/consultar_pedido/";
-		sync.conexion(param,route2);
-		try {
-			sync.getHilo().join();			
-		} catch (InterruptedException e) {
-			  // TODO Auto-generated catch block
-			e.printStackTrace();
-		}	    	  
-		Gson gson = new Gson();  			
-		requestList = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());	
-		if (requestList.size()>0){
-			pedidoSelected = requestList.get(0);
-			Log.d("selecionado1","PEDIDO1"+pedidoSelected.getIdPedido().toString());
-		}else{
-			finish();
-		}									
+//		Syncronizar sync = new Syncronizar(PaymentTask.this);
+//		List<NameValuePair> param = new ArrayList<NameValuePair>();								
+//		param.add(new BasicNameValuePair("idpedido", this.idpedido));		
+//		String route2="/ws/pedido/consultar_pedido/";
+//		sync.conexion(param,route2);
+//		try {
+//			sync.getHilo().join();			
+//		} catch (InterruptedException e) {
+//			  // TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}	    	  
+//		Gson gson = new Gson();  			
+//		requestList = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());	
+//		if (requestList.size()>0){
+//			pedidoSelected = requestList.get(0);
+//			Log.d("selecionado1","PEDIDO1"+pedidoSelected.getIdPedido().toString());
+//		}else{
+//			finish();
+//		}									
 		//Get Cliente Data
-		Syncronizar sync2 = new Syncronizar(PaymentTask.this);
-		List<NameValuePair> param2 = new ArrayList<NameValuePair>();								
-		param2.add(new BasicNameValuePair("idcliente", this.idcliente));		
-		String route="/ws/clientes/get_cliente_by_id/";
-		sync2.conexion(param2,route);
-		try {
-			sync2.getHilo().join();			
-		} catch (InterruptedException e) {
-			  // TODO Auto-generated catch block
-			e.printStackTrace();
-		}	    	  		
-		ArrayList<Cliente> cliList = new ArrayList<Cliente>();			
-		cliList=gson.fromJson(sync2.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
-		if (cliList.size()>0){
-			this.clienteSelected=cliList.get(0);
-		}else{
-			finish();
-		}
+//		Syncronizar sync2 = new Syncronizar(PaymentTask.this);
+//		List<NameValuePair> param2 = new ArrayList<NameValuePair>();								
+//		param2.add(new BasicNameValuePair("idcliente", this.idcliente));		
+//		String route="/ws/clientes/get_cliente_by_id/";
+//		sync2.conexion(param2,route);
+//		try {
+//			sync2.getHilo().join();			
+//		} catch (InterruptedException e) {
+//			  // TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}	    	  		
+//		ArrayList<Cliente> cliList = new ArrayList<Cliente>();			
+//		cliList=gson.fromJson(sync2.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
+//		if (cliList.size()>0){
+//			this.clienteSelected=cliList.get(0);
+//		}else{
+//			finish();
+//		}
 	}
 	public void sendSms(){
 		Intent intent = new Intent(PaymentTask.this, PaymentTask.class); 																					
