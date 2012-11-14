@@ -1084,7 +1084,7 @@ class Reporte_model extends CI_Model {
 		)
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
-		WHERE  `Ubigeo`.`Pais`= '".$id."' and `Usuario`.`IdJerarquia`= 4 
+		WHERE  `Ubigeo`.`Pais`= '".$id."' and `Usuario`.`IdJerarquia`= 5 and `Usuario`.`Activo`= 1  and `Usuario`.`IdPerfil`= 2
 		
 		");
 		break;
@@ -1102,7 +1102,7 @@ class Reporte_model extends CI_Model {
 		)
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
-		WHERE  `Ubigeo`.`Departamento`= '".$id."' and `Usuario`.`IdJerarquia`= 4  
+		WHERE  `Ubigeo`.`Departamento`= '".$id."' and `Usuario`.`IdJerarquia`= 5 and `Usuario`.`Activo`= 1 and `Usuario`.`IdPerfil`= 2
 		
 		");
 		break;
@@ -1121,12 +1121,12 @@ class Reporte_model extends CI_Model {
 		)
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
-		WHERE   ".$str." and `Ubigeo`.`Distrito`= '".$id."' and `Usuario`.`IdJerarquia`= 4  
+		WHERE   ".$str." and `Ubigeo`.`Distrito`= '".$id."' and `Usuario`.`IdJerarquia`= 5 and `Usuario`.`Activo`= 1 and `Usuario`.`IdPerfil`= 2 
 		
 		");
 		break;	
 		}		
-		//echo $this->db->last_query();
+		echo $this->db->last_query();
 		return $query->result();
 		
 	}
