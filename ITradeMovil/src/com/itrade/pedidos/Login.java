@@ -346,13 +346,13 @@ public class Login extends Activity {
 		contactoDao.deleteAll();
 		long temp=0;
 		temp++;
-		Contacto contacto= new Contacto(null,temp,null,"Benito","Leon","Cordova","A","016392394","benito@corp.com");
+		Contacto contacto= new Contacto(null,temp,null,"Benito","Leon","Cordova","A","997565670","benito@corp.com");
 		contactoDao.insert(contacto);
 		temp++;
-		Contacto contacto2= new Contacto(null,temp,null,"Ushpa","Leon","Co","A","016392394","ushpa@corp.com");
+		Contacto contacto2= new Contacto(null,temp,null,"Ushpa","Leon","Co","A","976755699","ushpa@corp.com");
 		contactoDao.insert(contacto2);
 		temp++;
-		Contacto contacto3= new Contacto(null,temp,null,"Anna","Godinez","Co","A","016392394","anna@corp.com");
+		Contacto contacto3= new Contacto(null,temp,null,"Anna","Godinez","Co","A","971199644","anna@corp.com");
 		contactoDao.insert(contacto3);
 
 		
