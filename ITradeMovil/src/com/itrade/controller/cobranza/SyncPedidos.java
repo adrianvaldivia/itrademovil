@@ -107,7 +107,7 @@ public class SyncPedidos {
 //				}
 				List<NameValuePair> parameters;
 				for (Pedido pedidin:pedList2){
-					if (pedidin.getIdEstadoPedido().equals("3")){
+					if (pedidin.getIdEstadoPedido()==3){
 						parameters= new ArrayList<NameValuePair>();
 						parameters.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
 						String route2="/ws/pedido/cancelar_pedido/";
@@ -119,7 +119,7 @@ public class SyncPedidos {
 							e.printStackTrace();
 						}
 					}
-					else if (pedidin.getIdEstadoPedido().equals("2")){
+					else if (pedidin.getIdEstadoPedido()==2){
 						parameters = new ArrayList<NameValuePair>();	
 						//String numVoucher= editNumVoucher.getText().toString();
 						param.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
