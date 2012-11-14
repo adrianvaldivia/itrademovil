@@ -15,6 +15,7 @@ class Reporte_model extends CI_Model {
 		$this->table_linea_pedido = 'Linea_Pedido';
 		$this->table_producto = 'Producto';
 		$this->table_estado_pedido = 'estadopedido';
+		$this->table_periodo_meta = 'PeriodoMeta';
     }	
 	
 	
@@ -1131,6 +1132,86 @@ class Reporte_model extends CI_Model {
 		
 	}
 	
+	function objetoMes($idperiodo){
+		
+		$query = $this->db->query("
+		
+		
+		SELECT 
+		MONTH(`PeriodoMeta`.`FechaIni`) AS nombre
+		FROM ( 
+		`PeriodoMeta`
+		)
+		
+		WHERE `PeriodoMeta`.`IdPeriodo`= '".$idperiodo."'  
+		");
+		
+		//echo $this->db->last_query();		
+        return $query->result();		
+	}
+	
+	public function pedidos_por_periodo_zona_estado($idestado,$idubigeo,$id){
+			
+	
+	
+	$stra="";
+	
+	if ($idestado==0)
+		{
+			$stra.=" 1=1 ";
+			
+		}
+		else
+		{ 
+			$stra.=" Pedido.IdEstadoPedido = ".$idestado;
+			
+		}
+	
+	$strb="";
+	
+	if ($idubigeo==0)
+		{
+			$strb.=" 1=1 ";
+			
+		}
+		else
+		{ 
+			$strb.=" Usuario.IdUbigeo = ".$idubigeo;
+			
+		}
+	
+	$strc="";
+	if ($id==0)
+		{
+			$strc.=" 1=1 ";
+			
+		}
+		else
+		{ 
+			$strc.=" MONTH(`Pedido`.`FechaPedido`) = ".$id;
+			
+		}
+	
+	
+	$query = $this->db->query("
+		
+		
+		SELECT `Usuario`.`Nombre`, `Pedido`.`MontoTotalPedido`, `Pedido`.`FechaCobranza`, `estadopedido`.`Descripcion`   
+		FROM ( 
+		`Usuario`
+		)
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Cliente` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario`  
+		JOIN  `Pedido` ON  `Pedido`.`IdCliente` =  `Cliente`.`IdCliente` 
+		JOIN  `EstadoPedido` ON  `EstadoPedido`.`IdEstadoPedido` =  `Pedido`.`IdEstadoPedido`
+		WHERE   ".$stra." and ".$strb." and ".$strc."
+		
+		");
+	
+	//echo $this->db->last_query();	
+	return $query->result();
+		
+	}
 	
 }
 ?>
