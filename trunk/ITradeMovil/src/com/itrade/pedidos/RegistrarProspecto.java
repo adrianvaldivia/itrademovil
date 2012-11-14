@@ -309,18 +309,18 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         	        				else 
         	        				{//aca empieza el caso feliz
         	        					
-    			
+        	    String  strFecha = fechanac.getText().toString();
     			client = new Prospecto(null, null, null, nombre.getText().toString().trim(), 
     					apellidopater.getText().toString().trim(),
     					apellidomater.getText().toString().trim(), 
     					rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), 
     					latitud, longitud, direcc.getText().toString().trim(),
     					null, null, null,0.0,dni.getText().toString().trim(),
-    					null,telefperson.getText().toString().trim(),
+    					strFecha,telefperson.getText().toString().trim(),
     					correo.getText().toString().trim());//aca el cliente ya contiene todos los campos necesarios 
 
             	  
-   String  strFecha = fechanac.getText().toString();
+//   String  strFecha = fechanac.getText().toString();
    
    Log.v("XXXX", "aa "+strFecha+" aaa");
     //cambio chichan
@@ -329,8 +329,9 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
   String valor = cantidad.getText().toString().trim();
 //  cred = new Credito(Integer.parseInt(valor));
   client.setMontoActual(0.0+Integer.parseInt(valor));
-	prospectoDao.insert(client);
-
+  //inicio insert  Green DAo
+	prospectoDao.insert(client);//aca hago en insert al SQLite 
+  //fin insert Green DAo
    /***************Falta Ingresar los idsssss de las tablas **************/
   				
   
