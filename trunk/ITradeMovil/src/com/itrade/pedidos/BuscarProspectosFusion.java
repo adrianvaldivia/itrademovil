@@ -204,7 +204,7 @@ public class BuscarProspectosFusion extends ListActivity{
      // TODO Auto-generated method stub
      //super.onListItemClick(l, v, position, id);
      String selection = l.getItemAtPosition(position).toString();
-     Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
+//     Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
      //inicio cambios chichan
      this.encuentraCliente(id);
      int temp=safeLongToInt(prospecto.getId());

@@ -7,8 +7,8 @@ package com.itrade.model;
 public class Contacto {
 
     private Long id;
-    private Integer IdPersona;
-    private Integer IdUsuario;
+    private Long IdPersona;
+    private Long IdUsuario;
     private String Nombre;
     private String ApePaterno;
     private String ApeMaterno;
@@ -23,7 +23,7 @@ public class Contacto {
         this.id = id;
     }
 
-    public Contacto(Long id, Integer IdPersona, Integer IdUsuario, String Nombre, String ApePaterno, String ApeMaterno, String Activo, String Telefono, String Email) {
+    public Contacto(Long id, Long IdPersona, Long IdUsuario, String Nombre, String ApePaterno, String ApeMaterno, String Activo, String Telefono, String Email) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.IdUsuario = IdUsuario;
@@ -43,19 +43,19 @@ public class Contacto {
         this.id = id;
     }
 
-    public Integer getIdPersona() {
+    public Long getIdPersona() {
         return IdPersona;
     }
 
-    public void setIdPersona(Integer IdPersona) {
+    public void setIdPersona(Long IdPersona) {
         this.IdPersona = IdPersona;
     }
 
-    public Integer getIdUsuario() {
+    public Long getIdUsuario() {
         return IdUsuario;
     }
 
-    public void setIdUsuario(Integer IdUsuario) {
+    public void setIdUsuario(Long IdUsuario) {
         this.IdUsuario = IdUsuario;
     }
 

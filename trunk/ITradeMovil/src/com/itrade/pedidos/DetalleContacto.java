@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itrade.R;
-import com.itrade.model.Cliente;
-import com.itrade.model.ClienteDao;
 import com.itrade.model.Contacto;
 import com.itrade.model.ContactoDao;
 import com.itrade.model.DaoMaster;
@@ -14,7 +12,7 @@ import com.itrade.model.ElementoLista;
 import com.itrade.model.ElementoListaDao;
 import com.itrade.model.Producto;
 import com.itrade.model.DaoMaster.DevOpenHelper;
-import com.itrade.model.ClienteDao.Properties;
+import com.itrade.model.ContactoDao.Properties;
 
 
 import android.app.ListActivity;
@@ -47,7 +45,7 @@ public class DetalleContacto extends ListActivity{
 	public String telefono="";
 	public String email="";
 	public long idusuario;
-	public long idcontacto;//id interno sqlite
+	public long idpersona;//id interno sqlite
 	//green dao
     private SQLiteDatabase db;
 
@@ -68,7 +66,7 @@ public class DetalleContacto extends ListActivity{
         setContentView(R.layout.detallecontactofusion);
 	    bundle = getIntent().getExtras();	
 		idusuario = bundle.getLong("idusuario");
-		idcontacto=bundle.getLong("idcontacto");
+		idpersona=bundle.getLong("idpersona");
         
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -118,21 +116,25 @@ public class DetalleContacto extends ListActivity{
 
     private void obtenerDatosContacto() {
 		// TODO Auto-generated method stub
+		String str="";
 		//Producto productoAux=productoDao.loadByRowId(idProducto);
-		Contacto contactoTemp=contactoDao.loadByRowId(idcontacto);
+		str=str+idpersona;
+        List<Contacto> contactosAux = contactoDao.queryBuilder()
+        		.where(Properties.IdPersona.eq(str))
+        		.orderAsc(Properties.Id).list();
         
-
-        	if(contactoTemp!=null){
+        if (contactosAux!=null){
+        	if(contactosAux.size()>0){
+        		Contacto contactoTemp=contactosAux.get(0);
             	nombre = contactoTemp.getNombre();
             	apellidos = contactoTemp.getApePaterno() + " " + contactoTemp.getApeMaterno(); 
             	telefono =  contactoTemp.getTelefono();
             	email = contactoTemp.getEmail();
-            	
         	}
         	else
             	nombre="Error";
-    	
-		
+        }
+    	           			
 	}
 	public void Convierte(){
 		elementoListaDao.deleteAll();
