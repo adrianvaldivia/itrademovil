@@ -36,6 +36,8 @@ import com.itrade.model.Categoria;
 import com.itrade.model.CategoriaDao;
 import com.itrade.model.Cliente;
 import com.itrade.model.ClienteDao;
+import com.itrade.model.Contacto;
+import com.itrade.model.ContactoDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
@@ -93,6 +95,7 @@ public class Login extends Activity {
     private EventoDao eventoDao;
     private MetaDao metaDao;
     private ProspectoDao prospectoDao;
+    private ContactoDao contactoDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
@@ -127,6 +130,7 @@ public class Login extends Activity {
         eventoDao = daoSession.getEventoDao();
         metaDao = daoSession.getMetaDao();
         prospectoDao = daoSession.getProspectoDao();
+        contactoDao = daoSession.getContactoDao();
         
         pedidoLineaDao.deleteAll();
         //fin green dao
@@ -338,6 +342,16 @@ public class Login extends Activity {
 			prospecto2.setActivo("A");//util para la sincronizacion de prospectos
 	        prospectoDao.insert(prospecto2);	        	        
 		}
+		//sincronizacion de contactos
+		contactoDao.deleteAll();
+		Contacto contacto= new Contacto(null,1,null,"Benito","Leon","Cordova","A","016392394","benito@corp.com");
+		contactoDao.insert(contacto);
+		Contacto contacto2= new Contacto(null,2,null,"Ushpa","Leon","Co","A","016392394","ushpa@corp.com");
+		contactoDao.insert(contacto2);
+		Contacto contacto3= new Contacto(null,3,null,"Anna","Godinez","Co","A","016392394","anna@corp.com");
+		contactoDao.insert(contacto3);
+
+		
 	}
     private String getFechaActual() {
     	String resul;
