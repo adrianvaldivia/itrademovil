@@ -261,17 +261,17 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     			bandera = validador.validate(correo.getText().toString());
     			
     			
-    			if ((ruc.getText().toString().trim().equals("")) ||
-                  (rzsocial.getText().toString().trim().equals("")) ||
-                  (direcc.getText().toString().trim().equals("")) ||
-                  (telefperson.getText().toString().trim().equals("")) ||
-                  (dni.getText().toString().trim().equals("")) ||
-                  (nombre.getText().toString().trim().equals("")) ||
-                  (apellidopater.getText().toString().trim().equals("")) ||
-                  (fechanac.getText().toString().trim().equals("")) ||
-                  (correo.getText().toString().trim().equals("")) ||
-                  (apellidomater.getText().toString().trim().equals("")) ||
-                  (cantidad.getText().toString().trim().equals(""))) 
+    			if ((!ruc.getText().toString().trim().equals("")) &&
+                  (!rzsocial.getText().toString().trim().equals("")) &&
+                  (!direcc.getText().toString().trim().equals("")) &&
+                  (!telefperson.getText().toString().trim().equals("")) &&
+                  (!dni.getText().toString().trim().equals("")) &&
+                  (!nombre.getText().toString().trim().equals("")) &&
+                  (!apellidopater.getText().toString().trim().equals("")) &&
+                  (!fechanac.getText().toString().trim().equals("")) &&
+                  (!correo.getText().toString().trim().equals("")) &&
+                  (!apellidomater.getText().toString().trim().equals("")) &&
+                  (!cantidad.getText().toString().trim().equals(""))) 
             		  
          {             
                     		
