@@ -19,12 +19,15 @@ import com.itrade.model.Usuario;
 import com.itrade.pedidos.BuscarClientesGreenDao;
 import com.itrade.pedidos.Login;
 import com.itrade.pedidos.MenuLista;
+import com.itrade.pedidos.RegistrarProspecto;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -98,18 +101,23 @@ public class ClientesListTask extends Activity {
 							public void onClick(DialogInterface dialog,int id) {														
 								dialog.cancel();
 								//verificar si tiene internet o no <--------------------------
-								Syncronizar sync = new Syncronizar(ClientesListTask.this);
-								List<NameValuePair> param = new ArrayList<NameValuePair>();
-								param.add(new BasicNameValuePair("idcobrador", idusuario));
-								String route2="/ws/cobranza/send_notifications/";
-								sync.conexion(param,route2);
-								try {
-									sync.getHilo().join();
-								} catch (InterruptedException e) {
-									  // TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-																
+								
+								if (networkAvailable()){
+									Syncronizar sync = new Syncronizar(ClientesListTask.this);
+									List<NameValuePair> param = new ArrayList<NameValuePair>();
+									param.add(new BasicNameValuePair("idcobrador", idusuario));
+									String route2="/ws/cobranza/send_notifications/";
+									sync.conexion(param,route2);
+									try {
+										sync.getHilo().join();
+									} catch (InterruptedException e) {
+										  // TODO Auto-generated catch block
+										e.printStackTrace();
+									}									
+									Toast.makeText(ClientesListTask.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+								}else{
+									Toast.makeText(ClientesListTask.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+								}																														
 								Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
 								intent.putExtra("idempleado", idusuario);
 								startActivity(intent);
@@ -136,9 +144,13 @@ public class ClientesListTask extends Activity {
 		btnMapaTotal.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(ClientesListTask.this, MapaClientes.class);		
-				intent.putExtra("idempleado", idusuario);				
-				startActivity(intent);
+				if (networkAvailable()){
+					Intent intent = new Intent(ClientesListTask.this, MapaClientes.class);		
+					intent.putExtra("idempleado", idusuario);				
+					startActivity(intent);
+				}else{
+					Toast.makeText(ClientesListTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+				}				
 			}
 		});	
 		
@@ -318,6 +330,24 @@ public class ClientesListTask extends Activity {
 	   	//Log.d("RESULTADOS","fecha ="+today.toString());
 	   	//List<Pedido> listaPedi =sincPedidos.getPedidos(Integer.parseInt(idusuario));
 		//Log.d("pEDIDOS","cantidad ="+listaPedi.size());
+     }
+     
+     public boolean networkAvailable() {    	
+     	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+     	if (connectMgr != null) {
+     		NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
+     		if (netInfo != null) {
+     			for (NetworkInfo net : netInfo) {
+     				if (net.getState() == NetworkInfo.State.CONNECTED) {
+     					return true;
+     				}
+     			}
+     		}
+     	} 
+     	else {
+     		Log.d("NETWORK", "No network available");
+     	}
+     	return false;
      }
 }
 

@@ -1,5 +1,6 @@
 package com.itrade.cobranzas;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.osmdroid.views.overlay.PathOverlay;
 import org.osmdroid.views.overlay.SimpleLocationOverlay;
 
 import com.google.gson.Gson;
@@ -21,13 +21,18 @@ import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
+import com.itrade.pedidos.UbicacionCheckInActivity;
 
 import android.app.Activity;
+
+
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;   
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,10 +40,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MapaClientes  extends Activity implements LocationListener {
@@ -54,11 +65,17 @@ public class MapaClientes  extends Activity implements LocationListener {
     // Fields
     // ===========================================================
 	public int j=0;
+	 private TextView txt_nombre;
+	 private PopupWindow m_pw;
+	 private GeoPoint cli;
     private MapView mOsmv;
+    private String idCliente;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
     List<GeoPoint> listaGeoPoint =null;//ruta
     List<Cliente> listaCliente =null;
-    
+	private final Double  TOLERANCIA = 0.004;
+	private OverlayItem itemActual;
+	private final int  MAXERRORES = 5;
     private ResourceProxy mResourceProxy;
     private final double factor=1000000;
   	public int posxint,posyint;
@@ -82,6 +99,8 @@ public class MapaClientes  extends Activity implements LocationListener {
     static Context context = null;
     boolean primeraVez=false;
     boolean boolHayGPS=true;
+    private Cliente client; 
+    int contadorErrores=0;
 
         
     // ===========================================================
@@ -101,10 +120,10 @@ public class MapaClientes  extends Activity implements LocationListener {
 			//inicio de green Dao
 	        //inicio green Dao
 			 
-			String Idvendedor=(String)i.getSerializableExtra("idempleado"); 
+			String IdUsuario=(String)i.getSerializableExtra("idempleado"); 
 			  Syncronizar sync = new Syncronizar(MapaClientes.this);
 				List<NameValuePair> param = new ArrayList<NameValuePair>();								
-				param.add(new BasicNameValuePair("idvendedor", Idvendedor));	
+				param.add(new BasicNameValuePair("idvendedor", IdUsuario));	
 					//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
 					String route="ws/clientes/get_clientes_by_vendedor/";
 				    sync.conexion(param,route);
@@ -123,7 +142,7 @@ public class MapaClientes  extends Activity implements LocationListener {
 	        //fin green dao
 	       // listaCliente=
 //            listaCliente= daoPara.getAllParaderos(idruta);//idRuta
-            listaGeoPoint=this.Convierte(listaCliente);
+            listaGeoPoint=this.Convierte();
             Log.d("ClienteeeEder", "hhahahhahahhah2");
             mResourceProxy = new DefaultResourceProxyImpl(getApplicationContext());
 
@@ -135,25 +154,31 @@ public class MapaClientes  extends Activity implements LocationListener {
 
             /* Itemized Overlay */
             {
-                    /* Create a static ItemizedOverlay showing a some Markers on some cities. */
 
 
-                    /* OnTapListener for the Markers, shows a simple Toast. */
+                   
                     this.mMyLocationOverlay = new ItemizedIconOverlay<OverlayItem>(items,
                                     new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                              				//single tap
+                              			
                                             public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                                                     Toast.makeText(
                                                                     MapaClientes.this,
                                                                     item.mTitle , Toast.LENGTH_LONG).show();
-                                                    return true; // We 'handled' this event.
+                                                    return true; 
                                             }
 
-                                            //long pressed
+                                           
                                             public boolean onItemLongPress(final int index, final OverlayItem item) {
-                                                   
-                                                    return false;
+                                            	cli= item.getPoint();
+                                            	idCliente= item.mDescription;
+                                               	ChekIN(item);
+												return true;
                                             }
+
+
+											
+
+										
                                     }, mResourceProxy);
                     this.mOsmv.getOverlays().add(this.mMyLocationOverlay);
             }
@@ -163,104 +188,94 @@ public class MapaClientes  extends Activity implements LocationListener {
             mOsmv.setMultiTouchControls(true);
   
             mapController = mOsmv.getController();
-            //mapController.setZoom(5);//-12.071208,-77.077569
+           
           			
             GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
-//            GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania  
-         //   mapController.setCenter(gPt0);
+
             mapController.setZoom(13);
-            //////////////////////////////////////////////////////LAYER DE RUTA
-   //         myPath = new PathOverlay(Color.RED, this);
-         //   cargarGeoPoints();      
+    
             if (this.listaGeoPoint!=null)
             	mapController.setCenter(gPt0);
-         //   mOsmv.getOverlays().add(myPath);
-          ////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
+    
             this.posicionActualOverlay = new SimpleLocationOverlay(this);
             mOsmv.getOverlays().add(posicionActualOverlay);
-//            if (this.listaGeoPoint!=null)
-//            	posicionActualOverlay.setLocation(gPt0);
-//            ///////////////////////////////////////////////////////////////////////timer
-//            mHandler.removeCallbacks(Timer_Tick);
-//		    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
-//    		//////////////////////////////////////////////////////////// fin timer
-                     
+
     }
 
 
-
-	// ===========================================================
-    // Getter & Setter
-    // ===========================================================
-
-    // ===========================================================
-    // Methods from SuperClass/Interfaces
-    // ===========================================================
-
-//    @Override
-//    public boolean onCreateOptionsMenu(final Menu pMenu) {
-//            pMenu.add(0, MENU_ZOOMIN_ID, Menu.NONE, "ZoomIn");
-//            pMenu.add(0, MENU_ZOOMOUT_ID, Menu.NONE, "ZoomOut");
-//
-//            return true;
-//    }
 
     @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
-//            switch (item.getItemId()) {
-//            case 0:
-//                    this.mOsmv.getController().zoomIn();
-//                    return true;
-//
-//            case 1:
-//                    this.mOsmv.getController().zoomOut();
-//                    return true;
-//            }
+
             return false;
     }
 
-    // ===========================================================
-    // Methods
-    // ===========================================================
-   
+  
     		
 	
-	private List<GeoPoint> Convierte(List<Cliente> lis) {
+	private List<GeoPoint> Convierte() {
+		
 		List<GeoPoint> lista=new ArrayList<GeoPoint>();;
 		int i;
-		for(i=0;i<lis.size();i++){
-			posxdouble=lis.get(i).getLatitud()*factor;
-			posydouble=lis.get(i).getLongitud()*factor;
+		
+		Log.d("Saleee de COnvertir", "EntroConvertir");
+		
+		for(i=0;i<listaCliente.size();i++){
+			posxdouble=listaCliente.get(i).getLatitud()*factor;
+			posydouble=listaCliente.get(i).getLongitud()*factor;
 			posxint=(int)posxdouble;
 			posyint=(int)posydouble;
-			 Log.d("ClienteeeEderXXX", ""+posxint); 
-			 Log.d("ClienteeeEderYYY", ""+posyint);
 			GeoPoint aux = new GeoPoint(posxint,posyint);
 			lista.add(aux);
 		}
-		if (!lis.isEmpty()){
-			//inicio cambios icono por defecto
-//			items.add(new OverlayItem(lis.get(0).getNombre(), "SampleDescription1", lista.get(0)));
-//	        //icono customizado        
-//	        OverlayItem olItem = new OverlayItem(lis.get(i-1).getNombre(), "SampleDescription", lista.get(i-1));
-//	        Drawable newMarker = this.getResources().getDrawable(R.drawable.marker);
-//	        olItem.setMarker(newMarker);
-//	        items.add(olItem);
-	        //fin cambios
-			for(i=0;i<lis.size();i++){
-				items.add(new OverlayItem(lis.get(i).getNombre()+" "+lis.get(i).getApePaterno(), "Cliente", lista.get(i)));
+		Log.d("Saleee de COnvertir", "hehehheheheh");
+		
+		if (!listaCliente.isEmpty()){
+			items.clear();
+			for(i=0;i<listaCliente.size();i++){
+				Log.d("EstadoPedido", "forrrrrrr");
+				OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+		        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker3);
+		        
+		        olItem.setMarker(newMarker);
+		        
+		        items.add(olItem);
+				/*
+				if (listaCliente.get(i).getActivo().compareTo("1")==0){
+					
+					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.skis2);
+			        olItem.setMarker(newMarker);
+			        items.add(olItem);
+				}
+				if (listaCliente.get(i).getEstadoPedido().compareTo("2")==0){
+					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.skis1);
+			        olItem.setMarker(newMarker);
+			        items.add(olItem);
+				}
+				
+				if (listaCliente.get(i).getEstadoPedido().compareTo("3")==0){
+					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.skis3);
+			        olItem.setMarker(newMarker);
+			        items.add(olItem);
+				}*/
+				
 			}  
 		}
-
-
+		else
+			return null;
+					
 		return lista;
 	}
-    // ===========================================================
-    // Inner and Anonymous Classes
-
+				
+				
+			
+	
+  
 	private Runnable Timer_Tick = new Runnable() {
-		public void run() {
-		//Do something to the UI thread here
+		public void run() {	
 		obtenerUbicacion();
 	    mOsmv.invalidate();       	  
 	    mHandler.removeCallbacks(Timer_Tick);
@@ -269,7 +284,7 @@ public class MapaClientes  extends Activity implements LocationListener {
 		
 	};
 	      
-	private void obtenerUbicacion() {
+	/*private void obtenerUbicacion() {
 		boolean isavailable;
 		if (boolHayGPS){
 			isavailable = gpsLocationManager.isProviderEnabled(GPSPROVIDER);//error	
@@ -291,7 +306,7 @@ public class MapaClientes  extends Activity implements LocationListener {
                 		mapController.setCenter(p);
                 		primeraVez=false;
                 	}        			
-                    //Toast.makeText(MiUbicacionImplActivity.this,"Longitude is  "+longitude + "   Latitude is   "+latitude, Toast.LENGTH_LONG).show();
+                  
                 }                
             }
             else
@@ -299,6 +314,56 @@ public class MapaClientes  extends Activity implements LocationListener {
         }
         else
         	Toast.makeText(MapaClientes.this,"Encienda el GPS, y salga fuera del edificio por favor.", Toast.LENGTH_LONG).show();
+	}
+	*/
+private void obtenerUbicacion() {
+		
+		boolean isavailable;
+		if (boolHayGPS){
+			isavailable = gpsLocationManager.isProviderEnabled(GPSPROVIDER);//error	
+		}
+		else
+			isavailable=false;
+      if(!isavailable) {
+    	  	if (contadorErrores==0||
+    	  		contadorErrores==1||
+    	  		contadorErrores==2)//con cero o un errores aumento el contador
+    	  		this.contadorErrores++;          	
+//          	if(markerOverlay.size()>0)
+//          		Toast.makeText(UbicacionCheckInActivity.this,""+markerOverlay.getItem(0).getPoint().getLatitudeE6()+" "+markerOverlay.getItem(0).getPoint().getLongitudeE6(), Toast.LENGTH_LONG).show();
+          	if(contadorErrores==1||contadorErrores==2)
+          		Toast.makeText(MapaClientes.this,"No se detecta el GPS", Toast.LENGTH_LONG).show();
+      }
+//        if(isavailable) {
+        if(gpsLocationManager!=null) {	
+            Location loc = gpsLocationManager.getLastKnownLocation(GPSPROVIDER);
+
+            if(loc != null) {
+                double latitude = loc.getLatitude();
+                double longitude = loc.getLongitude();
+                if (latitude!=0){
+                	GeoPoint p = new GeoPoint((int) (latitude * 1000000), (int) (longitude * 1000000));
+                	posicionActualOverlay.setLocation(p);
+//                	Toast.makeText(UbicacionCheckInActivity.this,"capture la posicion", Toast.LENGTH_SHORT).show();
+                	if(primeraVez){
+                		mapController.setCenter(p);
+                		mapController.setZoom(16);
+                		primeraVez=false;
+                	}        			
+                    //Toast.makeText(MiUbicacionImplActivity.this,"Longitude is  "+longitude + "   Latitude is   "+latitude, Toast.LENGTH_LONG).show();
+                }                
+            }
+            else{
+            	this.contadorErrores++;
+            	Toast.makeText(MapaClientes.this,"Encienda el GPS," +
+          				" y salga al aire libre por favor.", Toast.LENGTH_LONG).show();            	
+            }
+            	
+        }
+        else{
+        	this.contadorErrores++;
+        	Toast.makeText(MapaClientes.this,"Error GPS", Toast.LENGTH_LONG).show();
+        }
 	}
 
 	 private Boolean displayGpsStatus() {  
@@ -315,25 +380,129 @@ public class MapaClientes  extends Activity implements LocationListener {
 		  }  
 	} 
 
-
+		private void ChekIN(OverlayItem item) {
+			 LayoutInflater inflater = (LayoutInflater)
+				        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				   	 View layout = inflater.inflate(R.layout.checkin, (ViewGroup) findViewById(R.id.txtcheckinCobranza));
+				   	 txt_nombre  = (TextView) layout.findViewById(R.id.txtcheckinCobranza);   	 
+				   	 m_pw = new PopupWindow( layout,  350,  250,  true);
+				   	 txt_nombre.setText("Check In con "+item.getTitle()+"?");
+				   	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);			
+				   	itemActual=item;
+		}
 	 
 
 	 
 	@Override
 	protected void onDestroy() {
-		//cursor.close();
+	
 	
 		super.onDestroy();
 		mHandler.removeCallbacks(Timer_Tick);
 	}
+	
+	private boolean hayUbicacion() {
+		
+		GeoPoint punto = posicionActualOverlay.getMyLocation();
+		if (punto!=null){
+			if (punto.getLatitudeE6()!=0){
+				return true;				
+			}
+		}                    
+		
+		return false;
+	}
+	
+	private boolean estaCerca() {
+		boolean resul=false;		
+        GeoPoint punto = posicionActualOverlay.getMyLocation();
+        
+    	Log.d("BotonsOKkkk", "CheckINPunto");
+        double resta1=0;
+        double resta2=0;
+        Log.d("BotonsLAtitud", ""+punto.getLatitudeE6());
+        resta1=punto.getLatitudeE6();
+        resta1=resta1-cli.getLatitudeE6();
+        resta2=punto.getLongitudeE6();
+        resta2=resta2-cli.getLongitudeE6();
+        
+
+        resta1=Math.abs (resta1)/factor;
+        resta2=Math.abs (resta2)/factor;
+    
+
+        
+        Log.d("BotonsRestaaa", resta1 +"-"+resta2+"-Tolerancia:"+ TOLERANCIA);
+        Log.d("BotonsOKkkk", "TRUE");
+        if((resta1<TOLERANCIA) && (resta2 < TOLERANCIA))
+            return true;
+    	
+        else           
+        	Log.d("BotonsOKkkk", "False");
+		return resul;
+        
+	}
+	public void onButtonCancelarPopupCobranza(View target) {
+		m_pw.dismiss();
+	}
+	
+	public void onButtonInPopupCobranza (View target) {
+		m_pw.dismiss();
+		if(hayUbicacion()){
+			
+			if(estaCerca()){				
+		actualizaIconoCliente(idCliente);
+			 
+			}
+			else{
+				Toast.makeText(
+			             MapaClientes.this,
+			                    "Destino actual no es compatible con el del Cliente !" , Toast.LENGTH_LONG).show();
+			}
+		     
+			 
+		}  
+		else{
+            Toast.makeText(
+            		MapaClientes.this,
+                    "Encienda GPS!" , Toast.LENGTH_LONG).show();
+		}
+	      
+		Log.d("BotonsOKkkk", "CheckIN");
+	}
+	private void actualizaIconoCliente(String idCliente2) {
+	//	http://200.16.7.111/dp2/itrade/ws/cobranza/checkin/
+		//aqui actualizasa con el ws  
+		String IdCliente=idCliente2;//(String)i.getSerializableExtra("idempleado"); 
+		  Syncronizar sync = new Syncronizar(MapaClientes.this);
+			List<NameValuePair> param = new ArrayList<NameValuePair>();								
+			param.add(new BasicNameValuePair("idcliente", IdCliente));	
+				//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
+				String route="ws/cobranza/checkin";
+			    sync.conexion(param,route);
+			    try {  
+					sync.getHilo().join();			
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+			    Log.d("Responsee", sync.getResponse());
+			    
+			    			    Log.d("TAGgggCHEIN", "Cambia Icono");			   			 
+		        Drawable newMarker = this.getResources().getDrawable(R.drawable.greenmarker3);		        
+		        itemActual.setMarker(newMarker);
+		        		       
+	}
+
+
 
 	@Override
 	public void onResume() {
 	    super.onResume();
-        ///////////////////////////////////////////////////////////////////////timer
+     
         mHandler.removeCallbacks(Timer_Tick);
 	    mHandler.postDelayed(Timer_Tick, 30000); //cada 30 segundos connsulta a la BD
-		//////////////////////////////////////////////////////////// fin timer
+
 	    primeraVez=true;
 	    if(displayGpsStatus()){
 	        context = this;

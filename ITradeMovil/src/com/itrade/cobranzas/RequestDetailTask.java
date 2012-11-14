@@ -24,6 +24,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -34,6 +36,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RequestDetailTask extends Activity {
 	/**
@@ -114,15 +117,37 @@ public class RequestDetailTask extends Activity {
         buttonRuta= (Button)findViewById(R.id.btnRuta);
         buttonRuta.setOnClickListener(new OnClickListener() {
 	    	public void onClick(View v) {
-	    		//Definido en el evento onlick    						 						
-				Intent intent = new Intent(RequestDetailTask.this, RutaCliente.class); 													
-				/*intent.putExtra("idpedido", idpedido);
-				intent.putExtra("idempleado", idempleado);
-				intent.putExtra("idcliente", idcliente); */
-				intent.putExtra("idcliente", idcliente); 
-				startActivity(intent);									
+	    		//Definido en el evento onlick   
+	    		
+	    		
+		    		//Definido en el evento onlick    			
+		    	if (networkAvailable()){
+		    		Intent intent = new Intent(RequestDetailTask.this, RutaCliente.class); 													
+					/*intent.putExtra("idpedido", idpedido);
+					intent.putExtra("idcliente", idcliente); 	
+					intent.putExtra("idempleado", idempleado);			*/
+					startActivity(intent);
+		    	}else{
+		    		Toast.makeText(RequestDetailTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+		    	}												
+													
 			}
 	 	});
+        //btnMapa
+        btnMapa= (ImageView)findViewById(R.id.btnExplorar);
+		btnMapa.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (networkAvailable()){
+					Intent intent = new Intent(RequestDetailTask.this, MapaClientes.class);		
+					intent.putExtra("idempleado", idempleado);				
+					startActivity(intent);
+				}else{
+					Toast.makeText(RequestDetailTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+				}				
+			}
+		});
+        
         //btnRuta
         //bUTTON Clientes
         btnClientes= (ImageView)findViewById(R.id.btnPedidos);
@@ -243,5 +268,21 @@ public class RequestDetailTask extends Activity {
         SmsManager sms = SmsManager.getDefault();        
         sms.sendTextMessage("979331334", null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								
     }
-	
+	 public boolean networkAvailable() {    	
+	     	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	     	if (connectMgr != null) {
+	     		NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
+	     		if (netInfo != null) {
+	     			for (NetworkInfo net : netInfo) {
+	     				if (net.getState() == NetworkInfo.State.CONNECTED) {
+	     					return true;
+	     				}
+	     			}
+	     		}
+	     	} 
+	     	else {
+	     		Log.d("NETWORK", "No network available");
+	     	}
+	     	return false;
+	  }
 }

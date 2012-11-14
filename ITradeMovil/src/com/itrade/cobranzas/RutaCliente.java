@@ -1,7 +1,6 @@
 package com.itrade.cobranzas;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +54,7 @@ public class RutaCliente  extends Activity implements LocationListener {
     // ===========================================================
     // Fields
     // ===========================================================
+	private PathOverlay myPath;
 	public int j=0;
     private MapView mOsmv;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
@@ -67,13 +67,13 @@ public class RutaCliente  extends Activity implements LocationListener {
   	public double posxdouble,posydouble;
   	public double latitudAux=0;
   	public double longitudAux=0;
-  	PathOverlay myPath;
     private MapController mapController;
     private SimpleLocationOverlay posicionActualOverlay;
     final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
     //private Timer myTimer;
     private Handler mHandler = new Handler();
-    //green dao    
+    //green dao
+    private SQLiteDatabase db;
 
     SimpleCursorAdapter adapter;
     // fin de green dao
@@ -148,7 +148,7 @@ public class RutaCliente  extends Activity implements LocationListener {
                                             public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                                                     Toast.makeText(
                                                                     RutaCliente.this,
-                                                                    item.mTitle , Toast.LENGTH_LONG).show();
+                                                                    item.mDescription+"-"+item.getTitle() , Toast.LENGTH_LONG).show();
                                                     return true; // We 'handled' this event.
                                             }
 
@@ -173,52 +173,24 @@ public class RutaCliente  extends Activity implements LocationListener {
          //   mapController.setCenter(gPt0);
             mapController.setZoom(13);
             //////////////////////////////////////////////////////LAYER DE RUTA
-            myPath = new PathOverlay(Color.RED, this);
+            myPath = new PathOverlay(Color.BLACK, this);
             cargarGeoPoints();      
             if (this.listaGeoPoint!=null)
             	mapController.setCenter(gPt0);
             mOsmv.getOverlays().add(myPath);
           ////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
             this.posicionActualOverlay = new SimpleLocationOverlay(this);
+            
             mOsmv.getOverlays().add(posicionActualOverlay);
-//            if (this.listaGeoPoint!=null)
-//            	posicionActualOverlay.setLocation(gPt0);
-//            ///////////////////////////////////////////////////////////////////////timer
-//            mHandler.removeCallbacks(Timer_Tick);
-//		    mHandler.postDelayed(Timer_Tick, 40000); //cada 30 segundos connsulta a la BD
-//    		//////////////////////////////////////////////////////////// fin timer
-                     
+
     }
 
 
 
-	// ===========================================================
-    // Getter & Setter
-    // ===========================================================
-
-    // ===========================================================
-    // Methods from SuperClass/Interfaces
-    // ===========================================================
-
-//    @Override
-//    public boolean onCreateOptionsMenu(final Menu pMenu) {
-//            pMenu.add(0, MENU_ZOOMIN_ID, Menu.NONE, "ZoomIn");
-//            pMenu.add(0, MENU_ZOOMOUT_ID, Menu.NONE, "ZoomOut");
-//
-//            return true;
-//    }
 
     @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
-//            switch (item.getItemId()) {
-//            case 0:
-//                    this.mOsmv.getController().zoomIn();
-//                    return true;
-//
-//            case 1:
-//                    this.mOsmv.getController().zoomOut();
-//                    return true;
-//            }
+
             return false;
     }
 
@@ -257,7 +229,7 @@ public class RutaCliente  extends Activity implements LocationListener {
 //	        items.add(olItem);
 	        //fin cambios
 			for(i=0;i<lis.size();i++){
-				items.add(new OverlayItem(lis.get(i).getRazon_Social(), "SampleDescription1", lista.get(i)));
+				items.add(new OverlayItem(lis.get(i).getNombre()+" "+lis.get(i).getApePaterno(), "Cliente", lista.get(i)));
 			}  
 		}
 
@@ -295,7 +267,10 @@ public class RutaCliente  extends Activity implements LocationListener {
                 double longitude = loc.getLongitude();
                 if (latitude!=0){
                 	GeoPoint p = new GeoPoint((int) (latitude * 1000000), (int) (longitude * 1000000));
+                	
                 	posicionActualOverlay.setLocation(p);
+                	cargarGeoPoints();
+                	myPath.addPoint(posicionActualOverlay.getMyLocation());
                 	if(primeraVez){
                 		mapController.setCenter(p);
                 		primeraVez=false;
@@ -331,6 +306,7 @@ public class RutaCliente  extends Activity implements LocationListener {
 	@Override
 	protected void onDestroy() {
 		//cursor.close();
+		//db.close();
 		super.onDestroy();
 		mHandler.removeCallbacks(Timer_Tick);
 	}
@@ -379,7 +355,11 @@ public class RutaCliente  extends Activity implements LocationListener {
 			double lati = loc.getLatitude();
 			double longi = loc.getLongitude();
 	        GeoPoint p = new GeoPoint((int) (lati * 1000000), (int) (longi * 1000000));
-	    	posicionActualOverlay.setLocation(p);
+	//       myPath.getPaint().
+	        posicionActualOverlay.setLocation(p);
+	      myPath.clearPath();
+	      myPath.addPoint(posicionActualOverlay.getMyLocation());
+	    //  myPath.addPoint()
 	    	if (primeraVez){
 	    		mapController.setCenter(p);
 	    		primeraVez=false;
