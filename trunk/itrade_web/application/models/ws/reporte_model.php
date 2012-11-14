@@ -1196,7 +1196,7 @@ class Reporte_model extends CI_Model {
 	$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`Nombre`, `Pedido`.`MontoTotalPedido`, `Pedido`.`FechaCobranza`, `EstadoPedido`.`Descripcion`   
+		SELECT `Usuario`.`Nombre`, `Pedido`.`MontoTotalPedido`, `Pedido`.`FechaPedido`, `EstadoPedido`.`Descripcion`   
 		FROM ( 
 		`Usuario`
 		)
