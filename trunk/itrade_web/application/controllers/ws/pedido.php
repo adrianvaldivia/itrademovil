@@ -18,15 +18,21 @@ class Pedido extends CI_Controller {
 		$idpedido=$this->input->post('idpedido');		
 		$montocobrado=$this->input->post('montocobrado');
 		$numVoucher=$this->input->post('numVoucher');
-		
-		if (isset($idpedido_w)&& $idpedido_w!= "" ){			
-			$result=$this->Payment_model->pay_by_id($idpedido_w,$montocobrado_w,$numVoucher_W);	
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));		
-		}		
-		if (isset($idpedido)&& $idpedido!=""  ){
-			$result=$this->Payment_model->pay_by_id($idpedido,$montocobrado,$numVoucher);	
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
-		}		
+		if ($idpedido_w!='' && $montocobrado_w !='' && $numVoucher_w!=''){
+			$idpedido=$idpedido_w;		
+			$montocobrado=$montocobrado_w;
+			$numVoucher=$numVoucher_w;
+		}
+		//Actualizar el pedido del cliente
+		//Obtener el IdCliente
+		$objpedido=$this->Payment_model->get_objpedido_by_idpedido($idpedido);
+		//OBTENER LINEA CREDITO
+		//ACTUALIZAR LINEA CREDITO
+		$linea_credito=$this->Cliente_model->get_linea_credito($objpedido->IdCliente);					
+		$montoActual=number_format(round($linea_credito->MontoActual+$montocobrado,2),2,'.','');		
+		$this->Cliente_model->updateLineaPedidoCliente($objpedido->IdCliente,$montoActual);	
+		$result=$this->Payment_model->pay_by_id($idpedido,$montocobrado,$numVoucher);	
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));							
 	}
 	public function consultar_pedido($idpedido_w='')
 	{
@@ -69,20 +75,28 @@ class Pedido extends CI_Controller {
 		$idcliente=$this->input->post('idcliente');
 		$montototalpedidosinigv=$this->input->post('montototalpedidosinigv');
 		if (isset($idcliente)&& $idcliente!= "" ){
-			$result=$this->Payment_model->registrar_pedido($idcliente,$montototalpedidosinigv);	
-			//$montoconigv=number_format(round($montototalpedidosinigv*1.18,2),2,'.','');
-			//Update linea pedido
-			//$linea=$this->Cliente_model->updateLineaPedidoCliente($idcliente,$montoconigv);
-			//echo "LINEA///".$linea."///ahhhhh<br>";
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			$linea_credito=$this->Cliente_model->get_linea_credito($idcliente);			
+			$montoconigv=number_format(round($montototalpedidosinigv*1.18,2),2,'.','');
+			$montoActual=number_format(round($linea_credito->MontoActual-$montoconigv,2),2,'.','');
+			if($montoActual>=0){
+				$this->Cliente_model->updateLineaPedidoCliente($idcliente,$montoActual);				
+				$result=$this->Payment_model->registrar_pedido($idcliente,$montototalpedidosinigv);												
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+				$this->output->set_content_type('application/json')->set_output(json_encode(0));
+			}	
 		}
 		if (isset($idcliente_w)&& $idcliente_w!=""  ){
-			$result=$this->Payment_model->registrar_pedido($idcliente_w,$montototalpedidosinigv_w);
-			//$montoconigv=number_format(round($montototalpedidosinigv_w*1.18,2),2,'.','');
-			//Update linea pedido
-			//$this->Cliente_model->updateLineaPedidoCliente($idcliente_w,$montoconigv);			
-			//echo "LINEA///".$linea."///ahhhhh<br>";
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			$linea_credito=$this->Cliente_model->get_linea_credito($idcliente_w);			
+			$montoconigv=number_format(round($montototalpedidosinigv_w*1.18,2),2,'.','');
+			$montoActual=number_format(round($linea_credito->MontoActual-$montoconigv,2),2,'.','');
+			if($montoActual>=0){
+				$this->Cliente_model->updateLineaPedidoCliente($idcliente_w,$montoActual);				
+				$result=$this->Payment_model->registrar_pedido($idcliente_w,$montototalpedidosinigv_w);												
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+				$this->output->set_content_type('application/json')->set_output(json_encode(0));
+			}			
 		}
 	}
 	public function registrar_pedido_linea($idpedido_w='',$idproducto_w='',$montolinea_w='',$cantidad_w=''){		
@@ -100,15 +114,18 @@ class Pedido extends CI_Controller {
 		}
 	}
 	public function cancelar_pedido($idpedido_w=''){
-		$idpedido=$this->input->post('idpedido');			
+		$idpedido=$this->input->post('idpedido');	
+		if ($idpedido_w!=''){
+			$idpedido=$idpedido_w;
+		}
 		if (isset($idpedido)&& $idpedido!= "" ){					
+			$objpedido=$this->Payment_model->get_objpedido_by_idpedido($idpedido);			
+			$linea_credito=$this->Cliente_model->get_linea_credito($objpedido->IdCliente);					
+			$montoActual=number_format(round($linea_credito->MontoActual+$objpedido->MontoTotalPedido,2),2,'.','');		
+			$this->Cliente_model->updateLineaPedidoCliente($objpedido->IdCliente,$montoActual);
 			$result=$this->Payment_model->cancelar_pedido($idpedido);	
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
-		}		
-		if (isset($idpedido_w)&& $idpedido_w!=""  ){
-			$result=$this->Payment_model->cancelar_pedido($idpedido_w);
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
-		}
+		}			
 	}
 	public function ultimos_pedidos($idvendedor_w=''){
 		$idvendedor=$this->input->post('idvendedor');	
