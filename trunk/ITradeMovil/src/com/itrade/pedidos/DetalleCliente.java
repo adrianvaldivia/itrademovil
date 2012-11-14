@@ -40,8 +40,10 @@ public class DetalleCliente extends ListActivity{
 	private TextView txt_nombre;
 	private TextView txt_ruc;
 	public Bundle bundle;// = getIntent().getExtras();
-	public String nombre="";
+	public String nombre="";	
 	public String apellidos="";
+	public String direccion="";
+	public Double montoCredito=0.0;
 	public int idcliente;
 	public long idusuario;
 	int boolVer;
@@ -158,6 +160,8 @@ public class DetalleCliente extends ListActivity{
         		Cliente clienteTemp=clientesAux.get(0);
             	nombre=clienteTemp.getRazon_Social();
             	apellidos=clienteTemp.getRUC();
+            	montoCredito=clienteTemp.getMontoActual();
+            	direccion=clienteTemp.getDireccion();
         	}
         	else
             	nombre="Error";
@@ -173,10 +177,10 @@ public class DetalleCliente extends ListActivity{
 		long i=1;
 		this.txt_nombre.setText(this.nombre);
 		this.txt_ruc.setText("RUC: "+this.apellidos);
-		ElementoLista elemento = new ElementoLista(null,"Direccion:","HardCoded",null,i);
+		ElementoLista elemento = new ElementoLista(null,"Direccion:",""+direccion,null,i);
 		elementoListaDao.insert(elemento);
 		i++;
-		ElementoLista elemento2 = new ElementoLista(null,"Credito Disponible:","HardCoded",null,i);
+		ElementoLista elemento2 = new ElementoLista(null,"Credito Disponible:",""+montoCredito,null,i);
 		elementoListaDao.insert(elemento2);
 		cursorElementoLista.requery();
 //		lista.add("ID: "+this.idcliente);

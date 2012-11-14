@@ -37,6 +37,7 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         public final static Property IdCobrador = new Property(11, Integer.class, "IdCobrador", false, "ID_COBRADOR");
         public final static Property IdUsuario = new Property(12, Integer.class, "IdUsuario", false, "ID_USUARIO");
         public final static Property Activo = new Property(13, String.class, "Activo", false, "ACTIVO");
+        public final static Property MontoActual = new Property(14, Double.class, "MontoActual", false, "MONTO_ACTUAL");
     };
 
 
@@ -65,7 +66,8 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
                 "'DIRECCION' TEXT," + // 10: Direccion
                 "'ID_COBRADOR' INTEGER," + // 11: IdCobrador
                 "'ID_USUARIO' INTEGER," + // 12: IdUsuario
-                "'ACTIVO' TEXT);"); // 13: Activo
+                "'ACTIVO' TEXT," + // 13: Activo
+                "'MONTO_ACTUAL' REAL);"); // 14: MontoActual
     }
 
     /** Drops the underlying database table. */
@@ -144,6 +146,11 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         if (Activo != null) {
             stmt.bindString(14, Activo);
         }
+ 
+        Double MontoActual = entity.getMontoActual();
+        if (MontoActual != null) {
+            stmt.bindDouble(15, MontoActual);
+        }
     }
 
     /** @inheritdoc */
@@ -169,7 +176,8 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // Direccion
             cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // IdCobrador
             cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // IdUsuario
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // Activo
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // Activo
+            cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14) // MontoActual
         );
         return entity;
     }
@@ -191,6 +199,7 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         entity.setIdCobrador(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
         entity.setIdUsuario(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
         entity.setActivo(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setMontoActual(cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14));
      }
     
     /** @inheritdoc */

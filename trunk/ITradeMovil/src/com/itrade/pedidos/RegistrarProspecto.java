@@ -15,6 +15,7 @@ import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
 import com.itrade.model.Credito;
 import com.itrade.model.Persona;
+import com.itrade.model.Prospecto;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -51,7 +52,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	
 	Button btnregistrar;
 	
-	Cliente client;
+	Prospecto client;
 	Persona person;
 	Credito cred;
 	
@@ -289,7 +290,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         	        				else 
         	        				{
     			
-    			client = new Cliente(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), latitud, longitud, direcc.getText().toString().trim(), null, null, null); 
+    			client = new Prospecto(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), latitud, longitud, direcc.getText().toString().trim(), null, null, null,0.0); 
 
             	  
    String  strFecha = fechanac.getText().toString();
