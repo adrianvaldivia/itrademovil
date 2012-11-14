@@ -117,7 +117,8 @@ public class BuscarProspectosFusion extends ListActivity{
 	    button_agregar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent i = new Intent(BuscarProspectosFusion.this, RegistrarProspecto.class);
-				i.putExtra("idusuario", String.valueOf(idusuario));
+				String idus= String.valueOf(idusuario);
+				i.putExtra("idusuario", idus);
 				startActivity(i);
 				BuscarProspectosFusion.this.finish();
 			}
