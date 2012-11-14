@@ -332,7 +332,7 @@ public class Login extends Activity {
 					listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
 					listaProspecto.get(i).getRUC(),xx,yy,listaProspecto.get(i).getDireccion(),
 					listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
-					listaProspecto.get(i).getActivo());
+					listaProspecto.get(i).getActivo(),listaProspecto.get(i).getMontoActual());
 			prospecto2.setActivo("A");//util para la sincronizacion de prospectos
 	        prospectoDao.insert(prospecto2);	        	        
 		}

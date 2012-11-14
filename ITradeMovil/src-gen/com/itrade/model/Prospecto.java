@@ -21,6 +21,7 @@ public class Prospecto {
     private Integer IdCobrador;
     private Integer IdUsuario;
     private String Activo;
+    private Double MontoActual;
 
     public Prospecto() {
     }
@@ -29,7 +30,7 @@ public class Prospecto {
         this.id = id;
     }
 
-    public Prospecto(Long id, Integer IdPersona, Integer IdProspecto, String Nombre, String ApePaterno, String ApeMaterno, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo) {
+    public Prospecto(Long id, Integer IdPersona, Integer IdProspecto, String Nombre, String ApePaterno, String ApeMaterno, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo, Double MontoActual) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.IdProspecto = IdProspecto;
@@ -44,6 +45,7 @@ public class Prospecto {
         this.IdCobrador = IdCobrador;
         this.IdUsuario = IdUsuario;
         this.Activo = Activo;
+        this.MontoActual = MontoActual;
     }
 
     public Long getId() {
@@ -158,6 +160,14 @@ public class Prospecto {
 
     public void setActivo(String Activo) {
         this.Activo = Activo;
+    }
+
+    public Double getMontoActual() {
+        return MontoActual;
+    }
+
+    public void setMontoActual(Double MontoActual) {
+        this.MontoActual = MontoActual;
     }
 
 }
