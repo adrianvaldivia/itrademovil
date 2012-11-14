@@ -126,6 +126,7 @@ public class RequestDetailTask extends Activity {
 					/*intent.putExtra("idpedido", idpedido);
 					intent.putExtra("idcliente", idcliente); 	
 					intent.putExtra("idempleado", idempleado);			*/
+		    		intent.putExtra("idcliente", idcliente); 
 					startActivity(intent);
 		    	}else{
 		    		Toast.makeText(RequestDetailTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();

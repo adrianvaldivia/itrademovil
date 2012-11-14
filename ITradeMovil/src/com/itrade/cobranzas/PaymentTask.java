@@ -251,7 +251,8 @@ public class PaymentTask extends Activity {
 						/*intent.putExtra("idpedido", idpedido);
 						intent.putExtra("idcliente", idcliente); 	
 						intent.putExtra("idempleado", idempleado);			*/
-						startActivity(intent);
+		    			intent.putExtra("idcliente", idcliente);
+		    			startActivity(intent);
 		    		}else{
 		    			Toast.makeText(PaymentTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
 		    		}												
