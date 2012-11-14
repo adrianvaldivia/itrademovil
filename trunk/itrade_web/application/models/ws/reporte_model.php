@@ -1213,5 +1213,58 @@ class Reporte_model extends CI_Model {
 		
 	}
 	
+	
+	public function pedidos_estado($idubigeo,$id){
+			
+	
+	
+	
+	
+	$strb="";
+	
+	if ($idubigeo==0)
+		{
+			$strb.=" 1=1 ";
+			
+		}
+		else
+		{ 
+			$strb.=" Usuario.IdUbigeo = ".$idubigeo;
+			
+		}
+	
+	$strc="";
+	if ($id==0)
+		{
+			$strc.=" 1=1 ";
+			
+		}
+		else
+		{ 
+			$strc.=" MONTH(`Pedido`.`FechaPedido`) = ".$id;
+			
+		}
+	
+	
+	$query = $this->db->query("
+		
+		
+		SELECT  `EstadoPedido`.`Descripcion` , COUNT(`Pedido`.`IdEstadoPedido`)  AS CANTIDAD 
+		FROM ( 
+		`Usuario`
+		)
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Cliente` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario`  
+		JOIN  `Pedido` ON  `Pedido`.`IdCliente` =  `Cliente`.`IdCliente` 
+		JOIN  `EstadoPedido` ON  `EstadoPedido`.`IdEstadoPedido` =  `Pedido`.`IdEstadoPedido`
+		WHERE  ".$strb." and ".$strc." 
+		GROUP BY  `Pedido`.`IdEstadoPedido`
+		");
+	
+	//echo $this->db->last_query();	
+	return $query->result();
+		
+	}
+	
 }
 ?>
