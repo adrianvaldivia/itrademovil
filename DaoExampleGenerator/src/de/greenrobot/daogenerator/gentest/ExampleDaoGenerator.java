@@ -44,6 +44,7 @@ public class ExampleDaoGenerator {
 		addElementoLista(schema);
 		addEvento(schema);
 		addMeta(schema);
+		addContacto(schema);
 
 		new DaoGenerator().generateAll(schema, "../ITradeMovil/src-gen");
 	}
@@ -119,8 +120,20 @@ public class ExampleDaoGenerator {
 		prospecto.addStringProperty("DNI");
 		prospecto.addStringProperty("FechNac");
 		prospecto.addStringProperty("Telefono");
-		prospecto.addStringProperty("Email");
-		
+		prospecto.addStringProperty("Email");		
+	}
+	
+	private static void addContacto(Schema schema) {
+		Entity contacto = schema.addEntity("Contacto");
+		contacto.addIdProperty();
+		contacto.addIntProperty("IdPersona");
+		contacto.addIntProperty("IdUsuario");
+		contacto.addStringProperty("Nombre");
+		contacto.addStringProperty("ApePaterno");
+		contacto.addStringProperty("ApeMaterno");
+		contacto.addStringProperty("Activo");//para la sincronizacion
+		contacto.addStringProperty("Telefono");
+		contacto.addStringProperty("Email");		
 	}
 
 	private static void addUsuario(Schema schema) {
