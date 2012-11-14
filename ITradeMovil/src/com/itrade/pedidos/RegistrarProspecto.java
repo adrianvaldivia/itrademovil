@@ -12,15 +12,18 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.itrade.R;
 import com.itrade.controller.cobranza.Syncronizar;
-import com.itrade.model.Cliente;
-import com.itrade.model.Credito;
-import com.itrade.model.Persona;
+import com.itrade.model.DaoMaster;
+import com.itrade.model.DaoSession;
+import com.itrade.model.ProductoDao;
 import com.itrade.model.Prospecto;
+import com.itrade.model.DaoMaster.DevOpenHelper;
+import com.itrade.model.ProspectoDao;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -53,8 +56,9 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	Button btnregistrar;
 	
 	Prospecto client;
-	Persona person;
-	Credito cred;
+// cambios chichan	
+//	Persona person;
+//	Credito cred;
 	
 	Button ubic;
 	
@@ -79,11 +83,26 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 	
 	static final int DATE_DIALOG_ID = 999;
 /******************************************************/
+	
+	//Green Dao
+    private SQLiteDatabase db;
+
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
+    private ProspectoDao prospectoDao;
+    //fin green dao
 	Button bclientes, dprospectos, hpedidos, vdirectorio, aagenda, rmetas;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainprospecto);
+      //Inicio configuracion green dao
+        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        prospectoDao = daoSession.getProspectoDao();
+        //fin green dao
 
   /*LOS LINKS DE LOS BOTONES*******************************************************************/      
 //        bclientes = (Button) findViewById(R.id.btnCrearPedido);
@@ -288,34 +307,29 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         	        				Toast.makeText(RegistrarProspecto.this, "Su posible cliente debe ser mayor a 18 años", Toast.LENGTH_SHORT).show();
         	        		}
         	        				else 
-        	        				{
+        	        				{//aca empieza el caso feliz
+        	        					
     			
-    			client = new Prospecto(null, null, null, null, null, null, rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), latitud, longitud, direcc.getText().toString().trim(), null, null, null,0.0); 
+    			client = new Prospecto(null, null, null, nombre.getText().toString().trim(), 
+    					apellidopater.getText().toString().trim(),
+    					apellidomater.getText().toString().trim(), 
+    					rzsocial.getText().toString().trim(), ruc.getText().toString().trim(), 
+    					latitud, longitud, direcc.getText().toString().trim(),
+    					null, null, null,0.0,dni.getText().toString().trim(),
+    					null,telefperson.getText().toString().trim(),
+    					correo.getText().toString().trim());//aca el cliente ya contiene todos los campos necesarios 
 
             	  
    String  strFecha = fechanac.getText().toString();
-//    SimpleDateFormat formato = new SimpleDateFormat("yyyy-mm-dd");
-//    String strFecha = fechanac.getText().toString();
-//    
-//    Date fecha = null; 
-//    
-//    try {
-//   	      
-//    	fecha = formato.parse(strFecha);
-//		
-//	} catch (ParseException e) {
-//		// TODO Auto-generated catch block
-//	    e.printStackTrace();
-//    }
-//
-//   strFecha = fecha;
    
    Log.v("XXXX", "aa "+strFecha+" aaa");
-    
-    person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), strFecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
+    //cambio chichan
+//    person = new Persona(null, null, nombre.getText().toString().trim(), apellidopater.getText().toString().trim(), apellidomater.getText().toString().trim(), dni.getText().toString().trim(), strFecha, telefperson.getText().toString().trim(), correo.getText().toString().trim(), null); 
 
   String valor = cantidad.getText().toString().trim();
-  cred = new Credito(Integer.parseInt(valor)); 
+//  cred = new Credito(Integer.parseInt(valor));
+  client.setMontoActual(0.0+Integer.parseInt(valor));
+	prospectoDao.insert(client);
 
    /***************Falta Ingresar los idsssss de las tablas **************/
   				
@@ -324,12 +338,12 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                  List<NameValuePair> param = new ArrayList <NameValuePair>();
                  param.add(new BasicNameValuePair("idvendedor", idu));
                  
-                 param.add(new BasicNameValuePair("dni", person.getDNI()));
-                 param.add(new BasicNameValuePair("nombre", person.getNombre()));
-                 param.add(new BasicNameValuePair("apepaterno", person.getApePaterno()));
-                 param.add(new BasicNameValuePair("apematerno", person.getApeMaterno()));
-                 param.add(new BasicNameValuePair("telefono",  person.getTelefono()));
-                 param.add(new BasicNameValuePair("email",  person.getEmail()));
+                 param.add(new BasicNameValuePair("dni", client.getDNI()));
+                 param.add(new BasicNameValuePair("nombre", client.getNombre()));
+                 param.add(new BasicNameValuePair("apepaterno", client.getApePaterno()));
+                 param.add(new BasicNameValuePair("apematerno", client.getApeMaterno()));
+                 param.add(new BasicNameValuePair("telefono",  client.getTelefono()));
+                 param.add(new BasicNameValuePair("email",  client.getEmail()));
                  param.add(new BasicNameValuePair("fechanac", strFecha)); // Revisar Nombre de FechaNac
             
                  param.add(new BasicNameValuePair("ruc", client.getRUC()));
@@ -342,7 +356,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                 // int valor = Integer.parseInt(cantidad.getText().toString());
                 
                  
-                 param.add(new BasicNameValuePair("montosolicitado", Integer.toString(cred.getCantidad()) ));
+                 param.add(new BasicNameValuePair("montosolicitado", ""+client.getMontoActual() ));
 
                  String route = "/ws/clientes/registrar_prospecto/";
 			     sync.conexion(param, route);
@@ -373,7 +387,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
 			
          
-         }// fin de mi IF true
+         }// fin de mi IF true ... termina el caso feliz
     			}
          }
          	}

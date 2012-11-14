@@ -22,6 +22,10 @@ public class Prospecto {
     private Integer IdUsuario;
     private String Activo;
     private Double MontoActual;
+    private String DNI;
+    private String FechNac;
+    private String Telefono;
+    private String Email;
 
     public Prospecto() {
     }
@@ -30,7 +34,7 @@ public class Prospecto {
         this.id = id;
     }
 
-    public Prospecto(Long id, Integer IdPersona, Integer IdProspecto, String Nombre, String ApePaterno, String ApeMaterno, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo, Double MontoActual) {
+    public Prospecto(Long id, Integer IdPersona, Integer IdProspecto, String Nombre, String ApePaterno, String ApeMaterno, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo, Double MontoActual, String DNI, String FechNac, String Telefono, String Email) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.IdProspecto = IdProspecto;
@@ -46,6 +50,10 @@ public class Prospecto {
         this.IdUsuario = IdUsuario;
         this.Activo = Activo;
         this.MontoActual = MontoActual;
+        this.DNI = DNI;
+        this.FechNac = FechNac;
+        this.Telefono = Telefono;
+        this.Email = Email;
     }
 
     public Long getId() {
@@ -168,6 +176,38 @@ public class Prospecto {
 
     public void setMontoActual(Double MontoActual) {
         this.MontoActual = MontoActual;
+    }
+
+    public String getDNI() {
+        return DNI;
+    }
+
+    public void setDNI(String DNI) {
+        this.DNI = DNI;
+    }
+
+    public String getFechNac() {
+        return FechNac;
+    }
+
+    public void setFechNac(String FechNac) {
+        this.FechNac = FechNac;
+    }
+
+    public String getTelefono() {
+        return Telefono;
+    }
+
+    public void setTelefono(String Telefono) {
+        this.Telefono = Telefono;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
 
 }

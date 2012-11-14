@@ -38,6 +38,10 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         public final static Property IdUsuario = new Property(12, Integer.class, "IdUsuario", false, "ID_USUARIO");
         public final static Property Activo = new Property(13, String.class, "Activo", false, "ACTIVO");
         public final static Property MontoActual = new Property(14, Double.class, "MontoActual", false, "MONTO_ACTUAL");
+        public final static Property DNI = new Property(15, String.class, "DNI", false, "DNI");
+        public final static Property FechNac = new Property(16, String.class, "FechNac", false, "FECH_NAC");
+        public final static Property Telefono = new Property(17, String.class, "Telefono", false, "TELEFONO");
+        public final static Property Email = new Property(18, String.class, "Email", false, "EMAIL");
     };
 
 
@@ -67,7 +71,11 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
                 "'ID_COBRADOR' INTEGER," + // 11: IdCobrador
                 "'ID_USUARIO' INTEGER," + // 12: IdUsuario
                 "'ACTIVO' TEXT," + // 13: Activo
-                "'MONTO_ACTUAL' REAL);"); // 14: MontoActual
+                "'MONTO_ACTUAL' REAL," + // 14: MontoActual
+                "'DNI' TEXT," + // 15: DNI
+                "'FECH_NAC' TEXT," + // 16: FechNac
+                "'TELEFONO' TEXT," + // 17: Telefono
+                "'EMAIL' TEXT);"); // 18: Email
     }
 
     /** Drops the underlying database table. */
@@ -151,6 +159,26 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         if (MontoActual != null) {
             stmt.bindDouble(15, MontoActual);
         }
+ 
+        String DNI = entity.getDNI();
+        if (DNI != null) {
+            stmt.bindString(16, DNI);
+        }
+ 
+        String FechNac = entity.getFechNac();
+        if (FechNac != null) {
+            stmt.bindString(17, FechNac);
+        }
+ 
+        String Telefono = entity.getTelefono();
+        if (Telefono != null) {
+            stmt.bindString(18, Telefono);
+        }
+ 
+        String Email = entity.getEmail();
+        if (Email != null) {
+            stmt.bindString(19, Email);
+        }
     }
 
     /** @inheritdoc */
@@ -177,7 +205,11 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
             cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // IdCobrador
             cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // IdUsuario
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // Activo
-            cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14) // MontoActual
+            cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14), // MontoActual
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // DNI
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // FechNac
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // Telefono
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // Email
         );
         return entity;
     }
@@ -200,6 +232,10 @@ public class ProspectoDao extends AbstractDao<Prospecto, Long> {
         entity.setIdUsuario(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
         entity.setActivo(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setMontoActual(cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14));
+        entity.setDNI(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setFechNac(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setTelefono(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setEmail(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
      }
     
     /** @inheritdoc */
