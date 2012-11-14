@@ -251,5 +251,19 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();
 	}
+	
+	public function get_proximos_pedidos ($idcliente){
+		$this->db->from($this->table_pedido);
+		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");											
+		$this->db->where($this->table_cliente.".IdCliente", $idcliente);	
+		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);//Pendiente de pago
+		//$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";		
+		$dates="( ".$this->table_pedido.".FechaPedido BETWEEN CURDATE() AND CURDATE()+7 )";				 
+		$this->db->where($dates);
+		$this->db->order_by("FechaPedido", "ASC"); 
+		$query = $this->db->get();
+		//echo $this->db->last_query();		
+		return $query->result();
+	}
 }
 ?>
