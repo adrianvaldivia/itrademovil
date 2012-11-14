@@ -114,6 +114,7 @@ public class SyncPedidos {
 				//adapter.addItem(ped);
 				//iNSERT EN LA bd
 				pedidoDao.insert(pedido);
+				//Log.d("fecha",""+pedido.getFechaPedido().toString());
 			}
 		}
 		return pedList.size();
@@ -289,8 +290,12 @@ public class SyncPedidos {
 				.list();
 		Pedido ped=pedTemp.get(0);
 		ped.setIdEstadoPedido(2);
-		pedidoDao.update(ped);		
-		return 1;
+		Date ahora = new Date();
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");        
+		ped.setFechaCobranza(formateador.format(ahora).toString());
+		pedidoDao.update(ped);	
+		Log.d("fechacob",ped.getFechaCobranza().toString());
+		return pedTemp.size();
 	}
 
 	public Cliente buscarCliente(String idcliente) {
