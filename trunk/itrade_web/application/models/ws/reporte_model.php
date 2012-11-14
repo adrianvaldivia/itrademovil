@@ -1077,7 +1077,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`, `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
 		FROM ( 
@@ -1095,7 +1095,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
 		FROM ( 
@@ -1114,7 +1114,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
 		FROM ( 
