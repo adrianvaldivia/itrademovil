@@ -450,5 +450,54 @@ class Reportes extends CI_Controller {
 	}
 	
 	
+	public function pedidos_estado($idperiodo_w="",$idubigeo_w=""){		
+		//2012-05-10
+		$idperiodo=$this->input->post('idperiodo');
+		$idubigeo=$this->input->post('idubigeo');
+		
+		/*SOLO PARA WEB*/		
+		if (isset($idperiodo_w)&& $idperiodo_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" ){				
+			
+			if ($idperiodo_w == 0) 
+			{
+			$result=$this->Reporte_model->pedidos_estado($idubigeo_w,0);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}
+			else
+			{
+			$obj_id=$result=$this->Reporte_model->objetoMes($idperiodo_w);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}				
+			$result=$this->Reporte_model->pedidos_estado($idubigeo_w,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));		
+			}
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($idperiodo)&& $idperiodo!= "" && isset($idubigeo)&& $idubigeo!=""){				
+			if ($idperiodo==0)
+				{
+				$result=$this->Reporte_model->pedidos_estado($idubigeo,0);				
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}
+			
+			else
+				{
+			
+				$obj_id=$result=$this->Reporte_model->objetoMes($idperiodo);			
+				foreach($result as $res){
+					$id=$res->nombre;
+				
+					}
+				
+			
+			
+				$result=$this->Reporte_model->pedidos_estado($idubigeo,$id);				
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));		
+				}
+		}			
+	}
+	
+	
 }
 
