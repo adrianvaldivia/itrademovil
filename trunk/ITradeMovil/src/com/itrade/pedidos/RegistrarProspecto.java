@@ -37,6 +37,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -91,7 +92,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     private DaoSession daoSession;
     private ProspectoDao prospectoDao;
     //fin green dao
-	Button bclientes, dprospectos, hpedidos, vdirectorio, aagenda, rmetas;
+	ImageButton bclientes, dprospectos, hpedidos, vdirectorio, aagenda, rmetas;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,42 +106,44 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         //fin green dao
 
   /*LOS LINKS DE LOS BOTONES*******************************************************************/      
-//        bclientes = (Button) findViewById(R.id.btnCrearPedido);
-//        bclientes.setOnClickListener(new OnClickListener() {
-//			
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-////				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
-////				/*********ENVIAR INFO A LA VENTANA***********/
-////				startActivity(a);
-//			}
-//		});
-//        
-//        dprospectos = (Button) findViewById(R.id.btnBuscarPedido);
-//        dprospectos.setOnClickListener(new OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				limpiarProspecto();
-//				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+        bclientes = (ImageButton) findViewById(R.id.btnCrearPedido);
+        bclientes.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
 //				/*********ENVIAR INFO A LA VENTANA***********/
-//				b.putExtra("idusuario", idusuario);
-//				startActivity(b);
-//			}
-//		});
+				a.putExtra("idusuario", idusuario);
+        			startActivity(a);
+			}
+		});
 //        
-//        hpedidos = (Button) findViewById(R.id.btnProspectos); 
-//        hpedidos.setOnClickListener(new OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-////				Intent c = new Intent(RegistrarProspecto.this, CrearPedido.class);
-////				/*********ENVIAR INFO A LA VENTANA***********/
-////				startActivity(c);
-//			}
-//		});
+        dprospectos = (ImageButton) findViewById(R.id.btnBuscarPedido);
+        dprospectos.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				limpiarProspecto();
+				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+				/*********ENVIAR INFO A LA VENTANA***********/
+				b.putExtra("idusuario", idusuario);
+				startActivity(b);
+			}
+		});
 //        
-//        vdirectorio = (Button) findViewById(R.id.btnDirectorio);
+        hpedidos = (ImageButton) findViewById(R.id.btnProspectos); 
+        hpedidos.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent c = new Intent(RegistrarProspecto.this, CrearPedido.class);
+				/*********ENVIAR INFO A LA VENTANA***********/
+				c.putExtra("idusuario", idusuario);
+        			startActivity(c);
+			}
+		});
+//        
+//        vdirectorio = (ImageButton) findViewById(R.id.btnDirectorio);
 //        vdirectorio.setOnClickListener(new OnClickListener() {
 //			
 //			public void onClick(View v) {
@@ -152,7 +155,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 //			}
 //		});
 //        
-//        aagenda = (Button) findViewById(R.id.btnCalendario);
+//        aagenda = (ImageButton) findViewById(R.id.btnCalendario);
 //        aagenda.setOnClickListener(new OnClickListener() {
 //			
 //			public void onClick(View v) {
@@ -164,16 +167,17 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 //			}
 //		});
 //        
-//        rmetas = (Button) findViewById(R.id.btnMeta);
-//        rmetas.setOnClickListener(new OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-////				Intent f = new Intent(RegistrarProspecto.this, MiMeta.class);
-////				/*********ENVIAR INFO A LA VENTANA***********/
-////				startActivity(f);
-//			}
-//		});
+        rmetas = (ImageButton) findViewById(R.id.btnMeta);
+        rmetas.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent f = new Intent(RegistrarProspecto.this, MiMeta.class);
+				/*********ENVIAR INFO A LA VENTANA***********/
+				f.putExtra("idusuario", idusuario);
+        			startActivity(f);
+			}
+		});
   /********************************************************************************************/      
         cal = Calendar.getInstance();
 
@@ -359,6 +363,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                  
                  param.add(new BasicNameValuePair("montosolicitado", ""+client.getMontoActual() ));
 
+            Log.d("Jorge", ""+idu+", "+client.getDNI()+", "+client.getNombre()+","+client.getApePaterno()+", "+client.getApeMaterno()+", "+client.getTelefono()+", "+client.getEmail()+", "+strFecha+", "+client.getRUC()+", "+client.getRazon_Social()+", "+client.getDireccion()+","+client.getLatitud()+", "+client.getLongitud());     
+                 
                  String route = "/ws/clientes/registrar_prospecto/";
 			     sync.conexion(param, route);
 	             
