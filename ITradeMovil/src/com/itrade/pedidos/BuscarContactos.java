@@ -175,9 +175,11 @@ public class BuscarContactos extends ListActivity{
      // TODO Auto-generated method stub
      //super.onListItemClick(l, v, position, id);
      //inicio cambios chichan
+     ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
+	 contacto=contactoDao.loadByRowId(elementoAux.getIdElemento());
      Intent intent = new Intent(BuscarContactos.this, DetalleContacto.class);
      intent.putExtra("idusuario", idusuario);
-     intent.putExtra("idcontacto", id);
+     intent.putExtra("idpersona", contacto.getIdPersona());
      startActivity(intent);
      
     }    

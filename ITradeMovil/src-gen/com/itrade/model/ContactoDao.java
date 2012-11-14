@@ -24,8 +24,8 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdPersona = new Property(1, Integer.class, "IdPersona", false, "ID_PERSONA");
-        public final static Property IdUsuario = new Property(2, Integer.class, "IdUsuario", false, "ID_USUARIO");
+        public final static Property IdPersona = new Property(1, Long.class, "IdPersona", false, "ID_PERSONA");
+        public final static Property IdUsuario = new Property(2, Long.class, "IdUsuario", false, "ID_USUARIO");
         public final static Property Nombre = new Property(3, String.class, "Nombre", false, "NOMBRE");
         public final static Property ApePaterno = new Property(4, String.class, "ApePaterno", false, "APE_PATERNO");
         public final static Property ApeMaterno = new Property(5, String.class, "ApeMaterno", false, "APE_MATERNO");
@@ -74,12 +74,12 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer IdPersona = entity.getIdPersona();
+        Long IdPersona = entity.getIdPersona();
         if (IdPersona != null) {
             stmt.bindLong(2, IdPersona);
         }
  
-        Integer IdUsuario = entity.getIdUsuario();
+        Long IdUsuario = entity.getIdUsuario();
         if (IdUsuario != null) {
             stmt.bindLong(3, IdUsuario);
         }
@@ -126,8 +126,8 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
     public Contacto readEntity(Cursor cursor, int offset) {
         Contacto entity = new Contacto( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdPersona
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdUsuario
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdPersona
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // IdUsuario
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Nombre
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // ApePaterno
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // ApeMaterno
@@ -142,8 +142,8 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
     @Override
     public void readEntity(Cursor cursor, Contacto entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdPersona(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setIdUsuario(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setIdPersona(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setIdUsuario(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setNombre(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setApePaterno(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setApeMaterno(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));

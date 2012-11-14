@@ -344,11 +344,15 @@ public class Login extends Activity {
 		}
 		//sincronizacion de contactos
 		contactoDao.deleteAll();
-		Contacto contacto= new Contacto(null,1,null,"Benito","Leon","Cordova","A","016392394","benito@corp.com");
+		long temp=0;
+		temp++;
+		Contacto contacto= new Contacto(null,temp,null,"Benito","Leon","Cordova","A","016392394","benito@corp.com");
 		contactoDao.insert(contacto);
-		Contacto contacto2= new Contacto(null,2,null,"Ushpa","Leon","Co","A","016392394","ushpa@corp.com");
+		temp++;
+		Contacto contacto2= new Contacto(null,temp,null,"Ushpa","Leon","Co","A","016392394","ushpa@corp.com");
 		contactoDao.insert(contacto2);
-		Contacto contacto3= new Contacto(null,3,null,"Anna","Godinez","Co","A","016392394","anna@corp.com");
+		temp++;
+		Contacto contacto3= new Contacto(null,temp,null,"Anna","Godinez","Co","A","016392394","anna@corp.com");
 		contactoDao.insert(contacto3);
 
 		

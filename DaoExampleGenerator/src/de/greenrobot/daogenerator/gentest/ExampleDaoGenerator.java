@@ -126,8 +126,8 @@ public class ExampleDaoGenerator {
 	private static void addContacto(Schema schema) {
 		Entity contacto = schema.addEntity("Contacto");
 		contacto.addIdProperty();
-		contacto.addIntProperty("IdPersona");
-		contacto.addIntProperty("IdUsuario");
+		contacto.addLongProperty("IdPersona");
+		contacto.addLongProperty("IdUsuario");
 		contacto.addStringProperty("Nombre");
 		contacto.addStringProperty("ApePaterno");
 		contacto.addStringProperty("ApeMaterno");
