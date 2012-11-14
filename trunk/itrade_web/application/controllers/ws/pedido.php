@@ -6,6 +6,7 @@ class Pedido extends CI_Controller {
     {        
         parent::__construct();
 		$this->load->model('ws/Payment_model');
+		$this->load->model('ws/Cliente_model');
     }	
 
 	public function index()
@@ -52,15 +53,13 @@ class Pedido extends CI_Controller {
 			$result=$this->Payment_model->get_pedidos_by_idvendedor($idcobrador_w);
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 		}	
-	}
-	
+	}	
 	public function get_detail_by_idpedido($idpedido_w=''){
 		$idpedido=$this->input->post('idpedido');				
 		if (isset($idpedido)&& $idpedido!= "" ){			
 			$result=$this->Payment_model->get_detail_by_idpedido($idpedido);	
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
-		}
-		
+		}	
 		if (isset($idpedido_w)&& $idpedido_w!=""  ){
 			$result=$this->Payment_model->get_detail_by_idpedido($idpedido_w);
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
@@ -68,18 +67,25 @@ class Pedido extends CI_Controller {
 	}	
 	public function registrar_pedido($idcliente_w='',$montototalpedidosinigv_w=''){
 		$idcliente=$this->input->post('idcliente');
-		$montototalpedidosinigv=$this->input->post('montototalpedidosinigv');		
-		if (isset($idcliente)&& $idcliente!= "" ){					
+		$montototalpedidosinigv=$this->input->post('montototalpedidosinigv');
+		if (isset($idcliente)&& $idcliente!= "" ){
 			$result=$this->Payment_model->registrar_pedido($idcliente,$montototalpedidosinigv);	
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));			
-		}		
+			//$montoconigv=number_format(round($montototalpedidosinigv*1.18,2),2,'.','');
+			//Update linea pedido
+			//$linea=$this->Cliente_model->updateLineaPedidoCliente($idcliente,$montoconigv);
+			//echo "LINEA///".$linea."///ahhhhh<br>";
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}
 		if (isset($idcliente_w)&& $idcliente_w!=""  ){
 			$result=$this->Payment_model->registrar_pedido($idcliente_w,$montototalpedidosinigv_w);
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+			//$montoconigv=number_format(round($montototalpedidosinigv_w*1.18,2),2,'.','');
+			//Update linea pedido
+			//$this->Cliente_model->updateLineaPedidoCliente($idcliente_w,$montoconigv);			
+			//echo "LINEA///".$linea."///ahhhhh<br>";
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}
 	}
-	public function registrar_pedido_linea($idpedido_w='',$idproducto_w='',$montolinea_w='',$cantidad_w=''){
-		
+	public function registrar_pedido_linea($idpedido_w='',$idproducto_w='',$montolinea_w='',$cantidad_w=''){		
 		$idpedido=$this->input->post('idpedido');
 		$idproducto=$this->input->post('idproducto');
 		$montolinea=$this->input->post('montolinea');
@@ -128,7 +134,7 @@ class Pedido extends CI_Controller {
 		}
 		$arr_meta=$this->Payment_model->get_meta($idvendedor);
 		//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
-	//var_dump($arr_meta);
+	//var_dump($arr_meta);		
 		foreach($arr_meta as $ele){
 			$fechaini=$ele->FechaIni;
 			$fechafin=$ele->FechaFin;
@@ -186,5 +192,14 @@ class Pedido extends CI_Controller {
 		$result=$this->Payment_model->get_estadoPedido();	
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}	
+	
+	public function get_proximos_pedidos($idcliente_w=''){
+		$idcliente=$this->input->post('idcliente');
+		if ($idcliente_w!=''){
+			$idcliente=$idcliente_w;
+		}
+		$result=$this->Payment_model->get_proximos_pedidos($idcliente);		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
 }
 
