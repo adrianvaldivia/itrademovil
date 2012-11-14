@@ -21,6 +21,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -50,6 +52,7 @@ public class PaymentTask extends Activity {
 	private Button btnPagar;
 	private Button btnDetalle;
 	private Button btnRuta;
+	private ImageView btnMapa;
 	private Button buttonRuta;
 	private ImageView btnMail;
 	private ImageView btnClientes;
@@ -116,10 +119,11 @@ public class PaymentTask extends Activity {
         btnPagar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				sincPedidos=new SyncPedidos(PaymentTask.this);
+				String numVoucher= editNumVoucher.getText().toString();
 				if (sincPedidos.networkAvailable()){
 					Syncronizar sync = new Syncronizar(PaymentTask.this);
 					List<NameValuePair> param = new ArrayList<NameValuePair>();	
-					String numVoucher= editNumVoucher.getText().toString();
+					
 					param.add(new BasicNameValuePair("idpedido", idpedido));
 					param.add(new BasicNameValuePair("montocobrado", pedidoSelected.getMontoTotalPedido().toString()));			
 					if (spinTipo.getSelectedItem().toString().toLowerCase()!="efectivo"){
@@ -135,12 +139,12 @@ public class PaymentTask extends Activity {
 						  // TODO Auto-generated catch block
 						e.printStackTrace();
 					}	    	  
-					Gson gson = new Gson();  
-					ArrayList<Pedido> listaPayments = new ArrayList<Pedido>();
-					listaPayments = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
+//					Gson gson = new Gson();  
+//					ArrayList<Pedido> listaPayments = new ArrayList<Pedido>();
+//					listaPayments = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
 				}
 				
-				Integer numreg = sincPedidos.pagarPedido(idpedido);
+				Integer numreg = sincPedidos.pagarPedido(idpedido,numVoucher);
 				Log.d("SQL","Se pago ="+numreg.toString()+" pedidos");
 				
 				String titulo="";
@@ -187,6 +191,20 @@ public class PaymentTask extends Activity {
 				startActivity(intent);
 			}
 		});
+      //btnMapa
+        btnMapa= (ImageView)findViewById(R.id.btnMapa);
+		btnMapa.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (networkAvailable()){
+					Intent intent = new Intent(PaymentTask.this, MapaClientes.class);		
+					intent.putExtra("idempleado", idempleado);				
+					startActivity(intent);
+				}else{
+					Toast.makeText(PaymentTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+				}				
+			}
+		});
         btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
         btnClientes.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
@@ -227,12 +245,16 @@ public class PaymentTask extends Activity {
 		 buttonRuta= (Button)findViewById(R.id.btnRutaPed);
 	     buttonRuta.setOnClickListener(new OnClickListener() {
 		    	public void onClick(View v) {
-		    		//Definido en el evento onlick    						 						
-					Intent intent = new Intent(PaymentTask.this, RutaCliente.class); 													
-					/*intent.putExtra("idpedido", idpedido);
-					intent.putExtra("idcliente", idcliente); 	
-					intent.putExtra("idempleado", idempleado);			*/
-					startActivity(intent);									
+		    		//Definido en el evento onlick    			
+		    		if (sincPedidos.networkAvailable()){
+		    			Intent intent = new Intent(PaymentTask.this, RutaCliente.class); 													
+						/*intent.putExtra("idpedido", idpedido);
+						intent.putExtra("idcliente", idcliente); 	
+						intent.putExtra("idempleado", idempleado);			*/
+						startActivity(intent);
+		    		}else{
+		    			Toast.makeText(PaymentTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+		    		}												
 				}
 		 });
 	     
@@ -314,4 +336,21 @@ public class PaymentTask extends Activity {
         SmsManager sms = SmsManager.getDefault();        
         sms.sendTextMessage("979331334", null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								
     }
+	public boolean networkAvailable() {    	
+     	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+     	if (connectMgr != null) {
+     		NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
+     		if (netInfo != null) {
+     			for (NetworkInfo net : netInfo) {
+     				if (net.getState() == NetworkInfo.State.CONNECTED) {
+     					return true;
+     				}
+     			}
+     		}
+     	} 
+     	else {
+     		Log.d("NETWORK", "No network available");
+     	}
+     	return false;
+     }
 }
