@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -78,26 +79,64 @@ public class SyncPedidos {
 			Log.d("Pedido", "No hay datos de arriba");
 			return 0;
 		}
-		List<Pedido> pedList2= this.getPedidosHoy();
+		//quitar el getPedidosHoy, buscar todos los pedidos, comparar el estado y modificar arriba,
+		//si todo esta ok no hacer nada si esta pagado modificar arriba (esta en payment task) do it!
+		//si esta elimnado... bueno ya esta esa parte...
+		List<Pedido> pedList2= this.getPedidosHoyTotal();
+		
 		if (!pedList2.isEmpty()){
-			Pedido ped=pedList2.get(0);
-			if ((pedList.size()==pedList2.size())&&(pedList.get(0).getIdPedido().equals(ped.getIdPedido()))){
-				Log.d("SqlLite","Hey they are equals");
-			}
-			else{
-				List<Pedido> pedList3= this.getPedidosEliminados();
-				//Actualizar arriba
+//			Pedido ped=pedList2.get(0);
+//			if ((pedList.size()==pedList2.size())&&(pedList.get(0).getIdPedido().equals(ped.getIdPedido()))){
+//				Log.d("SqlLite","Hey they are equals");
+//			}
+//			else{
+//				List<Pedido> pedList3= this.getPedidosEliminados();
+//				//Actualizar arriba
+//				List<NameValuePair> parameters;
+//				for (Pedido pedidin:pedList3){
+//					parameters= new ArrayList<NameValuePair>();
+//					parameters.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
+//					String route2="/ws/pedido/cancelar_pedido/";
+//					sync.conexion(parameters,route2);
+//					try {
+//						sync.getHilo().join();
+//					} catch (InterruptedException e) {
+//						  // TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
 				List<NameValuePair> parameters;
-				for (Pedido pedidin:pedList3){
-					parameters= new ArrayList<NameValuePair>();
-					parameters.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
-					String route2="/ws/pedido/cancelar_pedido/";
-					sync.conexion(parameters,route2);
-					try {
-						sync.getHilo().join();
-					} catch (InterruptedException e) {
-						  // TODO Auto-generated catch block
-						e.printStackTrace();
+				for (Pedido pedidin:pedList2){
+					if (pedidin.getIdEstadoPedido().equals("3")){
+						parameters= new ArrayList<NameValuePair>();
+						parameters.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
+						String route2="/ws/pedido/cancelar_pedido/";
+						sync.conexion(parameters,route2);
+						try {
+							sync.getHilo().join();
+						} catch (InterruptedException e) {
+							  // TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else if (pedidin.getIdEstadoPedido().equals("2")){
+						parameters = new ArrayList<NameValuePair>();	
+						//String numVoucher= editNumVoucher.getText().toString();
+						param.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
+						param.add(new BasicNameValuePair("montocobrado", pedidin.getMontoTotalPedido().toString()));			
+						if (pedidin.getNumVoucher()!=null){
+							param.add(new BasicNameValuePair("numVoucher", pedidin.getNumVoucher()));
+						}else{
+							param.add(new BasicNameValuePair("numVoucher", ""));
+						}
+						String route2="/ws/pedido/pagar_pedido/";
+						sync.conexion(param,route2);
+						try {
+							sync.getHilo().join();			
+						} catch (InterruptedException e) {
+							  // TODO Auto-generated catch block
+							e.printStackTrace();
+						}	    	  
 					}
 				}
 				//SI sale lo de arriba esto seria x las weee
@@ -107,7 +146,7 @@ public class SyncPedidos {
 //					//iNSERT EN LA bd
 //					pedidoDao.insert(pedido);
 //				}
-			}
+//			}
 		}else{
 			pedidoDao.deleteAll();
 			for(Pedido pedido: pedList){				
@@ -117,6 +156,7 @@ public class SyncPedidos {
 				//Log.d("fecha",""+pedido.getFechaPedido().toString());
 			}
 		}
+		Toast.makeText(context, "Syncronizado correctamente", Toast.LENGTH_LONG).show();
 		return pedList.size();
 	}
 	public int cargarClientes(String idusuario){		
@@ -166,30 +206,31 @@ public class SyncPedidos {
 		}else{
     		//Obtener los clientes del vendedor 
 			Log.d("SqlLite","No hay internet");
-			List<Cliente> listTemp;
-			listTemp = clienteDao.queryBuilder()
-    				.where(com.itrade.model.ClienteDao.Properties.IdCobrador.eq (idusuario))
-    				.list();    		
-    		//Pedido mipedido2 = new Pedido(null, null, 1, 1, 1, "2012-10-25", "2012-10-31", 123.12, 12.23, 135.12, 0.2, "Q", 0.5);
-    		//pedidoDao.insert(mipedido2);
-			//Obtener la fecha de hoy
-			// ESTE CODIGO X LAS WE
-			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(new Date());
-			calendar.add(Calendar.DAY_OF_MONTH,-7);
-			String previousDate = form.format(calendar.getTime());			
-			for (Cliente cliente : listTemp)  {
-				List<Pedido> pedTemp=pedidoDao.queryBuilder()
-						.where(Properties.FechaPedido.eq(previousDate))
-						.where(Properties.IdCliente.eq(cliente.getIdCliente()))
-						.where(Properties.CheckIn.eq(1))					
-						.list();
-				listaPedido.addAll(pedTemp);
-				if (pedTemp.size()>0){
-					listaCliente.add(cliente);					
-				}											
-			}			
+			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
+//			List<Cliente> listTemp;
+//			listTemp = clienteDao.queryBuilder()
+//    				.where(com.itrade.model.ClienteDao.Properties.IdCobrador.eq (idusuario))
+//    				.list();    		
+//    		//Pedido mipedido2 = new Pedido(null, null, 1, 1, 1, "2012-10-25", "2012-10-31", 123.12, 12.23, 135.12, 0.2, "Q", 0.5);
+//    		//pedidoDao.insert(mipedido2);
+//			//Obtener la fecha de hoy
+//			// ESTE CODIGO X LAS WE
+//			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTime(new Date());
+//			calendar.add(Calendar.DAY_OF_MONTH,-7);
+//			String previousDate = form.format(calendar.getTime());			
+//			for (Cliente cliente : listTemp)  {
+//				List<Pedido> pedTemp=pedidoDao.queryBuilder()
+//						.where(Properties.FechaPedido.eq(previousDate))
+//						.where(Properties.IdCliente.eq(cliente.getIdCliente()))
+//						.where(Properties.CheckIn.eq(1))					
+//						.list();
+//				listaPedido.addAll(pedTemp);
+//				if (pedTemp.size()>0){
+//					listaCliente.add(cliente);					
+//				}											
+//			}			
 		}      	    	    
     	return registros;
     }
@@ -202,6 +243,18 @@ public class SyncPedidos {
     public List<Pedido> getPedidosHoy(){
     	List<Pedido> pedTemp=pedidoDao.queryBuilder()
 				.where(Properties.IdEstadoPedido.eq("1"))
+				.list();
+		return pedTemp;    	
+    }
+    
+    public List<Pedido> getPedidosHoyTotal(){
+    	SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH,-7);
+		String previousDate = form.format(calendar.getTime());
+    	List<Pedido> pedTemp=pedidoDao.queryBuilder()
+				.where(Properties.FechaPedido.eq(previousDate))
 				.list();
 		return pedTemp;    	
     }
@@ -283,13 +336,14 @@ public class SyncPedidos {
 		return 1;
 	}
 
-	public Integer pagarPedido(String idpedido) {
+	public Integer pagarPedido(String idpedido,String numVoucher) {
 		// TODO Auto-generated method stub
 		List<Pedido> pedTemp=pedidoDao.queryBuilder()
 				.where(Properties.IdPedido.eq(idpedido))
 				.list();
 		Pedido ped=pedTemp.get(0);
 		ped.setIdEstadoPedido(2);
+		ped.setNumVoucher(numVoucher);
 		Date ahora = new Date();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");        
 		ped.setFechaCobranza(formateador.format(ahora).toString());
