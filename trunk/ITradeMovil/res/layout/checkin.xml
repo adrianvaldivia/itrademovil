@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/MyLinearLayoutCheckInCobranza"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dip"
+    android:background="#8080A0"
+    >
+ 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:id="@+id/txtcheckinCobranza"
+        android:text="Desea Hacer Check In?" />
+    
+    <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="20dip"
+		    android:layout_marginBottom="10dp"
+		    android:layout_weight="0.10" >
+
+		<Button
+	        android:id="@+id/ButtonPopup"	     
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.10"	
+	         style="@drawable/estilo_botones"        	     
+	        android:text="Si"
+	        android:onClick="onButtonInPopupCobranza"
+	        android:textColor="#F7F8E0" />
+
+	    <Button
+	        android:id="@+id/button1"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.10"
+	         style="@drawable/estilo_botones"
+	        android:layout_marginLeft="30dip"
+	        android:text="No"
+	        android:onClick="onButtonCancelarPopupCobranza"
+	        android:textColor="#F7F8E0" />
+		</LinearLayout>
+
+
+
+</LinearLayout>
