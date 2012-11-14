@@ -239,6 +239,17 @@ class Cliente_model extends CI_Model {
 		$idubigeo=$this->get_ubigeo_by_idusuario($idvendedor);		
 		return $this->get_cobrador_by_idubigeo($idubigeo);					
 	}
-	
+	public function updateLineaPedidoCliente($idcliente,$montolinea){		
+		$this->db->set('MontoActual', $montolinea);		
+		$this->db->where('IdCliente', $idcliente);
+		$this->db->update($this->table_linea);
+		return $this->db->update($this->table_linea);
+	}
+	public function get_linea_credito($idcliente){
+		$this->db->flush_cache();
+		$this->db->where($this->table_linea.".IdCliente", $idcliente);	
+		$query = $this->db->get($this->table_linea);
+		return$query->row(0);
+	}
 }
 ?>

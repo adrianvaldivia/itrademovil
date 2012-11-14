@@ -265,5 +265,13 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();		
 		return $query->result();
 	}
+	
+	public function get_objpedido_by_idpedido($idpedido){
+		$this->db->flush_cache();			
+		$this->db->where($this->table_pedido.".IdPedido", $idpedido);	
+		$query = $this->db->get($this->table_pedido);
+		//echo $this->db->last_query();
+		return $query->row(0);
+	}
 }
 ?>
