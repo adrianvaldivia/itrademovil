@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <application android:background="@android:color/transparent"
         android:icon="@drawable/mapa" android:label="@string/app_name">
         <activity android:label="@string/app_name" android:name=".pedidos.Login">
@@ -99,6 +100,18 @@
               		android:launchMode="singleTask"
             		android:theme="@android:style/Theme.NoTitleBar"
             		android:name=".pedidos.verEvento"
+           			android:configChanges="keyboardHidden|orientation" 
+           />
+           <activity android:label="@string/app_name"
+              		android:launchMode="singleTop"
+            		android:theme="@android:style/Theme.NoTitleBar"
+            		android:name=".pedidos.BuscarContactos"
+           			android:configChanges="keyboardHidden|orientation" 
+           />
+           <activity android:label="@string/app_name"
+              		android:launchMode="singleTop"
+            		android:theme="@android:style/Theme.NoTitleBar"
+            		android:name=".pedidos.DetalleContacto"
            			android:configChanges="keyboardHidden|orientation" 
            />
         
