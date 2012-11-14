@@ -116,6 +116,11 @@ public class ExampleDaoGenerator {
 		prospecto.addIntProperty("IdUsuario");
 		prospecto.addStringProperty("Activo");
 		prospecto.addDoubleProperty("MontoActual");
+		prospecto.addStringProperty("DNI");
+		prospecto.addStringProperty("FechNac");
+		prospecto.addStringProperty("Telefono");
+		prospecto.addStringProperty("Email");
+		
 	}
 
 	private static void addUsuario(Schema schema) {
