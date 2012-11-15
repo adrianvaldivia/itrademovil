@@ -26,7 +26,7 @@ public class HiloConexion extends Thread{
 	public Syncronizar sync;
 	private String resultadoConexion = "";
 	private boolean bandera=false;
-	ProgressDialog pd;
+//	ProgressDialog pd;
 	private List<NameValuePair> params;
 	public String route;
 	
@@ -35,7 +35,7 @@ public class HiloConexion extends Thread{
 		this.params=param;
 		this.route=route;
 		Log.d("TAG","LLEGA TERCERO AKI");
-	    pd = ProgressDialog.show(syn.getWindow(), "Conectando...", "Conectando con el servidor");
+//	    pd = ProgressDialog.show(syn.getWindow(), "Conectando...", "Conectando con el servidor");
 	}
 		
 	public void run(){
@@ -63,16 +63,16 @@ public class HiloConexion extends Thread{
 				this.sync.setResponse(responseBody);
 			}else{
 				Log.e("log_tag", "Error in webservice");
-			     pd.dismiss();
+//			     pd.dismiss();
 			     bandera=false;
 			}				
 		}catch(Exception e){
 		     Log.e("log_tag", "Error in http connection "+e.toString());
-		     pd.dismiss();
+//		     pd.dismiss();
 		     bandera=false;
 		}
 		bandera=true;
-		pd.dismiss();
+//		pd.dismiss();
 	}
 
 //	private Runnable terminarConexion = new Runnable() {
