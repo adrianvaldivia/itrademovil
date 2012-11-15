@@ -64,9 +64,9 @@
                         </td>
                         <td class="accion"><? if ($credito['Activo'] == 1) { ?>
                                 <div class="accion">
-                                <a class="icon" href="<?php echo base_url() ?>admin/credito_controller/accept/<?php echo $idlinea ?>"><img alt="" src="<?php echo base_url() ?>/images/icon-archive.png"></a>
+                                <a class="icon" href="<?php echo base_url() ?>admin/credito_controller/accept/<?php echo $idlinea ?>"><img alt="Aprobar" title="Aprobar" src="<?php echo base_url() ?>/images/icon-archive.png"></a>
                                
-                                <a class="icon" href="<?php echo base_url() ?>admin/credito_controller/reject/<?php echo  $idlinea ?>"><img alt="" src="<?php echo base_url() ?>/images/icon-cancel.png"></a></div>
+                                <a class="icon" href="<?php echo base_url() ?>admin/credito_controller/reject/<?php echo  $idlinea ?>"><img alt="Rechazar" title="Rechazar" src="<?php echo base_url() ?>/images/icon-cancel.png"></a></div>
                             <? } else { ?>
                                 <div class="accion"><? echo"-"; ?></div>
                             <? } ?>
