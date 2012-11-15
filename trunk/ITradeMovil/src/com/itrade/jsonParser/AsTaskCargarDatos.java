@@ -47,6 +47,7 @@ import com.itrade.model.Prospecto;
 import com.itrade.model.ProspectoDao;
 import com.itrade.model.Usuario;
 import com.itrade.model.UsuarioDao;
+import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.pedidos.BuscarClientesGreenDao;
 import com.itrade.pedidos.Login;
 
@@ -105,6 +106,25 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 	            this.dialog.setMessage("Conectando");
 	            this.dialog.show();
 		    	_calendar = Calendar.getInstance(Locale.getDefault());
+		    	
+			    //inicio green DAO 
+		        DevOpenHelper helper = new DaoMaster.DevOpenHelper(activity, "itrade-db", null);
+		        db = helper.getWritableDatabase();
+		        daoMaster = new DaoMaster(db);
+		        daoSession = daoMaster.newSession();
+		        usuarioDao = daoSession.getUsuarioDao();
+		        clienteDao = daoSession.getClienteDao();
+		        pedidoDao = daoSession.getPedidoDao();
+		        pedidoLineaDao = daoSession.getPedidoLineaDao();
+		        productoDao = daoSession.getProductoDao();
+		        categoriaDao = daoSession.getCategoriaDao();
+		        eventoDao = daoSession.getEventoDao();
+		        metaDao = daoSession.getMetaDao();
+		        prospectoDao = daoSession.getProspectoDao();
+		        contactoDao = daoSession.getContactoDao();
+		        
+		        pedidoLineaDao.deleteAll();
+		        //fin green dao
 	        }
 
 
@@ -124,91 +144,91 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 					List<Producto> listaProducto = daoProducto.getAllProductos(); //obtiene los productos
 					List<Categoria> listaCategoria=daoProducto.getAllCategorias();
 			       
-					productoDao.deleteAll();
-					categoriaDao.deleteAll();
-					
-			        
-					for(int i=0;i<listaProducto.size();i++){
-						Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());		
-						productoDao.insert(productoAux);				    
-					}
-					for(int i=0;i<listaCategoria.size();i++){
-						Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
-						categoriaDao.insert(categoria);
-					}
-
-					
-					///////////////////////////////////////////////////Sincronizacion de Clientes		
-			        daoCliente = new DAOCliente(activity);  
-			        List<Cliente> listaCliente = daoCliente.getAllClientes(idUsuario); //obtiene los clientes
-			        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-			        Double x;
-					Double y;
-					clienteDao.deleteAll();
-					for(int i=0;i<listaCliente.size();i++){
-						x=listaCliente.get(i).getLatitud();
-						y=listaCliente.get(i).getLongitud();
-						Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
-								listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
-								listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
-								listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
-								listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
-								listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
-						cliente2.setActivo("A");//util para el checkin del mapa
-				        clienteDao.insert(cliente2);
-					}
-					//////////////////////////////////////////////sincronizacion de pedidos
-					daoPedido = new DAOPedido(activity);
-					List<Pedido> listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
-					pedidoDao.deleteAll();        
-					for(int i=0;i<listaPedido.size();i++){
-						//numvoucher = A de antiguo
-						Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),"A",listaPedido.get(i).getMontoTotal());
-						pedidoDao.insert(pedido);
-				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-					}
-					////////////////////////////////////////////////////////Sincronizacion de pedido Linea
-//					pedidoLineaDao.deleteAll();
-					/////////////////////////////////////////////Sincronizacion eventos
-					eventoDao.deleteAll();
-					daoEvento = new DAOEvento(activity);
-//					String fechaEvento="2012-10-12";
-					String fechaEvento=getFechaActual();
-					List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
-					for(int i=0;i<listaEvento.size();i++){
-						//numvoucher = A de antiguo
-						Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
-						eventoDao.insert(evento);
-				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-					}		
-					//sincronizacion de metas
-					metaDao.deleteAll();
-					Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
-					metaDao.insert(meta);
-					///////////////////////////////////////////////////sincronizacion de prospectos
-					prospectoDao.deleteAll();   	
-					daoProspecto = new DAOProspecto(activity);
-					List<Prospecto> listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idUsuario,"");
-			        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-			        Double xx;
-					Double yy;
-
-			        
-					for(int i=0;i<listaProspecto.size();i++){
-						xx=listaProspecto.get(i).getLatitud();
-						yy=listaProspecto.get(i).getLongitud();
-						Prospecto prospecto2 = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getIdProspecto(),
-								listaProspecto.get(i).getNombre(),listaProspecto.get(i).getApePaterno(),
-								listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
-								listaProspecto.get(i).getRUC(),xx,yy,listaProspecto.get(i).getDireccion(),
-								listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
-								listaProspecto.get(i).getActivo(),listaProspecto.get(i).getMontoActual(),
-								listaProspecto.get(i).getDNI(),listaProspecto.get(i).getFechNac(),
-								listaProspecto.get(i).getTelefono(),listaProspecto.get(i).getEmail());
-						prospecto2.setActivo("A");//util para la sincronizacion de prospectos
-				        prospectoDao.insert(prospecto2);	        	        
-					}
-					//sincronizacion de contactos
+//					productoDao.deleteAll();
+//					categoriaDao.deleteAll();
+//					
+//			        
+//					for(int i=0;i<listaProducto.size();i++){
+//						Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());		
+//						productoDao.insert(productoAux);				    
+//					}
+//					for(int i=0;i<listaCategoria.size();i++){
+//						Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
+//						categoriaDao.insert(categoria);
+//					}
+//
+//					
+//					///////////////////////////////////////////////////Sincronizacion de Clientes		
+//			        daoCliente = new DAOCliente(activity);  
+//			        List<Cliente> listaCliente = daoCliente.getAllClientes(idUsuario); //obtiene los clientes
+//			        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//			        Double x;
+//					Double y;
+//					clienteDao.deleteAll();
+//					for(int i=0;i<listaCliente.size();i++){
+//						x=listaCliente.get(i).getLatitud();
+//						y=listaCliente.get(i).getLongitud();
+//						Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
+//								listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+//								listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
+//								listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
+//								listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
+//								listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
+//						cliente2.setActivo("A");//util para el checkin del mapa
+//				        clienteDao.insert(cliente2);
+//					}
+//					//////////////////////////////////////////////sincronizacion de pedidos
+//					daoPedido = new DAOPedido(activity);
+//					List<Pedido> listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
+//					pedidoDao.deleteAll();        
+//					for(int i=0;i<listaPedido.size();i++){
+//						//numvoucher = A de antiguo
+//						Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),"A",listaPedido.get(i).getMontoTotal());
+//						pedidoDao.insert(pedido);
+//				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//					}
+//					////////////////////////////////////////////////////////Sincronizacion de pedido Linea
+////					pedidoLineaDao.deleteAll();
+//					/////////////////////////////////////////////Sincronizacion eventos
+//					eventoDao.deleteAll();
+//					daoEvento = new DAOEvento(activity);
+////					String fechaEvento="2012-10-12";
+//					String fechaEvento=getFechaActual();
+//					List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
+//					for(int i=0;i<listaEvento.size();i++){
+//						//numvoucher = A de antiguo
+//						Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
+//						eventoDao.insert(evento);
+//				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//					}		
+//					//sincronizacion de metas
+//					metaDao.deleteAll();
+//					Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
+//					metaDao.insert(meta);
+//					///////////////////////////////////////////////////sincronizacion de prospectos
+//					prospectoDao.deleteAll();   	
+//					daoProspecto = new DAOProspecto(activity);
+//					List<Prospecto> listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idUsuario,"");
+//			        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//			        Double xx;
+//					Double yy;
+//
+//			        
+//					for(int i=0;i<listaProspecto.size();i++){
+//						xx=listaProspecto.get(i).getLatitud();
+//						yy=listaProspecto.get(i).getLongitud();
+//						Prospecto prospecto2 = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getIdProspecto(),
+//								listaProspecto.get(i).getNombre(),listaProspecto.get(i).getApePaterno(),
+//								listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
+//								listaProspecto.get(i).getRUC(),xx,yy,listaProspecto.get(i).getDireccion(),
+//								listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
+//								listaProspecto.get(i).getActivo(),listaProspecto.get(i).getMontoActual(),
+//								listaProspecto.get(i).getDNI(),listaProspecto.get(i).getFechNac(),
+//								listaProspecto.get(i).getTelefono(),listaProspecto.get(i).getEmail());
+//						prospecto2.setActivo("A");//util para la sincronizacion de prospectos
+//				        prospectoDao.insert(prospecto2);	        	        
+//					}
+//					//sincronizacion de contactos
 					contactoDao.deleteAll();
 					long temp=0;
 					temp++;
