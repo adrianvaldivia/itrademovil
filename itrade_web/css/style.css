@@ -1,0 +1,30 @@
+
+				
+/*-----------------------------------------------------------------------------------------------*/
+/*                                         TOOLTIP STYLES                                        */
+/*-----------------------------------------------------------------------------------------------*/
+
+.tip {
+	width: 130px;
+	padding-top: 20px;
+	overflow: hidden;
+	display: none;
+	position: absolute;
+	z-index: 500;
+	background: transparent url(../images/tipTop.png) no-repeat top;
+	background-size: 130px;
+	}
+	
+.tipMid {
+background: transparent url(../images/tipMid.png) repeat-y; 
+padding:0 0 10px 25px;
+}
+.tipBtm {
+background: transparent url(../images/tipBtm.png) no-repeat bottom; 
+height: 19px; 
+background-size: 130px;
+}
+
+.ui-datepicker-calendar td{
+height:26px !important;
+}
