@@ -8,10 +8,14 @@
 
         <title><?php echo $title; ?></title>   
 <link rel="icon" type="image/ico" href="<?php echo base_url() ?>images/logicon.png"/>
-        <!--styleshets CSS-->
-        <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
-        <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />	
-        <link href="<?php echo base_url() ?>css/user_create.css" rel="stylesheet" />	
+            <!--styleshets CSS
+            <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
+            <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />-->
+			<link href="<?php echo base_url() ?>css/style.css" rel="stylesheet" type="text/css" media="all" />
+            <link href="<?php echo base_url() ?>css/styles.css" rel="stylesheet" />
+            <link href="<?php echo base_url() ?>css/1140.css" rel="stylesheet" />	
+			<link href="<?php echo base_url() ?>css/user_create.css" rel="stylesheet" />	
+			<link href="<?php echo base_url() ?>css/uniform.default.css" rel="stylesheet" />	
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 
         <!--scripts js-->
@@ -33,77 +37,68 @@
                 $( "#birthdate" ).datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
             });
         </script>
-        <div id="header">
-            <!--            <div id="title">iTRADE</div>-->
-            <div id="logo">
-                <a href="<? echo base_url() ?>home"> <img src="<?php echo base_url() ?>images/logo.png"/></a>
-            </div>
-            <? if ($this->session->userdata('logged_in') && (isset($username) && isset($name))) { ?>
-                <div class="header_left"  >
-                    <span class="bienvenido">Bienvenido <span class="user"><? echo trim($username); ?></span></span>
-                    <span class="nombre"><? echo trim($name); ?>
-                    </span>
-                </div>
-                <div class="header_right" >
-                    <a href="<? echo base_url() ?>home/logout"><img src="<? echo base_url() ?>images/logout.png" /></a>
-                    <? echo anchor(base_url() . 'home/logout', 'Logout', array('title' => 'Salir de la sesion')); ?>
-                </div>
-            <? } else { ?>
-                <? //si entra un usuario logueado al home ?>
-            <? } ?>
-        </div>
-        <div id="content">
+        <div id="header-wrapper" class="container"> 
+            <div id="user-options" class="row"> 
+            	<div class="threecol">
+            		<a href="<? echo base_url() ?>home">
+            			<img src="<?php echo base_url() ?>images/logo.png"/>
+            		</a>
+            </div> 
+            	
+                                                        
+            <div id="user-account" class="row"> 
+						<div class="ninecol last"> 
+							<a href="<? echo base_url() ?>home/logout">Logout</a> 
+							<?
+               if ($this->session->userdata('logged_in')) {
+						if ((isset($username) && isset($name))) {
+					?><span>|</span> 
+							<span>Bienvenido, <strong><? echo trim($username); ?></strong></span> 
+							<? } ?> 
+   	         <? } ?> 
+						</div> 
+   	       </div>
+             <div class="ninecol last fixed"></div> 
+          </div>
+        </div>  
+		
+		<div class="container"> <!--1-->
+         	<div class="row">  <!--2-->
+				<div id="content" class="ninecol last">   <!--4-->
+               	  <div class="accion"></div>
+				<h2><?= $title ?></h2>
+				<div class="panel-wrapper"> <!--5-->
+               		<div class="panel"> <!--6-->
 
-
-            <h2><?= $title ?></h2>
-
-            <?php // if ($error_message): ?>
-<!--    <p class="space">
-    <div class="message error close">		
-        <h2>Error!</h2>		
-        <p><? //= $error_message                    ?></p>
-    </div>
-    </p>-->
-            <?php
-            // endif; 
-//            print_r($metas);
-            ?>
-
-            <div class="contenido_principal" style="width:70%; height:100%;  min-width:650px; max-width:650px;">
-
+						  
+				  
                 <? if (count($metas) == 0) { ?>
-                    <? echo "El usuario seleccionado no tiene metas."; ?>
-                    <div class="accion"><? echo anchor('admin/usuario_controller/create_meta/' . $idusuario, 'Nueva Meta', array('title' => 'Nueva Meta')); ?></div>
+                   
+               			<div class="title"><!--7--> <h4><span>El usuario seleccionado no tiene metas.   </span><? echo anchor('admin/usuario_controller/create_meta/' . $idusuario, 'Nueva Meta', array('title' => 'Nueva Meta')); ?></h4> 
+                        	<!--<div class="collapse">collapse</div>8--> 
+                        </div><!--7--> 
                 <? } else {
                     ?>
 
-                    <div class="accion"><? echo anchor('admin/usuario_controller/create_meta/' . $idusuario, 'Nueva Meta', array('title' => 'Nueva Meta')); ?></div>
-                    <br/>
+                			<div class="title"><!--7--> <h4><? echo anchor('admin/usuario_controller/create_meta/' . $idusuario, 'Nueva Meta', array('title' => 'Nueva Meta')); ?></h4> 
+                        	<!--<div class="collapse">collapse</div>8--> 
+                        </div><!--7--> 
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>
-                                    Periodo
-                                </th>
-                                <th>
-                                    Fecha Inicio
-                                </th>
-                                <th>
-                                    Fecha Fin
-                                </th>
-                                <th>
-                                    Monto
-                                </th>
-                                <th>
-                                    Acciones
-                                </th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <?
+				  
+                        <div class="content"> <!--9-->
+                           	<table id="sample-table" class=""> 
+                              	<thead>
+								<tr>
+									<th>Periodo</th>
+									<th>Fecha Inicio</th>
+									<th>Fecha Fin</th>
+									<th>Monto</th>
+									<th>Acciones</th>
+								</tr>
+								</thead>
+                              	<tbody> 
+								
+								 <?
                             
                             foreach ($metas as $meta) {
                                 ?>
@@ -120,25 +115,34 @@
                                     <td>
                                         <div class="estado"><? echo $meta['Monto']; ?></div>
                                     </td>
-                                    <td>
-                                        <div class="accion"><? echo anchor("admin/usuario_controller/modificar_meta/$idusuario/".$meta['IdPeriodo'], 'Editar', array('title' => 'Editar')); ?></div>
+                                    <td><a class="icon" href="<?php echo base_url() ?>admin/usuario_controller/modificar_meta/<?php echo $idusuario.'/'.$meta['IdPeriodo']; ?>"><img class="editar" alt="Editar Meta"  title="Editar Meta" src="<?php echo base_url() ?>/images/icon-edit.png"></a>
 
                                     </td>
                                 </tr>
                                 <?
                             }
                             ?>
-                        </tbody>
-                    </table>
+							
+				
+                						</tbody> 
+			                    </table>  
+                        </div> <!--9-->
+						
                 <? }
                 ?>
 
+                      </div><!--6-->  
+                      <div class="shadow"></div> <!--10-->
+					  
+					</div><!--5-->
+                				  <input type="button" value="Regresar" class="button-blue" onclick="window.location='<?= base_url() ?>admin/usuario_controller/'"/>
 
-            </div>
-
-                <input type="button" value="Regresar" class="button" onclick="window.location='<?= base_url() ?>admin/usuario_controller/'"/>
-
-        </div>
+               </div><!--4-->
+        	</div><!--2-->                                                      
+		</div><!--1-->
+			
+			
+       
 
     </body>
 </html>

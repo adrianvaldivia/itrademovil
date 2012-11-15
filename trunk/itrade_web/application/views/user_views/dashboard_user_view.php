@@ -11,6 +11,7 @@
             <!--styleshets CSS
             <link href="<?php echo base_url() ?>css/login.css" rel="stylesheet" />	
             <link href="<?php echo base_url() ?>css/login_box.css" rel="stylesheet" />-->
+			<link href="<?php echo base_url() ?>css/style.css" rel="stylesheet" type="text/css" media="all" />
             <link href="<?php echo base_url() ?>css/styles.css" rel="stylesheet" />
             <link href="<?php echo base_url() ?>css/1140.css" rel="stylesheet" />
 
@@ -18,12 +19,24 @@
             <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.2.3.pack.js"></script>
             <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.js"></script>
             <script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.7.2.min.js"></script>
+			<!--<script type="text/javascript" src="<?php echo base_url() ?>js/jquery-1.3.1.min.js"></script>-->
+			<script type="text/javascript" src="<?php echo base_url() ?>js/jquery.betterTooltip.js"></script>
 
             <script type="text/javascript">
                 //<![CDATA[
                 base_url = '<?php echo base_url(); ?>';
                 //]]>
             </script>
+			
+			<script type="text/javascript">
+				/* $(document).ready(function(){
+					$('.metas').betterTooltip({speed: 150, delay: 300});
+				});
+				
+				$(document).ready(function(){
+					$('.editar').betterTooltip({speed: 150, delay: 300});
+				}); */
+			</script>
     </head>
     <body>  
         <div id="header-wrapper" class="container"> 

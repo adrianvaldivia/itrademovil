@@ -32,8 +32,8 @@
                     							</td>
                     							<td class='accion'>
                         						<div class="accion">
-                        						<a class="icon" href="<?php echo base_url() ?>admin/usuario_controller/modificar/<?php echo $idusuario.'/'.$idpersona; ?>"><img alt="" src="<?php echo base_url() ?>/images/icon-edit.png"></a>
-                        						<? if ($usuario['Perfil'] == 'VENDEDOR'): ?><a class="icon" href="<?php echo base_url() ?>admin/usuario_controller/metas_user/<?php echo $idusuario ?>"><img alt="" src="<?php echo base_url() ?>/images/icon-graph.png"></a>
+                        						<a class="icon" href="<?php echo base_url() ?>admin/usuario_controller/modificar/<?php echo $idusuario.'/'.$idpersona; ?>"><img class="editar" alt="Editar Usuario"  title="Editar Usuario" src="<?php echo base_url() ?>/images/icon-edit.png"></a>
+                        						<? if ($usuario['Perfil'] == 'VENDEDOR'): ?><a class="icon" href="<?php echo base_url() ?>admin/usuario_controller/metas_user/<?php echo $idusuario ?>"><img class="metas" alt="Metas" title="Metas" src="<?php echo base_url() ?>/images/icon-graph.png"></a>
                         						<? endif; ?>
                         						
                         						
@@ -47,5 +47,6 @@
                       </div><!--6-->  
                       <div class="shadow"></div> <!--10-->
 </div><!--5-->
-                   
+                
+<?php $this->load->view("pages/tooltip"); ?> 				
      
