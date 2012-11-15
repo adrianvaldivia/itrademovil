@@ -12,9 +12,9 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.itrade.R;
 import com.itrade.controller.cobranza.Syncronizar;
+import com.itrade.db.DAOProspecto;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
-import com.itrade.model.ProductoDao;
 import com.itrade.model.Prospecto;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.ProspectoDao;
@@ -22,8 +22,11 @@ import com.itrade.model.ProspectoDao;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -333,65 +336,72 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
   String valor = cantidad.getText().toString().trim();
 //  cred = new Credito(Integer.parseInt(valor));
   client.setMontoActual(0.0+Integer.parseInt(valor));
+  client.setActivo("N");//N de nuevo que me sirve para la sincronizacion  de SQLite
   //inicio insert  Green DAo
 	prospectoDao.insert(client);//aca hago en insert al SQLite 
   //fin insert Green DAo
-   /***************Falta Ingresar los idsssss de las tablas **************/
   				
-  
-                 Syncronizar sync = new Syncronizar(RegistrarProspecto.this);
-                 List<NameValuePair> param = new ArrayList <NameValuePair>();
-                 param.add(new BasicNameValuePair("idvendedor", idu));
-                 
-                 param.add(new BasicNameValuePair("dni", client.getDNI()));
-                 param.add(new BasicNameValuePair("nombre", client.getNombre()));
-                 param.add(new BasicNameValuePair("apepaterno", client.getApePaterno()));
-                 param.add(new BasicNameValuePair("apematerno", client.getApeMaterno()));
-                 param.add(new BasicNameValuePair("telefono",  client.getTelefono()));
-                 param.add(new BasicNameValuePair("email",  client.getEmail()));
-                 param.add(new BasicNameValuePair("fechanac", strFecha)); // Revisar Nombre de FechaNac
-            
-                 param.add(new BasicNameValuePair("ruc", client.getRUC()));
-                 param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
-                 param.add(new BasicNameValuePair("direccion", client.getDireccion()));
-                 param.add(new BasicNameValuePair("latitud", client.getLatitud().toString() ));
-                 param.add(new BasicNameValuePair("longitud", client.getLongitud().toString()));
-                
-                 //String monto = cred.getCantidad()+"";
-                // int valor = Integer.parseInt(cantidad.getText().toString());
-                
-                 
-                 param.add(new BasicNameValuePair("montosolicitado", ""+client.getMontoActual() ));
-
-            Log.d("Jorge", ""+idu+", "+client.getDNI()+", "+client.getNombre()+","+client.getApePaterno()+", "+client.getApeMaterno()+", "+client.getTelefono()+", "+client.getEmail()+", "+strFecha+", "+client.getRUC()+", "+client.getRazon_Social()+", "+client.getDireccion()+","+client.getLatitud()+", "+client.getLongitud());     
-                 
-                 String route = "/ws/clientes/registrar_prospecto/";
-			     sync.conexion(param, route);
-	             
-			     try {
-					sync.getHilo().join();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}		
+//			DAOProspecto daoprospect = new DAOProspecto(RegistrarProspecto.this);
+//			long idu3;
+//			idu3 = Long.parseLong(idu);
+//			daoprospect.registrarProspecto(client, idu3);
+			if (haveNetworkConnection()){
+				sincronizarBaseSubida();
+			}
+//                 Syncronizar sync = new Syncronizar(RegistrarProspecto.this);
+//                 List<NameValuePair> param = new ArrayList <NameValuePair>();
+//                 param.add(new BasicNameValuePair("idvendedor", idu));
+//                 
+//                 param.add(new BasicNameValuePair("dni", client.getDNI()));
+//                 param.add(new BasicNameValuePair("nombre", client.getNombre()));
+//                 param.add(new BasicNameValuePair("apepaterno", client.getApePaterno()));
+//                 param.add(new BasicNameValuePair("apematerno", client.getApeMaterno()));
+//                 param.add(new BasicNameValuePair("telefono",  client.getTelefono()));
+//                 param.add(new BasicNameValuePair("email",  client.getEmail()));
+//                 param.add(new BasicNameValuePair("fechanac", strFecha)); // Revisar Nombre de FechaNac
+//            
+//                 param.add(new BasicNameValuePair("ruc", client.getRUC()));
+//                 param.add(new BasicNameValuePair("razon_social", client.getRazon_Social()));
+//                 param.add(new BasicNameValuePair("direccion", client.getDireccion()));
+//                 param.add(new BasicNameValuePair("latitud", client.getLatitud().toString() ));
+//                 param.add(new BasicNameValuePair("longitud", client.getLongitud().toString()));
+//                
+//                 //String monto = cred.getCantidad()+"";
+//                // int valor = Integer.parseInt(cantidad.getText().toString());
+//                
+//                 
+//                 param.add(new BasicNameValuePair("montosolicitado", ""+client.getMontoActual() ));
+//
+//            Log.d("Jorge", ""+idu+", "+client.getDNI()+", "+client.getNombre()+","+client.getApePaterno()+", "+client.getApeMaterno()+", "+client.getTelefono()+", "+client.getEmail()+", "+strFecha+", "+client.getRUC()+", "+client.getRazon_Social()+", "+client.getDireccion()+","+client.getLatitud()+", "+client.getLongitud());     
+//                 
+//                 String route = "/ws/clientes/registrar_prospecto/";
+//			     sync.conexion(param, route);
+//	             
+//			     try {
+//					sync.getHilo().join();
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}		
 	
 			     /********EL WEBSERVICE TIENE QUE DEVOLVER ALGO COMO UNA VALIDACION PARA SABER SI SE REGISTRO********/
 			    
-			     if (!sync.getResponse().equals("0"))
+//			     if (!sync.getResponse().equals("0"))
+			     if (true)
 			     {
 			    	 
 			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
-			    	 
-			    	 limpiarProspecto();
-			    	 
-			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
-			    	 a.putExtra("idusuario", idusuario);
-			    	 startActivity(a);
+			    	 RegistrarProspecto.this.finish();
+//			    	 limpiarProspecto();
+//			    	 
+//			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+//			    	 a.putExtra("idusuario", idusuario);ss
+//			    	 startActivity(a);
 			     
 			     } 
 			     
-			     else	
-				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
+//			     else	
+//				   Toast.makeText(RegistrarProspecto.this, "No se registro, intentelo de nuevo más tarde", Toast.LENGTH_SHORT).show();
 			
          
          }// fin de mi IF true ... termina el caso feliz
@@ -580,6 +590,22 @@ public class ListenerTouchViewFlipper extends Activity implements View.OnTouchLi
 		 
 		}
 	};
+	private boolean haveNetworkConnection() {
+	    boolean haveConnectedWifi = false;
+	    boolean haveConnectedMobile = false;
+
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+	    for (NetworkInfo ni : netInfo) {
+	        if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+	            if (ni.isConnected())
+	                haveConnectedWifi = true;
+	        if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+	            if (ni.isConnected())
+	                haveConnectedMobile = true;
+	    }
+	    return haveConnectedWifi || haveConnectedMobile;
+	}
 	
 public void limpiarProspecto(){
 		ruc.setText("");
@@ -593,6 +619,26 @@ public void limpiarProspecto(){
 		fechanac.setText("");
 		correo.setText("");
 		cantidad.setText("");}	
+
+private void sincronizarBaseSubida() {	
+	int tam=0;
+	DAOProspecto daoprospect = new DAOProspecto(RegistrarProspecto.this);
+    List<Prospecto> prospectosAux = prospectoDao.queryBuilder()
+    		.where(com.itrade.model.ProspectoDao.Properties.Activo.eq("N"))
+    		.orderAsc(com.itrade.model.ProspectoDao.Properties.Id).list();
+    tam=prospectosAux.size();
+    for(int i=0;i<tam;i++){
+    	Prospecto prospectoTemp=prospectosAux.get(i);
+    	prospectoTemp.setActivo("A");;
+    	prospectoDao.deleteByKey(prospectoTemp.getId());
+    	prospectoDao.insert(prospectoTemp);
+		long idu3;
+		idu3 = Long.parseLong(idu);
+		daoprospect.registrarProspecto(prospectoTemp, idu3);
+    }
+}
+
+
 
 	@Override
 	protected void onActivityResult(int requestCode,int resultCode, Intent pData)           
