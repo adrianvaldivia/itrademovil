@@ -56,7 +56,7 @@ public class AsTaskLogin extends AsyncTask<String, Void, String>
 	           this.dialog.dismiss();
 	     }
 //	     if (usuario != null){
-	     if (true){	 
+	     if (usuario != null){	 
 	    		usuario.setPassword(pass);
 	    		taskCargar= new AsTaskCargarDatos(activity,usuario);
 				taskCargar.execute();
