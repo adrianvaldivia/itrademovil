@@ -38,6 +38,8 @@ import android.widget.TextView.OnEditorActionListener;
 import com.itrade.db.DAOCliente;
 import com.itrade.db.DAOPedido;
 
+
+import com.itrade.jsonParser.AsTaskSubirDatos;
 import com.itrade.model.Cliente;
 
 import com.itrade.model.ClienteDao.Properties;
@@ -85,6 +87,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	Cliente cliente= new Cliente();
 	List<Cliente> listaCliente;
 	List<Cliente> listaClienteOriginal;
+	AsTaskSubirDatos taskSubir;
 	
 	public long idUsuario;
 	String nombre, apellidos;
@@ -102,34 +105,6 @@ public class BuscarClientesGreenDao extends ListActivity {
 //        boolean boolBorrarDatos = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_SYNC_CONN, false);
 //        //fin preferencias
 
-        //inicio green Dao
-        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
-        db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-        clienteDao = daoSession.getClienteDao();
-        elementoListaDao = daoSession.getElementoListaDao();
-        pedidoDao = daoSession.getPedidoDao();
-        pedidoLineaDao=daoSession.getPedidoLineaDao();
-        usuarioDao=daoSession.getUsuarioDao();
-        //posible error al borrar
-        elementoListaDao.deleteAll();
-        
-        // Fin green Day  
-        
-        //Inicio green Dao Elementos Lista
-        String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
-        String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
-        cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
-        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-        int[] toElementoLista = { R.id.text1, R.id.text2 };
-        adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
-        		toElementoLista);    
-        //fin green Day de Elementos Lista
-        
-        setListAdapter(adapterElementoLista);
-        guardaListaOriginal();
-        recuperarOriginal();
         
         Bundle bundle=getIntent().getExtras();
         idUsuario = bundle.getLong("idusuario");
@@ -269,7 +244,10 @@ public class BuscarClientesGreenDao extends ListActivity {
 	        case R.id.opcion1:{
 //	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
 	        	if (haveNetworkConnection()){
-	        		cargarBaseLocal();
+		    		taskSubir= new AsTaskSubirDatos(BuscarClientesGreenDao.this,
+		    										idUsuario,cursorElementoLista);
+					taskSubir.execute();
+//	        		cargarBaseLocal();
 	        	}
 	        	else
 	        		Toast.makeText(this, "No hay conexion a Internet!", Toast.LENGTH_SHORT).show();	        		                  
@@ -291,37 +269,37 @@ public class BuscarClientesGreenDao extends ListActivity {
 	}
 
 
-	private void cargarBaseLocal() {
-		sincronizarBaseSubida();
-        daoCliente = new DAOCliente(this);  
-        listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        Double x;
-		Double y;
-		clienteDao.deleteAll();
-		elementoListaDao.deleteAll();
-        
-		for(int i=0;i<listaCliente.size();i++){
-			x=listaCliente.get(i).getLatitud();
-			y=listaCliente.get(i).getLongitud();
-			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
-					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
-					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
-					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
-					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
-					listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
-			cliente2.setActivo("A");//util para el checkin del mapa
-	        clienteDao.insert(cliente2);
-	        long temp=0;
-//	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
-	        temp=temp+i+1;//aca tambien habia error
-			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
-			elementoListaDao.insert(elemento);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-        cursorElementoLista.requery();		
-        guardaListaOriginal();        
-	}
+//	private void cargarBaseLocal() {
+//		sincronizarBaseSubida();
+//        daoCliente = new DAOCliente(this);  
+//        listaCliente = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//        Double x;
+//		Double y;
+//		clienteDao.deleteAll();
+//		elementoListaDao.deleteAll();
+//        
+//		for(int i=0;i<listaCliente.size();i++){
+//			x=listaCliente.get(i).getLatitud();
+//			y=listaCliente.get(i).getLongitud();
+//			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
+//					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+//					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
+//					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
+//					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
+//					listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
+//			cliente2.setActivo("A");//util para el checkin del mapa
+//	        clienteDao.insert(cliente2);
+//	        long temp=0;
+////	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
+//	        temp=temp+i+1;//aca tambien habia error
+//			ElementoLista elemento = new ElementoLista(null,listaCliente.get(i).getRazon_Social(),"RUC: "+listaCliente.get(i).getRUC(),null,temp);
+//			elementoListaDao.insert(elemento);
+//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//		}
+//        cursorElementoLista.requery();		
+//        guardaListaOriginal();        
+//	}
 
 	private void buscarCliente() {
         String texto = editText.getText().toString();
@@ -346,12 +324,13 @@ public class BuscarClientesGreenDao extends ListActivity {
 	}
 
 
-    private void guardaListaOriginal() {
-		// TODO Auto-generated method stub
-    	this.listaClienteOriginal=clienteDao.loadAll();
-		
-	}
+//    private void guardaListaOriginal() {
+//		// TODO Auto-generated method stub
+//    	this.listaClienteOriginal=clienteDao.loadAll();
+//		
+//	}
 	private void recuperarOriginal() {
+		this.listaClienteOriginal=clienteDao.loadAll();
 		elementoListaDao.deleteAll();
         
 		for(int i=0;i<listaClienteOriginal.size();i++){
@@ -401,6 +380,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	protected void onRestart() {
 		super.onRestart();
 //		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
+//		guardaListaOriginal();
 		recuperarOriginal();	
         imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
@@ -463,6 +443,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	
 	@Override
 	protected void onDestroy() {
+//		guardaListaOriginal();
 		recuperarOriginal();		
 		db.close();
 		cursorElementoLista.close();
@@ -475,7 +456,40 @@ public class BuscarClientesGreenDao extends ListActivity {
 	}
 	
 	@Override
-	public void finish(){
+	public void onResume(){
+        //inicio green Dao
+        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        clienteDao = daoSession.getClienteDao();
+        elementoListaDao = daoSession.getElementoListaDao();
+        pedidoDao = daoSession.getPedidoDao();
+        pedidoLineaDao=daoSession.getPedidoLineaDao();
+        usuarioDao=daoSession.getUsuarioDao();
+        //posible error al borrar
+        elementoListaDao.deleteAll();
+        
+        // Fin green Day  
+        
+        //Inicio green Dao Elementos Lista
+        String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
+        String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
+        cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
+        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
+        int[] toElementoLista = { R.id.text1, R.id.text2 };
+        adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
+        		toElementoLista);   
+        //fin green Day de Elementos Lista
+        
+        setListAdapter(adapterElementoLista);
+//        guardaListaOriginal();
+        recuperarOriginal();
+
+		super.onResume();		
+	}
+	@Override
+	public void finish(){     
 		super.finish();		
 	}
 }
