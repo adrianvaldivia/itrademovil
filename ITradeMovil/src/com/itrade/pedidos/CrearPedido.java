@@ -3,6 +3,8 @@ package com.itrade.pedidos;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.itrade.model.Cliente;
+import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
@@ -49,6 +51,7 @@ public class CrearPedido extends ListActivity{
 	public String apellidos="";
 	public int idcliente;
 	public long idusuario;
+	public Double montoCredito;
 	public String pruebaPaso;
 	private static final int REQUEST_CODE=10;
 	List<PedidoLinea> listaPedidoLinea=new ArrayList<PedidoLinea>();
@@ -67,6 +70,7 @@ public class CrearPedido extends ListActivity{
     private PedidoDao pedidoDao;
     private PedidoLineaDao pedidoLineaDao;
     private ElementoListaDao elementoListaDao;
+    private ClienteDao clienteDao;
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
 	
@@ -85,6 +89,7 @@ public class CrearPedido extends ListActivity{
         elementoListaDao = daoSession.getElementoListaDao();
         pedidoDao = daoSession.getPedidoDao();
         pedidoLineaDao = daoSession.getPedidoLineaDao();
+        clienteDao = daoSession.getClienteDao();
         elementoListaDao.deleteAll();
         //Fin configuracion green dao
         //Inicio green Dao Elementos Lista
@@ -105,6 +110,7 @@ public class CrearPedido extends ListActivity{
 		apellidos = bundle.getString("apellidos");
 		idcliente = bundle.getInt("idcliente");
 		idusuario = bundle.getLong("idusuario");
+		montoCredito= bundle.getDouble("montocredito");
 //		guardarPedido();
         setTitle("iTrade - Crear Pedido");
 
@@ -134,14 +140,33 @@ public class CrearPedido extends ListActivity{
 	 	});
 	    button_registrarpedido.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Toast.makeText(CrearPedido.this, "Pedido Registrado Exitosamente", Toast.LENGTH_LONG).show();
-				guardarPedido();
-				guardarDetallePedido();
-				CrearPedido.this.finish();
+				
+				if (tieneCredito()){
+					guardarPedido();
+					guardarDetallePedido();
+					actualizaCredito();
+					Toast.makeText(CrearPedido.this, "Pedido Registrado Exitosamente", Toast.LENGTH_LONG).show();
+					CrearPedido.this.finish();
+				}
+				else
+					Toast.makeText(CrearPedido.this, "Se Excede el Credito disponible", Toast.LENGTH_LONG).show();
+					
+				
 			}
+
+
 	 	});
 
     }
+	private boolean tieneCredito() {
+		// TODO Auto-generated method stub
+		boolean resul=false;
+		if (montoTotal*1.18<=this.montoCredito)
+			resul=true;
+		else
+			resul=false;
+		return resul;
+	}
 
 //    @Override
 //    protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -239,6 +264,36 @@ public class CrearPedido extends ListActivity{
         	listaPedidoLinea.get(i).setIdPedido(idpedido);        	
         }
 	}
+	public void actualizaCredito(){
+		Cliente clienteTemp=obtenerCliente();
+		if (clienteTemp!=null){
+			
+		}
+		else
+			Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+			
+		
+	}
+	 private Cliente obtenerCliente() {
+			// TODO Auto-generated method stub
+		 	Cliente clienteResul=new Cliente();
+			String str="";
+			//Producto productoAux=productoDao.loadByRowId(idProducto);
+			str=str+idcliente;
+	        List<Cliente> clientesAux = clienteDao.queryBuilder()
+	        		.where(com.itrade.model.ClienteDao.Properties.IdCliente.eq(str))
+	        		.orderAsc(com.itrade.model.ClienteDao.Properties.Id).list();
+	        
+	        if (clientesAux!=null){
+	        	if(clientesAux.size()>0){
+	        		clienteResul=clientesAux.get(0);	    
+	        	}
+	        	else
+	            	clienteResul=null;
+	        }
+	    	
+			return clienteResul;
+		}
 
 	@Override
 	public void onRestart(){
