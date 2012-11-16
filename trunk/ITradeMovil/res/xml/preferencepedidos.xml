@@ -7,6 +7,18 @@
             android:summary="Limpia los datos al cerrar la Sesion"
             android:title="Eliminar Datos"
             android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_key_recordar_usuario"
+            android:summary="Recuerda el Nombre del Usuario al cerrar la sesion"
+            android:title="Recordar Nombre de Usuario"
+            android:defaultValue="false"/>
+        <EditTextPreference  android:dialogTitle="Nombre de Usuario"
+                             android:dialogMessage="Usuario:"
+                             android:dependency="pref_key_recordar_usuario"
+                             android:key="pref_dialog"
+                             android:title="Nombre de Usuario"
+                             android:summary="Nombre de Usuario de inicio de sesion"
+                             android:defaultValue=""/>
     </PreferenceCategory>
 	<PreferenceCategory 
         android:title="Preferencias de Unidades"
@@ -16,7 +28,8 @@
   			android:summary="Seleccione un tipo de moneda"
   			android:key="listPref"
   			android:entries="@array/listDisplayMoneda"
-  			android:entryValues="@array/listReturnValue" />
+  			android:entryValues="@array/listReturnValue" 
+  			android:defaultValue="S/."/>
      	
     </PreferenceCategory>    
 
