@@ -258,7 +258,7 @@ class Payment_model extends CI_Model {
 		$this->db->where($this->table_cliente.".IdCliente", $idcliente);	
 		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);//Pendiente de pago
 		//$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";		
-		$dates="( ".$this->table_pedido.".FechaPedido BETWEEN CURDATE() AND CURDATE()+7 )";				 
+		$dates="( ".$this->table_pedido.".FechaPedido BETWEEN CURDATE()-6 AND CURDATE() )";				 
 		$this->db->where($dates);
 		$this->db->order_by("FechaPedido", "ASC"); 
 		$query = $this->db->get();
