@@ -43,28 +43,35 @@ public class PreferencePedidos extends PreferenceActivity {
         daoSession = daoMaster.newSession();
         usuarioDao = daoSession.getUsuarioDao();
         ultimoUsuario=usuarioDao.loadByRowId(1);//Obtengo el ultimo Usuario
+        
         Preference pref_chk_recordar= findPreference("pref_key_recordar_usuario");
-        if (pref_chk_recordar!=null)
-        	chkRecordarNombre= (CheckBoxPreference) pref_chk_recordar;
-        if(chkRecordarNombre!=null){
-        	boolRecordarNombre=chkRecordarNombre.isChecked();
-        }
+        chkRecordarNombre= (CheckBoxPreference) pref_chk_recordar;
+        boolRecordarNombre=chkRecordarNombre.isChecked();
+
         
         
         
-        Preference pref_dialog= findPreference("pref_dialog");
-        if (pref_dialog!=null)
-        	txtNombreUsuario= (EditTextPreference) pref_dialog;
-        if (txtNombreUsuario!=null&&ultimoUsuario!=null){
-        		if (!boolRecordarNombre){
-        			txtNombreUsuario.setText("");
-        		}
-            	if(txtNombreUsuario.getText().length()==0){
-            		txtNombreUsuario.setText(ultimoUsuario.getUsername());
-//            		Toast.makeText(getBaseContext(), "U:"+ultimoUsuario.getUsername(), Toast.LENGTH_SHORT).show();
-            	}            	
-            	        	            
-        }
+        Preference pref_dialog= findPreference("pref_dialog");     
+        txtNombreUsuario= (EditTextPreference) pref_dialog;
+        if (!boolRecordarNombre){
+			txtNombreUsuario.setText("");
+		}
+        if (ultimoUsuario!=null){
+        	txtNombreUsuario.setText(ultimoUsuario.getUsername());
+        }        
+		
+
+        
+//        if (txtNombreUsuario!=null&&ultimoUsuario!=null){
+//        		if (!boolRecordarNombre){
+//        			txtNombreUsuario.setText("");
+//        		}
+//            	if(txtNombreUsuario.getText().length()==0){
+//            		
+////            		Toast.makeText(getBaseContext(), "U:"+ultimoUsuario.getUsername(), Toast.LENGTH_SHORT).show();
+//            	}            	
+//            	        	            
+//        }
         
         
 
