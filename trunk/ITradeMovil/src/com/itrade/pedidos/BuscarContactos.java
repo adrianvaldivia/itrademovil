@@ -266,6 +266,11 @@ public class BuscarContactos extends ListActivity{
 		cursorElementoLista.close();
 	    super.onDestroy();
 	}
+	@Override
+	public void onRestart(){
+		recuperarOriginal();
+		super.onRestart();
+	}
 
 
 }
