@@ -54,7 +54,6 @@ import com.itrade.model.PedidoLineaDao;
 import com.itrade.model.Persona;
 import com.itrade.model.PersonaDao;
 import com.itrade.model.Producto;
-import com.itrade.model.ProductoDao;
 import com.itrade.model.Prospecto;
 import com.itrade.model.ProspectoDao;
 import com.itrade.R;
@@ -83,22 +82,13 @@ public class Login extends Activity {
 	DAOEvento daoEvento =null;
 	DAOProducto daoProducto =null;
 	DAOProspecto daoProspecto =null;
-    private DAOUsuario daoUsu= null;
     //green Dao
     private SQLiteDatabase db;
 
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private UsuarioDao usuarioDao;
-    private ClienteDao clienteDao;
-    private PedidoDao pedidoDao;
     private PedidoLineaDao pedidoLineaDao;
-    private ProductoDao productoDao;
-    private CategoriaDao categoriaDao;
-    private EventoDao eventoDao;
-    private MetaDao metaDao;
-    private ProspectoDao prospectoDao;
-    private ContactoDao contactoDao;
     //fin green dao
     List<Usuario> listaUsuario;
     List<Persona> listaPersona;
@@ -140,22 +130,22 @@ public class Login extends Activity {
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         usuarioDao = daoSession.getUsuarioDao();
-        clienteDao = daoSession.getClienteDao();
-        pedidoDao = daoSession.getPedidoDao();
-        pedidoLineaDao = daoSession.getPedidoLineaDao();
-        productoDao = daoSession.getProductoDao();
-        categoriaDao = daoSession.getCategoriaDao();
-        eventoDao = daoSession.getEventoDao();
-        metaDao = daoSession.getMetaDao();
-        prospectoDao = daoSession.getProspectoDao();
-        contactoDao = daoSession.getContactoDao();
+//        clienteDao = daoSession.getClienteDao();
+//        pedidoDao = daoSession.getPedidoDao();
+//        pedidoLineaDao = daoSession.getPedidoLineaDao();
+//        productoDao = daoSession.getProductoDao();
+//        categoriaDao = daoSession.getCategoriaDao();
+//        eventoDao = daoSession.getEventoDao();
+//        metaDao = daoSession.getMetaDao();
+//        prospectoDao = daoSession.getProspectoDao();
+//        contactoDao = daoSession.getContactoDao();
         
-        pedidoLineaDao.deleteAll();
+//        pedidoLineaDao.deleteAll();
         //fin green dao
 
 	    
 	    
-	    daoUsu = new DAOUsuario(Login.this);
+//	    daoUsu = new DAOUsuario(Login.this);
     
 	    
 	    textView_Usuario  = (EditText) findViewById(R.id.loginUser);
@@ -198,6 +188,8 @@ public class Login extends Activity {
 																
 				
 				if (usuarioLocal!=null) {//cuando se logeo localmente de manera correcta
+					usuarioDao.deleteAll();
+					usuarioDao.insert(usuarioLocal);
 	    			lanzarActivitys(usuarioLocal);													    				   
 				}
 				else{//intentara logearse en la nube
@@ -479,6 +471,12 @@ public class Login extends Activity {
 	}
 	@Override
 	protected void onResume() {
+	    //inicio green DAO 
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        usuarioDao = daoSession.getUsuarioDao();
+        pedidoLineaDao = daoSession.getPedidoLineaDao();
+        pedidoLineaDao.deleteAll();
 		 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		    final boolean boolRecordarUsu = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_CHECK_USUARIO, true);	    
 		    if (!boolRecordarUsu){
