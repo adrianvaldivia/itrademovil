@@ -24,11 +24,13 @@ import com.itrade.db.DAOPedido;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -73,12 +75,18 @@ public class CrearPedido extends ListActivity{
     private ClienteDao clienteDao;
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
+    String unidadMoneda="";
 	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
 //    	Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
+        //preferences
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        final String moneda = sharedPref.getString(PreferencePedidos.KEY_PREF_MONEDA,"S/.");
+        unidadMoneda=""+moneda;
+        //preferences
         
         //Inicio configuracion green dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -179,7 +187,7 @@ public class CrearPedido extends ListActivity{
 	public List<String> Convierte(List<String> lis){
 		List<String> lista=new ArrayList<String>();
 		this.txt_nombre.setText(this.nombre);
-		this.txt_ruc.setText("Monto S/.");
+		this.txt_ruc.setText("Monto "+unidadMoneda);
 //		lista.add("Nombre: "+this.nombre);
 //		lista.add("RUC: "+this.apellidos);
 //		lista.add("Lista de Productos:");
@@ -242,7 +250,7 @@ public class CrearPedido extends ListActivity{
         for(int i=0;i<listaPedidoLinea.size();i++){
         	montoTotal=montoTotal+listaPedidoLinea.get(i).getMontoLinea();
         }
-        this.txt_ruc.setText("S/. "+montoTotal);
+        this.txt_ruc.setText(unidadMoneda+" "+montoTotal);
 		// TODO Auto-generated method stub
 		
 	}

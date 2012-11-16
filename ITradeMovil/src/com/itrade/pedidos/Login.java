@@ -13,10 +13,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -112,13 +114,26 @@ public class Login extends Activity {
     public Boolean boolBaseLocalPersonasVacia=false;
 //    public ProgressDialog pd;
     AsTaskLogin  taskLogin;
-    
+    String nombreUsuRecordado="";
 
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 	    setContentView(R.layout.c_login);
+	    //inicio preferencias
+	    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	    final boolean boolRecordarUsuario = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_CHECK_USUARIO, false);	    
+	    if (boolRecordarUsuario){
+	    	final String nombUsuPreferences = sharedPref.getString(PreferencePedidos.KEY_PREF_USUARIO,"");
+	    	nombreUsuRecordado=""+nombUsuPreferences;
+	    }
+	    else
+	    	nombreUsuRecordado="";
+	    //fin preferencias
+        
+        
+	    
 	    //inicio green DAO 
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
         db = helper.getWritableDatabase();
@@ -144,6 +159,7 @@ public class Login extends Activity {
     
 	    
 	    textView_Usuario  = (EditText) findViewById(R.id.loginUser);
+	    textView_Usuario.setText(this.nombreUsuRecordado);
 	    textView_Password  = (EditText) findViewById(R.id.loginPassword);
 	    button_Ingresar = (Button) findViewById(R.id.btnLogin);
 	        
