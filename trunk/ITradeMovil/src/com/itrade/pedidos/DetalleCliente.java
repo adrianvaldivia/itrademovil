@@ -44,6 +44,7 @@ public class DetalleCliente extends ListActivity{
 	public String apellidos="";
 	public String direccion="";
 	public Double montoCredito=0.0;
+	String unidadMoneda="";
 	public int idcliente;
 	public long idusuario;
 	int boolVer;
@@ -65,6 +66,8 @@ public class DetalleCliente extends ListActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detalleclientefusion);
+        unidadMoneda="S./";
+        
         
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -126,6 +129,7 @@ public class DetalleCliente extends ListActivity{
 			     intent.putExtra("apellidos", apellidos);
 			     intent.putExtra("idcliente", idcliente);
 			     intent.putExtra("idusuario", idusuario);
+			     intent.putExtra("montocredito", montoCredito);			    
 			     startActivity(intent);				
 	
 			}
@@ -180,7 +184,7 @@ public class DetalleCliente extends ListActivity{
 		ElementoLista elemento = new ElementoLista(null,"Direccion:",""+direccion,null,i);
 		elementoListaDao.insert(elemento);
 		i++;
-		ElementoLista elemento2 = new ElementoLista(null,"Credito Disponible:",""+montoCredito,null,i);
+		ElementoLista elemento2 = new ElementoLista(null,"Credito Disponible:",""+unidadMoneda+montoCredito,null,i);
 		elementoListaDao.insert(elemento2);
 		cursorElementoLista.requery();
 //		lista.add("ID: "+this.idcliente);

@@ -104,6 +104,9 @@ public class BuscarClientesGreenDao extends ListActivity {
 //        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 //        boolean boolBorrarDatos = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_SYNC_CONN, false);
 //        //fin preferencias
+        
+        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
+        db = helper.getWritableDatabase();
 
         
         Bundle bundle=getIntent().getExtras();
@@ -458,8 +461,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	@Override
 	public void onResume(){
         //inicio green Dao
-        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
-        db = helper.getWritableDatabase();
+
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         clienteDao = daoSession.getClienteDao();
