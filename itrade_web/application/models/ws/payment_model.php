@@ -273,5 +273,18 @@ class Payment_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->row(0);
 	}
+	
+	public function get_clientes_checkin($idcobrador) {	
+		$query = $this->db->query("					
+			SELECT C.IdCliente, Pe.Nombre, Pe.ApePaterno, Pe.ApeMaterno, C.Latitud, C.Longitud, P.CheckIn
+			FROM Persona Pe, Pedido P, Cliente C
+			WHERE C.IdCliente = P.IdCliente
+			AND C.IdCobrador ='".$idcobrador."'
+			AND Pe.IdPersona = C.IdPersona
+			AND DATEDIFF( CURDATE( ) , P.FechaPedido ) =7
+			GROUP BY 1 		
+		");	
+		return $query->result();		
+	}
 }
 ?>
