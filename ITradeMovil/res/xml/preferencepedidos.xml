@@ -4,8 +4,8 @@
         android:key="pref_key_storage_settings">
         <CheckBoxPreference
             android:key="pref_key_recordar_usuario"
-            android:summary="Recuerda el Nombre del Usuario al cerrar la sesion"
-            android:title="Recordar Nombre de Usuario"
+            android:summary="Recuerda Nombre del Usuario"
+            android:title="Recordar Usuario"
             android:defaultValue="false"/>
         <EditTextPreference  android:dialogTitle="Nombre de Usuario"
                              android:dialogMessage="Usuario:"
