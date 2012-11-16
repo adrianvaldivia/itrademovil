@@ -266,7 +266,12 @@ public class CrearPedido extends ListActivity{
 	}
 	public void actualizaCredito(){
 		Cliente clienteTemp=obtenerCliente();
+		Double nuevoMonto=0.0;
 		if (clienteTemp!=null){
+			nuevoMonto=clienteTemp.getMontoActual()-this.montoTotal;
+			clienteTemp.setMontoActual(nuevoMonto);
+			clienteDao.deleteByKey(clienteTemp.getId());
+			clienteDao.insert(clienteTemp);
 			
 		}
 		else
