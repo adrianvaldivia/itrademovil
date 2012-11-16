@@ -166,7 +166,7 @@ public class Login extends Activity {
 	    if(boolRecordarUsuario){
 	    	textView_Usuario.setText(this.nombreUsuRecordado);
 	    }	    
-        if(boolRecordarUsuario&&nombreUsuRecordado.length()==0){//solo se ejecuta la primera vez despues de la instalacion
+        if(boolRecordarUsuario&&nombreUsuRecordado.length()==0){//solo se ejecuta la primera vez
             if (usuarioDao.count()==0){//cuando no hay usuario
         	    
             }
