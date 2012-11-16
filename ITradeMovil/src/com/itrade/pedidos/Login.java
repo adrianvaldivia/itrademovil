@@ -123,7 +123,7 @@ public class Login extends Activity {
 	    setContentView(R.layout.c_login);
 	    //inicio preferencias
 	    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-	    final boolean boolRecordarUsuario = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_CHECK_USUARIO, false);	    
+	    final boolean boolRecordarUsuario = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_CHECK_USUARIO, true);	    
 	    if (boolRecordarUsuario){
 	    	final String nombUsuPreferences = sharedPref.getString(PreferencePedidos.KEY_PREF_USUARIO,"");
 	    	nombreUsuRecordado=""+nombUsuPreferences;
@@ -159,9 +159,26 @@ public class Login extends Activity {
     
 	    
 	    textView_Usuario  = (EditText) findViewById(R.id.loginUser);
-	    textView_Usuario.setText(this.nombreUsuRecordado);
 	    textView_Password  = (EditText) findViewById(R.id.loginPassword);
 	    button_Ingresar = (Button) findViewById(R.id.btnLogin);
+	    
+	    
+	    if(boolRecordarUsuario){
+	    	textView_Usuario.setText(this.nombreUsuRecordado);
+	    }	    
+        if(boolRecordarUsuario&&nombreUsuRecordado.length()==0){//solo se ejecuta la primera vez despues de la instalacion
+            if (usuarioDao.count()==0){//cuando no hay usuario
+        	    
+            }
+            else{//cuando hay un usuario anterior
+            	ultimoUsuario=usuarioDao.loadByRowId(1);//
+            	textView_Usuario.setText(ultimoUsuario.getUsername());
+
+            }      	
+        }
+	    
+	    
+	    
 	        
 	    //M?todo click etn Boton Ingresar
 
@@ -169,8 +186,8 @@ public class Login extends Activity {
 			public void onClick(View v) {				
 				Usuario usuarioLocal=null;
 				boolBaseLocalUsuariosVacia=false;
-				String nombreUsuario = textView_Usuario.getText().toString();
-				String password = textView_Password.getText().toString();
+					String nombreUsuario = textView_Usuario.getText().toString();
+					String password = textView_Password.getText().toString();
 		        if (usuarioDao.count()==0){//cuando esta vacia
 		        	boolBaseLocalUsuariosVacia=true;
 		        }
@@ -459,6 +476,16 @@ public class Login extends Activity {
 	protected void onDestroy() { 
 		db.close();
 	    super.onDestroy();
+	}
+	@Override
+	protected void onResume() {
+		 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		    final boolean boolRecordarUsu = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_CHECK_USUARIO, true);	    
+		    if (!boolRecordarUsu){
+		    	textView_Usuario.setText("");//limpio cuando ya no se quiere recordar el nombre
+		    }
+		
+	    super.onResume();
 	}
     
 }

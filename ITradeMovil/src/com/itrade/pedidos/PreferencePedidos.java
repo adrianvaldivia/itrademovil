@@ -65,7 +65,13 @@ public class PreferencePedidos extends PreferenceActivity {
             	}            	
             	        	            
         }
-        	
+        
+        
 
     }
+	@Override
+	protected void onDestroy() { 
+		db.close();
+	    super.onDestroy();
+	}
 }
