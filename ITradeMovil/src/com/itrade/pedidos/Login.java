@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itrade.jsonParser.AsTaskLogin;
 import com.itrade.model.Categoria;
 import com.itrade.model.CategoriaDao;
 import com.itrade.model.Cliente;
@@ -109,7 +110,9 @@ public class Login extends Activity {
     public Persona datEmpleado = null;
     public Boolean boolBaseLocalUsuariosVacia=false;
     public Boolean boolBaseLocalPersonasVacia=false;
-    public ProgressDialog pd;
+//    public ProgressDialog pd;
+    AsTaskLogin  taskLogin;
+    
 
     
     @Override
@@ -147,7 +150,7 @@ public class Login extends Activity {
 	    //M?todo click etn Boton Ingresar
 
 	    button_Ingresar.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+			public void onClick(View v) {				
 				Usuario usuarioLocal=null;
 				boolBaseLocalUsuariosVacia=false;
 				String nombreUsuario = textView_Usuario.getText().toString();
@@ -166,20 +169,23 @@ public class Login extends Activity {
 				}
 				else{//intentara logearse en la nube
 					if (haveNetworkConnection()){
-						Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
-				    	if (usuario != null){
-				    		usuario.setPassword(password);
-				    		sincronizarBase(usuario);//Preguntar si quiere borrar los datos del usuario logeado anteriormente
-							lanzarActivitys(usuario);			    							   
-				    	}
-				    	else{
-				    		Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
-				    	}						
+//						Usuario usuario = daoUsu.confirmarLogin(nombreUsuario,password);
+//				    	if (usuario != null){
+//				    		usuario.setPassword(password);
+//				    		sincronizarBase(usuario);//Preguntar si quiere borrar los datos del usuario logeado anteriormente
+//							lanzarActivitys(usuario);			    							   
+//				    	}
+//				    	else{
+//				    		Toast.makeText(getBaseContext(), "Password o Usuario incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
+//				    	}		
+						taskLogin= new AsTaskLogin(Login.this,nombreUsuario,password);
+						taskLogin.execute();
 					}
 					else{
 						Toast.makeText(getBaseContext(), "Intente nuevamente. No Hay Conexion a Internet!", Toast.LENGTH_LONG).show();
 					}
 				}
+				textView_Password.setText("");
 			}
 
 
@@ -246,139 +252,139 @@ public class Login extends Activity {
 	
 
     
-	private void sincronizarBase(Usuario usuario) {
-		// TODO Auto-generated method stub
-		long idUsuario=usuario.getIdUsuario();
-		usuario.setNombreReal("BDLOCAL");
-		////////////////////////////////////////////////////////////Sincronizacion de Usuarios
-		usuarioDao.deleteAll();
-		usuarioDao.insert(usuario);
-		////////////////////////////////////////////////////////Sincronizacion de Productos
-		daoProducto = new DAOProducto(Login.this);
-		List<Producto> listaProducto = daoProducto.getAllProductos(); //obtiene los productos
-		List<Categoria> listaCategoria=daoProducto.getAllCategorias();
-       
-		productoDao.deleteAll();
-		categoriaDao.deleteAll();
-		
-        
-		for(int i=0;i<listaProducto.size();i++){
-			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());		
-			productoDao.insert(productoAux);				    
-		}
-		for(int i=0;i<listaCategoria.size();i++){
-			Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
-			categoriaDao.insert(categoria);
-		}
-
-		
-		///////////////////////////////////////////////////Sincronizacion de Clientes		
-        daoCliente = new DAOCliente(this);  
-        List<Cliente> listaCliente = daoCliente.getAllClientes(idUsuario); //obtiene los clientes
-        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        Double x;
-		Double y;
-		clienteDao.deleteAll();
-		for(int i=0;i<listaCliente.size();i++){
-			x=listaCliente.get(i).getLatitud();
-			y=listaCliente.get(i).getLongitud();
-			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
-					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
-					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
-					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
-					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
-					listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
-			cliente2.setActivo("A");//util para el checkin del mapa
-	        clienteDao.insert(cliente2);
-		}
-		//////////////////////////////////////////////sincronizacion de pedidos
-		daoPedido = new DAOPedido(Login.this);
-		List<Pedido> listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
-		pedidoDao.deleteAll();        
-		for(int i=0;i<listaPedido.size();i++){
-			//numvoucher = A de antiguo
-			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),"A",listaPedido.get(i).getMontoTotal());
-			pedidoDao.insert(pedido);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-		////////////////////////////////////////////////////////Sincronizacion de pedido Linea
-//		pedidoLineaDao.deleteAll();
-		/////////////////////////////////////////////Sincronizacion eventos
-		eventoDao.deleteAll();
-		daoEvento = new DAOEvento(Login.this);
-//		String fechaEvento="2012-10-12";
-		String fechaEvento=getFechaActual();
-		List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
-		for(int i=0;i<listaEvento.size();i++){
-			//numvoucher = A de antiguo
-			Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
-			eventoDao.insert(evento);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}		
-		//sincronizacion de metas
-		metaDao.deleteAll();
-		Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
-		metaDao.insert(meta);
-		///////////////////////////////////////////////////sincronizacion de prospectos
-		prospectoDao.deleteAll();   	
-		daoProspecto = new DAOProspecto(this);
-		List<Prospecto> listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idUsuario,"");
-        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-        Double xx;
-		Double yy;
-
-        
-		for(int i=0;i<listaProspecto.size();i++){
-			xx=listaProspecto.get(i).getLatitud();
-			yy=listaProspecto.get(i).getLongitud();
-			Prospecto prospecto2 = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getIdProspecto(),
-					listaProspecto.get(i).getNombre(),listaProspecto.get(i).getApePaterno(),
-					listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
-					listaProspecto.get(i).getRUC(),xx,yy,listaProspecto.get(i).getDireccion(),
-					listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
-					listaProspecto.get(i).getActivo(),listaProspecto.get(i).getMontoActual(),
-					listaProspecto.get(i).getDNI(),listaProspecto.get(i).getFechNac(),
-					listaProspecto.get(i).getTelefono(),listaProspecto.get(i).getEmail());
-			prospecto2.setActivo("A");//util para la sincronizacion de prospectos
-	        prospectoDao.insert(prospecto2);	        	        
-		}
-		//sincronizacion de contactos
-		contactoDao.deleteAll();
-		long temp=0;
-		temp++;
-		Contacto contacto= new Contacto(null,temp,null,"Benito","Leon","Cordova","A","997565670","benito@corp.com");
-		contactoDao.insert(contacto);
-		temp++;
-		Contacto contacto2= new Contacto(null,temp,null,"Ushpa","Leon","Co","A","976755699","ushpa@corp.com");
-		contactoDao.insert(contacto2);
-		temp++;
-		Contacto contacto3= new Contacto(null,temp,null,"Anna","Godinez","Co","A","971199644","anna@corp.com");
-		contactoDao.insert(contacto3);
-
-		
-	}
-    private String getFechaActual() {
-    	String resul;
-		Calendar _calendar;
-		int month, year;
-    	_calendar = Calendar.getInstance(Locale.getDefault());
-    	year = _calendar.get(Calendar.YEAR);
-		month = _calendar.get(Calendar.MONTH) + 1;
-		String strMonth=""+month;
-		strMonth=agregaCeroMes(strMonth);		
-		resul=""+year+"-"+strMonth+"-01";		
-		return resul;
-	}
-	private String agregaCeroMes(String themonth) {
-		String resul="";
-		if (themonth.length()==1)
-			resul="0"+themonth;
-		else
-			resul=""+themonth;
-			
-		return resul;
-		
-	}
+//	private void sincronizarBase(Usuario usuario) {
+//		// TODO Auto-generated method stub
+//		long idUsuario=usuario.getIdUsuario();
+//		usuario.setNombreReal("BDLOCAL");
+//		////////////////////////////////////////////////////////////Sincronizacion de Usuarios
+//		usuarioDao.deleteAll();
+//		usuarioDao.insert(usuario);
+//		////////////////////////////////////////////////////////Sincronizacion de Productos
+//		daoProducto = new DAOProducto(Login.this);
+//		List<Producto> listaProducto = daoProducto.getAllProductos(); //obtiene los productos
+//		List<Categoria> listaCategoria=daoProducto.getAllCategorias();
+//       
+//		productoDao.deleteAll();
+//		categoriaDao.deleteAll();
+//		
+//        
+//		for(int i=0;i<listaProducto.size();i++){
+//			Producto productoAux = new Producto(null,listaProducto.get(i).getIdProducto(),listaProducto.get(i).getDescripcion(),listaProducto.get(i).getPrecio(),listaProducto.get(i).getStock(),listaProducto.get(i).getActivo(),listaProducto.get(i).getIdCategoria(),listaProducto.get(i).getIdMarca());		
+//			productoDao.insert(productoAux);				    
+//		}
+//		for(int i=0;i<listaCategoria.size();i++){
+//			Categoria categoria = new Categoria(null,listaCategoria.get(i).getIdCategoria(),listaCategoria.get(i).getDescripcion());
+//			categoriaDao.insert(categoria);
+//		}
+//
+//		
+//		///////////////////////////////////////////////////Sincronizacion de Clientes		
+//        daoCliente = new DAOCliente(this);  
+//        List<Cliente> listaCliente = daoCliente.getAllClientes(idUsuario); //obtiene los clientes
+//        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//        Double x;
+//		Double y;
+//		clienteDao.deleteAll();
+//		for(int i=0;i<listaCliente.size();i++){
+//			x=listaCliente.get(i).getLatitud();
+//			y=listaCliente.get(i).getLongitud();
+//			Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
+//					listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+//					listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
+//					listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
+//					listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
+//					listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
+//			cliente2.setActivo("A");//util para el checkin del mapa
+//	        clienteDao.insert(cliente2);
+//		}
+//		//////////////////////////////////////////////sincronizacion de pedidos
+//		daoPedido = new DAOPedido(Login.this);
+//		List<Pedido> listaPedido = daoPedido.getAllPedidos(idUsuario); //obtiene los pedidos
+//		pedidoDao.deleteAll();        
+//		for(int i=0;i<listaPedido.size();i++){
+//			//numvoucher = A de antiguo
+//			Pedido pedido = new Pedido(null, listaPedido.get(i).getIdPedido(),listaPedido.get(i).getIdCliente(),listaPedido.get(i).getIdEstadoPedido(),listaPedido.get(i).getCheckIn(),listaPedido.get(i).getFechaPedido(),listaPedido.get(i).getFechaCobranza(),listaPedido.get(i).getMontoSinIGV(),listaPedido.get(i).getIGV(),listaPedido.get(i).getMontoTotalPedido(),listaPedido.get(i).getMontoTotalCobrado(),"A",listaPedido.get(i).getMontoTotal());
+//			pedidoDao.insert(pedido);
+//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//		}
+//		////////////////////////////////////////////////////////Sincronizacion de pedido Linea
+////		pedidoLineaDao.deleteAll();
+//		/////////////////////////////////////////////Sincronizacion eventos
+//		eventoDao.deleteAll();
+//		daoEvento = new DAOEvento(Login.this);
+////		String fechaEvento="2012-10-12";
+//		String fechaEvento=getFechaActual();
+//		List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
+//		for(int i=0;i<listaEvento.size();i++){
+//			//numvoucher = A de antiguo
+//			Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
+//			eventoDao.insert(evento);
+//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+//		}		
+//		//sincronizacion de metas
+//		metaDao.deleteAll();
+//		Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
+//		metaDao.insert(meta);
+//		///////////////////////////////////////////////////sincronizacion de prospectos
+//		prospectoDao.deleteAll();   	
+//		daoProspecto = new DAOProspecto(this);
+//		List<Prospecto> listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idUsuario,"");
+//        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
+//        Double xx;
+//		Double yy;
+//
+//        
+//		for(int i=0;i<listaProspecto.size();i++){
+//			xx=listaProspecto.get(i).getLatitud();
+//			yy=listaProspecto.get(i).getLongitud();
+//			Prospecto prospecto2 = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getIdProspecto(),
+//					listaProspecto.get(i).getNombre(),listaProspecto.get(i).getApePaterno(),
+//					listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
+//					listaProspecto.get(i).getRUC(),xx,yy,listaProspecto.get(i).getDireccion(),
+//					listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
+//					listaProspecto.get(i).getActivo(),listaProspecto.get(i).getMontoActual(),
+//					listaProspecto.get(i).getDNI(),listaProspecto.get(i).getFechNac(),
+//					listaProspecto.get(i).getTelefono(),listaProspecto.get(i).getEmail());
+//			prospecto2.setActivo("A");//util para la sincronizacion de prospectos
+//	        prospectoDao.insert(prospecto2);	        	        
+//		}
+//		//sincronizacion de contactos
+//		contactoDao.deleteAll();
+//		long temp=0;
+//		temp++;
+//		Contacto contacto= new Contacto(null,temp,null,"Benito","Leon","Cordova","A","997565670","benito@corp.com");
+//		contactoDao.insert(contacto);
+//		temp++;
+//		Contacto contacto2= new Contacto(null,temp,null,"Ushpa","Leon","Co","A","976755699","ushpa@corp.com");
+//		contactoDao.insert(contacto2);
+//		temp++;
+//		Contacto contacto3= new Contacto(null,temp,null,"Andres","Godinez","Co","A","971199644","anna@corp.com");
+//		contactoDao.insert(contacto3);
+//
+//		
+//	}
+//    private String getFechaActual() {
+//    	String resul;
+//		Calendar _calendar;
+//		int month, year;
+//    	_calendar = Calendar.getInstance(Locale.getDefault());
+//    	year = _calendar.get(Calendar.YEAR);
+//		month = _calendar.get(Calendar.MONTH) + 1;
+//		String strMonth=""+month;
+//		strMonth=agregaCeroMes(strMonth);		
+//		resul=""+year+"-"+strMonth+"-01";		
+//		return resul;
+//	}
+//	private String agregaCeroMes(String themonth) {
+//		String resul="";
+//		if (themonth.length()==1)
+//			resul="0"+themonth;
+//		else
+//			resul=""+themonth;
+//			
+//		return resul;
+//		
+//	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
