@@ -6,7 +6,7 @@
             android:key="pref_key_recordar_usuario"
             android:summary="Recuerda Nombre del Usuario"
             android:title="Recordar Usuario"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
         <EditTextPreference  android:dialogTitle="Nombre de Usuario"
                              android:dialogMessage="Usuario:"
                              android:dependency="pref_key_recordar_usuario"
