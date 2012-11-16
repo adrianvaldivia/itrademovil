@@ -105,10 +105,10 @@ public class DetalleCliente extends ListActivity{
         txt_nombre = (TextView) findViewById(R.id.txtnombrecliente);
         txt_ruc = (TextView) findViewById(R.id.txtruccliente);
 
-        List<String> listaCliente =null;  
+        
 //        listaCliente = daoCliente.getCliente(0); //obtiene los clientes
                
-        Convierte(listaCliente);
+        Convierte();
 
 	    button_verpedidos.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -176,7 +176,7 @@ public class DetalleCliente extends ListActivity{
 
 
     
-	public void Convierte(List<String> lis){
+	public void Convierte(){
 		elementoListaDao.deleteAll();
 		long i=1;
 		this.txt_nombre.setText(this.nombre);
@@ -188,6 +188,12 @@ public class DetalleCliente extends ListActivity{
 		elementoListaDao.insert(elemento2);
 		cursorElementoLista.requery();
 //		lista.add("ID: "+this.idcliente);
+	}
+	@Override
+	protected void onRestart() {
+		obtenerDatosCliente();
+		this.Convierte();
+		super.onRestart();
 	}
 	@Override
 	protected void onDestroy() {
