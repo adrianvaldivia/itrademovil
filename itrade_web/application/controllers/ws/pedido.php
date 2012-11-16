@@ -218,5 +218,13 @@ class Pedido extends CI_Controller {
 		$result=$this->Payment_model->get_proximos_pedidos($idcliente);		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
+	public function get_clientes_checkin($idcobrador_w=''){
+		$idcobrador=$this->input->post('idcobrador');
+		if ($idcobrador_w!=''){
+			$idcobrador=$idcobrador_w;
+		}
+		$result=$this->Payment_model->get_clientes_checkin($idcobrador);		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
 }
 
