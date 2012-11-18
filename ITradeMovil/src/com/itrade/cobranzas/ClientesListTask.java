@@ -11,6 +11,7 @@ import org.xml.sax.Parser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
+import com.itrade.controller.cobranza.SyncDetallePedido;
 import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.ClienteMapa;
@@ -65,6 +66,7 @@ public class ClientesListTask extends Activity {
 	private ImageView btnMapa;
 	private ImageView btnMapaTotal;
 	private SyncPedidos sincPedidos;
+	private SyncDetallePedido sincDetallePedido;
 	
     /** Called when the activity is first created. */
     @Override
@@ -286,6 +288,7 @@ public class ClientesListTask extends Activity {
         listView.setAdapter(adapter); 
         //No olvidar de esto en todos los activities
         sincPedidos.closeDB();
+        sincDetallePedido.closeDB();
     }
     
 
@@ -332,11 +335,13 @@ public class ClientesListTask extends Activity {
      
      private void sqlite(){
 		sincPedidos= new SyncPedidos(ClientesListTask.this); 
-		
+		sincDetallePedido= new SyncDetallePedido(ClientesListTask.this);
 		//Integer numePed = sincPedidos.cargarClientes(idusuario);
 		//Integer numeCli = sincPedidos.cargarPedidos(idusuario);
 		Integer numreg = sincPedidos.syncBDToSqlite(idusuario);
-		Log.d("RESULTADOS","numeros ="+numreg.toString());		
+		//Integer numerito = sincDetallePedido.syncBDToSqlite(idusuario);
+		Log.d("ClienteListaTask","pedidos ="+numreg.toString());		
+		//Log.d("ClienteListaTask","detallesPedidos ="+numerito.toString());
 	   	//Log.d("RESULTADOS","fecha ="+today.toString());
 	   	//List<Pedido> listaPedi =sincPedidos.getPedidos(Integer.parseInt(idusuario));
 		//Log.d("pEDIDOS","cantidad ="+listaPedi.size());
