@@ -1303,81 +1303,54 @@ class Reporte_model extends CI_Model {
 		case 1:
 		
 		$query = $this->db->query("
-		select D.Ubigeo, D.Pais, D.Departamento, D.Distrito, D.Zona,  
-          count(distinct B.IdUsuario) as numVendedores,
-          count(distinct D.IdPedido) as numVentas,
-          sum(MontoTotalPedido) as montoVentas
-			from Ubigeo A left outer join Usuario B
-        on A.IdUbigeo=B.IdUbigeo
-        and B.IdPerfil=2         
-        left outer join Cliente C
-        on B.IdUsuario=C.IdVendedor 
-        left outer join Pedido D
-        on C.IdCliente=D.IdCliente
+		SELECT DATE_FORMAT(  `Pedido`.`FechaPedido` ,  '%Y' ) AS YEAR, MONTH(  `Pedido`.`FechaPedido` ) AS 
+		MONTH , A.IdUbigeo, A.Pais, A.Departamento, A.Distrito, A.Zona, COUNT( DISTINCT B.IdUsuario ) AS numVendedores, COUNT( DISTINCT Pedido.IdPedido ) AS numVentas, SUM( MontoTotalPedido ) AS montoVentas
+		FROM Ubigeo A
+		LEFT OUTER JOIN Usuario B ON A.IdUbigeo = B.IdUbigeo
+		AND B.IdPerfil =2
+		LEFT OUTER JOIN Cliente C ON B.IdUsuario = C.IdVendedor
+		LEFT OUTER JOIN Pedido Pedido ON C.IdCliente = Pedido.IdCliente
 		
-		WHERE ".$str." and `D`.`Pais`= '".$id."' 
+		WHERE ".$str." and `A`.`Pais`= '".$id."' 
 		GROUP BY 
-		Year, 
-		Month,		
-		`D`.`IdUbigeo`,		
-		`D`.`Pais`,
-		`D`.`Departamento`,
-		`D`.`Distrito`,
-		`D`.`Zona`
+		YEAR, 
+		MONTH ,  `A`.`IdUbigeo` ,  `A`.`Pais` ,  `A`.`Departamento` ,  `A`.`Distrito` ,  `A`.`Zona`
 		");
 		break;
 		
 		case 2:
 		
 		$query = $this->db->query("
-		select D.Ubigeo, D.Pais, D.Departamento, D.Distrito, D.Zona,  
-          count(distinct B.IdUsuario) as numVendedores,
-          count(distinct D.IdPedido) as numVentas,
-          sum(MontoTotalPedido) as montoVentas
-			from Ubigeo A left outer join Usuario B
-        on A.IdUbigeo=B.IdUbigeo
-        and B.IdPerfil=2         
-        left outer join Cliente C
-        on B.IdUsuario=C.IdVendedor 
-        left outer join Pedido D
-        on C.IdCliente=D.IdCliente
+		SELECT DATE_FORMAT(  `Pedido`.`FechaPedido` ,  '%Y' ) AS YEAR, MONTH(  `Pedido`.`FechaPedido` ) AS 
+		MONTH , A.IdUbigeo, A.Pais, A.Departamento, A.Distrito, A.Zona, COUNT( DISTINCT B.IdUsuario ) AS numVendedores, COUNT( DISTINCT Pedido.IdPedido ) AS numVentas, SUM( MontoTotalPedido ) AS montoVentas
+		FROM Ubigeo A
+		LEFT OUTER JOIN Usuario B ON A.IdUbigeo = B.IdUbigeo
+		AND B.IdPerfil =2
+		LEFT OUTER JOIN Cliente C ON B.IdUsuario = C.IdVendedor
+		LEFT OUTER JOIN Pedido Pedido ON C.IdCliente = Pedido.IdCliente
 		
-		WHERE ".$str." and `D`.`Pais`= '".$id."' 
+		WHERE ".$str." and `A`.`Departamento`= '".$id."' 
 		GROUP BY 
-		Year, 
-		Month,		
-		`D`.`IdUbigeo`,		
-		`D`.`Pais`,
-		`D`.`Departamento`,
-		`D`.`Distrito`,
-		`D`.`Zona`
+		YEAR, 
+		MONTH ,  `A`.`IdUbigeo` ,  `A`.`Pais` ,  `A`.`Departamento` ,  `A`.`Distrito` ,  `A`.`Zona`
 		");
 		break;
 		
 		case 3:
 		
 		$query = $this->db->query("
-		select D.Ubigeo, D.Pais, D.Departamento, D.Distrito, D.Zona,  
-          count(distinct B.IdUsuario) as numVendedores,
-          count(distinct D.IdPedido) as numVentas,
-          sum(MontoTotalPedido) as montoVentas
-			from Ubigeo A left outer join Usuario B
-        on A.IdUbigeo=B.IdUbigeo
-        and B.IdPerfil=2         
-        left outer join Cliente C
-        on B.IdUsuario=C.IdVendedor 
-        left outer join Pedido D
-        on C.IdCliente=D.IdCliente
+		SELECT DATE_FORMAT(  `Pedido`.`FechaPedido` ,  '%Y' ) AS YEAR, MONTH(  `Pedido`.`FechaPedido` ) AS 
+		MONTH , A.IdUbigeo, A.Pais, A.Departamento, A.Distrito, A.Zona, COUNT( DISTINCT B.IdUsuario ) AS numVendedores, COUNT( DISTINCT Pedido.IdPedido ) AS numVentas, SUM( MontoTotalPedido ) AS montoVentas
+		FROM Ubigeo A
+		LEFT OUTER JOIN Usuario B ON A.IdUbigeo = B.IdUbigeo
+		AND B.IdPerfil =2
+		LEFT OUTER JOIN Cliente C ON B.IdUsuario = C.IdVendedor
+		LEFT OUTER JOIN Pedido Pedido ON C.IdCliente = Pedido.IdCliente
 		
-		WHERE ".$str." and `D`.`Pais`= '".$id."' 
+		WHERE ".$str." and `A`.`Distrito`= '".$id."' 
 		GROUP BY 
-		Year, 
-		Month,		
-		`D`.`IdUbigeo`,		
-		`D`.`Pais`,
-		`D`.`Departamento`,
-		`D`.`Distrito`,
-		`D`.`Zona`
+		YEAR, 
+		MONTH ,  `A`.`IdUbigeo` ,  `A`.`Pais` ,  `A`.`Departamento` ,  `A`.`Distrito` ,  `A`.`Zona`
 		");
 		break;
 		
