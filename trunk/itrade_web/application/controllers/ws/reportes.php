@@ -499,5 +499,32 @@ class Reportes extends CI_Controller {
 	}
 	
 	
+	public function ventas_resumido_sinc($anho_w="",$idjerarquia_w="",$idubigeo_w=""){		
+		//2012-05-10
+		$anho=$this->input->post('anho');
+		$idubigeo=$this->input->post('idubigeo');
+		$idjerarquia=$this->input->post('idjerarquia');	
+		/*SOLO PARA WEB*/		
+		if (isset($anho_w)&& $anho_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" && isset($idjerarquia_w)&& $idjerarquia_w!=""){				
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}				
+			$result=$this->Reporte_model->ventas_resumido_sinc($anho_w,$idjerarquia_w,$idubigeo_w,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($anho)&& $anho!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!=""){				
+			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo,$idjerarquia);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}	
+			
+			
+			$result=$this->Reporte_model->ventas_resumido_sinc($anho,$idjerarquia,$idubigeo,$id);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}			
+	}
+	
 }
 
