@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
 import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
-import com.itrade.model.Cliente;
+import com.itrade.model.ClienteMapa;
 import com.itrade.model.Pedido;
 import com.itrade.model.Usuario;
 import com.itrade.pedidos.BuscarClientesGreenDao;
@@ -138,7 +138,17 @@ public class ClientesListTask extends Activity {
 				intent.putExtra("boolVer", 1);
 				startActivity(intent);
 			}
-		});		
+		});
+		/**/
+		btnCalendario= (ImageView)findViewById(R.id.btnCalendario);
+		btnCalendario.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ClientesListTask.this, Calendario.class);
+				intent.putExtra("idusuario", idusuario);				
+				startActivity(intent);
+			}
+		});	
 		/*btn Mapa Clientes*/
 		btnMapaTotal= (ImageView)findViewById(R.id.btnMapa);
 		btnMapaTotal.setOnClickListener(new OnClickListener() {			
@@ -263,10 +273,10 @@ public class ClientesListTask extends Activity {
 
 		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());	
 	*/		
-        List<Cliente> cliList = sincPedidos.getListaCliente(idusuario);
+        List<ClienteMapa> cliList = sincPedidos.getListaCliente();
 	    ArrayList<String> idClientes = new ArrayList<String>();
 	    ArrayList<String> nombresClientes = new ArrayList<String>();
-		for(Cliente cli: cliList){
+		for(ClienteMapa cli: cliList){
 			idClientes.add(cli.getIdCliente().toString());
 			nombresClientes.add(cli.getApePaterno()+" "+cli.getNombre());
 		}

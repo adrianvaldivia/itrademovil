@@ -12,7 +12,7 @@ import com.itrade.R;
 import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.jsonParser.WBhelper;
-import com.itrade.model.Cliente;
+import com.itrade.model.ClienteMapa;
 import com.itrade.model.Pedido;
 
 import android.app.Activity;
@@ -62,7 +62,7 @@ public class PaymentTask extends Activity {
 	private String idcliente;
 	private String idempleado;
 	private Pedido pedidoSelected;
-	private Cliente clienteSelected;
+	private ClienteMapa clienteSelected;
 	private ArrayList<Pedido> requestList = new ArrayList<Pedido>();
 	private ArrayList<Pedido> payReqtList = new ArrayList<Pedido>();
 	private SyncPedidos sincPedidos;

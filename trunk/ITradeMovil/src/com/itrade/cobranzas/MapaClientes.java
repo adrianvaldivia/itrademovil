@@ -19,9 +19,9 @@ import org.osmdroid.views.overlay.SimpleLocationOverlay;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
+import com.itrade.controller.cobranza.ClienteMapa;
 import com.itrade.controller.cobranza.Syncronizar;
-import com.itrade.model.Cliente;
-import com.itrade.pedidos.UbicacionCheckInActivity;
+
 
 import android.app.Activity;
 
@@ -72,8 +72,8 @@ public class MapaClientes  extends Activity implements LocationListener {
     private String idCliente;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
     List<GeoPoint> listaGeoPoint =null;//ruta
-    List<Cliente> listaCliente =null;
-	private final Double  TOLERANCIA = 0.004;
+    List<ClienteMapa> listaCliente =null;
+	private final Double  TOLERANCIA = 0.0004;
 	private OverlayItem itemActual;
 	private final int  MAXERRORES = 5;
     private ResourceProxy mResourceProxy;
@@ -81,8 +81,8 @@ public class MapaClientes  extends Activity implements LocationListener {
   	public int posxint,posyint;
   	public double posxdouble,posydouble;
   	public double latitudAux=0;
-  	public double longitudAux=0;
-  	
+  	public double longitudAux=0; 
+  	 
     private MapController mapController;
     private SimpleLocationOverlay posicionActualOverlay;
     final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
@@ -99,7 +99,7 @@ public class MapaClientes  extends Activity implements LocationListener {
     static Context context = null;
     boolean primeraVez=false;
     boolean boolHayGPS=true;
-    private Cliente client; 
+    private ClienteMapa client; 
     int contadorErrores=0;
 
         
@@ -118,14 +118,14 @@ public class MapaClientes  extends Activity implements LocationListener {
 			setTitle("I Trade - Mi Ubicacion");
             //daoPara = new DAOParadero();
 			//inicio de green Dao
-	        //inicio green Dao
+	        //inicio green Dao 
 			 
-			String IdUsuario=(String)i.getSerializableExtra("idempleado"); 
+			String IdCobrador="2010";//(String)i.getSerializableExtra("idempleado") ; 
 			  Syncronizar sync = new Syncronizar(MapaClientes.this);
 				List<NameValuePair> param = new ArrayList<NameValuePair>();								
-				param.add(new BasicNameValuePair("idvendedor", IdUsuario));	
+				param.add(new BasicNameValuePair("idcobrador", IdCobrador));	
 					//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
-					String route="ws/clientes/get_clientes_by_vendedor/";
+					String route="ws/pedido/get_clientes_checkin";
 				    sync.conexion(param,route);
 				    try {
 						sync.getHilo().join();			
@@ -133,10 +133,11 @@ public class MapaClientes  extends Activity implements LocationListener {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}	    	    
+				    
 					Log.d("ClienteeeEder", "hhahahhahahhah1");
 				    Gson gson = new Gson();
 										
-				    listaCliente	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
+				    listaCliente	=	gson.fromJson(sync.getResponse(), new TypeToken<List<ClienteMapa>>(){}.getType());		
 				    Log.d("ClienteeeEder", "hhahahhahahhah1"+listaCliente);
 	        	        
 	        //fin green dao
@@ -233,34 +234,29 @@ public class MapaClientes  extends Activity implements LocationListener {
 		if (!listaCliente.isEmpty()){
 			items.clear();
 			for(i=0;i<listaCliente.size();i++){
-				Log.d("EstadoPedido", "forrrrrrr");
-				OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
-		        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker3);
-		        
-		        olItem.setMarker(newMarker);
-		        
-		        items.add(olItem);
-				/*
-				if (listaCliente.get(i).getActivo().compareTo("1")==0){
-					
+				Log.d("EstadoPedido", "forrrrrrrWhileee");         
+				  
+		/*		OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+		        Drawable newMarker = this.getResources().getDrawable(R.drawable.skis1);		        
+		        olItem.setMarker(newMarker);		        
+		        items.add(olItem);*/
+				  Log.d("LogCHEIN", ""+listaCliente.get(i).getCheckIn()); 
+				if ((listaCliente.get(i).getCheckIn()==1)){ // azul
 					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
-			        Drawable newMarker = this.getResources().getDrawable(R.drawable.skis2);
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.greenmarker3);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
+			        Log.d("entra", "NULL 1 1");					
 				}
-				if (listaCliente.get(i).getEstadoPedido().compareTo("2")==0){
+				else {			//((listaCliente.get(i).getCheckIN()==null) || (listaCliente.get(i).getCheckIN()==0) )	
 					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
-			        Drawable newMarker = this.getResources().getDrawable(R.drawable.skis1);
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker4); //rojo
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
+			        Log.d("entra", "NULL O 0");
 				}
+						
 				
-				if (listaCliente.get(i).getEstadoPedido().compareTo("3")==0){
-					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
-			        Drawable newMarker = this.getResources().getDrawable(R.drawable.skis3);
-			        olItem.setMarker(newMarker);
-			        items.add(olItem);
-				}*/
 				
 			}  
 		}
@@ -430,7 +426,7 @@ private void obtenerUbicacion() {
         resta1=Math.abs (resta1)/factor;
         resta2=Math.abs (resta2)/factor;
     
-
+ 
         
         Log.d("BotonsRestaaa", resta1 +"-"+resta2+"-Tolerancia:"+ TOLERANCIA);
         Log.d("BotonsOKkkk", "TRUE");
@@ -457,7 +453,7 @@ private void obtenerUbicacion() {
 			else{
 				Toast.makeText(
 			             MapaClientes.this,
-			                    "Destino actual no es compatible con el del Cliente !" , Toast.LENGTH_LONG).show();
+			                    "Debe acercarse más a la posición del cliente!" , Toast.LENGTH_LONG).show();
 			}
 		     
 			 
@@ -468,7 +464,7 @@ private void obtenerUbicacion() {
                     "Encienda GPS!" , Toast.LENGTH_LONG).show();
 		}
 	      
-		Log.d("BotonsOKkkk", "CheckIN");
+		Log.d("BotonsOKkkk", "CheckIN");  
 	}
 	private void actualizaIconoCliente(String idCliente2) {
 	//	http://200.16.7.111/dp2/itrade/ws/cobranza/checkin/
@@ -479,7 +475,7 @@ private void obtenerUbicacion() {
 			param.add(new BasicNameValuePair("idcliente", IdCliente));	
 				//String route="dp2/itrade/ws/clientes/get_clientes_by_vendedor/";
 				String route="ws/cobranza/checkin";
-			    sync.conexion(param,route);
+			    sync.conexion(param,route);  
 			    try {  
 					sync.getHilo().join();			
 				} catch (InterruptedException e) {
