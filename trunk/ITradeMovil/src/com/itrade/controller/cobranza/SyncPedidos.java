@@ -23,11 +23,13 @@ import com.itrade.cobranzas.ClientesListTask;
 import com.itrade.model.ClienteMapa;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
+import com.itrade.model.PedidoLineaDao;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.DaoSession;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoDao.Properties;
+import com.itrade.model.PedidoLinea;
 
 public class SyncPedidos {
 	private SQLiteDatabase db;
@@ -41,6 +43,8 @@ public class SyncPedidos {
     private Activity activity;
     private Syncronizar sync;
     private Gson gson;
+    private PedidoLineaDao pedidoLineaDao;
+    
 	public SyncPedidos(Activity activ) {
 		super();
 		listaPedido=new ArrayList<Pedido>();
@@ -53,6 +57,7 @@ public class SyncPedidos {
         daoSession = daoMaster.newSession();
         pedidoDao = daoSession.getPedidoDao();
         clienteDao = daoSession.getClienteDao();
+        pedidoLineaDao = daoSession.getPedidoLineaDao();
         sync=new Syncronizar(activity);
         gson = new Gson();  
 	}
@@ -196,6 +201,7 @@ public class SyncPedidos {
 				Log.d("SqlLite","Entro a cargar");
 				registros +=cargarClientes(idusuario);
 				registros +=cargarPedidos(idusuario);
+				registros +=cargarDetallePedido(idusuario);
 			}catch(Exception e){	
 			//}else{
 				Log.d("SqlLite","No tiene cobertura");
@@ -236,7 +242,43 @@ public class SyncPedidos {
     }
 	
 	
-    public List<Pedido> getListaPedido() {    	
+    private Integer cargarDetallePedido(String idusuario) {
+		// TODO Auto-generated method stub
+    	List<Pedido> pedidos=this.getPedidosHoy();
+    	String pedidosws = "";
+    	for(Pedido pedido: pedidos){				
+			//adapter.addItem(ped);
+			//iNSERT EN LA bd
+			pedidosws+=pedido.getIdPedido()+"-";
+			//Log.d("fecha",""+pedido.getFechaPedido().toString());
+		}
+    	List<NameValuePair> parameters;
+    	parameters= new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("idspedidos", pedidosws));
+		String route2="/ws/pedido/get_pedidos_detail/";
+		sync.conexion(parameters,route2);
+		try {
+			sync.getHilo().join();
+		} catch (InterruptedException e) {
+			  // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<PedidoLinea> listDetallePedidos = new ArrayList<PedidoLinea>();
+		listDetallePedidos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<PedidoLinea>>(){}.getType());	 
+		
+		List<PedidoLinea> listaPedTemp=pedidoLineaDao.queryBuilder()
+							.list();
+				
+		for(PedidoLinea linea: listDetallePedidos ){
+			if (!listaPedTemp.contains(linea)){
+				pedidoLineaDao.insert(linea);
+			}
+		}
+		
+		return pedidos.size();
+	}
+
+	public List<Pedido> getListaPedido() {    	
     	return pedidoDao.loadAll();
 	}
     
