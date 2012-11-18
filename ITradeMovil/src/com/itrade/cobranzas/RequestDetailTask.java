@@ -12,7 +12,7 @@ import com.itrade.R;
 import com.itrade.controller.cobranza.SyncDetallePedido;
 import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
-import com.itrade.model.ClienteMapa;
+import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoLinea;
 import com.itrade.modelo.Login;
@@ -46,7 +46,7 @@ public class RequestDetailTask extends Activity {
 	private String idpedido;
 	private String idcliente;
 	private String idempleado;
-	private ClienteMapa clienteSelected;
+	private Cliente clienteSelected;
 	private Pedido pedidoSelected;
 	private List<com.itrade.model.PedidoLinea> detallePedido;
 	private PedidoLineaAdapter pedidosAdapter;

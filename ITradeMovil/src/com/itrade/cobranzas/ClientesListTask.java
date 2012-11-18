@@ -14,7 +14,7 @@ import com.itrade.R;
 import com.itrade.controller.cobranza.SyncDetallePedido;
 import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
-import com.itrade.model.ClienteMapa;
+import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
 import com.itrade.model.Usuario;
 import com.itrade.pedidos.BuscarClientesGreenDao;
@@ -275,10 +275,10 @@ public class ClientesListTask extends Activity {
 
 		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());	
 	*/		
-        List<ClienteMapa> cliList = sincPedidos.getListaCliente();
+        List<Cliente> cliList = sincPedidos.getListaCliente();
 	    ArrayList<String> idClientes = new ArrayList<String>();
 	    ArrayList<String> nombresClientes = new ArrayList<String>();
-		for(ClienteMapa cli: cliList){
+		for(Cliente cli: cliList){
 			idClientes.add(cli.getIdCliente().toString());
 			nombresClientes.add(cli.getApePaterno()+" "+cli.getNombre());
 		}
