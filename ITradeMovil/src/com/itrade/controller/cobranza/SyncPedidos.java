@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.cobranzas.ClientesListTask;
-import com.itrade.model.Cliente;
+import com.itrade.model.ClienteMapa;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoMaster.DevOpenHelper;
@@ -36,7 +36,7 @@ public class SyncPedidos {
     private PedidoDao pedidoDao;
     private ClienteDao clienteDao;
     private List<Pedido> listaPedido;
-    private List<Cliente> listaCliente;
+    private List<ClienteMapa> listaCliente;
     private Context context;
     private Activity activity;
     private Syncronizar sync;
@@ -44,7 +44,7 @@ public class SyncPedidos {
 	public SyncPedidos(Activity activ) {
 		super();
 		listaPedido=new ArrayList<Pedido>();
-		listaCliente=new ArrayList<Cliente>();
+		listaCliente=new ArrayList<ClienteMapa>();
 		activity=activ;
 		this.context=activ;
 		DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "itrade-db", null);
@@ -171,9 +171,9 @@ public class SyncPedidos {
 			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<Cliente> cliList = new ArrayList<Cliente>();
-		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());	  		
-		for(Cliente cliente: cliList ){
+		ArrayList<ClienteMapa> cliList = new ArrayList<ClienteMapa>();
+		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<ClienteMapa>>(){}.getType());	  		
+		for(ClienteMapa cliente: cliList ){
 			clienteDao.insert(cliente);
 		}
 		return cliList.size();
@@ -241,14 +241,8 @@ public class SyncPedidos {
 	}
     
     public List<Pedido> getPedidosHoy(){
-    	SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		calendar.add(Calendar.DAY_OF_MONTH,-7);
-		String previousDate = form.format(calendar.getTime());
     	List<Pedido> pedTemp=pedidoDao.queryBuilder()
 				.where(Properties.IdEstadoPedido.eq("1"))
-				.where(Properties.FechaPedido.eq(previousDate))
 				.list();
 		return pedTemp;    	
     }
@@ -272,39 +266,15 @@ public class SyncPedidos {
 		return pedTemp;    	
     }
     
-    public List<Cliente> getListaCliente(String idusuario) {
-    	
-    	List<Cliente> listFinal=new ArrayList<Cliente>();
-    	List<Cliente> listTemp;
-		listTemp = clienteDao.queryBuilder()
-				.where(com.itrade.model.ClienteDao.Properties.IdCobrador.eq(idusuario))
-				.list();  
-		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		calendar.add(Calendar.DAY_OF_MONTH,-7);
-		String previousDate = form.format(calendar.getTime());			
-		for (Cliente cliente : listTemp)  {
-			List<Pedido> pedTemp=pedidoDao.queryBuilder()
-					.where(Properties.FechaPedido.eq(previousDate))
-					.where(Properties.IdCliente.eq(cliente.getIdCliente()))
-					.where(Properties.IdEstadoPedido.eq(1))
-					//.where(Properties.CheckIn.eq(1))					
-					.list();
-			listaPedido.addAll(pedTemp);
-			if (pedTemp.size()>0){
-				listFinal.add(cliente);					
-			}											
-		}	
-		//return clienteDao.loadAll();
-		return listFinal;
+    public List<ClienteMapa> getListaCliente() {		
+		return clienteDao.loadAll();
 	}
     
 	public void setListaPedido(List<Pedido> listaPedido) {
 		this.listaPedido = listaPedido;
 	}
 	
-	public void setListaCliente(List<Cliente> listaCliente) {
+	public void setListaCliente(List<ClienteMapa> listaCliente) {
 		this.listaCliente = listaCliente;
 	}
 
@@ -382,13 +352,13 @@ public class SyncPedidos {
 		return pedTemp.size();
 	}
 
-	public Cliente buscarCliente(String idcliente) {
+	public ClienteMapa buscarCliente(String idcliente) {
 		// TODO Auto-generated method stub
 		
-		List<Cliente> clie=clienteDao.queryBuilder()
+		List<ClienteMapa> clie=clienteDao.queryBuilder()
 				.where(Properties.IdCliente.eq(idcliente))
 				.list();
-		Cliente cliente=clie.get(0);
+		ClienteMapa cliente=clie.get(0);
 		return cliente;
 	}
 

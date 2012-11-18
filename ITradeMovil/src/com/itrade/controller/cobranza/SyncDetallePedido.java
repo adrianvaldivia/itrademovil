@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.cobranzas.ClientesListTask;
-import com.itrade.model.Cliente;
+import com.itrade.model.ClienteMapa;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoMaster.DevOpenHelper;
@@ -39,7 +39,7 @@ public class SyncDetallePedido {
     private PedidoLineaDao pedidoLineaDao;
     private ClienteDao clienteDao;
     private List<Pedido> listaPedido;
-    private List<Cliente> listaCliente;
+    private List<ClienteMapa> listaCliente;
     private List<PedidoLinea> listaPedidoLinea;
     private Context context;
     private Activity activity;
@@ -49,7 +49,7 @@ public class SyncDetallePedido {
     public SyncDetallePedido(Activity activ){
     	super();
 		listaPedido=new ArrayList<Pedido>();
-		listaCliente=new ArrayList<Cliente>();
+		listaCliente=new ArrayList<ClienteMapa>();
 		listaPedidoLinea=new ArrayList<PedidoLinea>();
 		activity=activ;
 		this.context=activ;
