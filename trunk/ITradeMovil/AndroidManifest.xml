@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<manifest android:versionCode="1" android:versionName="1.0" android:screenOrientation="portrait"
-    package="com.itrade" xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest android:versionCode="1" android:versionName="1.0" 
+    package="com.itrade" xmlns:android="http://schemas.android.com/apk/res/android" >
     <uses-sdk android:minSdkVersion="8"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <application android:background="@android:color/transparent"
         android:icon="@drawable/mapa" android:label="@string/app_name">
-        <activity android:label="@string/app_name" android:name=".pedidos.Login">
+        <activity android:label="@string/app_name" android:name=".pedidos.Login" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -82,14 +82,14 @@
         <activity android:label="@string/app_name" android:name=".pedidos.MiUbicacionImplActivity"/>
         <activity android:label="@string/app_name" android:name=".pedidos.RegistrarProspecto"/>
         <activity android:name=".ListaClientes"/>
-        <activity android:name=".cobranzas.ClientesListTask"/>
-        <activity android:name=".cobranzas.RequestDetailTask"/>
-        <activity android:name=".cobranzas.PaymentTask"/>
-        <activity android:name=".cobranzas.MapaClientes"/>
-        <activity android:name=".cobranzas.RutaCliente"/>
-        <activity android:name=".cobranzas.Calendario"/>
-        <activity android:name="com.itrade.cobranzas.DetalleDia"/>
-        <activity android:name="com.itrade.cobranzas.DetalleEvento"/>
+        <activity android:name=".cobranzas.ClientesListTask" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".cobranzas.RequestDetailTask" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".cobranzas.PaymentTask" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".cobranzas.MapaClientes" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".cobranzas.RutaCliente" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".cobranzas.Calendario" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.itrade.cobranzas.DetalleDia" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.itrade.cobranzas.DetalleEvento" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
     </application>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 </manifest>
