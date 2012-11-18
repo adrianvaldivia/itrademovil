@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
 import com.itrade.controller.cobranza.Syncronizar;
-import com.itrade.model.Cliente;
+import com.itrade.model.ClienteMapa;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -59,7 +59,7 @@ public class RutaCliente  extends Activity implements LocationListener {
     private MapView mOsmv;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
     List<GeoPoint> listaGeoPoint =null;//ruta
-    List<Cliente> listaCliente =null;
+    List<ClienteMapa> listaCliente =null;
     
     private ResourceProxy mResourceProxy;
     private final double factor=1000000;
@@ -120,7 +120,7 @@ public class RutaCliente  extends Activity implements LocationListener {
 					Log.d("ClienteeeEder", "hhahahhahahhah");
 				    Gson gson = new Gson();
 										
-				    listaCliente	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());		
+				    listaCliente	=	gson.fromJson(sync.getResponse(), new TypeToken<List<ClienteMapa>>(){}.getType());		
 				
 	        	        
 	        //fin green dao
@@ -208,7 +208,7 @@ public class RutaCliente  extends Activity implements LocationListener {
     		
 		
 	}
-	private List<GeoPoint> Convierte(List<Cliente> lis) {
+	private List<GeoPoint> Convierte(List<ClienteMapa> lis) {
 		List<GeoPoint> lista=new ArrayList<GeoPoint>();;
 		int i;
 		for(i=0;i<lis.size();i++){
