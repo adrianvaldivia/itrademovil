@@ -1,9 +1,6 @@
 package com.itrade.controller.cobranza;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -19,19 +16,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.itrade.cobranzas.ClientesListTask;
-import com.itrade.model.ClienteMapa;
-import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.DaoSession;
 import com.itrade.model.Evento;
 import com.itrade.model.EventoDao;
-import com.itrade.model.Pedido;
-import com.itrade.model.PedidoDao;
-import com.itrade.model.PedidoDao.Properties;
-import com.itrade.model.PedidoLinea;
-import com.itrade.model.PedidoLineaDao;
 
 public class SyncEventos {
 	private SQLiteDatabase db;
