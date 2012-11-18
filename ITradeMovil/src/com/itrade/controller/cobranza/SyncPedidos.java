@@ -241,8 +241,14 @@ public class SyncPedidos {
 	}
     
     public List<Pedido> getPedidosHoy(){
+    	SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH,-7);
+		String previousDate = form.format(calendar.getTime());
     	List<Pedido> pedTemp=pedidoDao.queryBuilder()
 				.where(Properties.IdEstadoPedido.eq("1"))
+				.where(Properties.FechaPedido.eq(previousDate))
 				.list();
 		return pedTemp;    	
     }
@@ -266,8 +272,32 @@ public class SyncPedidos {
 		return pedTemp;    	
     }
     
-    public List<Cliente> getListaCliente() {		
-		return clienteDao.loadAll();
+    public List<Cliente> getListaCliente(String idusuario) {
+    	
+    	List<Cliente> listFinal=new ArrayList<Cliente>();
+    	List<Cliente> listTemp;
+		listTemp = clienteDao.queryBuilder()
+				.where(com.itrade.model.ClienteDao.Properties.IdCobrador.eq(idusuario))
+				.list();  
+		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH,-7);
+		String previousDate = form.format(calendar.getTime());			
+		for (Cliente cliente : listTemp)  {
+			List<Pedido> pedTemp=pedidoDao.queryBuilder()
+					.where(Properties.FechaPedido.eq(previousDate))
+					.where(Properties.IdCliente.eq(cliente.getIdCliente()))
+					.where(Properties.IdEstadoPedido.eq(1))
+					//.where(Properties.CheckIn.eq(1))					
+					.list();
+			listaPedido.addAll(pedTemp);
+			if (pedTemp.size()>0){
+				listFinal.add(cliente);					
+			}											
+		}	
+		//return clienteDao.loadAll();
+		return listFinal;
 	}
     
 	public void setListaPedido(List<Pedido> listaPedido) {
