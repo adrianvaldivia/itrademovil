@@ -1,9 +1,6 @@
 package com.itrade.controller.cobranza;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -19,8 +16,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.itrade.cobranzas.ClientesListTask;
-import com.itrade.model.ClienteMapa;
+
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoMaster.DevOpenHelper;

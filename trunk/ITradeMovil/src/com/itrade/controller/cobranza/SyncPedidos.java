@@ -19,8 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.itrade.cobranzas.ClientesListTask;
-import com.itrade.model.ClienteMapa;
+import com.itrade.model.Cliente;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.PedidoLineaDao;
@@ -38,7 +37,7 @@ public class SyncPedidos {
     private PedidoDao pedidoDao;
     private ClienteDao clienteDao;
     private List<Pedido> listaPedido;
-    private List<ClienteMapa> listaCliente;
+    private List<Cliente> listaCliente;
     private Context context;
     private Activity activity;
     private Syncronizar sync;
@@ -48,7 +47,7 @@ public class SyncPedidos {
 	public SyncPedidos(Activity activ) {
 		super();
 		listaPedido=new ArrayList<Pedido>();
-		listaCliente=new ArrayList<ClienteMapa>();
+		listaCliente=new ArrayList<Cliente>();
 		activity=activ;
 		this.context=activ;
 		DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "itrade-db", null);
@@ -176,9 +175,9 @@ public class SyncPedidos {
 			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<ClienteMapa> cliList = new ArrayList<ClienteMapa>();
-		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<ClienteMapa>>(){}.getType());	  		
-		for(ClienteMapa cliente: cliList ){
+		ArrayList<Cliente> cliList = new ArrayList<Cliente>();
+		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());	  		
+		for(Cliente cliente: cliList ){
 			clienteDao.insert(cliente);
 		}
 		return cliList.size();
@@ -308,7 +307,7 @@ public class SyncPedidos {
 		return pedTemp;    	
     }
     
-    public List<ClienteMapa> getListaCliente() {		
+    public List<Cliente> getListaCliente() {		
 		return clienteDao.loadAll();
 	}
     
@@ -316,7 +315,7 @@ public class SyncPedidos {
 		this.listaPedido = listaPedido;
 	}
 	
-	public void setListaCliente(List<ClienteMapa> listaCliente) {
+	public void setListaCliente(List<Cliente> listaCliente) {
 		this.listaCliente = listaCliente;
 	}
 
@@ -394,13 +393,13 @@ public class SyncPedidos {
 		return pedTemp.size();
 	}
 
-	public ClienteMapa buscarCliente(String idcliente) {
+	public Cliente buscarCliente(String idcliente) {
 		// TODO Auto-generated method stub
 		
-		List<ClienteMapa> clie=clienteDao.queryBuilder()
+		List<Cliente> clie=clienteDao.queryBuilder()
 				.where(Properties.IdCliente.eq(idcliente))
 				.list();
-		ClienteMapa cliente=clie.get(0);
+		Cliente cliente=clie.get(0);
 		return cliente;
 	}
 
