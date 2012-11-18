@@ -3,7 +3,7 @@ package com.itrade.cobranzas;
 import java.util.ArrayList;
 
 import com.itrade.R;
-import com.itrade.model.ClienteMapa;
+import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
 
 
