@@ -231,9 +231,22 @@ class Payment_model extends CI_Model {
         $query = $this->db->get($this->table_periodos);
         return $query->row(0);
     }
-	public function get_pedidos_detail($ides){		
+	public function get_pedidos_detail($ides){
+		$this->db->select($this->table_pedido_linea.".IdPedido, ".
+							$this->table_pedido_linea.".IdProducto, ".
+							$this->table_pedido_linea.".MontoLinea, ".
+							$this->table_pedido_linea.".Cantidad, ".
+							$this->table_producto.".Precio, ".
+							$this->table_producto.".Descripcion as NombreProducto , ".
+							$this->table_marca.".Descripcion as Marca , ".
+							$this->table_categoria.".Descripcion as Categoria  "							
+							);
+		$this->db->from($this->table_pedido_linea);
+		$this->db->join($this->table_producto,$this->table_pedido_linea.".IdProducto =".$this->table_producto.".IdProducto");
+		$this->db->join($this->table_marca,$this->table_producto.".IdMarca =".$this->table_marca.".IdMarca");
+		$this->db->join($this->table_categoria,$this->table_producto.".IdCategoria =".$this->table_categoria.".IdCategoria");
 		$this->db->where_in($this->table_pedido_linea.'.IdPedido', $ides);
-		$query = $this->db->get($this->table_pedido_linea);        
+		$query = $this->db->get();        
 		return $query->result();
 	}
 	public function checkin($idcliente){
