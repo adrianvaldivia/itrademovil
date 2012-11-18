@@ -683,7 +683,7 @@ class Reporte_model extends CI_Model {
 		`Categoria`.`IdCategoria`, 
 		CategoriaDescripcion, 
 		`Producto`.`IdProducto` ,
-		`Producto`.`Descripcion` AS ProductoDescripcion
+		ProductoDescripcion
 		");
 		break;
 		
@@ -726,7 +726,7 @@ class Reporte_model extends CI_Model {
 		`Categoria`.`IdCategoria`, 
 		CategoriaDescripcion, 
 		`Producto`.`IdProducto` ,
-		`Producto`.`Descripcion` AS ProductoDescripcion
+		ProductoDescripcion
 		");
 		break;
 		
@@ -770,7 +770,7 @@ class Reporte_model extends CI_Model {
 		`Categoria`.`IdCategoria`, 
 		CategoriaDescripcion,
 		`Producto`.`IdProducto` , 
-		`Producto`.`Descripcion` AS ProductoDescripcion
+		ProductoDescripcion
 		");
 		break;	
 		}		
