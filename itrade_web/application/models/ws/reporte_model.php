@@ -1276,7 +1276,118 @@ class Reporte_model extends CI_Model {
 	//echo $this->db->last_query();	
 	return $query->result();
 		
+	} 
+	
+	public function ventas_resumido_sinc($anho,$idjerarquia,$idubigeo,$id){
+		
+		$myarr = explode("-",$anho);
+		
+		$str="(";
+		for($i = 0 ; $i< count($myarr); $i++)
+		
+		{ if ((count($myarr)-$i)==1)
+		{
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];
+			$str.=")";
+		}
+		else
+		{ 
+			$str.=" ( year(".$this->table_pedido.".FechaPedido) = ".$myarr[$i];	
+			$str.=") or ";
+			
+		}
+		}
+		$str.=")";
+		
+		switch($idjerarquia){
+		case 1:
+		
+		$query = $this->db->query("
+		select D.Ubigeo, D.Pais, D.Departamento, D.Distrito, D.Zona,  
+          count(distinct B.IdUsuario) as numVendedores,
+          count(distinct D.IdPedido) as numVentas,
+          sum(MontoTotalPedido) as montoVentas
+			from Ubigeo A left outer join Usuario B
+        on A.IdUbigeo=B.IdUbigeo
+        and B.IdPerfil=2         
+        left outer join Cliente C
+        on B.IdUsuario=C.IdVendedor 
+        left outer join Pedido D
+        on C.IdCliente=D.IdCliente
+		
+		WHERE ".$str." and `D`.`Pais`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month,		
+		`D`.`IdUbigeo`,		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		case 2:
+		
+		$query = $this->db->query("
+		select D.Ubigeo, D.Pais, D.Departamento, D.Distrito, D.Zona,  
+          count(distinct B.IdUsuario) as numVendedores,
+          count(distinct D.IdPedido) as numVentas,
+          sum(MontoTotalPedido) as montoVentas
+			from Ubigeo A left outer join Usuario B
+        on A.IdUbigeo=B.IdUbigeo
+        and B.IdPerfil=2         
+        left outer join Cliente C
+        on B.IdUsuario=C.IdVendedor 
+        left outer join Pedido D
+        on C.IdCliente=D.IdCliente
+		
+		WHERE ".$str." and `D`.`Pais`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month,		
+		`D`.`IdUbigeo`,		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		case 3:
+		
+		$query = $this->db->query("
+		select D.Ubigeo, D.Pais, D.Departamento, D.Distrito, D.Zona,  
+          count(distinct B.IdUsuario) as numVendedores,
+          count(distinct D.IdPedido) as numVentas,
+          sum(MontoTotalPedido) as montoVentas
+			from Ubigeo A left outer join Usuario B
+        on A.IdUbigeo=B.IdUbigeo
+        and B.IdPerfil=2         
+        left outer join Cliente C
+        on B.IdUsuario=C.IdVendedor 
+        left outer join Pedido D
+        on C.IdCliente=D.IdCliente
+		
+		WHERE ".$str." and `D`.`Pais`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month,		
+		`D`.`IdUbigeo`,		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		
+		}
+		//echo $this->db->last_query();
+		return $query->result();
 	}
+	
+	
 	
 }
 ?>
