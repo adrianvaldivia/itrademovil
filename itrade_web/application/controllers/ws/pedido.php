@@ -194,7 +194,7 @@ class Pedido extends CI_Controller {
 		$result=$this->Payment_model->get_monto_zona($idzona,$idperiodo);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}	
-	public function get_pedidos_detail($idspedidos_w){
+	public function get_pedidos_detail($idspedidos_w=''){
 		$idspedidos=$this->input->post('idspedidos');
 		if ($idspedidos_w!='' && isset($idspedidos_w)){			
 			$idspedidos=$idspedidos_w;
