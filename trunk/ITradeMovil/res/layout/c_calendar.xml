@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/top_control_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/blanco"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/azul_2" >
+
+
+                <TextView
+                    android:id="@+id/c_txtItrade"
+                    android:layout_width="246dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dip"
+                    android:background="@color/azul_2"
+                    android:text="iTrade - Agenda"
+                    android:textColor="@color/grisClaro"
+                    android:textSize="20dip" />
+
+                <ImageButton
+                    android:id="@+id/c_btnExplorar"
+                    android:layout_width="58dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@color/azul_2"
+                    android:src="@drawable/maps" />
+            </LinearLayout>
+
+           <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/azul_2" >
+
+                        <ImageButton
+                            android:id="@+id/c_calBtnPedidos"
+                            style="@drawable/estilo_botones"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/user_customer" />
+
+                        <ImageButton
+                            android:id="@+id/c_calBtnNotificar"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/e_mail" />
+
+                        <ImageButton
+                            android:id="@+id/c_calBtnBuscarClientes"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/users_search" />
+
+                        <ImageButton
+                            android:id="@+id/c_calBtnCalcularMonto"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/emblem_money" />
+
+                        <ImageButton
+                            android:id="@+id/c_calBtnDirectorio"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/directorio" />
+
+                        <ImageButton
+                            android:id="@+id/c_calBtnCalendario"
+                            android:layout_width="53dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/estilo_botones"
+                            android:src="@drawable/calendar" />
+                    </LinearLayout>
+        </LinearLayout>
+>
+
+    </RelativeLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_control_bar"
+        android:orientation="vertical" >
+
+
+
+
+
+
+
+
+
+
+
+        <Button
+            android:id="@+id/c_selectedDayMonthYear"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginRight="33dp"
+            android:background="@drawable/calendar_top_header"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/c_prevMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calendar_left_arrow_selector" />
+
+            <Button
+                android:id="@+id/c_currentMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:background="@drawable/calendar_bar"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+
+            <ImageView
+                android:id="@+id/c_nextMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calendar_right_arrow_selector" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/c_calendarheader"
+            android:layout_width="wrap_content"     
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:layout_marginRight="22dp"
+            android:layout_marginLeft="28dp"
+            android:src="@drawable/blue_bg_with_text2" />
+
+        <GridView
+            android:id="@+id/c_calendar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="0dp"
+            android:numColumns="7" >
+        </GridView>
+    </LinearLayout>
+
+</RelativeLayout>
