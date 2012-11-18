@@ -662,6 +662,8 @@ class Reporte_model extends CI_Model {
 		`Marca`.`Descripcion` AS MarcaDescripcion, 
 		`Categoria`.`IdCategoria` ,
 		`Categoria`.`Descripcion` AS CategoriaDescripcion, 
+		`Producto`.`IdProducto` ,
+		`Producto`.`Descripcion` AS ProductoDescripcion, 
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
 		FROM (`Linea_Pedido`)
@@ -679,7 +681,9 @@ class Reporte_model extends CI_Model {
 		`Marca`.`IdMarca`,
 		MarcaDescripcion,
 		`Categoria`.`IdCategoria`, 
-		CategoriaDescripcion
+		CategoriaDescripcion, 
+		`Producto`.`IdProducto` ,
+		`Producto`.`Descripcion` AS ProductoDescripcion
 		");
 		break;
 		
@@ -701,6 +705,8 @@ class Reporte_model extends CI_Model {
 		`Marca`.`Descripcion` AS MarcaDescripcion, 
 		`Categoria`.`IdCategoria` ,
 		`Categoria`.`Descripcion` AS CategoriaDescripcion, 
+		`Producto`.`IdProducto` ,
+		`Producto`.`Descripcion` AS ProductoDescripcion,
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
 		FROM (`Linea_Pedido`)
@@ -718,7 +724,9 @@ class Reporte_model extends CI_Model {
 		`Marca`.`IdMarca`,
 		MarcaDescripcion,
 		`Categoria`.`IdCategoria`, 
-		CategoriaDescripcion
+		CategoriaDescripcion, 
+		`Producto`.`IdProducto` ,
+		`Producto`.`Descripcion` AS ProductoDescripcion
 		");
 		break;
 		
@@ -741,6 +749,8 @@ class Reporte_model extends CI_Model {
 		`Marca`.`Descripcion` AS MarcaDescripcion, 
 		`Categoria`.`IdCategoria` ,
 		`Categoria`.`Descripcion` AS CategoriaDescripcion, 
+		`Producto`.`IdProducto` ,
+		`Producto`.`Descripcion` AS ProductoDescripcion,
 		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
 		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
 		FROM (`Linea_Pedido`)
@@ -758,7 +768,9 @@ class Reporte_model extends CI_Model {
 		`Marca`.`IdMarca`,
 		MarcaDescripcion,
 		`Categoria`.`IdCategoria`, 
-		CategoriaDescripcion
+		CategoriaDescripcion,
+		`Producto`.`IdProducto` , 
+		`Producto`.`Descripcion` AS ProductoDescripcion
 		");
 		break;	
 		}		
