@@ -120,16 +120,60 @@ public class VerDia extends ListActivity{
 	private void asignarFechaSeleccionada() {
 		// TODO Auto-generated method stub
 		int diames=0;
+		int mes=0;
+		int anhio=0;
 		diames=obtenerDia();
+		mes=obtenerMes();
+		anhio=obtenerAnhio();
 		
 		_calendar.set(Calendar.DAY_OF_MONTH,diames);
+		_calendar.set(Calendar.MONTH,mes-1);
+		_calendar.set(Calendar.YEAR,anhio);
 	}
 
 
 	private int obtenerDia() {
-		int di=2;
+		int di=1;
 		// TODO Auto-generated method stub
-		
+		String strDia=strFecha;
+		int tam=strFecha.length();
+		strDia=""+strDia.substring(tam-2, tam);	
+		try {
+			di=Integer.parseInt(strDia);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return di;
+	}
+	
+	private int obtenerMes() {
+		int di=1;
+		// TODO Auto-generated method stub
+		String strDia=strFecha;
+		int tam=strFecha.length();
+		strDia=""+strDia.substring(tam-5, tam-3);	
+		try {
+			di=Integer.parseInt(strDia);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return di;
+	}
+	
+	private int obtenerAnhio() {
+		int di=1;
+		// TODO Auto-generated method stub
+		String strDia=strFecha;
+		int tam=strFecha.length();
+		strDia=""+strDia.substring(0, 4);	
+		try {
+			di=Integer.parseInt(strDia);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return di;
 	}
 
