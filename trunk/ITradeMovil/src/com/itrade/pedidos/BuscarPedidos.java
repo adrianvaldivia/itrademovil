@@ -69,6 +69,7 @@ public class BuscarPedidos extends ListActivity{
 	private ImageButton  button_clientes;
 	InputMethodManager imm;
 	Cliente cliente= new Cliente();
+	String razonsocial="";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,10 +101,18 @@ public class BuscarPedidos extends ListActivity{
  
 		Bundle bundle = getIntent().getExtras();
 		idUsuario = bundle.getLong("idusuario");
+		this.razonsocial=bundle.getString("razonsocial");
         setTitle("iTrade - Pedidos");
         editText = (EditText) findViewById(R.id.editTextCliente);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
         button_clientes = (ImageButton) findViewById(R.id.btnBuscarClientes);
+        if (razonsocial!=null){
+            if (!(razonsocial.length()==0)){
+            	editText.setText(razonsocial);
+            	buscarPedido();            	
+            }
+        	
+        }
 	    button_buscar.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 //				Toast.makeText(BuscarClientesGreenDao.this, "Buscar", Toast.LENGTH_LONG).show();

@@ -118,10 +118,15 @@ public class DetalleCliente extends ListActivity{
 			public void onClick(View v) {
 				//Toast.makeText(DetalleCliente.this, "pruebaa", Toast.LENGTH_LONG).show();
 //				Bundle bundle = getIntent().getExtras();
+				//
+				Intent intent = new Intent(DetalleCliente.this, BuscarPedidos.class);
+				intent.putExtra("idusuario", idusuario);
+				if (nombre.length()==0){
+					obtenerDatosCliente();
+				}					
+				intent.putExtra("razonsocial", nombre);
 				
-				//Intent intent = new Intent(DetalleCliente.this, VerMapaActivity.class);
-				
-//				startActivity(intent);		
+				startActivity(intent);		
 			}
 	 	});
 	    button_crearpedidos.setOnClickListener(new OnClickListener() {
@@ -195,9 +200,15 @@ public class DetalleCliente extends ListActivity{
 	}
 	@Override
 	protected void onRestart() {
+//		obtenerDatosCliente();
+//		this.Convierte();
+		super.onRestart();
+	}
+	@Override
+	protected void onResume() {
 		obtenerDatosCliente();
 		this.Convierte();
-		super.onRestart();
+		super.onResume();
 	}
 	@Override
 	protected void onDestroy() {
