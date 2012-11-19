@@ -45,6 +45,7 @@ public class DetallePedido extends ListActivity{
 	private TextView txt_ruc;
 	public Bundle bundle;
 	public long idpedido=0;
+	public long idpedidolocal=0;
 	public String nombre="";
 	public String apellidos="";
 	public int idcliente;
@@ -53,9 +54,9 @@ public class DetallePedido extends ListActivity{
 	public String pruebaPaso;
 	private static final int REQUEST_CODE=10;
 	List<PedidoLinea> listaPedidoLinea=new ArrayList<PedidoLinea>();
-	ArrayList <Integer> listaProductoElegido= new ArrayList<Integer>();//arreglo de ids
-	ArrayList <Integer> listaProductoCantidad= new ArrayList<Integer>();//arreglo de cantidades
-	ArrayList <String> listaProductoNombre= new ArrayList<String>();//lista de arreglo de nombres
+//	ArrayList <Integer> listaProductoElegido= new ArrayList<Integer>();//arreglo de ids
+//	ArrayList <Integer> listaProductoCantidad= new ArrayList<Integer>();//arreglo de cantidades
+//	ArrayList <String> listaProductoNombre= new ArrayList<String>();//lista de arreglo de nombres
 	
 	Double montoTotal=0.0;
 	String unidadMoneda="";
@@ -112,20 +113,18 @@ public class DetallePedido extends ListActivity{
 		idcliente = bundle.getInt("idcliente");
 		idusuario = bundle.getLong("idusuario");
 		monto = bundle.getDouble("monto");
+		idpedidolocal = bundle.getLong("idpedidolocal");
 //		guardarPedido();
         setTitle("iTrade - Crear Pedido");
 
         txt_nombre = (TextView) findViewById(R.id.txtnombrecliente);
         txt_ruc = (TextView) findViewById(R.id.txtruccliente);
-
-        List<String> listaGenerica =null;  
-
-        List<String> lista =null;
         
-        lista= this.Convierte(listaGenerica);
-//        ListView lv = getListView(); 
-//        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.lista, lista));
-
+        obtenerListaPedidoLinea();
+        mostrarDatos();
+		List<String> lista2 =null;
+		List<String> listaGenerica2 =null; 
+		lista2= ConvierteAlVolver(listaGenerica2);
 
     }
 
@@ -137,14 +136,22 @@ public class DetallePedido extends ListActivity{
 //     Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
 //    }    
     
-	public List<String> Convierte(List<String> lis){
-		List<String> lista=new ArrayList<String>();
+	private void obtenerListaPedidoLinea() {
+		// TODO Auto-generated method stub
+//		listaPedidoLinea=pedidoLineaDao.loadAll();
+		listaPedidoLinea=pedidoLineaDao.queryBuilder()
+        		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idpedidolocal))
+        		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
+		
+	}
+
+	public void mostrarDatos(){
 		this.txt_nombre.setText(this.nombre);
 		this.txt_ruc.setText("Monto "+unidadMoneda+" "+monto);
 //		lista.add("Nombre: "+this.nombre);
 //		lista.add("RUC: "+this.apellidos);
 //		lista.add("Lista de Productos:");
-		return lista;
+
 	}
 	public List<String> ConvierteAlVolver(List<String> lis){//PROGRAMAR ACA
 		List<String> lista=new ArrayList<String>();
@@ -152,76 +159,74 @@ public class DetallePedido extends ListActivity{
 //		lista.add("Nombre: "+this.nombre);
 //		lista.add("RUC: "+this.apellidos);
 //		lista.add("Lista de Productos:");
-		for(int i=0;i<listaProductoNombre.size();i++){
+		for(int i=0;i<listaPedidoLinea.size();i++){
 
-			lista.add(listaProductoNombre.get(i)+"  Cantidad:"+this.listaProductoCantidad.get(i));
-		    PedidoLinea pedidoLinea = new PedidoLinea();
-		    pedidoLinea.setCantidad(listaProductoCantidad.get(i));
-		    pedidoLinea.setIdProducto(listaProductoElegido.get(i));
-		    pedidoLinea.setIdPedido(idpedido);
-		    pedidoLinea.setMarca("N");//N por ser un Nuevo Pedido Linea
-		    pedidoLinea.setMontoLinea(obtenerPrecio(pedidoLinea.getIdProducto())*pedidoLinea.getCantidad());
-			long temp=0;
-			temp=temp+listaProductoElegido.get(i);
-			ElementoLista elemento = new ElementoLista(null,listaProductoNombre.get(i),"Cantidad: "+this.listaProductoCantidad.get(i),"SubTotal:"+pedidoLinea.getMontoLinea(),temp);
+//			lista.add(listaProductoNombre.get(i)+"  Cantidad:"+this.listaProductoCantidad.get(i));
+		    PedidoLinea pedidoLinea = listaPedidoLinea.get(i);
+//		    pedidoLinea.setCantidad(listaProductoCantidad.get(i));
+//		    pedidoLinea.setIdProducto(listaProductoElegido.get(i));
+//		    pedidoLinea.setIdPedido(idpedido);
+//		    pedidoLinea.setMarca("N");//N por ser un Nuevo Pedido Linea
+//		    pedidoLinea.setMontoLinea(obtenerPrecio(pedidoLinea.getIdProducto())*pedidoLinea.getCantidad());
+//			long temp=0;
+//			temp=temp+listaProductoElegido.get(i);
+			ElementoLista elemento = new ElementoLista(null,obtenerNombreProducto(pedidoLinea.getIdProducto()),"Cantidad: "+pedidoLinea.getCantidad(),"SubTotal:"+pedidoLinea.getMontoLinea(),pedidoLinea.getId());
 			elementoListaDao.insert(elemento);
-		    this.listaPedidoLinea.add(pedidoLinea);
+//		    this.listaPedidoLinea.add(pedidoLinea);
 		}
-		procesaPedido();
+//		procesaPedido();
 		cursorElementoLista.requery();
 		return lista;
 	}
-	private Double obtenerPrecio(Integer idProducto) {
+	private String obtenerNombreProducto(Integer idProducto) {
 		// TODO Auto-generated method stubaa
-		Double precioAux=0.0;
-//		Producto productoAux= this.productoDao.loadByRowId(idProducto);
+		String resul="";
 		String str="";
-		//Producto productoAux=productoDao.loadByRowId(idProducto);
 		str=str+idProducto;
         List<Producto> productosAux = productoDao.queryBuilder()
         		.where(Properties.IdProducto.eq(str))
         		.orderAsc(Properties.Id).list();        
         Producto productoTemp=productosAux.get(0);
-		precioAux=productoTemp.getPrecio();
-		return precioAux;
+        resul=productoTemp.getDescripcion();
+		return resul;
 	}
 
-	public void guardarPedido(){
-        daoPedido = new DAOPedido(DetallePedido.this);
-        Pedido pedido= new Pedido();
-        pedido.setIdCliente(idcliente);
-        //procesaPedido();//obtiene el monto Total
-        pedido.setMontoTotal(montoTotal);
-        pedido.setMontoSinIGV(montoTotal);
-        pedido.setNumVoucher("N");//N de nuevo
-        //idpedido=daoPedido.registrarPedido(pedido);
-        pedidoDao.insert(pedido);
-        idpedido=pedidoDao.count();        
-	}
-	private void procesaPedido() {//acumulador del monto Total
-		montoTotal=0.0;
-        for(int i=0;i<listaPedidoLinea.size();i++){
-        	montoTotal=montoTotal+listaPedidoLinea.get(i).getMontoLinea();
-        }
-        this.txt_ruc.setText(unidadMoneda+" "+montoTotal);
-		// TODO Auto-generated method stub
-		
-	}
+//	public void guardarPedido(){
+//        daoPedido = new DAOPedido(DetallePedido.this);
+//        Pedido pedido= new Pedido();
+//        pedido.setIdCliente(idcliente);
+//        //procesaPedido();//obtiene el monto Total
+//        pedido.setMontoTotal(montoTotal);
+//        pedido.setMontoSinIGV(montoTotal);
+//        pedido.setNumVoucher("N");//N de nuevo
+//        //idpedido=daoPedido.registrarPedido(pedido);
+//        pedidoDao.insert(pedido);
+//        idpedido=pedidoDao.count();        
+//	}
+//	private void procesaPedido() {//acumulador del monto Total
+//		montoTotal=0.0;
+//        for(int i=0;i<listaPedidoLinea.size();i++){
+//        	montoTotal=montoTotal+listaPedidoLinea.get(i).getMontoLinea();
+//        }
+//        this.txt_ruc.setText(unidadMoneda+" "+montoTotal);
+//		// TODO Auto-generated method stub
+//		
+//	}
 
-	public void guardarDetallePedido(){
-		procesaPedidoLinea();
-        daoPedido = new DAOPedido(DetallePedido.this);
-        for(int i=0;i<listaPedidoLinea.size();i++){
-//        	daoPedido.registrarPedidoLinea(listaPedidoLinea.get(i));
-        	pedidoLineaDao.insert(listaPedidoLinea.get(i));        	
-        }
-	}
+//	public void guardarDetallePedido(){
+//		procesaPedidoLinea();
+//        daoPedido = new DAOPedido(DetallePedido.this);
+//        for(int i=0;i<listaPedidoLinea.size();i++){
+////        	daoPedido.registrarPedidoLinea(listaPedidoLinea.get(i));
+//        	pedidoLineaDao.insert(listaPedidoLinea.get(i));        	
+//        }
+//	}
  
-	private void procesaPedidoLinea() {
-        for(int i=0;i<listaPedidoLinea.size();i++){
-        	listaPedidoLinea.get(i).setIdPedido(idpedido);        	
-        }
-	}
+//	private void procesaPedidoLinea() {
+//        for(int i=0;i<listaPedidoLinea.size();i++){
+//        	listaPedidoLinea.get(i).setIdPedido(idpedido);        	
+//        }
+//	}
 
 	@Override
 	public void onRestart(){
@@ -241,21 +246,21 @@ public class DetallePedido extends ListActivity{
 //		Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show(); 
 		super.onStop(); 
 	}
-	@Override
-    protected void onActivityResult(int requestCode,int resultCode, Intent pData)           
-    {
-        if ( requestCode == REQUEST_CODE )//Si el código de respuesta es igual al requestCode
-            {
-            if (resultCode == RESULT_OK )//Si resultCode es igual a ok
-                {
-//            		pruebaPaso = pData.getExtras().getString("lista" );//Obtengo el string de la subactividad
-            		listaProductoElegido=pData.getExtras().getIntegerArrayList("listaProductoElegido");//Obtengo el string de la subactividad
-            		listaProductoCantidad=pData.getExtras().getIntegerArrayList("listaProductoCantidad");
-            		listaProductoNombre=pData.getExtras().getStringArrayList("listaProductoNombre");
-                    //Aquí se hara lo que se desee con el valor recuperado                    
-                }
-            }
-    }
+//	@Override
+//    protected void onActivityResult(int requestCode,int resultCode, Intent pData)           
+//    {
+//        if ( requestCode == REQUEST_CODE )//Si el código de respuesta es igual al requestCode
+//            {
+//            if (resultCode == RESULT_OK )//Si resultCode es igual a ok
+//                {
+////            		pruebaPaso = pData.getExtras().getString("lista" );//Obtengo el string de la subactividad
+//            		listaProductoElegido=pData.getExtras().getIntegerArrayList("listaProductoElegido");//Obtengo el string de la subactividad
+//            		listaProductoCantidad=pData.getExtras().getIntegerArrayList("listaProductoCantidad");
+//            		listaProductoNombre=pData.getExtras().getStringArrayList("listaProductoNombre");
+//                    //Aquí se hara lo que se desee con el valor recuperado                    
+//                }
+//            }
+//    }
 
 
 	@Override

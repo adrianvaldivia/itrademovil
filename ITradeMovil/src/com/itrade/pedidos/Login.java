@@ -476,7 +476,7 @@ public class Login extends Activity {
         daoSession = daoMaster.newSession();
         usuarioDao = daoSession.getUsuarioDao();
         pedidoLineaDao = daoSession.getPedidoLineaDao();
-        pedidoLineaDao.deleteAll();
+//        pedidoLineaDao.deleteAll();
 		 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		    final boolean boolRecordarUsu = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_CHECK_USUARIO, true);	    
 		    if (!boolRecordarUsu){

@@ -176,6 +176,7 @@ public class BuscarPedidos extends ListActivity{
    	     	intent.putExtra("apellidos", clienteTemp.getRUC());
    	     	intent.putExtra("idcliente", clienteTemp.getIdCliente());
    	     	intent.putExtra("idusuario", idUsuario );
+   	     	intent.putExtra("idpedidolocal", pedido.getId() );
    	     	intent.putExtra("monto", pedido.getMontoSinIGV() );
    	     	startActivity(intent);
     	}
