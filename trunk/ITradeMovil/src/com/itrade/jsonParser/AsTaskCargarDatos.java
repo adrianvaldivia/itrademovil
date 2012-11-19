@@ -197,14 +197,28 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 						strIdPedidos=strIdPedidos+pedAux.getIdPedido()+"-";
 			        }
 					List<PedidoLinea> listaPedidoLinea = daoPedido.getAllPedidoLineas(strIdPedidos);
+					
+					Pedido pedidoAux3;
 					pedidoLineaDao.deleteAll();
-					for(int i=0;i<listaPedidoLinea.size();i++){
-						//numvoucher = A de antiguo
-						PedidoLinea pedTemp= listaPedidoLinea.get(i);
-						pedTemp.setMarca("A");//A de antiguo porque ya esta registrado
-						pedidoLineaDao.insert(pedTemp);
-				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+					long idPed=0;
+					long idPedLi=0;
+					for(int j=0;j<listaPedido.size();j++){
+						long idLoc=1;
+						idLoc=idLoc+j;
+						pedidoAux3=listaPedido.get(j);
+						idPed=pedidoAux3.getIdPedido();
+						for(int i=0;i<listaPedidoLinea.size();i++){
+							PedidoLinea pedLinTemp= listaPedidoLinea.get(i);
+							idPedLi=pedLinTemp.getIdPedido();
+							if (idPed==idPedLi){
+								pedLinTemp.setIdPedido(idLoc);
+								pedLinTemp.setMarca("A");//A de antiguo porque ya esta registrado
+								pedidoLineaDao.insert(pedLinTemp);
+							}							
+						}
 					}
+
+					/////////////////////////////////////////////////////////////////////////fin  de Pedido Linea
 					/////////////////////////////////////////////Sincronizacion eventos
 					eventoDao.deleteAll();
 					daoEvento = new DAOEvento(activity);
