@@ -91,6 +91,33 @@
 		            android:background="@drawable/estilo_botones"
 		            android:src="@drawable/excelencia" />
 		    </LinearLayout>
+		    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/prevDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calendar_left_arrow_selector_big" />
+
+            <TextView
+		            android:id="@+id/txtfecha"
+		            android:layout_width="wrap_content"
+		            android:layout_height="fill_parent" 
+		            android:layout_weight="0.6"
+		            android:gravity="center"
+		            android:text="iTrade - Eventos"
+		            android:textColor="@color/OrangeRed"
+		            android:textSize="20dip" />
+
+            <ImageView
+                android:id="@+id/nextDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calendar_right_arrow_selector_big" />
+
+        </LinearLayout>
 		</LinearLayout>>
 
 	</RelativeLayout>
