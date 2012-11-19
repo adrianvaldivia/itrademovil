@@ -1,8 +1,10 @@
 package com.itrade.pedidos;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 import android.app.ListActivity;
@@ -12,8 +14,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itrade.R;
@@ -33,6 +37,7 @@ public class VerDia extends ListActivity{
 	private String idUsuario;
 	private Date fecha;
 	Evento evento= new Evento();
+	Calendar _calendar;
 	
 	
     private SQLiteDatabase db;
@@ -46,11 +51,22 @@ public class VerDia extends ListActivity{
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
 	
+    
+	private ImageView prevDate;
+	private ImageView nextDate;
+	private TextView txtFecha;
+	
 	 public void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.detalle_dia);
+		 prevDate = (ImageView) this.findViewById(R.id.prevDate);
+		 nextDate = (ImageView) this.findViewById(R.id.nextDate);
+		 txtFecha = (TextView) this.findViewById(R.id.txtfecha);
+		 _calendar = Calendar.getInstance(Locale.getDefault());
+		 
 		 Bundle bundle=getIntent().getExtras();
 		 strFecha=bundle.getString("fecha");
+		 asignarFechaSeleccionada();
 //		    Toast.makeText(this, "Fecha: "+strFecha, Toast.LENGTH_LONG).show();
 		    
 		 
@@ -74,15 +90,52 @@ public class VerDia extends ListActivity{
 	        		toElementoLista);    
 	        //fin green Day de Elementos Lista 
 	     setListAdapter(adapterElementoLista);
+	     
+	     
 	     guardaListaOriginal();	
 	     filtraLista();
 	     mostrarLista();
+	     txtFecha.setText(strFecha);
+	     prevDate.setOnClickListener(new android.view.View.OnClickListener() {
+				public void onClick(View v) {
+					strFecha=getFechaElegida("A");
+					txtFecha.setText(strFecha);
+					filtraLista();
+					mostrarLista();
+	
+				}
+		 });
+	     nextDate.setOnClickListener(new android.view.View.OnClickListener() {
+					public void onClick(View v) {
+						strFecha=getFechaElegida("S");
+						txtFecha.setText(strFecha);
+						filtraLista();
+						mostrarLista();
+				    }
+		 });
 	         		
 	 }
 	 
 
+	private void asignarFechaSeleccionada() {
+		// TODO Auto-generated method stub
+		int diames=0;
+		diames=obtenerDia();
+		
+		_calendar.set(Calendar.DAY_OF_MONTH,diames);
+	}
+
+
+	private int obtenerDia() {
+		int di=2;
+		// TODO Auto-generated method stub
+		
+		return di;
+	}
+
+
 	@Override
-	    protected void onListItemClick(ListView l, View v, int position, long id) {
+	protected void onListItemClick(ListView l, View v, int position, long id) {
 	     // TODO Auto-generated method stub
 	     //super.onListItemClick(l, v, position, id);
 //		 String selection="";
@@ -96,25 +149,25 @@ public class VerDia extends ListActivity{
 	     intent.putExtra("idevento",evento.getIdEvento()); //hardcode
 	     startActivity(intent);	
 	     
-	    }    
+	}    
 	 
-	 	private void encuentraEvento(long id) {
+	private void encuentraEvento(long id) {
 			ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
 			evento=eventoDao.loadByRowId(elementoAux.getIdElemento());
-		}
-	    private void guardaListaOriginal() {
+	}
+	private void guardaListaOriginal() {
 			// TODO Auto-generated method stub
 	    	this.eventos=eventoDao.loadAll();
 			
 		}
-		private void filtraLista() {
+	private void filtraLista() {
 				// TODO Auto-generated method stub
 			this.eventos=eventoDao.queryBuilder()
 			             .where(Properties.Fecha.eq(strFecha))
 			        	 .orderAsc(Properties.Id).list();
 //			Toast.makeText(this, "filtrado", Toast.LENGTH_LONG).show();
 			}
-		private void mostrarLista() {
+	private void mostrarLista() {
 			elementoListaDao.deleteAll();	        
 			for(int i=0;i<eventos.size();i++){
 		        long temp=0;
@@ -127,7 +180,7 @@ public class VerDia extends ListActivity{
 	        cursorElementoLista.requery();	
 			
 		}
-		private String remueveCerosDerecha(String horaInicio) {
+	private String remueveCerosDerecha(String horaInicio) {
 			// TODO Auto-generated method stub
 			int tam=horaInicio.length();
 			String resul="";
@@ -135,13 +188,68 @@ public class VerDia extends ListActivity{
 			resul=resul.substring(0, tam-3);	
 			return resul;
 		}
-		
-		@Override
-		protected void onDestroy() {
+	private String getFechaElegida(String anteriorSiguiente) {
+		    	String resul;			
+				int month=1;
+				int year=1;
+				int day=1;
+				
+				Calendar prevDay = (Calendar) _calendar.clone();
+				prevDay.add (Calendar.DAY_OF_YEAR, -1);
+				System.out.println ("Previous Day: " + prevDay.getTime());
+
+				Calendar nextDay = (Calendar) _calendar.clone();
+				nextDay.add (Calendar.DAY_OF_YEAR, 1);
+				System.out.println ("Next Day: " + nextDay.getTime());
+				
+				if(anteriorSiguiente.compareToIgnoreCase("A")==0){					
+			    	year = prevDay.get(Calendar.YEAR);
+					month = prevDay.get(Calendar.MONTH) + 1;
+					day= prevDay.get(Calendar.DAY_OF_MONTH);
+					_calendar=(Calendar) prevDay.clone();
+				}
+				if (anteriorSiguiente.compareToIgnoreCase("S")==0){					
+			    	year = nextDay.get(Calendar.YEAR);
+					month = nextDay.get(Calendar.MONTH) + 1;
+					day= nextDay.get(Calendar.DAY_OF_MONTH);		
+					_calendar=(Calendar) nextDay.clone();
+				}
+
+
+				
+				String strMonth=""+month;
+				String strDay=""+day;
+				strMonth=agregaCeroMes(strMonth);
+				strDay=agregaCeroDia(strDay);
+				resul=""+year+"-"+strMonth+"-"+strDay;		
+				return resul;
+			}
+	private String agregaCeroMes(String themonth) {
+				String resul="";
+				if (themonth.length()==1)
+					resul="0"+themonth;
+				else
+					resul=""+themonth;
+					
+				return resul;
+				
+			}
+	private String agregaCeroDia(String theday) {
+				String resul="";
+				if (theday.length()==1)
+					resul="0"+theday;
+				else
+					resul=""+theday;
+					
+				return resul;
+				
+			}
+	@Override
+	protected void onDestroy() {
 //			recuperarOriginal();		
 			db.close();
 			cursorElementoLista.close();
 		    super.onDestroy();
-		}
+	}
 	
 }

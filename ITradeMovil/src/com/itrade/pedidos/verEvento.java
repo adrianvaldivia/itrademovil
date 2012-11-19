@@ -1,10 +1,8 @@
 package com.itrade.pedidos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -15,25 +13,24 @@ import android.widget.Toast;
 import com.itrade.R;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
-import com.itrade.model.ElementoListaDao;
+//import com.itrade.model.ElementoListaDao;
 import com.itrade.model.Evento;
 import com.itrade.model.EventoDao;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.EventoDao.Properties;
 
 public class verEvento extends Activity{
- private String fecha;
  Evento evento= new Evento();
  
  private SQLiteDatabase db;
 
  private DaoMaster daoMaster;
  private DaoSession daoSession;
- private ElementoListaDao elementoListaDao;
+// private ElementoListaDao elementoListaDao;
  private EventoDao eventoDao;
 
 // private Cursor cursor;
- private Cursor cursorElementoLista;
+// private Cursor cursorElementoLista;
  SimpleCursorAdapter adapterElementoLista;
  int idEvento=0;
  private TextView txt_Hora;
@@ -57,7 +54,7 @@ public class verEvento extends Activity{
      db = helper.getWritableDatabase();
      daoMaster = new DaoMaster(db);
      daoSession = daoMaster.newSession();	     
-     elementoListaDao = daoSession.getElementoListaDao();
+//     elementoListaDao = daoSession.getElementoListaDao();
      eventoDao = daoSession.getEventoDao();
      //fin green day
      encontrarEvento();
@@ -90,5 +87,12 @@ public class verEvento extends Activity{
 			evento=eventos.get(0);
 		else
 			evento.setDescripcion("ERROR");
+	}
+	
+	@Override
+	protected void onDestroy() {
+//		recuperarOriginal();		
+		db.close();
+	    super.onDestroy();
 	}
 }
