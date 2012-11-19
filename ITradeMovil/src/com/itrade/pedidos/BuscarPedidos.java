@@ -109,7 +109,7 @@ public class BuscarPedidos extends ListActivity{
         if (razonsocial!=null){
             if (!(razonsocial.length()==0)){
             	editText.setText(razonsocial);
-            	buscarPedido();            	
+            	buscarPedido2(razonsocial);
             }
         	
         }
@@ -153,7 +153,14 @@ public class BuscarPedidos extends ListActivity{
                 boolean enable = s.length() != 0;//habilita o deshabilita el boton segun sea el caso
                 button.setEnabled(enable);
                 if (enable==false){
-                	recuperarOriginal();
+                    if (razonsocial!=null){
+                        if(razonsocial.length()==0){
+                        	recuperarOriginal();
+                        }        
+                    }
+                    else
+                    	recuperarOriginal();
+//                	recuperarOriginal();
                 }
                 else
                 	buscarPedido();
@@ -196,6 +203,29 @@ public class BuscarPedidos extends ListActivity{
 		// TODO Auto-generated method stub
 		
 	}
+	private void buscarPedido2(String texto) {
+        ArrayList<String> listaGenerica = encuentraIdCliente(texto);//lista con los Ids de los clientes encontrados
+        elementoListaDao.deleteAll();
+        if(listaGenerica.size()>0){
+        	for(int k=0;k<listaGenerica.size();k++){
+        		String strIdCliente=listaGenerica.get(k);
+        		List<Pedido> pedidosAux = pedidoDao.queryBuilder()
+              		.where(com.itrade.model.PedidoDao.Properties.IdCliente.eq(strIdCliente))
+              		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
+      		              
+        		for(int i=0;i<pedidosAux.size();i++){
+        			long longTemp=0;
+        			longTemp=longTemp+pedidosAux.get(i).getIdCliente();
+        			Cliente clienteTemp= this.encuentraCliente(longTemp);
+        			ElementoLista elemento = new ElementoLista(null,clienteTemp.getRazon_Social(),"Monto Total: "+pedidosAux.get(i).getMontoSinIGV(),null,pedidosAux.get(i).getId());
+      						
+        			elementoListaDao.insert(elemento);
+        			//Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+        		}
+            }
+        }                
+        cursorElementoLista.requery();	                
+    }
 
 	private void buscarPedido() {
         String texto = editText.getText().toString();
@@ -327,7 +357,14 @@ public class BuscarPedidos extends ListActivity{
 	@Override
 	public void onResume() {
         this.guardaListaOriginal();
-        this.recuperarOriginal();
+        if (razonsocial!=null){
+            if(razonsocial.length()==0){
+            	recuperarOriginal();
+            }        
+        }
+        else
+        	recuperarOriginal();
+
 		super.onResume();
 	}
 	@Override
