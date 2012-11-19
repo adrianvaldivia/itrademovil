@@ -69,6 +69,38 @@ public class DAOPedido {
 		
 	}
 
+	
+	public List<PedidoLinea> getAllPedidoLineas(String idPedidos) {
+		
+		List<PedidoLinea> listapedidolinea = new ArrayList<PedidoLinea>();
+		
+		/**************************WEBSERVICE BEGIN******************************/
+		
+		Syncronizar sync = new Syncronizar(window);
+		List<NameValuePair> param = new ArrayList<NameValuePair>();
+//		String idusuario=String.valueOf(idUsuario);
+//		param.add(new BasicNameValuePair("idvendedor", idusuario));
+		String route="/ws/pedido/get_pedidos_detail/"+idPedidos;
+		
+	    sync.conexion(param,route);
+	    try {
+			sync.getHilo().join();
+			Log.d("TAG","LLEGA PRIMERO AKI");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Log.d("TAG","LLEGA SEGUNDO AKI");
+	    Gson gson = new Gson();
+							
+		Log.e("log_tag", "se cayo5" );
+		listapedidolinea	=	gson.fromJson(sync.getResponse(), new TypeToken<List<PedidoLinea>>(){}.getType());				    
+
+		    /*****************************WEBSERVICE END**********************************/				
+		return listapedidolinea;
+		
+	}
+	
 
 	public int registrarPedido(Pedido pedido){
 		int idPedido=-1;

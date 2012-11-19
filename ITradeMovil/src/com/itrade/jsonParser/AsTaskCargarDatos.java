@@ -40,6 +40,7 @@ import com.itrade.model.Meta;
 import com.itrade.model.MetaDao;
 import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
+import com.itrade.model.PedidoLinea;
 import com.itrade.model.PedidoLineaDao;
 import com.itrade.model.Producto;
 import com.itrade.model.ProductoDao;
@@ -123,7 +124,7 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 		        prospectoDao = daoSession.getProspectoDao();
 		        contactoDao = daoSession.getContactoDao();
 		        
-		        pedidoLineaDao.deleteAll();
+//		        pedidoLineaDao.deleteAll();
 		        //fin green dao
 	        }
 
@@ -187,8 +188,23 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 						pedidoDao.insert(pedido);
 				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 					}
-					////////////////////////////////////////////////////////Sincronizacion de pedido Linea
-//					pedidoLineaDao.deleteAll();
+					////////////////////////////////////////////////////////Sincronizacion de pedido Linea				
+					int tam=0;
+					String strIdPedidos="";
+					tam=listaPedido.size();
+					for(int i=0;i<tam;i++){
+						Pedido pedAux= listaPedido.get(i);
+						strIdPedidos=strIdPedidos+pedAux.getIdPedido()+"-";
+			        }
+					List<PedidoLinea> listaPedidoLinea = daoPedido.getAllPedidoLineas(strIdPedidos);
+					pedidoLineaDao.deleteAll();
+					for(int i=0;i<listaPedidoLinea.size();i++){
+						//numvoucher = A de antiguo
+						PedidoLinea pedTemp= listaPedidoLinea.get(i);
+						pedTemp.setMarca("A");//A de antiguo porque ya esta registrado
+						pedidoLineaDao.insert(pedTemp);
+				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+					}
 					/////////////////////////////////////////////Sincronizacion eventos
 					eventoDao.deleteAll();
 					daoEvento = new DAOEvento(activity);
