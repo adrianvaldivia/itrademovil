@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -209,9 +210,10 @@ public class BuscarProspectosFusion extends ListActivity{
      //inicio cambios chichan
      this.encuentraCliente(id);
      int temp=safeLongToInt(prospecto.getId());
-     Intent intent = new Intent(BuscarProspectosFusion.this, DetalleCliente.class);
+     Intent intent = new Intent(BuscarProspectosFusion.this, DetalleProspecto.class);
      intent.putExtra("nombre", prospecto.getRazon_Social());
      intent.putExtra("apellidos", prospecto.getRUC());
+     Log.d("****IDPROSPECTO", temp+"");
      intent.putExtra("idcliente", temp);
      intent.putExtra("idusuario", idusuario);
      startActivity(intent);
