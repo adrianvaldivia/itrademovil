@@ -16,6 +16,7 @@ class Reporte_model extends CI_Model {
 		$this->table_producto = 'Producto';
 		$this->table_estado_pedido = 'estadopedido';
 		$this->table_periodo_meta = 'PeriodoMeta';
+		$this->table_persona = 'Persona';
     }	
 	
 	
@@ -1360,6 +1361,91 @@ class Reporte_model extends CI_Model {
 		return $query->result();
 	}
 	
+	public function visitas_sinc($anho,$mes,$idjerarquia,$idubigeo,$id){
+		
+		
+		
+		switch($idjerarquia){
+		case 1:
+		
+		$query = $this->db->query("
+		
+		
+		SELECT 
+		Visita.FechaVisita,
+		`Usuario`.`Nombre`,
+		`Persona`.`Nombre`, 
+		`Persona`.`ApePaterno`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona` 
+		
+		FROM (
+		`Visita`
+		)
+		JOIN  `Cliente` ON  `Cliente`.`IdCliente` =  `Visita`.`IdCliente` 
+		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Cliente`.`IdPersona` 
+		WHERE   MONTH(`Visita`.`FechaVisita`) = ".$mes." and `Ubigeo`.`Pais`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
+		 
+		");
+		break;
+		
+		case 2:
+		
+		$query = $this->db->query("
+		SELECT 
+		Visita.FechaVisita,
+		`Usuario`.`Nombre`,
+		`Persona`.`Nombre`, 
+		`Persona`.`ApePaterno`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona` 
+		
+		FROM (
+		`Visita`
+		)
+		JOIN  `Cliente` ON  `Cliente`.`IdCliente` =  `Visita`.`IdCliente` 
+		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Cliente`.`IdPersona` 
+		WHERE   MONTH(`Visita`.`FechaVisita`) = ".$mes." and `Ubigeo`.`Departamento`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
+		");
+		break;
+		
+		case 3:
+		
+		$query = $this->db->query("
+		SELECT 
+		Visita.FechaVisita,
+		`Usuario`.`Nombre`,
+		`Persona`.`Nombre`, 
+		`Persona`.`ApePaterno`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona` 
+		
+		FROM (
+		`Visita`
+		)
+		JOIN  `Cliente` ON  `Cliente`.`IdCliente` =  `Visita`.`IdCliente` 
+		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Cliente`.`IdPersona` 
+		WHERE   MONTH(`Visita`.`FechaVisita`) = ".$mes." and `Ubigeo`.`Distrito`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
+		");
+		break;
+		
+		
+		}
+		//echo $this->db->last_query();
+		return $query->result();
+	}
 	
 	
 }
