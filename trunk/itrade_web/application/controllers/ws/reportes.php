@@ -554,5 +554,52 @@ class Reportes extends CI_Controller {
 		}			
 	}
 	
+	public function meta_periodo($anho_w="",$idjerarquia_w="",$idubigeo_w=""){
+	
+		$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}				
+			$arr_usuarios=$this->Reporte_model->usuarios_resumido_sinc($anho_w,$idjerarquia_w,$idubigeo_w,$id);	
+	
+		//$idvendedor=$this->input->post('idvendedor');
+		//$idvendedor=1;
+		//if ($idvendedor_w!=''){
+		//	$idvendedor=$idvendedor_w;
+		//}
+		
+		foreach($arr_usuarios as $ele_usu){
+			$idvendedor=$ele_usu->IdUsuario;
+			$nacimiento=$ele_usu->FechNac;
+			$telefono=$ele_usu->Telefono;
+			$email=$ele_usu->Email;
+			echo $idvendedor;
+			$arr_meta=$this->Reporte_model->get_meta($idvendedor);
+			//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
+			//var_dump($arr_meta);	
+
+			
+			foreach($arr_meta as $ele){
+				$fechaini=$ele->FechaIni;
+				$fechafin=$ele->FechaFin;
+				$nombre=$ele->Descripcion;
+				$meta=$ele->Monto;
+				$metaout="$meta";
+				$suma=$this->Reporte_model->get_monto($idvendedor,$ele->FechaIni,$ele->FechaFin);			
+			}				
+			//var_dump($suma);
+			foreach($suma as $elem){
+			
+				$nume=($elem->montototal!=null)?$elem->montototal:0;
+			
+				$numeout="$nume";
+			$this->output->set_content_type('application/json')->set_output(json_encode(array("suma"=>$numeout,"fechini"=>$fechaini,
+			"fechafin"=>$fechafin,"meta"=>$metaout,"nombre"=>$nombre,"idvendedor"=>$idvendedor,"telefono"=>$telefono,"nacimiento"=>$nacimiento,"email"=>$email)));
+			}
+		
+		}
+		//$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
+	}
+	
 }
 
