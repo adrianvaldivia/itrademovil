@@ -1092,7 +1092,7 @@ class Reporte_model extends CI_Model {
 		
 		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`, `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
-		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
+		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona` ,  `Persona`.`Telefono`, `Persona`.`Email` ,`Persona`.`FechNac` 
 		FROM ( 
 		`Usuario`
 		)
@@ -1110,7 +1110,7 @@ class Reporte_model extends CI_Model {
 		
 		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
-		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
+		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`  , `Persona`.`Telefono`, `Persona`.`Email` ,`Persona`.`FechNac`  
 		FROM ( 
 		`Usuario`
 		)
@@ -1129,7 +1129,7 @@ class Reporte_model extends CI_Model {
 		
 		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
-		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`   
+		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona` , `Persona`.`Telefono`, `Persona`.`Email` ,`Persona`.`FechNac`   
 		FROM ( 
 		`Usuario`
 		)
@@ -1445,6 +1445,31 @@ class Reporte_model extends CI_Model {
 		}
 		//echo $this->db->last_query();
 		return $query->result();
+	}
+	
+	public function get_meta($idvendedor){
+		$query = $this->db->query("
+			SELECT P.Descripcion, M.Monto, P.FechaIni ,P.FechaFin  
+			FROM PeriodoMeta P, Meta M
+			WHERE P.FechaFin >= NOW( ) 
+			AND P.FechaIni <= NOW( ) 
+			AND P.IdPeriodo = M.IdPeriodo
+			AND M.IdUsuario =  '".$idvendedor."'
+		");	
+		echo $this->db->last_query();
+		return $query->result();	
+	}
+	public function get_monto($idvendedor,$fechini,$fechfin){
+		$query = $this->db->query("
+			SELECT SUM( P.MontoTotalPedido ) as montototal 
+			FROM Pedido P, Cliente C
+			WHERE  NOW() >= P.FechaPedido
+			AND  '".$fechini."' <= P.FechaPedido
+			AND P.IdCliente = C.IdCliente
+			AND C.IdVendedor ='".$idvendedor."' 
+		");
+		echo $this->db->last_query();
+		return $query->result();	
 	}
 	
 	
