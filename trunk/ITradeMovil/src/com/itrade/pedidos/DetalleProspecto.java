@@ -88,8 +88,12 @@ public class DetalleProspecto extends ListActivity{
 		idcliente = bundle.getInt("idcliente");
 		Log.d("***idprospecto", idcliente+"");
 		idusuario = bundle.getLong("idusuario");
+		nombre = bundle.getString("nombre");
+		apellidos = bundle.getString("apellidos");
+		montoCredito = bundle.getDouble("monto");
+		direccion = bundle.getString("direc");
 		
-		obtenerDatosCliente();//obtiene los datos del SQLite
+		//obtenerDatosCliente();//obtiene los datos del SQLite
 		boolVer=bundle.getInt("boolVer");//booleano indica desde donde fue llamado el activity
 
 //        Bundle bundle=getIntent().getExtras();
@@ -144,9 +148,10 @@ public class DetalleProspecto extends ListActivity{
 		String str="";
 		//Producto productoAux=productoDao.loadByRowId(idProducto);
 		str=str+idcliente;
+		Log.d("*idprospecto**", str);
         List<Prospecto> clientesAux = prospectoDao.queryBuilder()
-        		.where(Properties.IdProspecto.eq(str))
-        		.orderAsc(Properties.Id).list();
+        		.where(Properties.IdProspecto.eq(str)).list();
+//        		.orderAsc(Properties.Id).list();
         
         if (clientesAux!=null){
         	Log.d("***PROSPECTOYA", clientesAux.size()+"");
