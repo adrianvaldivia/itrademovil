@@ -276,6 +276,7 @@ public class ClientesListTask extends Activity {
 		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());	
 	*/		
         List<Cliente> cliList = sincPedidos.getListaCliente(idusuario);
+        
 	    ArrayList<String> idClientes = new ArrayList<String>();
 	    ArrayList<String> nombresClientes = new ArrayList<String>();
 		for(Cliente cli: cliList){
@@ -314,13 +315,12 @@ public class ClientesListTask extends Activity {
 	  }
 	  */
 	  //Esta jalando los pedidos de Hoy
-	  List<Pedido> pedList= sincPedidos.getPedidosHoy();
+	  
+	  List<Pedido> pedList= sincPedidos.getPedidosHoy();	  
 	  for(Pedido ped: pedList ){
 		  adapter.addItem(ped);
 	  }
-	  
-	  
-	  
+	  	  	
 	}
 
   	private Handler handler = new Handler()
