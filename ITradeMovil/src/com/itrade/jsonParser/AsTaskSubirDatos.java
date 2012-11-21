@@ -148,7 +148,12 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 	 @Override
 	protected void onPostExecute(String result) {
 	     if (this.dialog.isShowing()) {
-	           this.dialog.dismiss();
+	    	    try {
+	    	    	this.dialog.dismiss();
+	    	        dialog = null;
+	    	    } catch (Exception e) {
+	    	        // nothing
+	    	    }	    	 	           
 	     }	     
 	     actualizarUI();
 	     db.close();
