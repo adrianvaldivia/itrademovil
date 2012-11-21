@@ -24,14 +24,15 @@ public class EventoDao extends AbstractDao<Evento, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property IdEvento = new Property(1, Integer.class, "IdEvento", false, "ID_EVENTO");
-        public final static Property Creador = new Property(2, String.class, "Creador", false, "CREADOR");
-        public final static Property Asunto = new Property(3, String.class, "Asunto", false, "ASUNTO");
-        public final static Property Lugar = new Property(4, String.class, "Lugar", false, "LUGAR");
-        public final static Property Descripcion = new Property(5, String.class, "Descripcion", false, "DESCRIPCION");
-        public final static Property Fecha = new Property(6, String.class, "Fecha", false, "FECHA");
-        public final static Property HoraInicio = new Property(7, String.class, "HoraInicio", false, "HORA_INICIO");
-        public final static Property HoraFin = new Property(8, String.class, "HoraFin", false, "HORA_FIN");
+        public final static Property IdEvento = new Property(1, Long.class, "IdEvento", false, "ID_EVENTO");
+        public final static Property IdPersona = new Property(2, Long.class, "IdPersona", false, "ID_PERSONA");
+        public final static Property Creador = new Property(3, String.class, "Creador", false, "CREADOR");
+        public final static Property Asunto = new Property(4, String.class, "Asunto", false, "ASUNTO");
+        public final static Property Lugar = new Property(5, String.class, "Lugar", false, "LUGAR");
+        public final static Property Descripcion = new Property(6, String.class, "Descripcion", false, "DESCRIPCION");
+        public final static Property Fecha = new Property(7, String.class, "Fecha", false, "FECHA");
+        public final static Property HoraInicio = new Property(8, String.class, "HoraInicio", false, "HORA_INICIO");
+        public final static Property HoraFin = new Property(9, String.class, "HoraFin", false, "HORA_FIN");
     };
 
 
@@ -49,13 +50,14 @@ public class EventoDao extends AbstractDao<Evento, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'EVENTO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'ID_EVENTO' INTEGER," + // 1: IdEvento
-                "'CREADOR' TEXT," + // 2: Creador
-                "'ASUNTO' TEXT," + // 3: Asunto
-                "'LUGAR' TEXT," + // 4: Lugar
-                "'DESCRIPCION' TEXT," + // 5: Descripcion
-                "'FECHA' TEXT," + // 6: Fecha
-                "'HORA_INICIO' TEXT," + // 7: HoraInicio
-                "'HORA_FIN' TEXT);"); // 8: HoraFin
+                "'ID_PERSONA' INTEGER," + // 2: IdPersona
+                "'CREADOR' TEXT," + // 3: Creador
+                "'ASUNTO' TEXT," + // 4: Asunto
+                "'LUGAR' TEXT," + // 5: Lugar
+                "'DESCRIPCION' TEXT," + // 6: Descripcion
+                "'FECHA' TEXT," + // 7: Fecha
+                "'HORA_INICIO' TEXT," + // 8: HoraInicio
+                "'HORA_FIN' TEXT);"); // 9: HoraFin
     }
 
     /** Drops the underlying database table. */
@@ -74,44 +76,49 @@ public class EventoDao extends AbstractDao<Evento, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer IdEvento = entity.getIdEvento();
+        Long IdEvento = entity.getIdEvento();
         if (IdEvento != null) {
             stmt.bindLong(2, IdEvento);
         }
  
+        Long IdPersona = entity.getIdPersona();
+        if (IdPersona != null) {
+            stmt.bindLong(3, IdPersona);
+        }
+ 
         String Creador = entity.getCreador();
         if (Creador != null) {
-            stmt.bindString(3, Creador);
+            stmt.bindString(4, Creador);
         }
  
         String Asunto = entity.getAsunto();
         if (Asunto != null) {
-            stmt.bindString(4, Asunto);
+            stmt.bindString(5, Asunto);
         }
  
         String Lugar = entity.getLugar();
         if (Lugar != null) {
-            stmt.bindString(5, Lugar);
+            stmt.bindString(6, Lugar);
         }
  
         String Descripcion = entity.getDescripcion();
         if (Descripcion != null) {
-            stmt.bindString(6, Descripcion);
+            stmt.bindString(7, Descripcion);
         }
  
         String Fecha = entity.getFecha();
         if (Fecha != null) {
-            stmt.bindString(7, Fecha);
+            stmt.bindString(8, Fecha);
         }
  
         String HoraInicio = entity.getHoraInicio();
         if (HoraInicio != null) {
-            stmt.bindString(8, HoraInicio);
+            stmt.bindString(9, HoraInicio);
         }
  
         String HoraFin = entity.getHoraFin();
         if (HoraFin != null) {
-            stmt.bindString(9, HoraFin);
+            stmt.bindString(10, HoraFin);
         }
     }
 
@@ -126,14 +133,15 @@ public class EventoDao extends AbstractDao<Evento, Long> {
     public Evento readEntity(Cursor cursor, int offset) {
         Evento entity = new Evento( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdEvento
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // Creador
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Asunto
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // Lugar
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // Descripcion
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Fecha
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // HoraInicio
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // HoraFin
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // IdEvento
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // IdPersona
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Creador
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // Asunto
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // Lugar
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Descripcion
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // Fecha
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // HoraInicio
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // HoraFin
         );
         return entity;
     }
@@ -142,14 +150,15 @@ public class EventoDao extends AbstractDao<Evento, Long> {
     @Override
     public void readEntity(Cursor cursor, Evento entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setIdEvento(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setCreador(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setAsunto(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setLugar(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setDescripcion(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setFecha(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setHoraInicio(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setHoraFin(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setIdEvento(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setIdPersona(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setCreador(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setAsunto(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setLugar(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setDescripcion(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setFecha(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setHoraInicio(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setHoraFin(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     /** @inheritdoc */

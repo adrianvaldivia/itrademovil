@@ -230,7 +230,7 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 					List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
 					for(int i=0;i<listaEvento.size();i++){
 						//numvoucher = A de antiguo
-						Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
+						Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getIdPersona(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
 						eventoDao.insert(evento);
 				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 					}		
