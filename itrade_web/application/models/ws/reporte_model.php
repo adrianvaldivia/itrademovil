@@ -1361,7 +1361,7 @@ class Reporte_model extends CI_Model {
 		return $query->result();
 	}
 	
-	public function visitas_sinc($anho,$mes,$idjerarquia,$idubigeo,$id){
+	public function visitas_sinc($anho,$idjerarquia,$idubigeo,$id){
 		
 		
 		
@@ -1372,7 +1372,8 @@ class Reporte_model extends CI_Model {
 		
 		
 		SELECT 
-		Visita.FechaVisita,
+		Visita.FechaVisita, 
+		MONTH(`Visita`.`FechaVisita`) as mes , 
 		`Usuario`.`Nombre`,
 		`Persona`.`Nombre`, 
 		`Persona`.`ApePaterno`, 
@@ -1388,7 +1389,7 @@ class Reporte_model extends CI_Model {
 		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Cliente`.`IdPersona` 
-		WHERE   MONTH(`Visita`.`FechaVisita`) = ".$mes." and `Ubigeo`.`Pais`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
+		WHERE   `Ubigeo`.`Pais`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
 		 
 		");
 		break;
@@ -1397,7 +1398,8 @@ class Reporte_model extends CI_Model {
 		
 		$query = $this->db->query("
 		SELECT 
-		Visita.FechaVisita,
+		Visita.FechaVisita, 
+		MONTH(`Visita`.`FechaVisita`) as mes , 
 		`Usuario`.`Nombre`,
 		`Persona`.`Nombre`, 
 		`Persona`.`ApePaterno`, 
@@ -1413,7 +1415,7 @@ class Reporte_model extends CI_Model {
 		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Cliente`.`IdPersona` 
-		WHERE   MONTH(`Visita`.`FechaVisita`) = ".$mes." and `Ubigeo`.`Departamento`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
+		WHERE   `Ubigeo`.`Departamento`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
 		");
 		break;
 		
@@ -1422,6 +1424,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		SELECT 
 		Visita.FechaVisita,
+		MONTH(`Visita`.`FechaVisita`) as mes , 
 		`Usuario`.`Nombre`,
 		`Persona`.`Nombre`, 
 		`Persona`.`ApePaterno`, 
@@ -1437,7 +1440,7 @@ class Reporte_model extends CI_Model {
 		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Cliente`.`IdPersona` 
-		WHERE   MONTH(`Visita`.`FechaVisita`) = ".$mes." and `Ubigeo`.`Distrito`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
+		WHERE  `Ubigeo`.`Distrito`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
 		");
 		break;
 		
