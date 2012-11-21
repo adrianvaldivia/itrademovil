@@ -570,6 +570,16 @@ class Reportes extends CI_Controller {
 		$arr_acumulador=array();
 		foreach($arr_usuarios as $ele_usu){
 			$idvendedor=$ele_usu->IdUsuario;
+			$nombreusuario=$ele_usu->NombreUsuario;
+			$nombrepersona=$ele_usu->Nombre;
+			$apepaterno=$ele_usu->ApePaterno;
+			$apematerno=$ele_usu->ApeMaterno;
+			$ubigeovendedor=$ele_usu->IdUbigeo;
+			$paisvendedor=$ele_usu->Pais;
+			$departamentovendedor=$ele_usu->Departamento;
+			$distritovendedor=$ele_usu->Distrito;
+			$zonavendedor=$ele_usu->Zona;
+			
 			$nacimiento=$ele_usu->FechNac;
 			$telefono=$ele_usu->Telefono;
 			$email=$ele_usu->Email;
@@ -594,6 +604,9 @@ class Reportes extends CI_Controller {
 				$numeout="$nume";
 				$arr_by_vendedor=array("suma"=>$numeout,"fechini"=>$fechaini,"fechafin"=>$fechafin,
 				"meta"=>$metaout,"nombre"=>$nombre,"idvendedor"=>$idvendedor,
+				"nombreusuario"=>$nombreusuario,"nombrepersona"=>$nombrepersona,"apepaterno"=>$apepaterno,
+				"apematerno"=>$apematerno,"ubigeovendedor"=>$ubigeovendedor,"paisvendedor"=>$paisvendedor,
+				"departamentovendedor"=>$departamentovendedor,"distritovendedor"=>$distritovendedor,"zonavendedor"=>$zonavendedor,
 				"telefono"=>$telefono,"nacimiento"=>$nacimiento,"email"=>$email);			
 			}
 			array_push($arr_acumulador,$arr_by_vendedor);	
