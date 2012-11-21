@@ -182,7 +182,7 @@ public class SyncPedidos {
 			List<Cliente> clie=clienteDao.queryBuilder()
 					.where(Properties.IdCliente.eq(cliente.getIdCliente()))
 					.list();
-			if (!clie.isEmpty()){
+			if (clie.isEmpty()){
 				clienteDao.insert(cliente);
 			}
 		}
