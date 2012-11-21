@@ -48,13 +48,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itrade.R;
-import com.itrade.model.Cliente;
-import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.PedidoLinea;
-import com.itrade.model.ClienteDao.Properties;
+import com.itrade.model.ProspectoDao.Properties;
 import com.itrade.model.DaoMaster.DevOpenHelper;
+import com.itrade.model.Prospecto;
+import com.itrade.model.ProspectoDao;
 
 
 
@@ -79,7 +79,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
     private MapView mOsmv;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
     List<GeoPoint> listaGeoPoint =null;// puntos para la ruta
-    List<Cliente> listaCliente =null;
+    List<Prospecto> listaCliente =null;
     
     private ResourceProxy mResourceProxy;
     private final double factor=1000000;
@@ -104,7 +104,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 
     private DaoMaster daoMaster;
     private DaoSession daoSession;
-    private ClienteDao clienteDao;
+    private ProspectoDao prospectoDao;
 
     SimpleCursorAdapter adapter;
     // fin de green dao
@@ -117,7 +117,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
     boolean primeraVez=false;
     boolean boolHayGPS=true;
     public long idusuario;
-    Cliente cliente= new Cliente();
+    Prospecto cliente= new Prospecto();
     private TextView txt_nombre;
     int numLayers;
     int contadorErrores=0;
@@ -140,7 +140,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 	        db = helper.getWritableDatabase();
 	        daoMaster = new DaoMaster(db);
 	        daoSession = daoMaster.newSession();
-	        clienteDao = daoSession.getClienteDao();	        	        
+	        prospectoDao = daoSession.getProspectoDao();	        	        
 	        //fin green dao
 	        
             mResourceProxy = new DefaultResourceProxyImpl(getApplicationContext());
@@ -155,7 +155,7 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
             mOsmv.setMultiTouchControls(true);
 ///////////////////////////////////
                         
-//	        listaCliente=clienteDao.loadAll();
+	        listaCliente=prospectoDao.loadAll();
             if (listaCliente!=null){
             	listaGeoPoint=this.Convierte();
             }
@@ -233,13 +233,13 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 			for(i=0;i<listaCliente.size();i++){
 				if (listaCliente.get(i).getActivo().compareTo("A")==0){
 //					items.add(new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i)));
-					OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+					OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdProspecto(), lista.get(i));
 			        Drawable newMarker = this.getResources().getDrawable(R.drawable.greenmarker3);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
 				}
 				if (listaCliente.get(i).getActivo().compareTo("C")==0){
-			        OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+			        OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdProspecto(), lista.get(i));
 			        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker3);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
@@ -362,8 +362,8 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
                                         public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                                                 Toast.makeText(
                                                                 UbicacionProspectoActivity.this,
-                                                                item.mTitle , Toast.LENGTH_LONG).show();
-                                                encuentraCliente(item.mDescription);
+                                                                item.mTitle , Toast.LENGTH_SHORT).show();
+//                                                encuentraCliente(item.mDescription);
                                                 return true; // We 'handled' this event.
                                         }
 
@@ -374,18 +374,18 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 //                                                Toast.makeText(
 //                                                		UbicacionCheckInActivity.this,
 //                                                                item.mTitle, Toast.LENGTH_LONG).show();
-                                                encuentraCliente(item.mDescription);//mDescription es IdCliente
-                                                HacerCheckIn();//error
+//                                                encuentraCliente(item.mDescription);//mDescription es IdCliente
+//                                                HacerCheckIn();//error
                                                 return false;
                                         }
                                 }, mResourceProxy);
-//                this.mOsmv.getOverlays().add(this.mMyLocationOverlay);
+                this.mOsmv.getOverlays().add(this.mMyLocationOverlay);
 //                int nuevoTamanio=this.mOsmv.getOverlays().size();
 //                if(nuevoTamanio>numLayers){
 //                	this.mOsmv.getOverlays().remove(numLayers-1);
 //                }
-//                              
-//                mOsmv.invalidate();
+                              
+                mOsmv.invalidate();
         }
 
                
@@ -464,63 +464,63 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 	}
 
 	
-	public void HacerCheckIn() {		
-		// TODO Auto-generated method stub
-		
-   	 // Inicio del popup
-   	 LayoutInflater inflater = (LayoutInflater)
-        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-   	 View layout = inflater.inflate(R.layout.mypopupcheckin,
-   	 (ViewGroup) findViewById(R.id.MyLinearLayoutCheckIn));
-   	 txt_nombre  = (TextView) layout.findViewById(R.id.txtcheckin);   	 
-   	 m_pw = new PopupWindow( layout,  350,  250,  true);
-   	 txt_nombre.setText("Check In con "+cliente.getRazon_Social()+"?");
-   	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
-
-		
-	}
-    private void encuentraCliente(String strIdCliente) {
-		// TODO Auto-generated method stub    	
-        List<Cliente> clientesAux = clienteDao.queryBuilder()
-        		.where(Properties.IdCliente.eq(strIdCliente))
-        		.orderAsc(Properties.Id).list();
-        
-        if (clientesAux!=null){
-        	if(clientesAux.size()>0){
-        		this.cliente=clientesAux.get(0);
-        	}
-        	else
-            	cliente.setRazon_Social("Error");
-        }
-	}
+//	public void HacerCheckIn() {		
+//		// TODO Auto-generated method stub
+//		
+//   	 // Inicio del popup
+//   	 LayoutInflater inflater = (LayoutInflater)
+//        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//   	 View layout = inflater.inflate(R.layout.mypopupcheckin,
+//   	 (ViewGroup) findViewById(R.id.MyLinearLayoutCheckIn));
+//   	 txt_nombre  = (TextView) layout.findViewById(R.id.txtcheckin);   	 
+//   	 m_pw = new PopupWindow( layout,  350,  250,  true);
+//   	 txt_nombre.setText("Check In con "+cliente.getRazon_Social()+"?");
+//   	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+//
+//		
+//	}
+//    private void encuentraCliente(String strIdCliente) {
+//		// TODO Auto-generated method stub    	
+//        List<Prospecto> clientesAux = prospectoDao.queryBuilder()
+//        		.where(Properties.IdProspecto.eq(strIdCliente))
+//        		.orderAsc(Properties.Id).list();
+//        
+//        if (clientesAux!=null){
+//        	if(clientesAux.size()>0){
+//        		this.cliente=clientesAux.get(0);
+//        	}
+//        	else
+//            	cliente.setRazon_Social("Error");
+//        }
+//	}
     
-	public void onButtonInPopup (View target) {
-		m_pw.dismiss();
-		if(hayUbicacion()){
-			if(estaCerca()){				
-				actualizaIconoCliente();
-				int temp=cliente.getIdCliente();				
-			    Intent intent = new Intent(UbicacionProspectoActivity.this, DetalleCliente.class);
-			    intent.putExtra("idcliente", temp);
-			    intent.putExtra("idusuario", idusuario);
-			    startActivity(intent);
-			}
-			else{
-				Toast.makeText(
-			             UbicacionProspectoActivity.this,
-			                    "Cliente muy lejos de la Ubicacion actual, elija otro por favor" , Toast.LENGTH_LONG).show();
-			}
-		     
-			
-		}
-		else{
-            Toast.makeText(
-             UbicacionProspectoActivity.this,
-                    "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_LONG).show();
-		}
-	    
-
-	}
+//	public void onButtonInPopup (View target) {
+//		m_pw.dismiss();
+//		if(hayUbicacion()){
+//			if(estaCerca()){				
+//				actualizaIconoCliente();
+//				int temp=cliente.getIdCliente();				
+//			    Intent intent = new Intent(UbicacionProspectoActivity.this, DetalleCliente.class);
+//			    intent.putExtra("idcliente", temp);
+//			    intent.putExtra("idusuario", idusuario);
+//			    startActivity(intent);
+//			}
+//			else{
+//				Toast.makeText(
+//			             UbicacionProspectoActivity.this,
+//			                    "Cliente muy lejos de la Ubicacion actual, elija otro por favor" , Toast.LENGTH_LONG).show();
+//			}
+//		     
+//			
+//		}
+//		else{
+//            Toast.makeText(
+//             UbicacionProspectoActivity.this,
+//                    "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_LONG).show();
+//		}
+//	    
+//
+//	}
 
 	private boolean hayUbicacion() {
 		boolean resul=false;
@@ -536,13 +536,13 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 
 
 
-	private void actualizaIconoCliente() {
-		long longTemp=cliente.getId();
-		Cliente clienteTemp=clienteDao.loadByRowId(longTemp);
-		clienteTemp.setActivo("C");
-		clienteDao.deleteByKey(longTemp);
-		clienteDao.insert(clienteTemp);
-	}
+//	private void actualizaIconoCliente() {
+//		long longTemp=cliente.getId();
+//		Cliente clienteTemp=clienteDao.loadByRowId(longTemp);
+//		clienteTemp.setActivo("C");
+//		prospectoDao.deleteByKey(longTemp);
+//		prospectoDao.insert(clienteTemp);
+//	}
 
 
 
