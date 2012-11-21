@@ -3,7 +3,11 @@ package com.itrade.cobranzas;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import com.itrade.R;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Contacto;
 import com.itrade.model.ContactoDao;
 import com.itrade.model.DaoMaster;
@@ -15,10 +19,15 @@ import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.ContactoDao.Properties;
 
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +36,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -54,8 +64,18 @@ public class ContactoDetalle extends ListActivity{
     private DaoSession daoSession;
     private ElementoListaDao elementoListaDao;
     private ContactoDao contactoDao;
+    final Context context = this;
     //fin green dao
-
+  //Botones
+  		private ImageView btnClientes;
+  		private ImageView btnMail;
+  		private ImageView btnBuscar;
+  		private ImageView btnDepositar;
+  		private ImageView btnDirectorio;
+  		private ImageView btnCalendario;
+  		private ImageView btnMapa;
+  		private ImageView btnMapaTotal;
+  		//fin Botones
 //    private Cursor cursor;
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
@@ -70,6 +90,109 @@ public class ContactoDetalle extends ListActivity{
 		Log.d("TAGGGGG", idusuario);
 		idpersona=bundle.getLong("idpersona");
         
+		/*BOTONERA INICIO*/
+		/*BTN clientes*/
+		btnClientes= (ImageView)findViewById(R.id.c_con_btnPedidos);
+		btnClientes.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ContactoDetalle.this, ClientesListTask.class); 																				
+				intent.putExtra("idempleado", idusuario);
+				startActivity(intent);
+			}
+		});
+		/*BTN Mensaje masivo*/
+		btnMail= (ImageView)findViewById(R.id.c_con_btnNotificar);
+		btnMail.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String titulo="Notificar"; 
+				String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+				alertDialogBuilder.setTitle(titulo);		 			
+				alertDialogBuilder
+						.setMessage(mensaje)
+						.setCancelable(true)
+						.setNegativeButton("Cancelar", null)
+						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {														
+								dialog.cancel();
+								//verificar si tiene internet o no <--------------------------
+								
+								if (networkAvailable()){
+									Syncronizar sync = new Syncronizar(ContactoDetalle.this);
+									List<NameValuePair> param = new ArrayList<NameValuePair>();
+									param.add(new BasicNameValuePair("idcobrador", idusuario));
+									String route2="/ws/cobranza/send_notifications/";
+									sync.conexion(param,route2);
+									try {
+										sync.getHilo().join();
+									} catch (InterruptedException e) {
+										  // TODO Auto-generated catch block
+										e.printStackTrace();
+									}									
+									Toast.makeText(ContactoDetalle.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+								}else{
+									Toast.makeText(ContactoDetalle.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+								}																														
+								Intent intent = new Intent(ContactoDetalle.this, ClientesListTask.class); 													
+								intent.putExtra("idempleado", idusuario);
+								startActivity(intent);
+							}
+				});		
+				AlertDialog alertDialog = alertDialogBuilder.create();		 
+				alertDialog.show();	
+				
+			}
+		});
+		/*btn buscar clientes*/
+		btnBuscar= (ImageView)findViewById(R.id.c_con_btnBuscarClientes);
+		btnBuscar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				/*
+				Intent intent = new Intent(Calendario.this, BuscarClientesGreenDao.class);		
+				intent.putExtra("idusuario", idUsuario);
+				intent.putExtra("boolVer", 1);
+				startActivity(intent);
+				*/
+			}
+		});
+		/**/
+		btnCalendario= (ImageView)findViewById(R.id.c_con_btnCalendario);
+		btnCalendario.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ContactoDetalle.this, Calendario.class);
+				intent.putExtra("idusuario", idusuario);				
+				startActivity(intent);
+			}
+		});	
+		btnDirectorio= (ImageView)findViewById(R.id.c_con_btnDirectorio);
+		btnDirectorio.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ContactoDetalle.this, Directorio.class);
+				intent.putExtra("idusuario", idusuario);				
+				startActivity(intent);
+			}
+		});	
+		/*btn Mapa Clientes*/
+		btnMapaTotal= (ImageView)findViewById(R.id.c_con_btnExplorar);
+		btnMapaTotal.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (networkAvailable()){
+					Intent intent = new Intent(ContactoDetalle.this, MapaClientes.class);		
+					intent.putExtra("idempleado", idusuario);				
+					startActivity(intent);
+				}else{
+					Toast.makeText(ContactoDetalle.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+				}				
+			}
+		});
+		/*BOTONERA FIN*/
+		
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
         db = helper.getWritableDatabase();
@@ -163,4 +286,21 @@ public class ContactoDetalle extends ListActivity{
 		cursorElementoLista.close();
 	    super.onDestroy();
 	}
+	public boolean networkAvailable() {    	
+     	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+     	if (connectMgr != null) {
+     		NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
+     		if (netInfo != null) {
+     			for (NetworkInfo net : netInfo) {
+     				if (net.getState() == NetworkInfo.State.CONNECTED) {
+     					return true;
+     				}
+     			}
+     		}
+     	} 
+     	else {
+     		Log.d("NETWORK", "No network available");
+     	}
+     	return false;
+     }
 }

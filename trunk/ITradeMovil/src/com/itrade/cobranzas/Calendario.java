@@ -11,17 +11,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import com.itrade.R;
 import com.itrade.controller.cobranza.SyncEventos;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.db.DAOEvento;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.Evento;
 import com.itrade.model.EventoDao;
 import com.itrade.model.DaoMaster.DevOpenHelper;
+import com.itrade.pedidos.BuscarClientesGreenDao;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -47,7 +54,7 @@ import android.widget.Toast;
 public class Calendario extends Activity implements OnClickListener
 	{
 		private static final String tag = "SimpleCalendarViewActivity";
-
+		final Context context = this;
 		private ImageView calendarToJournalButton;
 		private Button selectedDayMonthYearButton;
 		private Button currentMonth;
@@ -62,6 +69,15 @@ public class Calendario extends Activity implements OnClickListener
 		private String idUsuario;
 		//green dao	    
 	    private SyncEventos sincEventos;
+	    //Botones
+		private ImageView btnClientes;
+		private ImageView btnMail;
+		private ImageView btnBuscar;
+		private ImageView btnDepositar;
+		private ImageView btnDirectorio;
+		private ImageView btnCalendario;
+		private ImageView btnMapa;
+		private ImageView btnMapaTotal;
 	    ///fin green dao	    
 
 
@@ -83,6 +99,111 @@ public class Calendario extends Activity implements OnClickListener
 		        //Fin greenDAO	
 		        Intent i = getIntent();                       
 				idUsuario=(String)i.getSerializableExtra("idusuario");
+				
+				/*BOTONERA INICIO*/
+				/*BTN clientes*/
+				btnClientes= (ImageView)findViewById(R.id.c_calBtnPedidos);
+				btnClientes.setOnClickListener(new OnClickListener() {			
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(Calendario.this, ClientesListTask.class); 																				
+						intent.putExtra("idempleado", idUsuario);
+						startActivity(intent);
+					}
+				});
+				/*BTN Mensaje masivo*/
+				btnMail= (ImageView)findViewById(R.id.c_calBtnNotificar);
+				btnMail.setOnClickListener(new OnClickListener() {			
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						String titulo="Notificar"; 
+						String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+						alertDialogBuilder.setTitle(titulo);		 			
+						alertDialogBuilder
+								.setMessage(mensaje)
+								.setCancelable(true)
+								.setNegativeButton("Cancelar", null)
+								.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {														
+										dialog.cancel();
+										//verificar si tiene internet o no <--------------------------
+										
+										if (networkAvailable()){
+											Syncronizar sync = new Syncronizar(Calendario.this);
+											List<NameValuePair> param = new ArrayList<NameValuePair>();
+											param.add(new BasicNameValuePair("idcobrador", idUsuario));
+											String route2="/ws/cobranza/send_notifications/";
+											sync.conexion(param,route2);
+											try {
+												sync.getHilo().join();
+											} catch (InterruptedException e) {
+												  // TODO Auto-generated catch block
+												e.printStackTrace();
+											}									
+											Toast.makeText(Calendario.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+										}else{
+											Toast.makeText(Calendario.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+										}																														
+										Intent intent = new Intent(Calendario.this, ClientesListTask.class); 													
+										intent.putExtra("idempleado", idUsuario);
+										startActivity(intent);
+									}
+						});		
+						AlertDialog alertDialog = alertDialogBuilder.create();		 
+						alertDialog.show();	
+						
+					}
+				});
+				/*btn buscar clientes*/
+				btnBuscar= (ImageView)findViewById(R.id.c_calBtnBuscarClientes);
+				btnBuscar.setOnClickListener(new OnClickListener() {			
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						/*
+						Intent intent = new Intent(Calendario.this, BuscarClientesGreenDao.class);		
+						intent.putExtra("idusuario", idUsuario);
+						intent.putExtra("boolVer", 1);
+						startActivity(intent);
+						*/
+					}
+				});
+				/**/
+				btnCalendario= (ImageView)findViewById(R.id.c_calBtnCalendario);
+				btnCalendario.setOnClickListener(new OnClickListener() {			
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(Calendario.this, Calendario.class);
+						intent.putExtra("idusuario", idUsuario);				
+						startActivity(intent);
+					}
+				});	
+				btnDirectorio= (ImageView)findViewById(R.id.c_calBtnDirectorio);
+				btnDirectorio.setOnClickListener(new OnClickListener() {			
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(Calendario.this, Directorio.class);
+						intent.putExtra("idusuario", idUsuario);				
+						startActivity(intent);
+					}
+				});	
+				/*btn Mapa Clientes*/
+				btnMapaTotal= (ImageView)findViewById(R.id.c_btnExplorar);
+				btnMapaTotal.setOnClickListener(new OnClickListener() {			
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						if (networkAvailable()){
+							Intent intent = new Intent(Calendario.this, MapaClientes.class);		
+							intent.putExtra("idempleado", idUsuario);				
+							startActivity(intent);
+						}else{
+							Toast.makeText(Calendario.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+						}				
+					}
+				});
+				/*BOTONERA FIN*/
+				
+				
 				sincEventos= new SyncEventos(this);
 			    sqlite();
 				_calendar = Calendar.getInstance(Locale.getDefault());
@@ -609,21 +730,23 @@ public class Calendario extends Activity implements OnClickListener
 			return resul;
 			
 		}
-		/*private boolean haveNetworkConnection() {
-		    boolean haveConnectedWifi = false;
-		    boolean haveConnectedMobile = false;
-
-		    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-		    for (NetworkInfo ni : netInfo) {
-		        if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-		            if (ni.isConnected())
-		                haveConnectedWifi = true;
-		        if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-		            if (ni.isConnected())
-		                haveConnectedMobile = true;
-		    }
-		    return haveConnectedWifi || haveConnectedMobile;
-		}*/
+		public boolean networkAvailable() {    	
+	     	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	     	if (connectMgr != null) {
+	     		NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
+	     		if (netInfo != null) {
+	     			for (NetworkInfo net : netInfo) {
+	     				if (net.getState() == NetworkInfo.State.CONNECTED) {
+	     					return true;
+	     				}
+	     			}
+	     		}
+	     	} 
+	     	else {
+	     		Log.d("NETWORK", "No network available");
+	     	}
+	     	return false;
+	     }
+	
 	}
 

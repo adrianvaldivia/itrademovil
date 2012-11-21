@@ -160,6 +160,39 @@ public class RequestDetailTask extends Activity {
 				startActivity(intent);
 			}
 		});
+		/*btn buscar clientes*/
+		btnBuscar= (ImageView)findViewById(R.id.c_con_btnBuscarClientes);
+		btnBuscar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				/*
+				Intent intent = new Intent(Calendario.this, BuscarClientesGreenDao.class);		
+				intent.putExtra("idusuario", idUsuario);
+				intent.putExtra("boolVer", 1);
+				startActivity(intent);
+				*/
+			}
+		});
+		/**/
+		btnCalendario= (ImageView)findViewById(R.id.btnCalendario);
+		btnCalendario.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RequestDetailTask.this, Calendario.class);
+				intent.putExtra("idusuario", idempleado);				
+				startActivity(intent);
+			}
+		});	
+		btnDirectorio= (ImageView)findViewById(R.id.btnDirectorio);
+		btnDirectorio.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RequestDetailTask.this, Directorio.class);
+				intent.putExtra("idusuario", idempleado);				
+				startActivity(intent);
+			}
+		});	
+		
 		//Button mail
 		btnMail= (ImageView)findViewById(R.id.btnNotificar);
 		btnMail.setOnClickListener(new OnClickListener() {			
