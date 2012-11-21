@@ -655,6 +655,13 @@ private void sincronizarBaseSubida() {
             }
         }
 }
+	
+	
+	@Override
+	protected void onDestroy() { 
+		db.close();
+	    super.onDestroy();
+	}
 }
 
 

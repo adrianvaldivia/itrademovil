@@ -266,6 +266,7 @@ public class BuscarProspectosFusion extends ListActivity{
 	    return true;
 	}
     private void cargarBaseLocal() {
+    	sincronizarBaseSubida();
     	daoProspecto = new DAOProspecto(this);
     	listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idusuario,"");
         //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
@@ -317,6 +318,24 @@ public class BuscarProspectosFusion extends ListActivity{
         cursorElementoLista.requery();	
 		
 	}
+	private void sincronizarBaseSubida() {	
+		int tam=0;
+		DAOProspecto daoprospect = new DAOProspecto(BuscarProspectosFusion.this);
+	    List<Prospecto> prospectosAux = prospectoDao.queryBuilder()
+	    		.where(com.itrade.model.ProspectoDao.Properties.Activo.eq("N"))
+	    		.orderAsc(com.itrade.model.ProspectoDao.Properties.Id).list();
+	    tam=prospectosAux.size();
+	    for(int i=0;i<tam;i++){
+	    	Prospecto prospectoTemp=prospectosAux.get(i);
+	    	prospectoTemp.setActivo("A");;
+	    	prospectoDao.deleteByKey(prospectoTemp.getId());
+	    	prospectoDao.insert(prospectoTemp);
+//			long idu3;
+//			idu3 = Long.parseLong(idu);
+			daoprospect.registrarProspecto(prospectoTemp, idusuario);
+	    }
+	}
+
 
 	public static int safeLongToInt(long l) {
 	    return (int) Math.max(Math.min(Integer.MAX_VALUE, l), Integer.MIN_VALUE);
