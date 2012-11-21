@@ -356,14 +356,21 @@ public class BuscarPedidos extends ListActivity{
 	}
 	@Override
 	public void onResume() {
-        this.guardaListaOriginal();
+        
         if (razonsocial!=null){
             if(razonsocial.length()==0){
+            	this.guardaListaOriginal();
             	recuperarOriginal();
-            }        
+            }
+            else{
+            	buscarPedido2(razonsocial);//cuando lo llama la ventana de un cliente especifico
+            }
         }
-        else
+        else{
+        	this.guardaListaOriginal();
         	recuperarOriginal();
+        }
+        	
 
 		super.onResume();
 	}
