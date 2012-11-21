@@ -152,7 +152,7 @@ public class SyncPedidos {
 //				}
 //			}
 		}else{
-			pedidoDao.deleteAll();
+			//pedidoDao.deleteAll();
 			for(Pedido pedido: pedList){				
 				//adapter.addItem(ped);
 				//iNSERT EN LA bd
@@ -200,7 +200,7 @@ public class SyncPedidos {
 				Log.d("SqlLite","Entro a cargar");
 				registros +=cargarClientes(idusuario);
 				registros +=cargarPedidos(idusuario);
-				registros +=cargarDetallePedido(idusuario);
+				//registros +=cargarDetallePedido(idusuario);
 			}catch(Exception e){	
 			//}else{
 				Log.d("SqlLite","No tiene cobertura");
@@ -210,8 +210,11 @@ public class SyncPedidos {
 			}
 		}else{
     		//Obtener los clientes del vendedor 
+			List<Pedido> aux=this.getPedidosHoy();
+			int cont=aux.size();
 			Log.d("SqlLite","No hay internet");
 			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
+			return cont;
 //			List<Cliente> listTemp;
 //			listTemp = clienteDao.queryBuilder()
 //    				.where(com.itrade.model.ClienteDao.Properties.IdCobrador.eq (idusuario))
@@ -273,8 +276,8 @@ public class SyncPedidos {
 				pedidoLineaDao.insert(linea);
 			}
 		}
-		
-		return pedidos.size();
+		Log.d("Num detalle pedidos",""+listDetallePedidos.size());
+		return listDetallePedidos.size();
 	}
 
 	public List<Pedido> getListaPedido() {    	

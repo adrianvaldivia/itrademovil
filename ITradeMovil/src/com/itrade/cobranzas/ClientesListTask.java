@@ -235,7 +235,7 @@ public class ClientesListTask extends Activity {
 											e.printStackTrace();
 										}
 									}	
-									
+									sincPedidos.closeDB();
 									Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
 									intent.putExtra("idempleado", idusuario);
 									startActivity(intent);
@@ -339,9 +339,9 @@ public class ClientesListTask extends Activity {
 		//Integer numePed = sincPedidos.cargarClientes(idusuario);
 		//Integer numeCli = sincPedidos.cargarPedidos(idusuario);
 		Integer numreg = sincPedidos.syncBDToSqlite(idusuario);
-		//Integer numerito = sincDetallePedido.syncBDToSqlite(idusuario);
+		Integer numerito = sincDetallePedido.syncBDToSqlite(idusuario);
 		Log.d("ClienteListaTask","pedidos ="+numreg.toString());		
-		//Log.d("ClienteListaTask","detallesPedidos ="+numerito.toString());
+		Log.d("ClienteListaTask","detallesPedidos ="+numerito.toString());
 	   	//Log.d("RESULTADOS","fecha ="+today.toString());
 	   	//List<Pedido> listaPedi =sincPedidos.getPedidos(Integer.parseInt(idusuario));
 		//Log.d("pEDIDOS","cantidad ="+listaPedi.size());

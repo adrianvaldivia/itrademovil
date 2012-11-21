@@ -82,7 +82,7 @@ public class SyncDetallePedido {
     	return false;
     }
 
-	public Integer syncBDToSqlite(String idpedido) {
+	public Integer syncBDToSqlite(String idusuario) {
 		// TODO Auto-generated method stub
 		Integer registros=0;
 		
@@ -95,7 +95,8 @@ public class SyncDetallePedido {
 				
 				Log.d("SqlLite","Entro a cargar");
 				//registros +=cargarPedido(idpedido);
-				registros +=cargarDetallePedido(idpedido);
+				registros +=cargarDetallePedidoTotales(idusuario);
+				//registros +=cargarDetallePedido(idpedido);
 				//WEB SERVICE SAQUE TODO EL DETALLE X PEDIDO
 			}catch(Exception e){
 			//}else{
@@ -107,9 +108,52 @@ public class SyncDetallePedido {
 		}
 		else{
 			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
+			List<PedidoLinea> aux=pedidoLineaDao.queryBuilder()
+					.list();
+			return aux.size();
+			
 		}
 		
 		return registros;
+	}
+
+	private Integer cargarDetallePedidoTotales(String idusuario) {
+		// TODO Auto-generated method stub
+		List<Pedido> pedidos=pedidoDao.queryBuilder()
+				.where(Properties.IdEstadoPedido.eq("1"))
+				.list();
+		
+    	String pedidosws = "";
+    	for(Pedido pedido: pedidos){				
+			//adapter.addItem(ped);
+			//iNSERT EN LA bd
+			pedidosws+=pedido.getIdPedido()+"-";
+			//Log.d("fecha",""+pedido.getFechaPedido().toString());
+		}
+    	List<NameValuePair> parameters;
+    	parameters= new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("idspedidos", pedidosws));
+		String route2="/ws/pedido/get_pedidos_detail/";
+		sync.conexion(parameters,route2);
+		try {
+			sync.getHilo().join();
+		} catch (InterruptedException e) {
+			  // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<PedidoLinea> listDetallePedidos = new ArrayList<PedidoLinea>();
+		listDetallePedidos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<PedidoLinea>>(){}.getType());	 
+		
+		List<PedidoLinea> listaPedTemp=pedidoLineaDao.queryBuilder()
+							.list();
+				
+		for(PedidoLinea linea: listDetallePedidos ){
+			if (!listaPedTemp.contains(linea)){
+				pedidoLineaDao.insert(linea);
+			}
+		}
+		Log.d("Num detalle pedidos",""+listDetallePedidos.size());
+		return listDetallePedidos.size();
 	}
 
 	private Integer cargarDetallePedido(String idpedido) {
@@ -158,6 +202,12 @@ public class SyncDetallePedido {
 		List<PedidoLinea> listaPedTemp=pedidoLineaDao.queryBuilder()
 				.where(Properties.IdPedido.eq(idpedido))
 				.list();
+		
+		List<PedidoLinea> listatotal=pedidoLineaDao.queryBuilder()
+								.list();
+		int size=listatotal.size();
+		Log.d("sizetotal",""+size);
+		
 		return listaPedTemp;
 	}
     

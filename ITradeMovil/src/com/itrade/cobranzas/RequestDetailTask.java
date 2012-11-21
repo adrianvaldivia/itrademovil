@@ -86,8 +86,8 @@ public class RequestDetailTask extends Activity {
 		// TODO Auto-generated method stub
 		syncDetalle=new SyncDetallePedido(RequestDetailTask.this);
 		syncPedido=new SyncPedidos(RequestDetailTask.this);
-		Integer numreg = syncDetalle.syncBDToSqlite(idpedido);
-		Log.d("RESULTADOS","numeros ="+numreg.toString());	
+//		Integer numreg = syncDetalle.syncBDToSqlite(idpedido);
+//		Log.d("RESULTADOS","numeros ="+numreg.toString());	
 		
 	}
 	public void setValues(){
