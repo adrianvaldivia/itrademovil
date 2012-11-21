@@ -150,11 +150,15 @@ public class CrearPedido extends ListActivity{
 			public void onClick(View v) {
 				
 				if (tieneCredito()){
-					guardarPedido();
-					guardarDetallePedido();
-					actualizaCredito();
-					Toast.makeText(CrearPedido.this, "Pedido Registrado Exitosamente", Toast.LENGTH_LONG).show();
-					CrearPedido.this.finish();
+					if (noEstaVaciaLista()){
+						guardarPedido();
+						guardarDetallePedido();
+						actualizaCredito();
+						Toast.makeText(CrearPedido.this, "Pedido Registrado Exitosamente", Toast.LENGTH_SHORT).show();
+						CrearPedido.this.finish();						
+					}					
+					else
+						Toast.makeText(CrearPedido.this, "Por favor agregue al menos un producto", Toast.LENGTH_SHORT).show();
 				}
 				else
 					Toast.makeText(CrearPedido.this, "Se Excede el Credito disponible", Toast.LENGTH_LONG).show();
@@ -170,6 +174,15 @@ public class CrearPedido extends ListActivity{
 		// TODO Auto-generated method stub
 		boolean resul=false;
 		if (montoTotal*1.18<=this.montoCredito)
+			resul=true;
+		else
+			resul=false;
+		return resul;
+	}
+	private boolean noEstaVaciaLista() {
+		// TODO Auto-generated method stub
+		boolean resul=false;
+		if (listaPedidoLinea.size()>0)
 			resul=true;
 		else
 			resul=false;
