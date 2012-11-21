@@ -178,11 +178,11 @@ public class SyncPedidos {
 		ArrayList<Cliente> cliList = new ArrayList<Cliente>();
 		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());
 		
-		List<Cliente> clie=clienteDao.queryBuilder()
-					.list();
-		
 		for(Cliente cliente: cliList ){
-			if (!clie.contains(cliente)){
+			List<Cliente> clie=clienteDao.queryBuilder()
+					.where(Properties.IdCliente.eq(cliente.getIdCliente()))
+					.list();
+			if (!clie.isEmpty()){
 				clienteDao.insert(cliente);
 			}
 		}
