@@ -42,5 +42,13 @@ class Evento_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();
 	}
+	public function get_eventos_por_dia($idusuario,$fecha){		
+		$this->db->from($this->table_evento);
+		$this->db->where($this->table_evento.".IdCreador", $idusuario);	
+		$this->db->where($this->table_evento.".Fecha", $fecha);
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		return $query->result();
+	}
 }
 ?>
