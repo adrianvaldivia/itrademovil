@@ -54,6 +54,8 @@ import com.itrade.model.Pedido;
 import com.itrade.model.PedidoDao;
 import com.itrade.model.PedidoLinea;
 import com.itrade.model.PedidoLineaDao;
+import com.itrade.model.Prospecto;
+import com.itrade.model.ProspectoDao;
 import com.itrade.model.UsuarioDao;
 import com.itrade.R;
 
@@ -67,6 +69,7 @@ public class BuscarClientesGreenDao extends ListActivity {
     private ClienteDao clienteDao;
     private ElementoListaDao elementoListaDao;
     private PedidoDao pedidoDao;
+    private ProspectoDao prospectoDao;
     private PedidoLineaDao pedidoLineaDao;
     private UsuarioDao usuarioDao;
 
@@ -420,24 +423,33 @@ public class BuscarClientesGreenDao extends ListActivity {
         		.where(com.itrade.model.PedidoDao.Properties.NumVoucher.eq("N"))
         		.orderAsc(com.itrade.model.PedidoDao.Properties.Id).list();
         tam=pedidosAux.size();
-        if (tam>0){
+        int tam2=0;
+	    List<Prospecto> prospectosAux = prospectoDao.queryBuilder()
+	    		.where(com.itrade.model.ProspectoDao.Properties.Activo.eq("N"))
+	    		.orderAsc(com.itrade.model.ProspectoDao.Properties.Id).list();
+	    tam2=prospectosAux.size();
+        
+        if (tam>0||tam2>0){
         	if (haveNetworkConnection()){
-                for(int i=0;i<tam;i++){
-                	Pedido pedidoTemp=pedidosAux.get(i);
-                	pedidoTemp.setNumVoucher("A");;
-                	pedidoDao.deleteByKey(pedidoTemp.getId());
-                	pedidoDao.insert(pedidoTemp);
-                	idPedidoLocal=pedidoTemp.getId();
-                	idPedido=daoPedido.registrarPedido(pedidoTemp);//id de bd externa
-                    List<PedidoLinea> pedidosLineaAux = pedidoLineaDao.queryBuilder()
-                    		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idPedidoLocal))
-                    		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
-                    for(int j=0;j<pedidosLineaAux.size();j++){
-                    	PedidoLinea pedidoLineaTemp=pedidosLineaAux.get(j);
-                    	pedidoLineaTemp.setIdPedido(idPedido);//lo setteo con el Id de BD externa
-                    	daoPedido.registrarPedidoLinea(pedidoLineaTemp);
-                    }
-                }        		
+	    		taskSubir= new AsTaskSubirDatos(BuscarClientesGreenDao.this,
+						idUsuario,cursorElementoLista);
+	    		taskSubir.execute();
+//                for(int i=0;i<tam;i++){
+//                	Pedido pedidoTemp=pedidosAux.get(i);
+//                	pedidoTemp.setNumVoucher("A");;
+//                	pedidoDao.deleteByKey(pedidoTemp.getId());
+//                	pedidoDao.insert(pedidoTemp);
+//                	idPedidoLocal=pedidoTemp.getId();
+//                	idPedido=daoPedido.registrarPedido(pedidoTemp);//id de bd externa
+//                    List<PedidoLinea> pedidosLineaAux = pedidoLineaDao.queryBuilder()
+//                    		.where(com.itrade.model.PedidoLineaDao.Properties.IdPedido.eq(idPedidoLocal))
+//                    		.orderAsc(com.itrade.model.PedidoLineaDao.Properties.Id).list();
+//                    for(int j=0;j<pedidosLineaAux.size();j++){
+//                    	PedidoLinea pedidoLineaTemp=pedidosLineaAux.get(j);
+//                    	pedidoLineaTemp.setIdPedido(idPedido);//lo setteo con el Id de BD externa
+//                    	daoPedido.registrarPedidoLinea(pedidoLineaTemp);
+//                    }
+//                }        		
         	}
         	else
             	Toast.makeText(BuscarClientesGreenDao.this, "Sincronizacion Sin Exito, No hay Conexion a Internet!", Toast.LENGTH_LONG).show();
@@ -469,6 +481,7 @@ public class BuscarClientesGreenDao extends ListActivity {
         pedidoDao = daoSession.getPedidoDao();
         pedidoLineaDao=daoSession.getPedidoLineaDao();
         usuarioDao=daoSession.getUsuarioDao();
+        prospectoDao=daoSession.getProspectoDao();
         //posible error al borrar
         elementoListaDao.deleteAll();
         
