@@ -166,7 +166,7 @@ class Pedido extends CI_Controller {
 			$nume=($elem->montototal!=null)?$elem->montototal:0;
 			
 			$numeout="$nume";
-			$this->output->set_content_type('application/json')->set_output(json_encode(array("suma"=>$numeout,"fechini"=>$fechaini,"fechafin"=>$fechafin,"meta"=>$metaout,"nombre"=>$nombre)));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array("Suma"=>$numeout,"Fechini"=>$fechaini,"Fechafin"=>$fechafin,"Meta"=>$metaout,"Nombre"=>$nombre)));
 		}
 		//$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
 	}
