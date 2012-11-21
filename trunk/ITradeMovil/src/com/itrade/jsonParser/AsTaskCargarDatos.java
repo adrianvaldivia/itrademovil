@@ -235,12 +235,15 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 					}		
 					//sincronizacion de metas
-					metaDao.deleteAll();
-					daoMeta = new DAOMeta(activity);
-					//Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
-					Meta meta = daoMeta.buscarMetaxVendedor(""+idUsuario);
-					//Log.d("meta de mela", meta.getNombre());
-					metaDao.insert(meta);
+					
+					if (usuario.getIdPerfil()==2){
+						metaDao.deleteAll();
+						daoMeta = new DAOMeta(activity);
+						//Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
+						Meta meta = daoMeta.buscarMetaxVendedor(""+idUsuario);
+						//Log.d("meta de mela", meta.getNombre());
+						metaDao.insert(meta);
+					}
 					///////////////////////////////////////////////////sincronizacion de prospectos
 					prospectoDao.deleteAll();   	
 					daoProspecto = new DAOProspecto(activity);
