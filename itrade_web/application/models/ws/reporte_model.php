@@ -1456,19 +1456,19 @@ class Reporte_model extends CI_Model {
 			AND P.IdPeriodo = M.IdPeriodo
 			AND M.IdUsuario =  '".$idvendedor."'
 		");	
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();	
 	}
 	public function get_monto($idvendedor,$fechini,$fechfin){
 		$query = $this->db->query("
 			SELECT SUM( P.MontoTotalPedido ) as montototal 
 			FROM Pedido P, Cliente C
-			WHERE  NOW() >= P.FechaPedido
+			WHERE  '".$fechfin."' >= P.FechaPedido
 			AND  '".$fechini."' <= P.FechaPedido
 			AND P.IdCliente = C.IdCliente
 			AND C.IdVendedor ='".$idvendedor."' 
 		");
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		return $query->result();	
 	}
 	
