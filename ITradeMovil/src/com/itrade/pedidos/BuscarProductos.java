@@ -255,21 +255,26 @@ public class BuscarProductos extends ListActivity{
 	    if(strCantidad!=null){
 	    	if (strCantidad.length()>0) {
 	    		cantidad = Integer.parseInt(strCantidad);
-	    		registraCantidadLista();
-	    		chequeaProductoRepetido(intAux);
+	    		if (cantidad!=0){
+	    			registraCantidadLista();
+		    		chequeaProductoRepetido(intAux);
+	    		}	    		
 	    	}
 	    	else
 	    		cantidad=0;
 	    }
 	    else
 	    	cantidad=0;
+	    if (cantidad!=0){
+		    PedidoLinea pedidoLinea = new PedidoLinea();
+		    pedidoLinea.setCantidad(cantidad);
+		    pedidoLinea.setIdProducto(intAux);
+		    pedidoLinea.setIdPedido(idpedido);
+		    //pedidoLinea.setNombre(producto.getDescripcion());
+		    this.listaPedidoLinea.add(pedidoLinea);
 	    	
-	    PedidoLinea pedidoLinea = new PedidoLinea();
-	    pedidoLinea.setCantidad(cantidad);
-	    pedidoLinea.setIdProducto(intAux);
-	    pedidoLinea.setIdPedido(idpedido);
-	    //pedidoLinea.setNombre(producto.getDescripcion());
-	    this.listaPedidoLinea.add(pedidoLinea);
+	    }
+
 	    //Toast.makeText(this, "C:"+cantidad+"Pr:"+producto.getIdproducto()+"Pe:"+idpedido, Toast.LENGTH_LONG).show();
 	    m_pw.dismiss();
 	}
