@@ -8,8 +8,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Meta;
+import com.itrade.model.Usuario;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,7 +32,7 @@ public class DAOMeta {
 
 	public Meta buscarMetaxVendedor(String idusuario) {
 		
-		//List<Prospecto> listaProspectos = new ArrayList<Prospecto>();
+		List<Meta> listaMeta = new ArrayList<Meta>();
 		Meta metav= new Meta();
 		
 		Intent i = this.window.getIntent();                
@@ -63,9 +65,16 @@ public class DAOMeta {
 	    Gson gson = new Gson();
 							
 		Log.e("log_tag", "se cayo5" );
-		metav	=	gson.fromJson(sync.getResponse(), Meta.class);				    
+//		metav	=	gson.fromJson(sync.getResponse(), Meta.class);				    
 
-		    /*****************************WEBSERVICE END**********************************/				
-		return metav;
+//		    /*****************************WEBSERVICE END**********************************/				
+//		return metav;
+		metav	=	gson.fromJson(sync.getResponse(), new TypeToken<Meta>(){}.getType());				    
+
+	    /*****************************WEBSERVICE END**********************************/		
+		if(metav!=null)
+				return metav;
+		else 
+			return null;			
 	}
 }
