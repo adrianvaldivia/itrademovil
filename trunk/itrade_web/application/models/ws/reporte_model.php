@@ -1090,7 +1090,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre` AS NombreUsuario, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`, `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona` ,  `Persona`.`Telefono`, `Persona`.`Email` ,`Persona`.`FechNac` 
 		FROM ( 
@@ -1108,7 +1108,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre` AS NombreUsuario, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona`  , `Persona`.`Telefono`, `Persona`.`Email` ,`Persona`.`FechNac`  
 		FROM ( 
@@ -1127,7 +1127,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre`, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre` AS NombreUsuario, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
 		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
 		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona` , `Persona`.`Telefono`, `Persona`.`Email` ,`Persona`.`FechNac`   
 		FROM ( 
@@ -1135,7 +1135,7 @@ class Reporte_model extends CI_Model {
 		)
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
-		WHERE   ".$str." and `Ubigeo`.`Distrito`= '".$id."' and `Usuario`.`IdJerarquia`= 5 and `Usuario`.`Activo`= 1 and `Usuario`.`IdPerfil`= 2 
+		WHERE  `Ubigeo`.`Distrito`= '".$id."' and `Usuario`.`IdJerarquia`= 5 and `Usuario`.`Activo`= 1 and `Usuario`.`IdPerfil`= 2 
 		
 		");
 		break;	
