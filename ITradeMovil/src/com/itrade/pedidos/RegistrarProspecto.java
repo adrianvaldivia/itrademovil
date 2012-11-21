@@ -63,6 +63,8 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 // cambios chichan	
 //	Persona person;
 //	Credito cred;
+	long idu1=0;
+	int regisubic=0;
 	
 	Button ubic;
 	
@@ -108,18 +110,28 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         prospectoDao = daoSession.getProspectoDao();
         //fin green dao
 
+        /****************************************************/
+        Bundle bundle=getIntent().getExtras();
+        //int idu = bundle.getInt("idusuario");		
+        idu = bundle.getString("idusuario");
+        //idusuario= String.valueOf(idu);
+  /*************************************************************/
+        
   /*LOS LINKS DE LOS BOTONES*******************************************************************/      
-        bclientes = (ImageButton) findViewById(R.id.btnCrearPedido);
-        bclientes.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
-//				/*********ENVIAR INFO A LA VENTANA***********/
-				a.putExtra("idusuario", idusuario);
-        			startActivity(a);
-			}
-		});
+        idu1 = Long.parseLong(idu);
+        
+//        bclientes = (ImageButton) findViewById(R.id.btnCrearPedido);
+//        bclientes.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				limpiarProspecto();
+//				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
+////				/*********ENVIAR INFO A LA VENTANA***********/
+//				a.putExtra("idusuario", idu1);
+//        			startActivity(a);
+//			}
+//		});
 //        
         dprospectos = (ImageButton) findViewById(R.id.btnBuscarPedido);
         dprospectos.setOnClickListener(new OnClickListener() {
@@ -129,7 +141,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 				limpiarProspecto();
 				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
 				/*********ENVIAR INFO A LA VENTANA***********/
-				b.putExtra("idusuario", idusuario);
+				b.putExtra("idusuario", idu1);
 				startActivity(b);
 			}
 		});
@@ -139,22 +151,24 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent c = new Intent(RegistrarProspecto.this, CrearPedido.class);
+				limpiarProspecto();
+				Intent c = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
 				/*********ENVIAR INFO A LA VENTANA***********/
-				c.putExtra("idusuario", idusuario);
+				c.putExtra("idusuario", idu1);
         			startActivity(c);
 			}
 		});
-//        
+        
 //        vdirectorio = (ImageButton) findViewById(R.id.btnDirectorio);
 //        vdirectorio.setOnClickListener(new OnClickListener() {
 //			
 //			public void onClick(View v) {
 //				// TODO Auto-generated method stub
-//				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
-////				Intent d = new Intent(RegistrarProspecto.this, .class);
-////				/*********ENVIAR INFO A LA VENTANA***********/
-////				startActivity(d);
+//				limpiarProspecto();
+//				Intent d = new Intent(RegistrarProspecto.this, BuscarContactos.class);
+//				/*********ENVIAR INFO A LA VENTANA***********/
+//				d.putExtra("idusuario", idu1);
+//	        	startActivity(d);
 //			}
 //		});
 //        
@@ -163,10 +177,10 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 //			
 //			public void onClick(View v) {
 //				// TODO Auto-generated method stub
-//				Toast.makeText(RegistrarProspecto.this, "Funcionalidad Pendiente", Toast.LENGTH_SHORT).show();
-////				Intent e = new Intent(RegistrarProspecto.this, x.class);
-////				/*********ENVIAR INFO A LA VENTANA***********/
-////				startActivity(e);
+//				Intent e = new Intent(RegistrarProspecto.this, verEvento.class);
+//				/*********ENVIAR INFO A LA VENTANA***********/
+//				e.putExtra("idusuario", idu1);
+//	        	startActivity(e);
 //			}
 //		});
 //        
@@ -178,7 +192,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 				Intent f = new Intent(RegistrarProspecto.this, MiMeta.class);
 				/*********ENVIAR INFO A LA VENTANA***********/
 				f.putExtra("idusuario", idusuario);
-        			startActivity(f);
+        		startActivity(f);
 			}
 		});
   /********************************************************************************************/      
@@ -194,18 +208,14 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
         
         vf = (ViewFlipper) findViewById(R.id.viewFlipper);
         
- /****************************************************/
-        Bundle bundle=getIntent().getExtras();
-        //int idu = bundle.getInt("idusuario");		
-        idu = bundle.getString("idusuario");
-        //idusuario= String.valueOf(idu);
-  /*************************************************************/
+ 
         
         ubic = (Button)findViewById(R.id.ubicar);
         ubic.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				regisubic=1;
 				Intent intent = new Intent(RegistrarProspecto.this, UbicacionProspectoActivity.class);
 				intent.putExtra("idusuario", idusuario);
 				startActivityForResult(intent,REQUEST_CODE);
@@ -281,8 +291,12 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
                   (!cantidad.getText().toString().trim().equals(""))) 
             		  
          {             
-                    		
-    
+                    if (regisubic==0)
+                    {	
+                    	Toast.makeText(RegistrarProspecto.this, "Registre la Ubicación del Cliente por favor", Toast.LENGTH_SHORT).show();
+                    }
+                    else 
+                    {
     		if ((ruc.length()!=11) || (dni.length()!=8) || (Integer.parseInt(cantidad.getText().toString().trim()) < 1))
     		{
     				Toast.makeText(RegistrarProspecto.this, "Revisar valores de DNI, RUC y Cantidad", Toast.LENGTH_SHORT).show();
@@ -392,11 +406,11 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			    	 
 			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
 			    	 RegistrarProspecto.super.onBackPressed();
-//			    	 limpiarProspecto();
+			    	 limpiarProspecto();
 //			    	 
-//			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
-//			    	 a.putExtra("idusuario", idusuario);ss
-//			    	 startActivity(a);
+			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+			    	 a.putExtra("idusuario", idusuario);
+			    	 startActivity(a);
 			     
 			     } 
 			     
@@ -408,6 +422,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
     			}
          }
          	}
+         }
          }
     		else 
     		{
