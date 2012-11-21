@@ -151,6 +151,15 @@ public class ClientesListTask extends Activity {
 				startActivity(intent);
 			}
 		});	
+		btnDirectorio= (ImageView)findViewById(R.id.btnDirectorio);
+		btnDirectorio.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ClientesListTask.this, Directorio.class);
+				intent.putExtra("idusuario", idusuario);				
+				startActivity(intent);
+			}
+		});	
 		/*btn Mapa Clientes*/
 		btnMapaTotal= (ImageView)findViewById(R.id.btnMapa);
 		btnMapaTotal.setOnClickListener(new OnClickListener() {			
