@@ -526,35 +526,42 @@ class Reportes extends CI_Controller {
 		}			
 	}
 	
-	public function visitas_sinc($anho_w="",$mes_w="",$idjerarquia_w="",$idubigeo_w=""){		
+	public function visitas_sinc($anho_w="",$idjerarquia_w="",$idubigeo_w=""){		
 		//2012-05-10
 		$anho=$this->input->post('anho');
-		$mes=$this->input->post('mes');
+		//$mes=$this->input->post('mes');
 		$idubigeo=$this->input->post('idubigeo');
 		$idjerarquia=$this->input->post('idjerarquia');	
 		/*SOLO PARA WEB*/		
-		if (isset($anho_w)&& $anho_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" && isset($idjerarquia_w)&& $idjerarquia_w!="" && isset($mes_w)&& $mes_w!=""){				
+		if (isset($anho_w)&& $anho_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" && isset($idjerarquia_w)&& $idjerarquia_w!="" ){				
 			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
 			foreach($result as $res){
 				$id=$res->nombre;
 			}				
-			$result=$this->Reporte_model->visitas_sinc($anho_w,$mes_w,$idjerarquia_w,$idubigeo_w,$id);				
+			$result=$this->Reporte_model->visitas_sinc($anho_w,$idjerarquia_w,$idubigeo_w,$id);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}
 		/*SOLO PARA ANDROID*/		
-		if (isset($anho)&& $anho!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!="" && isset($mes)&& $mes!=""){				
+		if (isset($anho)&& $anho!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!="" ){				
 			$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo,$idjerarquia);			
 			foreach($result as $res){
 				$id=$res->nombre;
 			}	
 			
 			
-			$result=$this->Reporte_model->visitas_sinc($anho,$mes,$idjerarquia,$idubigeo,$id);				
+			$result=$this->Reporte_model->visitas_sinc($anho,$idjerarquia,$idubigeo,$id);				
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
 		}			
 	}
 	
 	public function meta_periodo($anho_w="",$idjerarquia_w="",$idubigeo_w=""){
+		$anho=$this->input->post('anho');
+		//$mes=$this->input->post('mes');
+		$idjerarquia=$this->input->post('idjerarquia');	
+		$idubigeo=$this->input->post('idubigeo');
+		
+	
+	
 	
 		$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
 			foreach($result as $res){
