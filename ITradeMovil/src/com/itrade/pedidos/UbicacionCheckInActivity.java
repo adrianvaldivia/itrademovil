@@ -471,15 +471,48 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	public void HacerCheckIn() {		
 		// TODO Auto-generated method stub
 		
-   	 // Inicio del popup
-   	 LayoutInflater inflater = (LayoutInflater)
-        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-   	 View layout = inflater.inflate(R.layout.mypopupcheckin,
-   	 (ViewGroup) findViewById(R.id.MyLinearLayoutCheckIn));
-   	 txt_nombre  = (TextView) layout.findViewById(R.id.txtcheckin);   	 
-   	 m_pw = new PopupWindow( layout,  350,  250,  true);
-   	 txt_nombre.setText("Check In con "+cliente.getRazon_Social()+"?");
-   	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+		
+
+	    new AlertDialog.Builder(this)
+        .setTitle("Cerrar Sesion")
+        .setMessage("Desea Hacer Check-In donde el cliente: "+cliente.getRazon_Social()+"?")
+        .setNegativeButton("No", null)
+        .setPositiveButton("Si", new OnClickListener() {
+
+            public void onClick(DialogInterface arg0, int arg1) {
+            	if(hayUbicacion()){
+        			if(estaCerca()){				
+        				actualizaIconoCliente();
+        				int temp=cliente.getIdCliente();				
+        			    Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
+        			    intent.putExtra("idcliente", temp);
+        			    intent.putExtra("idusuario", idusuario);
+        			    startActivity(intent);
+        			}
+        			else{
+        				Toast.makeText(
+        			             UbicacionCheckInActivity.this,
+        			                    "Cliente muy lejos de la Ubicacion actual, elija otro por favor" , Toast.LENGTH_LONG).show();
+        			}        		             			
+        		}
+        		else{
+                    Toast.makeText(
+                     UbicacionCheckInActivity.this,
+                            "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_SHORT).show();
+        		}
+            }
+        }).create().show();	
+
+		
+//   	  Inicio del popup
+//   	 LayoutInflater inflater = (LayoutInflater)
+//        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//   	 View layout = inflater.inflate(R.layout.mypopupcheckin,
+//   	 (ViewGroup) findViewById(R.id.MyLinearLayoutCheckIn));
+//   	 txt_nombre  = (TextView) layout.findViewById(R.id.txtcheckin);   	 
+//   	 m_pw = new PopupWindow( layout,  350,  250,  true);
+//   	 txt_nombre.setText("Check In con "+cliente.getRazon_Social()+"?");
+//   	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
 		
 	}
@@ -498,33 +531,33 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
         }
 	}
     
-	public void onButtonInPopup (View target) {
-		m_pw.dismiss();
-		if(hayUbicacion()){
-			if(estaCerca()){				
-				actualizaIconoCliente();
-				int temp=cliente.getIdCliente();				
-			    Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
-			    intent.putExtra("idcliente", temp);
-			    intent.putExtra("idusuario", idusuario);
-			    startActivity(intent);
-			}
-			else{
-				Toast.makeText(
-			             UbicacionCheckInActivity.this,
-			                    "Cliente muy lejos de la Ubicacion actual, elija otro por favor" , Toast.LENGTH_LONG).show();
-			}
-		     
-			
-		}
-		else{
-            Toast.makeText(
-             UbicacionCheckInActivity.this,
-                    "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_LONG).show();
-		}
-	    
-
-	}
+//	public void onButtonInPopup (View target) {
+//		m_pw.dismiss();
+//		if(hayUbicacion()){
+//			if(estaCerca()){				
+//				actualizaIconoCliente();
+//				int temp=cliente.getIdCliente();				
+//			    Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
+//			    intent.putExtra("idcliente", temp);
+//			    intent.putExtra("idusuario", idusuario);
+//			    startActivity(intent);
+//			}
+//			else{
+//				Toast.makeText(
+//			             UbicacionCheckInActivity.this,
+//			                    "Cliente muy lejos de la Ubicacion actual, elija otro por favor" , Toast.LENGTH_LONG).show();
+//			}
+//		     
+//			
+//		}
+//		else{
+//            Toast.makeText(
+//             UbicacionCheckInActivity.this,
+//                    "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_LONG).show();
+//		}
+//	    
+//
+//	}
 
 	private boolean hayUbicacion() {
 		boolean resul=false;
@@ -550,9 +583,9 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 
 
 
-	public void onButtonCancelarPopup (View target) {
-	    m_pw.dismiss();
-	}
+//	public void onButtonCancelarPopup (View target) {
+//	    m_pw.dismiss();
+//	}
 	
 	private boolean estaCerca() {
 		boolean resul=false;		
