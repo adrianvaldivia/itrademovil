@@ -42,6 +42,7 @@ public class DetalleProspecto extends ListActivity{
 	public String apellidos="";
 	public String direccion="";
 	public Double montoCredito=0.0;
+	public String monto;
 	public int idcliente;
 	public long idusuario;
 	int boolVer;
@@ -90,7 +91,8 @@ public class DetalleProspecto extends ListActivity{
 		idusuario = bundle.getLong("idusuario");
 		nombre = bundle.getString("nombre");
 		apellidos = bundle.getString("apellidos");
-		montoCredito = bundle.getDouble("monto");
+		//montoCredito = bundle.get("monto");
+		monto = bundle.getString("monto");
 		direccion = bundle.getString("direc");
 		
 		//obtenerDatosCliente();//obtiene los datos del SQLite
@@ -179,7 +181,7 @@ public class DetalleProspecto extends ListActivity{
 		ElementoLista elemento = new ElementoLista(null,"Direccion:",""+direccion,null,i);
 		elementoListaDao.insert(elemento);
 		i++;
-		ElementoLista elemento2 = new ElementoLista(null,"Credito Solicitado:",""+montoCredito,null,i);
+		ElementoLista elemento2 = new ElementoLista(null,"Credito Solicitado:",""+monto,null,i);
 		elementoListaDao.insert(elemento2);
 		cursorElementoLista.requery();
 //		lista.add("ID: "+this.idcliente);

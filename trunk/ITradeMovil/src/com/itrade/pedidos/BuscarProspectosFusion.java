@@ -216,8 +216,10 @@ public class BuscarProspectosFusion extends ListActivity{
      Log.d("****IDPROSPECTO", temp+"");
      intent.putExtra("idcliente", temp);
      intent.putExtra("idusuario", idusuario);
-     if (prospecto.getMontoActual()!=null){
-     intent.putExtra("monto", prospecto.getMontoActual().toString());
+     Log.d("MONTO SOLICITADO", prospecto.getMontoActual().toString());
+     String monto =prospecto.getMontoActual().toString();
+     if (monto!=null){
+    	 intent.putExtra("monto", monto);
      }
      else 
     	 intent.putExtra("monto", " ");
