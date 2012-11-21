@@ -391,7 +391,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			     {
 			    	 
 			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
-			    	 RegistrarProspecto.this.finish();
+			    	 RegistrarProspecto.super.onBackPressed();
 //			    	 limpiarProspecto();
 //			    	 
 //			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
