@@ -24,6 +24,7 @@ class Login_model extends CI_Model {
 		$this->table_usuario.".IdPerfil, ".
 		$this->table_usuario.".IdUbigeo, ".
 		$this->table_persona.".Email, ".
+		$this->table_persona.".Telefono, ".
 		$this->table_usuario.".IdJerarquia");
 		$this->db->from($this->table_persona);
 		$this->db->join($this->table_usuario,$this->table_usuario.".IdPersona =".$this->table_persona.".IdPersona");
