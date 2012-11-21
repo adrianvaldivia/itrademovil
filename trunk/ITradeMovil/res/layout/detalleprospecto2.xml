@@ -160,7 +160,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="0dp"
 		    android:layout_weight="0.10" >
-
+
 		                    <Button
 		                        android:id="@+id/buttoncrearpedido"
 		                        style="@drawable/estilo_botones"
@@ -168,7 +168,7 @@
 		                        android:layout_height="wrap_content"
 		                        android:layout_weight="0.10"
 		                        android:background="@drawable/estilo_botones"
-		                        android:text="@string/aceptar"
+		                        android:text="Volver"
 		                        android:textColor="@color/blanco" />
 
 		</LinearLayout>
