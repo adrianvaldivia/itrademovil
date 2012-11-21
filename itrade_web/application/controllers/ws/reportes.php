@@ -561,7 +561,7 @@ class Reportes extends CI_Controller {
 		$idubigeo=$this->input->post('idubigeo');
 		
 	
-	
+	if (isset($anho_w)&& $anho_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" && isset($idjerarquia_w)&& $idjerarquia_w!="" ){
 	
 		$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo_w,$idjerarquia_w);			
 			foreach($result as $res){
@@ -619,6 +619,69 @@ class Reportes extends CI_Controller {
 			array_push($arr_acumulador,$arr_by_vendedor);	
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($arr_acumulador));
+		
+		}
+		
+		if (isset($anho)&& $anho!= "" && isset($idubigeo)&& $idubigeo!="" && isset($idjerarquia)&& $idjerarquia!="" ){
+	
+		$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo,$idjerarquia);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}				
+			$arr_usuarios=$this->Reporte_model->usuarios_resumido_sinc($anho,$idjerarquia,$idubigeo,$id);	
+	
+		//$idvendedor=$this->input->post('idvendedor');
+		//$idvendedor=1;
+		//if ($idvendedor_w!=''){
+		//	$idvendedor=$idvendedor_w;
+		//}
+		$arr_acumulador=array();
+		foreach($arr_usuarios as $ele_usu){
+			$idvendedor=$ele_usu->IdUsuario;
+			$nombreusuario=$ele_usu->NombreUsuario;
+			$nombrepersona=$ele_usu->Nombre;
+			$apepaterno=$ele_usu->ApePaterno;
+			$apematerno=$ele_usu->ApeMaterno;
+			$ubigeovendedor=$ele_usu->IdUbigeo;
+			$paisvendedor=$ele_usu->Pais;
+			$departamentovendedor=$ele_usu->Departamento;
+			$distritovendedor=$ele_usu->Distrito;
+			$zonavendedor=$ele_usu->Zona;
+			
+			$nacimiento=$ele_usu->FechNac;
+			$telefono=$ele_usu->Telefono;
+			$email=$ele_usu->Email;
+			//echo $idvendedor;
+			$arr_meta=$this->Reporte_model->get_meta($idvendedor);
+			//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
+			//var_dump($arr_meta);	
+		
+			foreach($arr_meta as $ele){
+				$fechaini=$ele->FechaIni;
+				$fechafin=$ele->FechaFin;
+				$nombre=$ele->Descripcion;
+				$meta=$ele->Monto;
+				$metaout="$meta";
+				$suma=$this->Reporte_model->get_monto($idvendedor,$ele->FechaIni,$ele->FechaFin);			
+			}				
+			//var_dump($suma);
+			foreach($suma as $elem){
+			
+				$nume=($elem->montototal!=null)?$elem->montototal:0;
+			
+				$numeout="$nume";
+				$arr_by_vendedor=array("suma"=>$numeout,"fechini"=>$fechaini,"fechafin"=>$fechafin,
+				"meta"=>$metaout,"nombre"=>$nombre,"idvendedor"=>$idvendedor,
+				"nombreusuario"=>$nombreusuario,"nombrepersona"=>$nombrepersona,"apepaterno"=>$apepaterno,
+				"apematerno"=>$apematerno,"ubigeovendedor"=>$ubigeovendedor,"paisvendedor"=>$paisvendedor,
+				"departamentovendedor"=>$departamentovendedor,"distritovendedor"=>$distritovendedor,"zonavendedor"=>$zonavendedor,
+				"telefono"=>$telefono,"nacimiento"=>$nacimiento,"email"=>$email);			
+			}
+			array_push($arr_acumulador,$arr_by_vendedor);	
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($arr_acumulador));
+		
+		}
 	}
 	
 }
