@@ -131,7 +131,6 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 		        contactoDao = daoSession.getContactoDao();
 		        elementoListaDao = daoSession.getElementoListaDao();
 		        
-		        pedidoLineaDao.deleteAll();
 		        //fin green dao
 	        }
 
@@ -207,7 +206,7 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 //				idu3 = Long.parseLong(idu);
 				daoprospect.registrarProspecto(prospectoTemp, idusuario);
 		    }
-		 
+		 // fin de sincronizacion de prospectos
 		 
 		 	///sincronizacion de Pedidos
 			long idPedido=0;
