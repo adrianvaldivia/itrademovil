@@ -299,7 +299,7 @@ public class SyncPedidos {
     	List<Pedido> pedTemp=pedidoDao.queryBuilder()
 				.where(Properties.IdEstadoPedido.eq("1"))
 				.where(Properties.FechaPedido.eq(previousDate))
-				.list();
+				.list();    
 		return pedTemp;    	
     }
     
@@ -337,8 +337,8 @@ public class SyncPedidos {
 		for (Cliente cliente : listTemp)  {
 			List<Pedido> pedTemp=pedidoDao.queryBuilder()
 					.where(Properties.FechaPedido.eq(previousDate))
-					.where(Properties.IdCliente.eq(cliente.getIdCliente()))
-					.where(Properties.CheckIn.eq(1))					
+					.where(Properties.IdCliente.eq(cliente.getIdCliente()))								
+					.where(Properties.IdEstadoPedido.eq("1"))
 					.list();
 			listaPedido.addAll(pedTemp);
 			if (pedTemp.size()>0){
