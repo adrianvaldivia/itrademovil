@@ -1,6 +1,7 @@
 package com.itrade.pedidos;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -413,23 +414,57 @@ public class Login extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
+	    inflater.inflate(R.menu.menulogin, menu);
 	    return true;
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
+	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_SHORT).show();
 	        	cargarBaseLocal();	        	
-	                            break;
-	                           }
-	        case R.id.opcion2:     Toast.makeText(this, "Presionaste Opcion 2!", Toast.LENGTH_LONG).show();
-	                            break;
+	            break;
+	        }
+	        case R.id.opcion2:{
+	        	Toast.makeText(this, "Eliminando Datos Guardados!", Toast.LENGTH_SHORT).show();
+	        	limpiarBaseLocal();
+                break;
+	        }
+	        	
+	            
 	    }
 	    return true;
 	}
-    private void cargarBaseLocal() {
+    private void limpiarBaseLocal() {
+		// TODO Auto-generated method stub
+    	usuarioDao.deleteAll();
+    	this.textView_Usuario.setText("");
+    	 File cache = getCacheDir();
+    	    File appDir = new File(cache.getParent());
+    	    if (appDir.exists()) {
+    	        String[] children = appDir.list();
+    	        for (String s : children) {
+    	            if (!s.equals("lib")) {
+    	                deleteDir(new File(appDir, s));Log.i("TAG", "**************** File /data/data/APP_PACKAGE/" + s + " DELETED *******************");
+    	            }
+    	        }
+    	    }
+		
+	}
+    public static boolean deleteDir(File dir) {
+	    if (dir != null && dir.isDirectory()) {
+	        String[] children = dir.list();
+	        for (int i = 0; i < children.length; i++) {
+	            boolean success = deleteDir(new File(dir, children[i]));
+	            if (!success) {
+	                return false;
+	            }
+	        }
+	    }
+
+	    return dir.delete();
+	}
+	private void cargarBaseLocal() {
   
 	}
 	private Usuario confirmarLoginLocal(String nombreUsuario,String password) {		
@@ -471,7 +506,11 @@ public class Login extends Activity {
 	}
 	@Override
 	protected void onResume() {
-	    //inicio green DAO 
+	    //inicio green DAO
+		//inicio cambio reciente
+        DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
+        db = helper.getWritableDatabase();	
+        //Fin cambio reciente
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         usuarioDao = daoSession.getUsuarioDao();
