@@ -567,18 +567,17 @@ class Reportes extends CI_Controller {
 		//if ($idvendedor_w!=''){
 		//	$idvendedor=$idvendedor_w;
 		//}
-		
+		$arr_acumulador=array();
 		foreach($arr_usuarios as $ele_usu){
 			$idvendedor=$ele_usu->IdUsuario;
 			$nacimiento=$ele_usu->FechNac;
 			$telefono=$ele_usu->Telefono;
 			$email=$ele_usu->Email;
-			echo $idvendedor;
+			//echo $idvendedor;
 			$arr_meta=$this->Reporte_model->get_meta($idvendedor);
 			//$arr=array("periodo"=>$query->row(0)->Descripcion,"monto"=>$query->row(0)->Monto);
 			//var_dump($arr_meta);	
-
-			
+		
 			foreach($arr_meta as $ele){
 				$fechaini=$ele->FechaIni;
 				$fechafin=$ele->FechaFin;
@@ -593,12 +592,13 @@ class Reportes extends CI_Controller {
 				$nume=($elem->montototal!=null)?$elem->montototal:0;
 			
 				$numeout="$nume";
-			$this->output->set_content_type('application/json')->set_output(json_encode(array("suma"=>$numeout,"fechini"=>$fechaini,
-			"fechafin"=>$fechafin,"meta"=>$metaout,"nombre"=>$nombre,"idvendedor"=>$idvendedor,"telefono"=>$telefono,"nacimiento"=>$nacimiento,"email"=>$email)));
+				$arr_by_vendedor=array("suma"=>$numeout,"fechini"=>$fechaini,"fechafin"=>$fechafin,
+				"meta"=>$metaout,"nombre"=>$nombre,"idvendedor"=>$idvendedor,
+				"telefono"=>$telefono,"nacimiento"=>$nacimiento,"email"=>$email);			
 			}
-		
+			array_push($arr_acumulador,$arr_by_vendedor);	
 		}
-		//$this->output->set_content_type('application/json')->set_output(json_encode(array("nom"=>$suma, "arra"=>implode(",",$arr_meta))));
+		$this->output->set_content_type('application/json')->set_output(json_encode($arr_acumulador));
 	}
 	
 }
