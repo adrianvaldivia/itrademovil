@@ -73,8 +73,8 @@ private Activity window;
 public int registrarProspecto(Prospecto client, long idu) {
 		int idProspecto=-1;
 		Intent i = this.window.getIntent();                
-		//idusuario=String.valueOf(idUsuario);	
-		Log.d("IDUSUARIO", "usuario="+idusuario.toString());
+		idusuario=String.valueOf(idu);	
+	//	Log.d("IDUSUARIO", "usuario="+idusuario.toString());
 		
 		/*****ws****/
 		
