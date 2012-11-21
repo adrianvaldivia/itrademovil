@@ -7,7 +7,8 @@ package com.itrade.model;
 public class Evento {
 
     private Long id;
-    private Integer IdEvento;
+    private Long IdEvento;
+    private Long IdPersona;
     private String Creador;
     private String Asunto;
     private String Lugar;
@@ -23,9 +24,10 @@ public class Evento {
         this.id = id;
     }
 
-    public Evento(Long id, Integer IdEvento, String Creador, String Asunto, String Lugar, String Descripcion, String Fecha, String HoraInicio, String HoraFin) {
+    public Evento(Long id, Long IdEvento, Long IdPersona, String Creador, String Asunto, String Lugar, String Descripcion, String Fecha, String HoraInicio, String HoraFin) {
         this.id = id;
         this.IdEvento = IdEvento;
+        this.IdPersona = IdPersona;
         this.Creador = Creador;
         this.Asunto = Asunto;
         this.Lugar = Lugar;
@@ -43,12 +45,20 @@ public class Evento {
         this.id = id;
     }
 
-    public Integer getIdEvento() {
+    public Long getIdEvento() {
         return IdEvento;
     }
 
-    public void setIdEvento(Integer IdEvento) {
+    public void setIdEvento(Long IdEvento) {
         this.IdEvento = IdEvento;
+    }
+
+    public Long getIdPersona() {
+        return IdPersona;
+    }
+
+    public void setIdPersona(Long IdPersona) {
+        this.IdPersona = IdPersona;
     }
 
     public String getCreador() {
