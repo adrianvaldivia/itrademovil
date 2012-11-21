@@ -120,26 +120,26 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
   /*LOS LINKS DE LOS BOTONES*******************************************************************/      
         idu1 = Long.parseLong(idu);
         
-//        bclientes = (ImageButton) findViewById(R.id.btnCrearPedido);
-//        bclientes.setOnClickListener(new OnClickListener() {
-//			
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-//				limpiarProspecto();
-//				Intent a = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class); //CAMBIAR
-////				/*********ENVIAR INFO A LA VENTANA***********/
-//				a.putExtra("idusuario", idu1);
-//        			startActivity(a);
-//			}
-//		});
-//        
+        bclientes = (ImageButton) findViewById(R.id.btnCrearPedido);
+        bclientes.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				limpiarProspecto();
+				Intent a = new Intent(RegistrarProspecto.this, BuscarPedidos.class); //CAMBIAR
+//				/*********ENVIAR INFO A LA VENTANA***********/
+				a.putExtra("idusuario", idu1);
+        			startActivity(a);
+			}
+		});
+        
         dprospectos = (ImageButton) findViewById(R.id.btnBuscarPedido);
         dprospectos.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				limpiarProspecto();
-				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+				Intent b = new Intent(RegistrarProspecto.this, BuscarProspectosFusion.class);
 				/*********ENVIAR INFO A LA VENTANA***********/
 				b.putExtra("idusuario", idu1);
 				startActivity(b);
@@ -152,7 +152,7 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				limpiarProspecto();
-				Intent c = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+				Intent c = new Intent(RegistrarProspecto.this, BuscarClientesGreenDao.class);
 				/*********ENVIAR INFO A LA VENTANA***********/
 				c.putExtra("idusuario", idu1);
         			startActivity(c);
