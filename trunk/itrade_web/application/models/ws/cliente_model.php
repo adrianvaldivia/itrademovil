@@ -125,7 +125,7 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
 						$this->table_cliente.".IdCobrador, ".
-						$this->table_linea.".MontoActual, ".
+						$this->table_linea.".MontoSolicitado as MontoActual, ".
 						$this->table_persona.".ApeMaterno ");
 						
 		$this->db->from($this->table_cliente);		
