@@ -53,6 +53,7 @@ import com.itrade.model.UsuarioDao;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.pedidos.BuscarClientesGreenDao;
 import com.itrade.pedidos.Login;
+import com.itrade.pedidos.RegistrarProspecto;
 
 
 import android.app.Activity;
@@ -190,6 +191,25 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 		}
 	 
 	 private void sincronizarBaseSubida() {
+		 //sincronizacion de Prospectos
+		 int tam2=0;
+			DAOProspecto daoprospect = new DAOProspecto(activity);
+		    List<Prospecto> prospectosAux = prospectoDao.queryBuilder()
+		    		.where(com.itrade.model.ProspectoDao.Properties.Activo.eq("N"))
+		    		.orderAsc(com.itrade.model.ProspectoDao.Properties.Id).list();
+		    tam2=prospectosAux.size();
+		    for(int i=0;i<tam2;i++){
+		    	Prospecto prospectoTemp=prospectosAux.get(i);
+		    	prospectoTemp.setActivo("A");;
+		    	prospectoDao.deleteByKey(prospectoTemp.getId());
+		    	prospectoDao.insert(prospectoTemp);
+//				long idu3;
+//				idu3 = Long.parseLong(idu);
+				daoprospect.registrarProspecto(prospectoTemp, idusuario);
+		    }
+		 
+		 
+		 	///sincronizacion de Pedidos
 			long idPedido=0;
 			long idPedidoLocal;
 			int tam=0;
@@ -216,6 +236,9 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 	                    }
 	                }        			        	   
 	        }
+	        //fin de sincronizacion de pedidos
+	        ////Inicio sincronizacion de ....
+	        
 		}
 
 	 
