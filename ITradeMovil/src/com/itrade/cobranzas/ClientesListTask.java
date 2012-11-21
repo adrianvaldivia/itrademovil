@@ -275,7 +275,7 @@ public class ClientesListTask extends Activity {
 
 		cliList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Cliente>>(){}.getType());	
 	*/		
-        List<Cliente> cliList = sincPedidos.getListaCliente();
+        List<Cliente> cliList = sincPedidos.getListaCliente(idusuario);
 	    ArrayList<String> idClientes = new ArrayList<String>();
 	    ArrayList<String> nombresClientes = new ArrayList<String>();
 		for(Cliente cli: cliList){

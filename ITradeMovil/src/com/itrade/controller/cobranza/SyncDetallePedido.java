@@ -203,10 +203,10 @@ public class SyncDetallePedido {
 				.where(Properties.IdPedido.eq(idpedido))
 				.list();
 		
-		List<PedidoLinea> listatotal=pedidoLineaDao.queryBuilder()
-								.list();
-		int size=listatotal.size();
-		Log.d("sizetotal",""+size);
+//		List<PedidoLinea> listatotal=pedidoLineaDao.queryBuilder()
+//								.list();
+//		int size=listatotal.size();
+//		Log.d("sizetotal",""+size);
 		
 		return listaPedTemp;
 	}
