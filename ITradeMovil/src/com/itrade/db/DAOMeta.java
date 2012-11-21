@@ -65,16 +65,10 @@ public class DAOMeta {
 	    Gson gson = new Gson();
 							
 		Log.e("log_tag", "se cayo5" );
-//		metav	=	gson.fromJson(sync.getResponse(), Meta.class);				    
+		metav	=	gson.fromJson(sync.getResponse(), Meta.class);				    
 
-//		    /*****************************WEBSERVICE END**********************************/				
-//		return metav;
-		metav	=	gson.fromJson(sync.getResponse(), new TypeToken<Meta>(){}.getType());				    
-
-	    /*****************************WEBSERVICE END**********************************/		
-		if(metav!=null)
-				return metav;
-		else 
-			return null;			
+		    /*****************************WEBSERVICE END**********************************/				
+		return metav;
+		
 	}
 }
