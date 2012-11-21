@@ -62,7 +62,10 @@ public class BuscarProspectosFusion extends ListActivity{
     DAOProspecto daoProspecto=null;
 	private Button button_agregar;
 	private Button button_buscar;
+	//private Button button_buscarclientes;
 	private ImageButton button_meta;
+	private ImageButton button_buscarclientes;
+	private ImageButton button_buscarpedidos;
 	Prospecto prospecto= new Prospecto();
 	List<Prospecto> listaProspecto;
 	
@@ -103,6 +106,8 @@ public class BuscarProspectosFusion extends ListActivity{
                           
         
         button_agregar = (Button) findViewById(R.id.buttonvermapa);
+        button_buscarclientes = (ImageButton) findViewById(R.id.btnBuscarClientes);
+        button_buscarpedidos = (ImageButton) findViewById(R.id.btnBuscarPedidos);
         button_buscar = (Button) findViewById(R.id.buttonbuscar);
         editText = (EditText) findViewById(R.id.editTextCliente);
         button_meta = (ImageButton) findViewById(R.id.btnMeta);
@@ -124,6 +129,23 @@ public class BuscarProspectosFusion extends ListActivity{
 				BuscarProspectosFusion.this.finish();
 			}
 	 	});
+	    
+	    button_buscarclientes.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(BuscarProspectosFusion.this,  BuscarClientesGreenDao.class);
+				intent.putExtra("idusuario", idusuario);
+				startActivity(intent);		
+			}
+	 	});
+	    
+	    button_buscarpedidos.setOnClickListener(new android.view.View.OnClickListener() {
+			public void onClick(View v) {				
+				Intent intent = new Intent(BuscarProspectosFusion.this,  BuscarPedidos.class);
+				intent.putExtra("idusuario", idusuario);
+				startActivity(intent);		
+			}
+	 	});
+	    
 	    button_meta.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){					    			    
 				Intent i = new Intent(BuscarProspectosFusion.this, MiMeta.class);								
