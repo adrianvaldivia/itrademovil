@@ -238,9 +238,9 @@ public class UbicacionProspectoActivity extends Activity implements LocationList
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
 				}
-				if (listaCliente.get(i).getActivo().compareTo("C")==0){
+				if (listaCliente.get(i).getActivo().compareTo("N")==0){
 			        OverlayItem olItem = new OverlayItem(listaCliente.get(i).getRazon_Social(), ""+listaCliente.get(i).getIdProspecto(), lista.get(i));
-			        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker3);
+			        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker2);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
 				}
