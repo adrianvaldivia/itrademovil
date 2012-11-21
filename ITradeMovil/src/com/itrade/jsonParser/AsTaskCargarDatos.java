@@ -22,6 +22,7 @@ import com.itrade.cobranzas.ClientesListTask;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.db.DAOCliente;
 import com.itrade.db.DAOEvento;
+import com.itrade.db.DAOMeta;
 import com.itrade.db.DAOPedido;
 import com.itrade.db.DAOProducto;
 import com.itrade.db.DAOProspecto;
@@ -68,6 +69,8 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 	DAOEvento daoEvento =null;
 	DAOProducto daoProducto =null;
 	DAOProspecto daoProspecto =null;
+	//modif ela
+	DAOMeta daoMeta = null;
     //green Dao
     private SQLiteDatabase db;
 
@@ -233,7 +236,10 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 					}		
 					//sincronizacion de metas
 					metaDao.deleteAll();
-					Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
+					daoMeta = new DAOMeta(activity);
+					//Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
+					Meta meta = daoMeta.buscarMetaxVendedor(""+idUsuario);
+					//Log.d("meta de mela", meta.getNombre());
 					metaDao.insert(meta);
 					///////////////////////////////////////////////////sincronizacion de prospectos
 					prospectoDao.deleteAll();   	
