@@ -61,7 +61,8 @@ public class ExampleDaoGenerator {
 	private static void addEvento(Schema schema) {
 		Entity evento = schema.addEntity("Evento");
 		evento.addIdProperty();
-		evento.addIntProperty("IdEvento");
+		evento.addLongProperty("IdEvento");
+		evento.addLongProperty("IdPersona");
 		evento.addStringProperty("Creador");
 		evento.addStringProperty("Asunto");
 		evento.addStringProperty("Lugar");
