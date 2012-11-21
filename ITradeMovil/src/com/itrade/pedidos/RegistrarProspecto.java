@@ -650,7 +650,7 @@ private void sincronizarBaseSubida() {
 //        		pruebaPaso = pData.getExtras().getString("lista" );//Obtengo el string de la subactividad
         		this.latitud=pData.getExtras().getDouble("latitud");//Obtengo el string de la subactividad
         		this.longitud=pData.getExtras().getDouble("longitud");
-        		Toast.makeText(RegistrarProspecto.this,""+latitud+" "+longitud, Toast.LENGTH_LONG).show();
+//        		Toast.makeText(RegistrarProspecto.this,""+latitud+" "+longitud, Toast.LENGTH_LONG).show();
                 //Aquí se hara lo que se desee con el valor recuperado                    
             }
         }
