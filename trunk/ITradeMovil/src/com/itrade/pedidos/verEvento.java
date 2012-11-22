@@ -32,7 +32,7 @@ public class verEvento extends Activity{
 // private Cursor cursor;
 // private Cursor cursorElementoLista;
  SimpleCursorAdapter adapterElementoLista;
- int idEvento=0;
+ long idEvento=0;
  private TextView txt_Hora;
  private EditText editTextDesc;
  private EditText editTextLugar;
@@ -47,7 +47,7 @@ public class verEvento extends Activity{
 	 editTextDesc = (EditText) findViewById(R.id.txtDesc);
 	 editTextLugar = (EditText) findViewById(R.id.txtLugar);
 	 Bundle bundle=getIntent().getExtras();
-	 idEvento=bundle.getInt("idevento");
+	 idEvento=bundle.getLong("idevento");
 	 
 	 
 	 DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);

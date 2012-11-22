@@ -405,10 +405,10 @@ public class RegistrarProspecto extends Activity implements OnClickListener{
 			     {
 			    	 
 			    	 Toast.makeText(RegistrarProspecto.this, "Se registro el Prospecto Exitosamente", Toast.LENGTH_SHORT).show();    
-			    	 RegistrarProspecto.super.onBackPressed();
+			    	 RegistrarProspecto.this.finish();;
 			    	 limpiarProspecto();
 //			    	 
-			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectos.class);
+			    	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectosFusion.class);
 			    	 a.putExtra("idusuario", idusuario);
 			    	 startActivity(a);
 			     
@@ -676,6 +676,18 @@ private void sincronizarBaseSubida() {
 	protected void onDestroy() { 
 		db.close();
 	    super.onDestroy();
+	}
+	@Override
+	public void finish(){
+		super.finish();		
+	}
+	@Override
+	public void onBackPressed() {		
+		RegistrarProspecto.this.finish();
+   	 Intent a = new Intent(RegistrarProspecto.this, BuscarProspectosFusion.class);
+   	 a.putExtra("idusuario", idusuario);
+   	 startActivity(a);
+	return;
 	}
 }
 
