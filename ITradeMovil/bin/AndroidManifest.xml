@@ -1,143 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest android:versionCode="1" android:versionName="1.0"
-    package="com.itrade" xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-sdk android:minSdkVersion="8"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
-    <uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.itrade"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="8" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <application android:background="@android:color/transparent"
-        android:icon="@drawable/mapa" android:label="@string/app_name">
-        <activity android:label="@string/app_name" android:name=".pedidos.Login">
+
+    <application
+        android:background="@android:color/transparent"
+        android:icon="@drawable/mapa"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".pedidos.Login"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/ventanamapa" android:name=".pedidos.VerMapaActivity"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.EnviarMensaje"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.RecibirMensaje"/>
-        <activity android:label="@string/app_name"
-            android:launchMode="singleTask"
+        <activity
+            android:name=".pedidos.VerMapaActivity"
+            android:label="@string/ventanamapa" />
+        <activity
+            android:name=".pedidos.EnviarMensaje"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".pedidos.RecibirMensaje"
+            android:label="@string/app_name" />
+        <activity
             android:name=".pedidos.BuscarPedidos"
-            android:configChanges="keyboardHidden|orientation" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.Incidencias"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.Menu"/>
-        
-       	<activity android:name=".pedidos.BuscarProductos"
-       	    	  android:launchMode="singleTop"
-       	    	  android:label="@string/app_name"
-                  android:configChanges="keyboardHidden|orientation" 
-            	  android:theme="@android:style/Theme.NoTitleBar">
-            	  <intent-filter>
-            	  		<action android:name="android.intent.action.SEARCH" />
-        		  </intent-filter>
-        		  <meta-data android:name="android.app.searchable"
-                   			 android:resource="@xml/searchable"/>        
-    	</activity>
-        
-        
-        <activity android:label="@string/app_name" android:name=".pedidos.BuscarClientes"/>
-        <activity android:label="@string/app_name"
-            android:name=".pedidos.DetalleCliente" 
-            android:configChanges="keyboardHidden|orientation" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:label="@string/app_name"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.Incidencias"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".pedidos.Menu"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".pedidos.BuscarProductos"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".pedidos.BuscarClientes"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".pedidos.DetalleCliente"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.DetalleProspecto"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".pedidos.CrearPedido"
-            android:configChanges="keyboardHidden|orientation"  
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:label="@string/app_name"
-            android:name=".pedidos.BuscarProspectos" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.MenuLista"/>
-        <activity android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.BuscarProspectos"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.MenuLista"
+            android:label="@string/app_name" />
+        <activity
             android:name=".pedidos.BuscarClientesGreenDao"
-            android:configChanges="keyboardHidden|orientation" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:label="@string/app_name"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".pedidos.BuscarProspectosFusion"
-            android:configChanges="keyboardHidden|orientation" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:label="@string/app_name" 
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".pedidos.MiMeta"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:configChanges="keyboardHidden|orientation" />
-        <activity android:label="@string/app_name"
-            	  android:theme="@android:style/Theme.NoTitleBar"	
-            	  android:configChanges="keyboardHidden|orientation" 
-            	  android:name=".pedidos.SimpleCalendarViewActivity"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.MiUbicacionActivity"/>
-        <activity android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.SimpleCalendarViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.MiUbicacionActivity"
+            android:label="@string/app_name" />
+        <activity
             android:name=".pedidos.UbicacionCheckInActivity"
-           android:configChanges="keyboardHidden|orientation" 
-           />        
-        <activity android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".pedidos.UbicacionProspectoActivity"
-           android:configChanges="keyboardHidden|orientation" 
-        />
-        
-         <activity android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".pedidos.VerDia"
-           android:configChanges="keyboardHidden|orientation" 
-           />
-          <activity android:label="@string/app_name"
-              		android:launchMode="singleTask"
-            		android:theme="@android:style/Theme.NoTitleBar"
-            		android:name=".pedidos.DetallePedido"
-           			android:configChanges="keyboardHidden|orientation" 
-           />
-          <activity android:label="@string/app_name"
-              		android:launchMode="singleTask"
-            		android:theme="@android:style/Theme.NoTitleBar"
-            		android:name=".pedidos.verEvento"
-           			android:configChanges="keyboardHidden|orientation" 
-           />
-          
-          <activity android:label="@string/app_name"
-              		android:launchMode="singleTop"
-            		android:theme="@android:style/Theme.NoTitleBar"
-            		android:name=".pedidos.BuscarContactos"
-           			android:configChanges="keyboardHidden|orientation" 
-           />
-          
-          <activity android:label="@string/app_name"
-              		android:launchMode="singleTop"
-            		android:theme="@android:style/Theme.NoTitleBar"
-            		android:name=".pedidos.DetalleContacto"
-           			android:configChanges="keyboardHidden|orientation" 
-           />
-                                       
-         <activity android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.DetallePedido"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.verEvento"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.BuscarContactos"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.DetalleContacto"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".pedidos.Picker"
-           android:configChanges="keyboardHidden|orientation" 
-           />
-        <activity android:label="@string/app_name" 
-            	  android:name=".pedidos.PreferencePedidos"
-        		  android:theme="@style/PreferencesTheme">
-        		  <intent-filter>                                
-        		  </intent-filter>
-    	</activity>
-        <activity android:label="@string/app_name" 
-            android:name=".pedidos.MiUbicacionImplActivity"/>
-        <activity android:label="@string/app_name" android:name=".pedidos.RegistrarProspecto"/>
-        <activity android:name=".ListaClientes"/>
-        <activity android:name=".cobranzas.ClientesListTask"/>
-        <activity android:name=".cobranzas.RequestDetailTask"/>
-        <activity android:name=".cobranzas.PaymentTask"/>
-        <activity android:name=".cobranzas.MapaClientes"/>
-        <activity android:name=".cobranzas.RutaCliente"/>
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pedidos.PreferencePedidos"
+            android:label="@string/app_name"
+            android:theme="@style/PreferencesTheme" >
+            <intent-filter />
+        </activity>
+        <activity
+            android:name=".pedidos.MiUbicacionImplActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".pedidos.RegistrarProspecto"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".ListaClientes" />
+        <activity
+            android:name=".cobranzas.ClientesListTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".cobranzas.RequestDetailTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".cobranzas.PaymentTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".cobranzas.MapaClientes"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".cobranzas.RutaCliente"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".cobranzas.Calendario"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.itrade.cobranzas.DetalleDia"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.itrade.cobranzas.DetalleEvento"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.itrade.cobranzas.Directorio"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.itrade.cobranzas.ContactoDetalle"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
 </manifest>
