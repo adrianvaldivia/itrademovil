@@ -106,6 +106,7 @@ public class Login extends Activity {
 //    public ProgressDialog pd;
     AsTaskLogin  taskLogin;
     String nombreUsuRecordado="";
+    boolean sePuedeBorrar=false;
 
     
     @Override
@@ -437,7 +438,9 @@ public class Login extends Activity {
 	}
     private void limpiarBaseLocal() {
 		// TODO Auto-generated method stub
-    	usuarioDao.deleteAll();
+    	if (sePuedeBorrar){
+    		usuarioDao.deleteAll();
+    	}    	
     	this.textView_Usuario.setText("");
     	 File cache = getCacheDir();
     	    File appDir = new File(cache.getParent());
@@ -449,7 +452,7 @@ public class Login extends Activity {
     	            }
     	        }
     	    }
-		
+		sePuedeBorrar=false;
 	}
     public static boolean deleteDir(File dir) {
 	    if (dir != null && dir.isDirectory()) {
@@ -515,6 +518,7 @@ public class Login extends Activity {
         daoSession = daoMaster.newSession();
         usuarioDao = daoSession.getUsuarioDao();
         pedidoLineaDao = daoSession.getPedidoLineaDao();
+        sePuedeBorrar=true;
 //        pedidoLineaDao.deleteAll();
 		 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		    final boolean boolRecordarUsu = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_CHECK_USUARIO, true);	    
