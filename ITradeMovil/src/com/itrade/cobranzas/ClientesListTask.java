@@ -228,9 +228,10 @@ public class ClientesListTask extends Activity {
 									
 									// AQUI SI NO TiENE CONEXION
 									sincPedidos= new SyncPedidos(ClientesListTask.this);
+									Integer numreg = sincPedidos.eliminarPedido(idpedido);
+									Log.d("LONGCLICK","Se elimino ="+numreg.toString());	
 									if (!sincPedidos.networkAvailable()){									
-										Integer numreg = sincPedidos.eliminarPedido(idpedido);
-										Log.d("LONGCLICK","Se elimino ="+numreg.toString());		
+											
 									}else{//Si es que tiene conexion
 										Syncronizar sync = new Syncronizar(ClientesListTask.this);
 										List<NameValuePair> param = new ArrayList<NameValuePair>();
