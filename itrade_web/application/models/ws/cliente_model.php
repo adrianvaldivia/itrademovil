@@ -34,7 +34,8 @@ class Cliente_model extends CI_Model {
 		$this->db->join($this->table_persona,$this->table_persona.".IdPersona =".$this->table_cliente.".IdPersona");				
 		$this->db->join($this->table_linea,$this->table_cliente.".IdCliente =".$this->table_linea.".IdCliente");				
 		//Restriccion del día de hoy				
-		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
+		//$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
+		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)<=7)";
 		$this->db->where($dates);		
 		//Restriccion de un solo vendedor
 		$this->db->where($this->table_cliente.".IdCobrador", $idvendedor);					
