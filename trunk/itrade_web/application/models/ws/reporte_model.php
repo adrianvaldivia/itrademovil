@@ -1215,21 +1215,31 @@ class Reporte_model extends CI_Model {
 	$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`Nombre`, `Pedido`.`MontoTotalPedido`, `Pedido`.`FechaPedido`, 
+		SELECT `Usuario`.`Nombre`, 
+		`Pedido`.`MontoTotalPedido`,
+		`Pedido`.`FechaPedido`, 
 		`EstadoPedido`.`IdEstadoPedido`,
-		`EstadoPedido`.`Descripcion`,
+		`EstadoPedido`.`Descripcion` as DescripcionEstado,
 		`Usuario`.`IdUbigeo`,
 		`Ubigeo`.`Pais`,
 		`Ubigeo`.`Departamento`,
 		`Ubigeo`.`Distrito`,
-		`Ubigeo`.`Zona`
+		`Ubigeo`.`Zona`, 
+        `PeriodoMeta`.`IdPeriodo`, 
+         MONTH(`PeriodoMeta`.`FechaIni`) as MesPeriodo, 
+          Year(`PeriodoMeta`.`FechaIni`) as AnhoPeriodo,
+         `PeriodoMeta`.`Descripcion` as DescripcionPeriodo
+              
 		FROM ( 
 		`Usuario`
 		)
 		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
 		JOIN  `Cliente` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario`  
 		JOIN  `Pedido` ON  `Pedido`.`IdCliente` =  `Cliente`.`IdCliente` 
-		JOIN  `EstadoPedido` ON  `EstadoPedido`.`IdEstadoPedido` =  `Pedido`.`IdEstadoPedido`
+		JOIN  `EstadoPedido` ON  `EstadoPedido`.`IdEstadoPedido` =  `Pedido`.`IdEstadoPedido` 
+                JOIN `PeriodoMeta` ON  (MONTH(`PeriodoMeta`.`FechaIni`)=MONTH(`Pedido`.`FechaPedido`) and YEAR
+
+		(`PeriodoMeta`.`FechaIni`)= YEAR(`Pedido`.`FechaPedido`))
 		WHERE   ".$stra." and ".$strb." and ".$strc."
 		
 		");
