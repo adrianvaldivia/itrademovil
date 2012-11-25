@@ -75,17 +75,15 @@ public class SyncDeposito {
     	return false;
     }
 
-	public Integer syncBDToSqlite(String idusuario,String fecha) {
+	public Integer syncBDToSqlite(String idusuario) {
 		// TODO Auto-generated method stub
-		Integer registros=0;
-		
+		Integer registros=0;		
 		if (networkAvailable()){
-			try{
-				//registros +=cargarDeposito(idusuario,fecha);
-			}catch(Exception e){
-				Log.d("SqlLite","No tiene cobertura");
-				Log.d("Error", "SE CAYO" + " "+e.getMessage());
-			}
+			//Obtener todos los depositos del usuario
+			List<Deposito> depositosPendientes=depositosByUser(idusuario);
+			Log.d("Depositos pendientes", "CANTIDAD="+depositosPendientes.size());			
+			//Llamar al webservice
+			//obtener el iddeposito y updatear
 		}
 		else{
 			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
@@ -98,6 +96,13 @@ public class SyncDeposito {
 		
 	}
 */
+	public List<Deposito> depositosByUser(String idusuario){		
+		List<Deposito> depTemp = depositoDao.queryBuilder()
+				.where(Properties.IdUsuario.eq(Integer.parseInt(idusuario)))	
+				.where(Properties.IdDeposito.isNull())
+				.list();			
+		return depTemp;
+	}
 		
 	public Integer cargarDeposito(String idusuario,String monto, String numVoucher ) {
 		
