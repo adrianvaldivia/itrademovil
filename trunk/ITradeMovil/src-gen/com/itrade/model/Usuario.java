@@ -20,6 +20,7 @@ public class Usuario {
     private Integer IdPersona;
     private String Activo;
     private Integer IdJerarquia;
+    private Integer IdUbigeo;
     private Integer IdZona;
     private Integer IdDistrito;
     private Integer IdCiudad;
@@ -32,7 +33,7 @@ public class Usuario {
         this.id = id;
     }
 
-    public Usuario(Long id, Long IdUsuario, String Nombre, String Password, String Username, String NombreReal, String ApePaterno, String ApeMaterno, Integer IdPerfil, Integer IdPersona, String Activo, Integer IdJerarquia, Integer IdZona, Integer IdDistrito, Integer IdCiudad, Integer IdPais) {
+    public Usuario(Long id, Long IdUsuario, String Nombre, String Password, String Username, String NombreReal, String ApePaterno, String ApeMaterno, Integer IdPerfil, Integer IdPersona, String Activo, Integer IdJerarquia, Integer IdUbigeo, Integer IdZona, Integer IdDistrito, Integer IdCiudad, Integer IdPais) {
         this.id = id;
         this.IdUsuario = IdUsuario;
         this.Nombre = Nombre;
@@ -45,6 +46,7 @@ public class Usuario {
         this.IdPersona = IdPersona;
         this.Activo = Activo;
         this.IdJerarquia = IdJerarquia;
+        this.IdUbigeo = IdUbigeo;
         this.IdZona = IdZona;
         this.IdDistrito = IdDistrito;
         this.IdCiudad = IdCiudad;
@@ -149,6 +151,14 @@ public class Usuario {
 
     public void setIdJerarquia(Integer IdJerarquia) {
         this.IdJerarquia = IdJerarquia;
+    }
+
+    public Integer getIdUbigeo() {
+        return IdUbigeo;
+    }
+
+    public void setIdUbigeo(Integer IdUbigeo) {
+        this.IdUbigeo = IdUbigeo;
     }
 
     public Integer getIdZona() {
