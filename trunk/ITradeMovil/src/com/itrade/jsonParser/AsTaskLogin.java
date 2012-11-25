@@ -11,10 +11,7 @@ import android.widget.Toast;
 public class AsTaskLogin extends AsyncTask<String, Void, String>
 {		
     private DAOUsuario daoUsu= null;
-    
-    
-    
-    
+              
 	 private ProgressDialog dialog;
 	 private Activity activity;		 
 	 String nusuario="";
