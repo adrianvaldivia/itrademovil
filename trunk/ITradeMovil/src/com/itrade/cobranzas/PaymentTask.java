@@ -329,13 +329,13 @@ public class PaymentTask extends Activity {
 //		}
 	}
 	public void sendSms(){
-		Intent intent = new Intent(PaymentTask.this, PaymentTask.class); 																					
+		Intent intent = new Intent(PaymentTask.this, PaymentTask.class); 																										 																				
 		intent.putExtra("idpedido", idpedido);
 		intent.putExtra("idcliente",idcliente);
 		intent.putExtra("idempleado", idempleado);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);                
-        SmsManager sms = SmsManager.getDefault();        
-        sms.sendTextMessage("979331334", null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								
+	    SmsManager sms = SmsManager.getDefault();        
+	    sms.sendTextMessage(this.clienteSelected.getTelefono(), null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);									   						
     }
 	public boolean networkAvailable() {    	
      	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

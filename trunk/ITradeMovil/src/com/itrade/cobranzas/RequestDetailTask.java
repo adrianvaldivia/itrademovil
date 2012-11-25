@@ -302,7 +302,7 @@ public class RequestDetailTask extends Activity {
 		intent.putExtra("idempleado", idempleado);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);                
         SmsManager sms = SmsManager.getDefault();        
-        sms.sendTextMessage("979331334", null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								
+        sms.sendTextMessage(this.clienteSelected.getTelefono(), null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								
     }
 	 public boolean networkAvailable() {    	
 	     	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
