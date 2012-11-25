@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/blanco"
     android:orientation="vertical" >
-
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,7 +84,8 @@
                         android:background="@color/azul_2" >
 
                         <ImageButton
-                            android:id="@+id/btnPedidos"                      
+                            android:id="@+id/btnPedidos"
+                            style="@drawable/estilo_botones"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
@@ -99,7 +102,7 @@
                             android:id="@+id/btnBuscarClientes"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_default"
+                            android:background="@drawable/estilo_botones"
                             android:src="@drawable/users_search" />
 
                         <ImageButton
@@ -139,7 +142,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0.05"
                 android:ems="10"
-                android:hint="Ingrese Razon Social"
+                android:hint="Ingrese Razon"
                 android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions" />
 
@@ -151,14 +154,16 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.05"
                 android:background="@drawable/searchbutton" />
+            
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+        <ListView android:id="@+id/list"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:textColor="@color/azul_2" >
         </ListView>
-
-    </LinearLayout>
+        
+      
+	</LinearLayout>
 
 </LinearLayout>
