@@ -14,6 +14,7 @@ class Payment_model extends CI_Model {
 		$this->table_categoria = 'Categoria';
 		$this->table_periodos = 'PeriodoMeta';
 		$this->table_ubigeo = 'Ubigeo';
+		$this->table_deposito = 'Deposito';
 		
     }	
 	
@@ -358,5 +359,21 @@ class Payment_model extends CI_Model {
 		$this->db->update($this->table_pedido);
 		return $this->get_by_id($idpedido);
 	}
+	
+	public function registro_deposito($idusuario,$monto, $fecha, $numvoucher){
+		$data=array("IdUsuario"=>$idusuario,
+				"Fecha"=>$fecha,
+				"Monto"=>$monto,
+				"NumVoucher"=>$numvoucher);
+		$this->db->insert($this->table_deposito, $data);
+		return $this->get_last_iddeposito();
+	}
+	
+	public function get_last_iddeposito(){
+		$this->db->flush_cache();
+        $this->db->select_max('IdDeposito');
+        $query = $this->db->get($this->table_deposito);
+        return $query->row(0)->IdDeposito;
+    }
 }
 ?>
