@@ -16,33 +16,33 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itrade.model.Contacto;
+import com.itrade.model.ContactoDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.DaoSession;
-import com.itrade.model.Evento;
-import com.itrade.model.EventoDao;
 
-public class SyncEventos {
+public class SyncContactos {
 	private SQLiteDatabase db;
     private DaoMaster daoMaster;
     private DaoSession daoSession;
-    private EventoDao eventoDao;    
-    private List<Evento> listaEvento;   
+    private ContactoDao contactoDao;    
+    private List<Contacto> listaContacto;   
     private Context context;
     private Activity activity;
     private Syncronizar sync;
     private Gson gson;
 	
-    public SyncEventos(Activity activ){
+    public SyncContactos(Activity activ){
     	super();
-    	listaEvento=new ArrayList<Evento>();
+    	listaContacto=new ArrayList<Contacto>();
 		activity=activ;
 		this.context=activ;
 		DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "itrade-db", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
-        eventoDao = daoSession.getEventoDao();
+        contactoDao = daoSession.getContactoDao();
         sync=new Syncronizar(activity);
         gson = new Gson();  
     }
@@ -69,16 +69,16 @@ public class SyncEventos {
     	return false;
     }
 
-	public Integer syncBDToSqlite(String idusuario,String fecha) {
+	public Integer syncBDToSqlite(String idubigeo) {
 		// TODO Auto-generated method stub
-		Integer registros=0;
-		
+		Integer registros=0;		
 		if (networkAvailable()){
 			try{
-				registros +=cargarEventos(idusuario,fecha);
+				Log.d("SqlLite","Entro a cargar");
+				registros +=cargarContactos(idubigeo);
 			}catch(Exception e){
 				Log.d("SqlLite","No tiene cobertura");
-				Log.d("Error", "SE CAYO" + " "+e.getMessage());
+				Log.d("Error", "SE CAYO" + " "+e.getMessage()); 	
 			}
 		}
 		else{
@@ -88,39 +88,38 @@ public class SyncEventos {
 		return registros;
 	}
 
-	private Integer cargarEventos(String idusuario,String fecha) {
-		// TODO Auto-generated method stub
-		List<Evento> listaEventTemp=eventoDao.loadAll();	
-		if (listaEventTemp.isEmpty() || listaEventTemp.size()==0 ){					
-			ArrayList<Evento> linEvenList = getWebServiceList(idusuario, fecha);				
-			if (linEvenList.size()>0){
-				for(Evento evento: linEvenList){				
-					eventoDao.insert(evento);
-				}
+	public Integer cargarContactos(String idubigeo) {
+		// TODO Auto-generated method stub				
+		List<Contacto> listaContactTemp=contactoDao.loadAll();		
+		if (listaContactTemp.isEmpty() || listaContactTemp.size()==0){							
+			ArrayList<Contacto> linContactoList = getWebServiceList(idubigeo);				
+			if (linContactoList.size()>0){
+				contactoDao.deleteAll();
+				for(Contacto contacto: linContactoList){				
+					contactoDao.insert(contacto);
+				}			
 			}else{
-				Log.d("cargarDetallePedido", "No hay datos");
-			}
-		
+				Log.d("cargarContactos", "No hay datos");
+			}		
 		}
 		else{
-			ArrayList<Evento> linEvenList = getWebServiceList(idusuario, fecha);			
-			if (listaEventTemp.size()!=linEvenList.size()){
-				eventoDao.deleteAll();
-				for(Evento evento: linEvenList){				
-					eventoDao.insert(evento);
+			Log.d("ACTUALIZAR CONTACTOS", "Ya se encuentra en la bd");
+			ArrayList<Contacto> linContactoList = getWebServiceList(idubigeo);
+			if (listaContactTemp.size()!=linContactoList.size()){
+				contactoDao.deleteAll();
+				for(Contacto contacto: linContactoList){				
+					contactoDao.insert(contacto);
 				}
 			}
-			Log.d("cargarDetallePedido", "Ya se encuentra en la bd");
 		}
 		
-		return eventoDao.loadAll().size();
+		return contactoDao.loadAll().size();
 	}
 
-	private ArrayList<Evento> getWebServiceList(String idusuario, String fecha) {
+	private ArrayList<Contacto> getWebServiceList(String idubigeo) {
 		List<NameValuePair> param = new ArrayList<NameValuePair>();								
-		param.add(new BasicNameValuePair("idusuario", idusuario));
-		param.add(new BasicNameValuePair("fecha", fecha));			
-		String route="/ws/eventos/get_eventos_idusuario_month/";					
+		param.add(new BasicNameValuePair("idubigeo", idubigeo));				
+		String route="/ws/pedido/get_contactos_by_user_id/";
 		sync.conexion(param,route);
 		try {
 			sync.getHilo().join();
@@ -128,16 +127,13 @@ public class SyncEventos {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
-		ArrayList<Evento> linEvenList = new ArrayList<Evento>();			
-		linEvenList=gson.fromJson(sync.getResponse(), new TypeToken<List<Evento>>(){}.getType());
-		return linEvenList;
+		}		    		   
+		ArrayList<Contacto> linContactoList = new ArrayList<Contacto>();			
+		linContactoList=gson.fromJson(sync.getResponse(), new TypeToken<List<Contacto>>(){}.getType());
+		return linContactoList;
 	}
 
-	public List<Evento> buscarEventos(String idusuario,String fecha) {
-		return eventoDao.loadAll();
-	}
-    
-    
-    
+	public List<Contacto> buscarContactos() {		
+		return contactoDao.loadAll();
+	}          
 }
