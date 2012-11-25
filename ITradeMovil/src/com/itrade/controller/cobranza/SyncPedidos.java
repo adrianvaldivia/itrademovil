@@ -298,7 +298,8 @@ public class SyncPedidos {
 		calendar.add(Calendar.DAY_OF_MONTH,-7);
 		String previousDate = form.format(calendar.getTime());
     	List<Pedido> pedTemp=pedidoDao.queryBuilder()
-				.where(Properties.IdEstadoPedido.eq("1"))
+				//.where(Properties.IdEstadoPedido.eq("1"))				
+				.whereOr(Properties.IdEstadoPedido.eq("1"), Properties.IdEstadoPedido.eq("4"))
 				.where(Properties.FechaPedido.eq(previousDate))
 				.list();    
 		return pedTemp;    	
@@ -339,7 +340,7 @@ public class SyncPedidos {
 			List<Pedido> pedTemp=pedidoDao.queryBuilder()
 					.where(Properties.FechaPedido.eq(previousDate))
 					.where(Properties.IdCliente.eq(cliente.getIdCliente()))								
-					.where(Properties.IdEstadoPedido.eq("1"))
+					.whereOr(Properties.IdEstadoPedido.eq("1"), Properties.IdEstadoPedido.eq("4"))
 					.list();
 			listaPedido.addAll(pedTemp);
 			if (pedTemp.size()>0){
@@ -485,5 +486,16 @@ public class SyncPedidos {
 		String today = form.format(calendar.getTime());	
 		return today;
 	} 
+
+	public Integer entregarPedido(String idpedido) {
+		// TODO Auto-generated method stub
+		List<Pedido> pedTemp=pedidoDao.queryBuilder()
+				.where(Properties.IdPedido.eq(idpedido))
+				.list();
+		Pedido ped=pedTemp.get(0);
+		ped.setIdEstadoPedido(2);
+		pedidoDao.update(ped);		
+		return 1;
+	}
     
 }

@@ -120,7 +120,7 @@ public class SyncDetallePedido {
 	private Integer cargarDetallePedidoTotales(String idusuario) {
 		// TODO Auto-generated method stub
 		List<Pedido> pedidos=pedidoDao.queryBuilder()
-				.where(Properties.IdEstadoPedido.eq("1"))
+				.whereOr(Properties.IdEstadoPedido.eq("1"),Properties.IdEstadoPedido.eq("4"))
 				.list();
 		
     	String pedidosws = "";

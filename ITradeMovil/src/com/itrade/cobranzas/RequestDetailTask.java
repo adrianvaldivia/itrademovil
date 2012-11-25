@@ -93,27 +93,71 @@ public class RequestDetailTask extends Activity {
 	public void setValues(){
 		Log.d("tag", "LLEGO1");
 		TextView txtNombre = (TextView) findViewById(R.id.textVwCliente);
-		TextView txtTotal = (TextView) findViewById(R.id.textVwTotal);		
+		TextView txtTotal = (TextView) findViewById(R.id.textVwTotal);	
+		TextView txtEstado = (TextView) findViewById(R.id.TextVwEstado);
 		txtNombre.setText(this.clienteSelected.getApePaterno()+" "+this.clienteSelected.getNombre());
 		txtTotal.setText(this.pedidoSelected.getMontoTotalPedido().toString());
 		Log.d("tag", "LLEGO2");
-		buttonCobrar= (Button)findViewById(R.id.btnCobrar);		
+		buttonCobrar= (Button)findViewById(R.id.btnCobrar);
+		if(pedidoSelected.getIdEstadoPedido()==4){
+			txtEstado.setText("COBRADO");
+			buttonCobrar.setText("Entregar");
+		}
+		
 		//Set Adapter
 		ListView listView = (ListView) findViewById(R.id.listDetalle);
         PedidoLineaAdapter adapter = new PedidoLineaAdapter(this,R.layout.c_detalle_row, detallePedido);
         listView.setAdapter(adapter);
         //Set button cobrar Event
         Log.d("tag", "LLEGO3");
-        buttonCobrar.setOnClickListener(new OnClickListener() {
-	    	public void onClick(View v) {
-	    		//Definido en el evento onlick    						 						
-				Intent intent = new Intent(RequestDetailTask.this, PaymentTask.class); 													
-				intent.putExtra("idpedido", idpedido);
-				intent.putExtra("idcliente", idcliente); 	
-				intent.putExtra("idempleado", idempleado);
-				startActivity(intent);									
-			}
-	 	});
+        if(pedidoSelected.getIdEstadoPedido()==4){
+        	buttonCobrar.setOnClickListener(new OnClickListener() {
+        		public void onClick(View v) {        	
+		        	Integer numreg = syncPedido.entregarPedido(idpedido);
+					Log.d("SQL","Se entrego ="+numreg.toString()+" pedido");
+					
+					String titulo="";
+					String mensaje=""; 
+					if (numreg>0){
+						Pedido pedido = syncPedido.buscarPedido(idpedido);
+						titulo="Entrega exitosa"; 
+						mensaje="Se registro la entrega del pedido Nro: "+pedido.getIdPedido().toString(); 
+					}else{				
+						titulo="No se registro la entrega";
+						mensaje="No se realizo la entrega del pedido"; 							
+					}				
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+					alertDialogBuilder.setTitle(titulo);		 			
+					alertDialogBuilder
+							.setMessage(mensaje)
+							.setCancelable(false)						
+							.setNegativeButton("Aceptar",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {														
+									dialog.cancel();
+									//finish();
+									Intent intent = new Intent(RequestDetailTask.this, ClientesListTask.class); 													
+		//							intent.putExtra("idpedido", idpedido);
+		//							intent.putExtra("idcliente", idcliente);	
+									intent.putExtra("idempleado", idempleado);
+									startActivity(intent);
+								}
+					});		
+					AlertDialog alertDialog = alertDialogBuilder.create();		 
+					alertDialog.show();
+        		}
+        	});
+        }else{
+        	buttonCobrar.setOnClickListener(new OnClickListener() {
+		    	public void onClick(View v) {
+		    		//Definido en el evento onlick    						 						
+					Intent intent = new Intent(RequestDetailTask.this, PaymentTask.class); 													
+					intent.putExtra("idpedido", idpedido);
+					intent.putExtra("idcliente", idcliente); 	
+					intent.putExtra("idempleado", idempleado);
+					startActivity(intent);									
+				}
+		 	});
+        }
         buttonRuta= (Button)findViewById(R.id.btnRuta);
         buttonRuta.setOnClickListener(new OnClickListener() {
 	    	public void onClick(View v) {
