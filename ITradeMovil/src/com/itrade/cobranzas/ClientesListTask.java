@@ -92,6 +92,17 @@ public class ClientesListTask extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		/*BTN clientes*/
+		btnDepositar= (ImageView)findViewById(R.id.btnDepositarBanco);
+		btnDepositar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ClientesListTask.this, Amortizacion.class); 																				
+				intent.putExtra("idusuario", idusuario);
+				startActivity(intent);
+			}
+		});
 		/*BTN Mensaje masivo*/
 		btnMail= (ImageView)findViewById(R.id.btnMailMasivo);
 		btnMail.setOnClickListener(new OnClickListener() {			
