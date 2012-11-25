@@ -583,16 +583,17 @@ class Reporte_model extends CI_Model {
 		MONTH( Pedido.FechaPedido) AS Month, 
 		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
-		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(distinct `Meta`.`Monto`) AS MontoMeta 
 		FROM (`Pedido`)
 		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
 		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
 		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
 		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
+		JOIN  `PeriodoMeta` ON (  `PeriodoMeta`.`IdPeriodo` =  `Meta`.`IdPeriodo` ) 
 		WHERE   ".$str." and `Ubigeo`.`Pais`= '".$id."' 
 		GROUP BY 
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
-		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` 
 		");
 		break;
 		
@@ -603,16 +604,17 @@ class Reporte_model extends CI_Model {
 		MONTH( Pedido.FechaPedido) AS Month, 
 		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
-		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM( distinct `Meta`.`Monto`) AS MontoMeta 
 		FROM (`Pedido`)
 		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
 		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
 		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
 		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
+		JOIN  `PeriodoMeta` ON (  `PeriodoMeta`.`IdPeriodo` =  `Meta`.`IdPeriodo` ) 
 		WHERE   ".$str."  and `Ubigeo`.`Departamento`= '".$id."' 
 		GROUP BY 
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
-		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` 
 		");
 		break;
 		
@@ -624,16 +626,17 @@ class Reporte_model extends CI_Model {
 		MONTH( Pedido.FechaPedido) AS Month,  
 		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
-		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM( distinct `Meta`.`Monto`) AS MontoMeta 
 		FROM (`Pedido`)
 		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
 		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
 		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
 		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
+		JOIN  `PeriodoMeta` ON (  `PeriodoMeta`.`IdPeriodo` =  `Meta`.`IdPeriodo` ) 
 		WHERE   ".$str."  and `Ubigeo`.`Distrito`= '".$id."' 
 		GROUP BY 
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
-		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` 
 		");
 		break;
 		
@@ -644,16 +647,17 @@ class Reporte_model extends CI_Model {
 		MONTH( Pedido.FechaPedido) AS Month,  
 		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
-		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM( distinct `Meta`.`Monto`) AS MontoMeta 
 		FROM (`Pedido`)
 		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
 		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
 		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
 		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
+		JOIN  `PeriodoMeta` ON (  `PeriodoMeta`.`IdPeriodo` =  `Meta`.`IdPeriodo` ) 
 		WHERE   ".$str."  and `Ubigeo`.`Zona`= '".$id."' 
 		GROUP BY 
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
-		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` 
 		");
 		break;
 		
