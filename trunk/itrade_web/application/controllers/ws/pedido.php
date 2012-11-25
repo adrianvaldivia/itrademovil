@@ -34,6 +34,16 @@ class Pedido extends CI_Controller {
 		$result=$this->Payment_model->pay_by_id($idpedido,$montocobrado,$numVoucher);	
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));							
 	}
+	public function entregar_pedido($idpedido_w=''){
+		$idpedido=$this->input->post('idpedido');			
+		if ($idpedido_w!=''){
+			$idpedido=$idpedido_w;		
+		}	
+		$result=$this->Payment_model->entregar_pedido($idpedido);	
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));		
+	}
+	
+	
 	public function consultar_pedido($idpedido_w='')
 	{
 		$idpedido=$this->input->post('idpedido');				
