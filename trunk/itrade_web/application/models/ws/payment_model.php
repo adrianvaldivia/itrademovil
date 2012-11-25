@@ -21,8 +21,17 @@ class Payment_model extends CI_Model {
 		//obtain pedido
 		//si es que ya esta pagado, no se puede cambiar de estado y se devuelve un array vacio
 		
-		if ($this->pendiente($idpedido)){									
-			$this->db->set('IdEstadoPedido', 2);//Pagado
+		if ($this->pendiente($idpedido)){
+			//echo "PENDIENTE";
+			if ($this->entregado($idpedido)){
+				//echo "ENTREGADO";
+				$this->db->flush_cache();
+				$this->db->set('IdEstadoPedido', 2);//Entregado
+			}else{
+				//echo "PAGADO";
+				$this->db->flush_cache();
+				$this->db->set('IdEstadoPedido', 4);//Cobrado
+			}			
 			$this->db->set('MontoTotalCobrado', $montocobrado);
 			$this->db->set('FechaCobranza', 'CURDATE()', FALSE);
 			if (trim($numVoucher)!=""){
@@ -35,7 +44,22 @@ class Payment_model extends CI_Model {
 		return array();
 		
 	}
-	
+	public function entregado($idpedido){
+		$this->db->flush_cache();
+		$this->db->select($this->table_pedido.".IdPedido");		
+		$this->db->from($this->table_pedido);		
+		$this->db->where($this->table_pedido.".IdPedido", $idpedido);
+		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);// 1 indica que no esta pagado
+		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
+		$this->db->where($dates);
+		$query = $this->db->get();			
+        if ($query->num_rows()>0){
+			//QUIERE DECIR QUE se puede entregar
+			return true;			
+		}else{
+			return false;
+		}	
+	}
 	public function get_by_id($idpedido){
 		//IDPEDIDO, IDCLIENTE, NOMBRECLIENTE, MONTOTOTAL
 		/*$this->db->select($this->table_pedido.".IdPedido, ".
@@ -59,6 +83,7 @@ class Payment_model extends CI_Model {
 	}
 	
 	public function pendiente($idpedido){
+		$this->db->flush_cache();
 		$this->db->select($this->table_pedido.".IdPedido");		
 		$this->db->from($this->table_pedido);		
 		$this->db->where($this->table_pedido.".IdPedido", $idpedido);
@@ -77,6 +102,7 @@ class Payment_model extends CI_Model {
 		$this->db->join($this->table_cliente,$this->table_pedido.".IdCliente =".$this->table_cliente.".IdCliente");											
 		$this->db->where($this->table_cliente.".IdCobrador", $idcobrador);	
 		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);//Pendiente de pago
+		$this->db->or_where($this->table_pedido.".IdEstadoPedido", 4);
 		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
 		$this->db->where($dates);
 		$query = $this->db->get();
