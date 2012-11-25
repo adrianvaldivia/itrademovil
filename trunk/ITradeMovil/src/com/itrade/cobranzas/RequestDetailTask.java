@@ -112,7 +112,27 @@ public class RequestDetailTask extends Activity {
         Log.d("tag", "LLEGO3");
         if(pedidoSelected.getIdEstadoPedido()==4){
         	buttonCobrar.setOnClickListener(new OnClickListener() {
-        		public void onClick(View v) {        	
+        		public void onClick(View v) {
+        			syncPedido=new SyncPedidos(RequestDetailTask.this);
+        			if (syncPedido.networkAvailable()){
+    					Syncronizar sync = new Syncronizar(RequestDetailTask.this);
+    					List<NameValuePair> param = new ArrayList<NameValuePair>();	
+    					
+    					param.add(new BasicNameValuePair("idpedido", idpedido));
+    					
+    					String route2="/ws/pedido/entregar_pedido/";
+    					sync.conexion(param,route2);
+    					try {
+    						sync.getHilo().join();			
+    					} catch (InterruptedException e) {
+    						  // TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}	    	  
+//    					Gson gson = new Gson();  
+//    					ArrayList<Pedido> listaPayments = new ArrayList<Pedido>();
+//    					listaPayments = gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
+    				}
+        			
 		        	Integer numreg = syncPedido.entregarPedido(idpedido);
 					Log.d("SQL","Se entrego ="+numreg.toString()+" pedido");
 					
@@ -144,6 +164,7 @@ public class RequestDetailTask extends Activity {
 					});		
 					AlertDialog alertDialog = alertDialogBuilder.create();		 
 					alertDialog.show();
+					syncPedido.closeDB();
         		}
         	});
         }else{
