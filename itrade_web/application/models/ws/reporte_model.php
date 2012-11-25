@@ -637,6 +637,26 @@ class Reporte_model extends CI_Model {
 		");
 		break;
 		
+		case 4:
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
+		MONTH( Pedido.FechaPedido) AS Month,  
+		`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`, 
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`,
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoTotalPedido, SUM(`Meta`.`Monto`) AS MontoMeta 
+		FROM (`Pedido`)
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente`
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo`
+		JOIN `Meta` ON `Usuario`.`IdUsuario` =`Meta`.`IdUsuario` 
+		WHERE   ".$str."  and `Ubigeo`.`Zona`= '".$id."' 
+		GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		");
+		break;
+		
 		}
 		
 		//echo $this->db->last_query();
@@ -798,7 +818,50 @@ class Reporte_model extends CI_Model {
 		`Producto`.`IdProducto` , 
 		ProductoDescripcion
 		");
-		break;	
+		break;
+
+		case 4:
+		
+		$query = $this->db->query("		
+		
+		SELECT 	
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year,  
+		MONTH( Pedido.FechaPedido) AS Month,  
+		`Usuario`.`Nombre`, 
+		`Ubigeo`.`IdUbigeo`, 
+		`Usuario`.`IdJerarquia`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona`,		
+		`Marca`.`IdMarca`,
+		`Marca`.`Descripcion` AS MarcaDescripcion, 
+		`Categoria`.`IdCategoria` ,
+		`Categoria`.`Descripcion` AS CategoriaDescripcion, 
+		`Producto`.`IdProducto` ,
+		`Producto`.`Descripcion` AS ProductoDescripcion,
+		SUM(`Linea_Pedido`.`MontoLinea`) AS MontoLinea, 
+		SUM(`Linea_Pedido`.`Cantidad`) AS Cantidad
+		FROM (`Linea_Pedido`)
+		JOIN `Pedido` ON `Linea_Pedido`.`IdPedido` =`Pedido`.`IdPedido`
+		JOIN `Producto` ON `Linea_Pedido`.`IdProducto` =`Producto`.`IdProducto`
+		JOIN `Marca` ON `Producto`.`IdMarca` =`Marca`.`IdMarca`
+		JOIN `Categoria` ON `Producto`.`IdCategoria` =`Categoria`.`IdCategoria`
+		JOIN `Cliente` ON `Pedido`.`IdCliente` =`Cliente`.`IdCliente` 
+		JOIN `Usuario` ON `Cliente`.`IdVendedor` =`Usuario`.`IdUsuario`
+		JOIN `Ubigeo` ON `Usuario`.`IdUbigeo` =`Ubigeo`.`IdUbigeo` 
+		WHERE   ".$str." and `Ubigeo`.`Zona`= '".$id."'  
+		 GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona` , 
+		`Marca`.`IdMarca`,
+		MarcaDescripcion,
+		`Categoria`.`IdCategoria`, 
+		CategoriaDescripcion,
+		`Producto`.`IdProducto` , 
+		ProductoDescripcion
+		");
+		break;
 		}		
 		//echo $this->db->last_query();
 		return $query->result();
@@ -946,6 +1009,45 @@ class Reporte_model extends CI_Model {
 		");
 		break;
 		
+		case 4:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month, 
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN 1 ELSE 0 END) AS CANTPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=1 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE1,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3, 
+		SUM(CASE WHEN IdEstadoPedido=4 THEN 1 ELSE 0 END) AS CANTPEDIDOE4,
+		SUM(CASE WHEN IdEstadoPedido=4 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE4
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Zona`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month, 
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+
+		
 		
 		}
 		//echo $this->db->last_query();
@@ -1070,6 +1172,42 @@ class Reporte_model extends CI_Model {
 		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
 		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
 		AND  ".$str." and `D`.`Distrito`= '".$id."' 
+		GROUP BY 
+		Year, 
+		Month, 
+		`C`.`Nombre`,
+		`C`.`IdJerarquia`,
+		`C`.`IdUbigeo`,
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`
+		");
+		break;
+		
+		case 4:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( `Pedido`.`FechaPedido`,  '%Y' ) AS Year,
+		MONTH(`Pedido`.`FechaPedido`) AS Month, 
+		`C`.`Nombre`,
+		`C`.`IdUbigeo`,
+		`C`.`IdJerarquia`,
+		
+		`D`.`Pais`,
+		`D`.`Departamento`,
+		`D`.`Distrito`,
+		`D`.`Zona`,
+		
+		COUNT(`Pedido`.`IdPedido`) AS CANTPEDIDO,
+		SUM(`Pedido`.`MontoTotalPedido`) AS VENTAPEDIDO,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		
+		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
+		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
+		AND  ".$str." and `D`.`Zona`= '".$id."' 
 		GROUP BY 
 		Year, 
 		Month, 
@@ -1397,6 +1535,24 @@ class Reporte_model extends CI_Model {
 		LEFT OUTER JOIN Pedido Pedido ON C.IdCliente = Pedido.IdCliente
 		
 		WHERE ".$str." and `A`.`Distrito`= '".$id."' 
+		GROUP BY 
+		YEAR, 
+		MONTH ,  `A`.`IdUbigeo` ,  `A`.`Pais` ,  `A`.`Departamento` ,  `A`.`Distrito` ,  `A`.`Zona`
+		");
+		break;
+		
+		case 4:
+		
+		$query = $this->db->query("
+		SELECT DATE_FORMAT(  `Pedido`.`FechaPedido` ,  '%Y' ) AS YEAR, MONTH(  `Pedido`.`FechaPedido` ) AS 
+		MONTH , A.IdUbigeo, A.Pais, A.Departamento, A.Distrito, A.Zona, COUNT( DISTINCT B.IdUsuario ) AS numVendedores, COUNT( DISTINCT Pedido.IdPedido ) AS numVentas, SUM( MontoTotalPedido ) AS montoVentas
+		FROM Ubigeo A
+		LEFT OUTER JOIN Usuario B ON A.IdUbigeo = B.IdUbigeo
+		AND B.IdPerfil =2
+		LEFT OUTER JOIN Cliente C ON B.IdUsuario = C.IdVendedor
+		LEFT OUTER JOIN Pedido Pedido ON C.IdCliente = Pedido.IdCliente
+		
+		WHERE ".$str." and `A`.`Zona`= '".$id."' 
 		GROUP BY 
 		YEAR, 
 		MONTH ,  `A`.`IdUbigeo` ,  `A`.`Pais` ,  `A`.`Departamento` ,  `A`.`Distrito` ,  `A`.`Zona`
