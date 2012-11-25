@@ -20,6 +20,7 @@ class Cliente_model extends CI_Model {
 						$this->table_persona.".ApePaterno, ".
 						$this->table_cliente.".Razon_Social, ".
 						$this->table_cliente.".RUC, ".
+						$this->table_persona.".Telefono, ".
 						$this->table_cliente.".Latitud, ".
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
@@ -50,6 +51,7 @@ class Cliente_model extends CI_Model {
 						$this->table_cliente.".IdCliente, ".
 						$this->table_persona.".Nombre, ".
 						$this->table_persona.".ApePaterno, ".
+						$this->table_persona.".Telefono, ".
 						$this->table_cliente.".Razon_Social, ".
 						$this->table_cliente.".RUC, ".
 						$this->table_cliente.".Latitud, ".
@@ -95,6 +97,7 @@ class Cliente_model extends CI_Model {
 						$this->table_persona.".ApePaterno, ".
 						$this->table_cliente.".Razon_Social, ".
 						$this->table_cliente.".RUC, ".
+						$this->table_persona.".Telefono, ".
 						$this->table_cliente.".Latitud, ".
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
@@ -121,6 +124,7 @@ class Cliente_model extends CI_Model {
 						$this->table_persona.".ApePaterno, ".
 						$this->table_cliente.".Razon_Social, ".
 						$this->table_cliente.".RUC, ".
+						$this->table_persona.".Telefono, ".
 						$this->table_cliente.".Latitud, ".
 						$this->table_cliente.".Longitud, ".
 						$this->table_cliente.".Direccion, ".
