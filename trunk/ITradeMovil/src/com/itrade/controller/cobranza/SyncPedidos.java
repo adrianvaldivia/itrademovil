@@ -510,5 +510,24 @@ public class SyncPedidos {
 		pedidoDao.update(ped);		
 		return 1;
 	}
-    
+	public List<Pedido> getPedidosSemana(String idCliente){
+		
+    	SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH,-7);
+		
+		String fechaF = form.format(calendar.getTime());
+		long sem = 7 * 24 * 60 * 60 * 1000;
+		Date fechaID = new Date(Calendar.getInstance().getTime().getTime() - sem);
+		
+		String fechaI = form.format(fechaID);
+		
+		List<Pedido> pedTemp=pedidoDao.queryBuilder()
+    			.where(Properties.IdCliente.eq(idCliente))
+				.where(Properties.IdEstadoPedido.eq("1"))
+				.where(Properties.FechaPedido.between(fechaI, fechaF))
+				.list();    
+		return pedTemp;    	
+    }
 }
