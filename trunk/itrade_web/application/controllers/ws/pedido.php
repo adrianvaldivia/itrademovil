@@ -226,5 +226,14 @@ class Pedido extends CI_Controller {
 		$result=$this->Payment_model->get_clientes_checkin($idcobrador);		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
+	
+	public function get_contactos_by_user_id($idubigeo_w){		
+		$idubigeo=$this->input->post('idubigeo');
+		if ($idubigeo_w!=''){			
+			$idubigeo=$idubigeo_w;
+		}
+		$result=$this->Payment_model->get_contactos_by_user_id($idubigeo);		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
 }
 
