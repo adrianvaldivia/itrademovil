@@ -17,8 +17,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
+import com.itrade.model.PedidoLinea;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.Usuario;
+import com.itrade.model.UsuarioDao.Properties;
+
 import com.itrade.model.UsuarioDao;
 
 public class SyncUsuarios {
@@ -104,8 +107,21 @@ public class SyncUsuarios {
     public Usuario getUsuarioLogged() {
     	List<Usuario> listaUsuario=usuarioDao.loadAll();
 		return listaUsuario.get(0);
-	}
+	}    
 
+    public Usuario getUsuarioById(String idUsuario) {
+    	List<Usuario> listaUsuario=usuarioDao.queryBuilder()
+				.where(Properties.IdUsuario.eq(Integer.parseInt(idUsuario)))
+				.list();
+    	//List<Usuario> listaUsuario=usuarioDao.loadAll();
+    	if (listaUsuario.size()>0){
+    		return listaUsuario.get(0);
+    	}else{
+    		return null;
+    	}
+		
+	}
+    
 	public Integer syncBDToSqlite(){    	
 		Integer registros=0;
 		//Compruebo si tengo conexión a internet;    			
