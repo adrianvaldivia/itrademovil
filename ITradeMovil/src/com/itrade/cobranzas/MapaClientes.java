@@ -120,7 +120,7 @@ public class MapaClientes  extends Activity implements LocationListener {
 			//inicio de green Dao
 	        //inicio green Dao 
 			 
-			String IdCobrador="2010";//(String)i.getSerializableExtra("idempleado") ; 
+			String IdCobrador=(String)i.getSerializableExtra("idempleado") ; 
 			  Syncronizar sync = new Syncronizar(MapaClientes.this);
 				List<NameValuePair> param = new ArrayList<NameValuePair>();								
 				param.add(new BasicNameValuePair("idcobrador", IdCobrador));	

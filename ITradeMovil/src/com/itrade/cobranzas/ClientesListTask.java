@@ -11,8 +11,11 @@ import org.xml.sax.Parser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
+import com.itrade.controller.cobranza.SyncContactos;
 import com.itrade.controller.cobranza.SyncDetallePedido;
+import com.itrade.controller.cobranza.SyncNotifications;
 import com.itrade.controller.cobranza.SyncPedidos;
+import com.itrade.controller.cobranza.SyncUsuarios;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
@@ -67,6 +70,9 @@ public class ClientesListTask extends Activity {
 	private ImageView btnMapaTotal;
 	private SyncPedidos sincPedidos;
 	private SyncDetallePedido sincDetallePedido;
+	private SyncContactos sincContacto;
+	private SyncUsuarios sincUsuario;
+	private SyncNotifications sincNotifications;
 	
     /** Called when the activity is first created. */
     @Override
@@ -105,18 +111,23 @@ public class ClientesListTask extends Activity {
 								//verificar si tiene internet o no <--------------------------
 								
 								if (networkAvailable()){
-									Syncronizar sync = new Syncronizar(ClientesListTask.this);
-									List<NameValuePair> param = new ArrayList<NameValuePair>();
-									param.add(new BasicNameValuePair("idcobrador", idusuario));
-									String route2="/ws/cobranza/send_notifications/";
-									sync.conexion(param,route2);
-									try {
-										sync.getHilo().join();
-									} catch (InterruptedException e) {
-										  // TODO Auto-generated catch block
-										e.printStackTrace();
-									}									
-									Toast.makeText(ClientesListTask.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+									if (!sincNotifications.sendNotification(idusuario)){
+										Syncronizar sync = new Syncronizar(ClientesListTask.this);
+										List<NameValuePair> param = new ArrayList<NameValuePair>();
+										param.add(new BasicNameValuePair("idcobrador", idusuario));
+										String route2="/ws/cobranza/send_notifications/";
+										sync.conexion(param,route2);
+										try {
+											sync.getHilo().join();
+										} catch (InterruptedException e) {
+											  // TODO Auto-generated catch block
+											e.printStackTrace();
+										}									
+										sincNotifications.saveNotification(idusuario);
+										Toast.makeText(ClientesListTask.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+									}else{
+										Toast.makeText(ClientesListTask.this, "Usted ya envió notifaciones el dia de hoy.", Toast.LENGTH_SHORT).show();
+									}																		
 								}else{
 									Toast.makeText(ClientesListTask.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
 								}																														
@@ -300,6 +311,9 @@ public class ClientesListTask extends Activity {
         //No olvidar de esto en todos los activities
         sincPedidos.closeDB();
         sincDetallePedido.closeDB();
+        sincContacto.closeDB();               
+		sincUsuario.closeDB();
+		sincNotifications.closeDB();
     }
     
 
@@ -346,12 +360,19 @@ public class ClientesListTask extends Activity {
      private void sqlite(){
 		sincPedidos= new SyncPedidos(ClientesListTask.this); 
 		sincDetallePedido= new SyncDetallePedido(ClientesListTask.this);
+		sincContacto= new SyncContactos(ClientesListTask.this);
+		sincUsuario = new SyncUsuarios(ClientesListTask.this);
+		sincNotifications = new SyncNotifications(ClientesListTask.this);
 		//Integer numePed = sincPedidos.cargarClientes(idusuario);
 		//Integer numeCli = sincPedidos.cargarPedidos(idusuario);
 		Integer numreg = sincPedidos.syncBDToSqlite(idusuario);
 		Integer numerito = sincDetallePedido.syncBDToSqlite(idusuario);
+		Usuario usuario = sincUsuario.getUsuarioById(idusuario);
+		Log.d("USUARIIO","USUARIIO ="+usuario.getNombre());						
+		Integer numerazo = sincContacto.cargarContactos(usuario.getIdUbigeo().toString());
 		Log.d("ClienteListaTask","pedidos ="+numreg.toString());		
 		Log.d("ClienteListaTask","detallesPedidos ="+numerito.toString());
+		Log.d("ClienteListaTask","detallesPedidos ="+numerazo.toString());
 	   	//Log.d("RESULTADOS","fecha ="+today.toString());
 	   	//List<Pedido> listaPedi =sincPedidos.getPedidos(Integer.parseInt(idusuario));
 		//Log.d("pEDIDOS","cantidad ="+listaPedi.size());
