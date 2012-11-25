@@ -173,7 +173,7 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 						x=listaCliente.get(i).getLatitud();
 						y=listaCliente.get(i).getLongitud();
 						Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
-								listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+								listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),listaCliente.get(i).getTelefono(),
 								listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
 								listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
 								listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
@@ -223,20 +223,19 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 
 					/////////////////////////////////////////////////////////////////////////fin  de Pedido Linea
 					/////////////////////////////////////////////Sincronizacion eventos
-					eventoDao.deleteAll();
-					daoEvento = new DAOEvento(activity);
-//					String fechaEvento="2012-10-12";
-					String fechaEvento=getFechaActual();
-					List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
-					for(int i=0;i<listaEvento.size();i++){
-						//numvoucher = A de antiguo
-						Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getIdPersona(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
-						eventoDao.insert(evento);
-				        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-					}		
-					//sincronizacion de metas
-					
 					if (usuario.getIdPerfil()==2){
+						eventoDao.deleteAll();
+						daoEvento = new DAOEvento(activity);
+	//					String fechaEvento="2012-10-12";
+						String fechaEvento=getFechaActual();
+						List<Evento> listaEvento = daoEvento.getAllEventos(idUsuario,fechaEvento); //obtiene los eventos        
+						for(int i=0;i<listaEvento.size();i++){
+							//numvoucher = A de antiguo
+							Evento evento = new Evento(null, listaEvento.get(i).getIdEvento(),listaEvento.get(i).getIdPersona(),listaEvento.get(i).getCreador(),listaEvento.get(i).getAsunto(),listaEvento.get(i).getLugar(),listaEvento.get(i).getDescripcion(),listaEvento.get(i).getFecha(),listaEvento.get(i).getHoraInicio(),listaEvento.get(i).getHoraFin());
+							eventoDao.insert(evento);
+					        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+						}		
+						//sincronizacion de metas									
 						metaDao.deleteAll();
 						daoMeta = new DAOMeta(activity);
 						//Meta meta= new Meta(null,null,100.0,"2012-11-10","2012-12-10",200.0,"Octubre 2012");
@@ -268,7 +267,8 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 				        prospectoDao.insert(prospecto2);	        	        
 					}
 					//sincronizacion de contactos
-					contactoDao.deleteAll();
+					//contactoDao.deleteAll();
+					/*
 					long temp=0;
 					temp++;
 					Contacto contacto= new Contacto(null,temp,null,"Benito","Leon","Cordova","A","951711196","benito@corp.com");
@@ -278,7 +278,7 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 					contactoDao.insert(contacto2);
 					temp++;
 					Contacto contacto3= new Contacto(null,temp,null,"Andres","Godinez","Co","A","971199644","anna@corp.com");
-					contactoDao.insert(contacto3);
+					contactoDao.insert(contacto3);*/
 
 	    return str;
 	}

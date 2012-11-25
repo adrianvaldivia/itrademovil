@@ -176,11 +176,11 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 				x=listaCliente.get(i).getLatitud();
 				y=listaCliente.get(i).getLongitud();
 				Cliente cliente2 = new Cliente(null,listaCliente.get(i).getIdPersona(),listaCliente.get(i).getIdCliente(),
-						listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),
+						listaCliente.get(i).getNombre(),listaCliente.get(i).getApePaterno(),listaCliente.get(i).getTelefono(),
 						listaCliente.get(i).getRazon_Social(),listaCliente.get(i).getRazon_Social(),
 						listaCliente.get(i).getRUC(),x,y,listaCliente.get(i).getDireccion(),
 						listaCliente.get(i).getIdCobrador(),listaCliente.get(i).getIdUsuario(),
-						listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());
+						listaCliente.get(i).getActivo(),listaCliente.get(i).getMontoActual());				
 				cliente2.setActivo("A");//util para el checkin del mapa
 		        clienteDao.insert(cliente2);
 		        long temp=0;
