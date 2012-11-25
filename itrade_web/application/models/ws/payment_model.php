@@ -299,5 +299,24 @@ class Payment_model extends CI_Model {
 		");	
 		return $query->result();		
 	}
+	public function get_contactos_by_user_id($idubigeo) {	
+		$distrito_str=$this->get_distrito($idubigeo);
+		
+		$this->db->flush_cache();	
+		$query = $this->db->query("					
+			SELECT P.IdPersona, Usu.IdUsuario, P.Nombre, P.ApePaterno, P.ApeMaterno, P.Activo, P.Telefono, P.Email 
+			FROM Usuario Usu
+			INNER JOIN Ubigeo U ON Usu.IdUbigeo = U.IdUbigeo
+			INNER JOIN Persona P ON Usu.IdPersona = P.IdPersona
+			WHERE U.Distrito =  '".$distrito_str."' AND Usu.Activo=1 AND P.Activo=1
+			AND Usu.IdJerarquia =5	
+		");	
+		return $query->result();		
+	}
+	public function get_distrito($idubigeo){
+		$this->db->where($this->table_ubigeo.".IdUbigeo", $idubigeo);	
+        $query = $this->db->get($this->table_ubigeo);
+        return $query->row(0)->Distrito;		
+	}	
 }
 ?>
