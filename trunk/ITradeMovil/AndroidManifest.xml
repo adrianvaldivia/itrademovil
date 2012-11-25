@@ -173,42 +173,52 @@
         <activity
             android:name=".cobranzas.ClientesListTask"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".cobranzas.RequestDetailTask"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".cobranzas.PaymentTask"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".cobranzas.MapaClientes"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".cobranzas.RutaCliente"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".cobranzas.Calendario"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.itrade.cobranzas.DetalleDia"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.itrade.cobranzas.DetalleEvento"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.itrade.cobranzas.Directorio"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.itrade.cobranzas.ContactoDetalle"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
