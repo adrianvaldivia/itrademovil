@@ -826,7 +826,9 @@ class Reporte_model extends CI_Model {
 		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
-		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3, 
+		SUM(CASE WHEN IdEstadoPedido=4 THEN 1 ELSE 0 END) AS CANTPEDIDOE4,
+		SUM(CASE WHEN IdEstadoPedido=4 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE4
 		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
 		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
 		AND  ".$str." and `D`.`Pais`= '".$id."' 
@@ -862,7 +864,9 @@ class Reporte_model extends CI_Model {
 		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
-		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3, 
+		SUM(CASE WHEN IdEstadoPedido=4 THEN 1 ELSE 0 END) AS CANTPEDIDOE4,
+		SUM(CASE WHEN IdEstadoPedido=4 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE4
 		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
 		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
 		AND  ".$str." and `D`.`Departamento`= '".$id."' 
@@ -898,7 +902,9 @@ class Reporte_model extends CI_Model {
 		SUM(CASE WHEN IdEstadoPedido=2 THEN 1 ELSE 0 END) AS CANTPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=2 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE2,
 		SUM(CASE WHEN IdEstadoPedido=3 THEN 1 ELSE 0 END) AS CANTPEDIDOE3,
-		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3
+		SUM(CASE WHEN IdEstadoPedido=3 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE3, 
+		SUM(CASE WHEN IdEstadoPedido=4 THEN 1 ELSE 0 END) AS CANTPEDIDOE4,
+		SUM(CASE WHEN IdEstadoPedido=4 THEN MontoTotalPedido ELSE 0 END) AS VENTAPEDIDOE4
 		FROM Pedido, Cliente B, Usuario C, Ubigeo D 
 		WHERE `Pedido`.`IdCliente`=`B`.`IdCliente` AND `B`.`IdVendedor`=`C`.`IdUsuario` AND `C`.`IdUbigeo`=`D`.`IdUbigeo`
 		AND  ".$str." and `D`.`Distrito`= '".$id."' 
