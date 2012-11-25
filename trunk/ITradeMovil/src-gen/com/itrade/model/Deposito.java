@@ -11,6 +11,7 @@ public class Deposito {
     private Integer IdUsuario;
     private Double Monto;
     private String Fecha;
+    private String NumVoucher;
 
     public Deposito() {
     }
@@ -19,12 +20,13 @@ public class Deposito {
         this.id = id;
     }
 
-    public Deposito(Long id, Integer IdDeposito, Integer IdUsuario, Double Monto, String Fecha) {
+    public Deposito(Long id, Integer IdDeposito, Integer IdUsuario, Double Monto, String Fecha, String NumVoucher) {
         this.id = id;
         this.IdDeposito = IdDeposito;
         this.IdUsuario = IdUsuario;
         this.Monto = Monto;
         this.Fecha = Fecha;
+        this.NumVoucher = NumVoucher;
     }
 
     public Long getId() {
@@ -65,6 +67,14 @@ public class Deposito {
 
     public void setFecha(String Fecha) {
         this.Fecha = Fecha;
+    }
+
+    public String getNumVoucher() {
+        return NumVoucher;
+    }
+
+    public void setNumVoucher(String NumVoucher) {
+        this.NumVoucher = NumVoucher;
     }
 
 }

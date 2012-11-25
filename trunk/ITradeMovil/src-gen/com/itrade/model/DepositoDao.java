@@ -28,6 +28,7 @@ public class DepositoDao extends AbstractDao<Deposito, Long> {
         public final static Property IdUsuario = new Property(2, Integer.class, "IdUsuario", false, "ID_USUARIO");
         public final static Property Monto = new Property(3, Double.class, "Monto", false, "MONTO");
         public final static Property Fecha = new Property(4, String.class, "Fecha", false, "FECHA");
+        public final static Property NumVoucher = new Property(5, String.class, "NumVoucher", false, "NUM_VOUCHER");
     };
 
 
@@ -47,7 +48,8 @@ public class DepositoDao extends AbstractDao<Deposito, Long> {
                 "'ID_DEPOSITO' INTEGER," + // 1: IdDeposito
                 "'ID_USUARIO' INTEGER," + // 2: IdUsuario
                 "'MONTO' REAL," + // 3: Monto
-                "'FECHA' TEXT);"); // 4: Fecha
+                "'FECHA' TEXT," + // 4: Fecha
+                "'NUM_VOUCHER' TEXT);"); // 5: NumVoucher
     }
 
     /** Drops the underlying database table. */
@@ -85,6 +87,11 @@ public class DepositoDao extends AbstractDao<Deposito, Long> {
         if (Fecha != null) {
             stmt.bindString(5, Fecha);
         }
+ 
+        String NumVoucher = entity.getNumVoucher();
+        if (NumVoucher != null) {
+            stmt.bindString(6, NumVoucher);
+        }
     }
 
     /** @inheritdoc */
@@ -101,7 +108,8 @@ public class DepositoDao extends AbstractDao<Deposito, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // IdDeposito
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // IdUsuario
             cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3), // Monto
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // Fecha
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // Fecha
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // NumVoucher
         );
         return entity;
     }
@@ -114,6 +122,7 @@ public class DepositoDao extends AbstractDao<Deposito, Long> {
         entity.setIdUsuario(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setMonto(cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3));
         entity.setFecha(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setNumVoucher(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     /** @inheritdoc */
