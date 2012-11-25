@@ -1209,7 +1209,14 @@ class Reporte_model extends CI_Model {
 	$query = $this->db->query("
 		
 		
-		SELECT `Usuario`.`Nombre`, `Pedido`.`MontoTotalPedido`, `Pedido`.`FechaPedido`, `EstadoPedido`.`Descripcion`   
+		SELECT `Usuario`.`Nombre`, `Pedido`.`MontoTotalPedido`, `Pedido`.`FechaPedido`, 
+		`EstadoPedido`.`IdEstadoPedido`,
+		`EstadoPedido`.`Descripcion`,
+		`Usuario`.`IdUbigeo`,
+		`Ubigeo`.`Pais`,
+		`Ubigeo`.`Departamento`,
+		`Ubigeo`.`Distrito`,
+		`Ubigeo`.`Zona`
 		FROM ( 
 		`Usuario`
 		)
@@ -1473,6 +1480,38 @@ class Reporte_model extends CI_Model {
 		");
 		//echo $this->db->last_query();
 		return $query->result();	
+	}
+	
+	function cumple_resumido_sinc($mes,$idjerarquia,$idubigeo){
+		
+		$query = $this->db->query("
+		
+		
+		select 
+P.Nombre as Nombre, 
+P.ApePaterno as ApePaterno, 
+P.ApeMaterno as ApeMaterno, 
+P.Telefono as Telefono,  
+P.Email as Email,
+P.FechNac as FechNac ,
+MONTH(P.FechNac) as MesCumple, 
+DAY(P.FechNac) as MesCumple, 
+Ubi.Pais, 
+Ubi.Departamento, 
+Ubi.Distrito, 
+Ubi.Zona
+ 
+
+
+from Usuario U 
+inner join Persona P on P.IdPersona = U.IdPersona 
+inner join Ubigeo Ubi on Ubi.IdUbigeo = U.IdUbigeo
+		
+		WHERE MONTH(P.FechNac)= '".$mes."'  
+		");
+		
+		//echo $this->db->last_query();		
+        return $query->result();		
 	}
 	
 	
