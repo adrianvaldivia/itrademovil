@@ -352,5 +352,11 @@ class Payment_model extends CI_Model {
         $query = $this->db->get($this->table_ubigeo);
         return $query->row(0)->Distrito;		
 	}	
+	public function entregar_pedido($idpedido){
+		$this->db->set('IdEstadoPedido', 2);//Entregado
+		$this->db->where('IdPedido', $idpedido);
+		$this->db->update($this->table_pedido);
+		return $this->get_by_id($idpedido);
+	}
 }
 ?>
