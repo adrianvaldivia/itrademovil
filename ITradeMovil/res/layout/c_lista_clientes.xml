@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@color/blanco"
     android:orientation="vertical" >
-
+ 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,11 +83,10 @@
                         android:background="@color/azul_2" >
 
                         <ImageButton
-                            android:id="@+id/btnListaClientes"
-                            style="@drawable/estilo_botones"
+                            android:id="@+id/btnListaClientes"                           
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
+                            android:background="@drawable/estilo_default"                    
                             android:src="@drawable/user_customer" />
 
                         <ImageButton

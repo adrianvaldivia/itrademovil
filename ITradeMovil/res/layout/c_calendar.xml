@@ -91,7 +91,7 @@
                             android:id="@+id/c_calBtnCalendario"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
+                            android:background="@drawable/estilo_default"
                             android:src="@drawable/calendar" />
                     </LinearLayout>
         </LinearLayout>
