@@ -82,11 +82,10 @@
                         android:background="@color/azul_2" >
 
                         <ImageButton
-                            android:id="@+id/btnPedidos"
-                            style="@drawable/estilo_botones"
+                            android:id="@+id/btnPedidos"                       
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
+                            android:background="@drawable/estilo_default"
                             android:src="@drawable/user_customer" />
 
                         <ImageButton
