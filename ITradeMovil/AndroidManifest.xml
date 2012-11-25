@@ -117,7 +117,11 @@
         <activity android:launchMode="singleTask"
             android:name="com.itrade.cobranzas.ContactoDetalle"
             android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.itrade.cobranzas.Amortizacion"/>
+        <activity android:launchMode="singleTask"
+            android:name="com.itrade.cobranzas.Amortizacion"
+            android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.itrade.cobranzas.Buscaclientes"/>
+        <activity android:name="com.itrade.cobranzas.BuscarPedidoCliente"/>
     </application>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 </manifest>
