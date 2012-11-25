@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
 import com.itrade.controller.cobranza.SyncContactos;
+import com.itrade.controller.cobranza.SyncDeposito;
 import com.itrade.controller.cobranza.SyncDetallePedido;
 import com.itrade.controller.cobranza.SyncNotifications;
 import com.itrade.controller.cobranza.SyncPedidos;
@@ -73,6 +74,7 @@ public class ClientesListTask extends Activity {
 	private SyncContactos sincContacto;
 	private SyncUsuarios sincUsuario;
 	private SyncNotifications sincNotifications;
+	private SyncDeposito sincDepositos;
 	
     /** Called when the activity is first created. */
     @Override
@@ -157,7 +159,7 @@ public class ClientesListTask extends Activity {
 		btnBuscar.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(ClientesListTask.this, BuscarClientesGreenDao.class);		
+				Intent intent = new Intent(ClientesListTask.this, Buscaclientes.class);		
 				intent.putExtra("idusuario", idusuario);
 				intent.putExtra("boolVer", 1);
 				startActivity(intent);
@@ -375,9 +377,11 @@ public class ClientesListTask extends Activity {
 		sincContacto= new SyncContactos(ClientesListTask.this);
 		sincUsuario = new SyncUsuarios(ClientesListTask.this);
 		sincNotifications = new SyncNotifications(ClientesListTask.this);
+		sincDepositos= new SyncDeposito(ClientesListTask.this);
 		//Integer numePed = sincPedidos.cargarClientes(idusuario);
 		//Integer numeCli = sincPedidos.cargarPedidos(idusuario);
 		Integer numreg = sincPedidos.syncBDToSqlite(idusuario);
+		Integer numDepositos = sincDepositos.syncBDToSqlite(idusuario);
 		Integer numerito = sincDetallePedido.syncBDToSqlite(idusuario);
 		Usuario usuario = sincUsuario.getUsuarioById(idusuario);
 		Log.d("USUARIIO","USUARIIO ="+usuario.getNombre());						
@@ -385,6 +389,7 @@ public class ClientesListTask extends Activity {
 		Log.d("ClienteListaTask","pedidos ="+numreg.toString());		
 		Log.d("ClienteListaTask","detallesPedidos ="+numerito.toString());
 		Log.d("ClienteListaTask","detallesPedidos ="+numerazo.toString());
+		Log.d("ClienteListaTask","DEPOSITOS SINCRONIZADOS ="+numDepositos.toString());
 	   	//Log.d("RESULTADOS","fecha ="+today.toString());
 	   	//List<Pedido> listaPedi =sincPedidos.getPedidos(Integer.parseInt(idusuario));
 		//Log.d("pEDIDOS","cantidad ="+listaPedi.size());
