@@ -92,6 +92,9 @@ class Reporte_model extends CI_Model {
 			case 3://distrito		
 				$this->db->select($this->table_ubigeo.".Distrito as nombre");								
 				break;
+			case 4://zona		
+				$this->db->select($this->table_ubigeo.".Zona as nombre");								
+				break;
 		}
 		$this->db->where('idUbigeo', $idubigeo);
 		$query = $this->db->get($this->table_ubigeo);
@@ -429,7 +432,29 @@ class Reporte_model extends CI_Model {
 		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
 		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
 		");
-		break;	
+		break;
+
+		case 4:
+		
+		$query = $this->db->query("
+		SELECT 
+		DATE_FORMAT( Pedido.FechaPedido,  '%Y' ) AS Year, 
+		MONTH( Pedido.FechaPedido) AS Month, 
+			`Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`, `Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito` , `Ubigeo`.`Zona`, 
+		SUM(`Pedido`.`MontoTotalPedido`) AS MontoPedido, SUM(`Pedido`.`MontoTotalCobrado`)  AS MontoCobrado
+		FROM (
+		`Pedido`
+		)
+		JOIN  `Cliente` ON  `Pedido`.`IdCliente` =  `Cliente`.`IdCliente` 
+		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		WHERE   ".$str." and `Ubigeo`.`Zona`= '".$id."'    
+		 GROUP BY 
+		Year, Month, `Usuario`.`Nombre`, `Ubigeo`.`IdUbigeo`,`Usuario`.`IdJerarquia`,
+		`Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , `Ubigeo`.`Distrito`, `Ubigeo`.`Zona 
+		");
+		break;
 		}		
 		//echo $this->db->last_query();
 		return $query->result();
