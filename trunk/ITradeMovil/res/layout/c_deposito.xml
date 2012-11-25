@@ -153,9 +153,9 @@ android:layout_width="match_parent"
                 android:text="Monto cobrado hasta el momento:"
                 android:textColor="@color/azul_2"
                 android:textStyle="bold" />
-
+
             <TextView
-                android:id="@+id/txtVwCliente"
+                android:id="@+id/montoCobrado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dip"
@@ -164,30 +164,59 @@ android:layout_width="match_parent"
                 android:textColor="@color/azul_2" />
 
         </LinearLayout>
+		<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
+
+            <TextView
+                android:id="@+id/textVwCli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="20dip"
+                android:text="Monto depositado hoy:"
+                android:textColor="@color/azul_2"
+                android:textStyle="bold" />
+
+
+
+
+            <TextView
+                android:id="@+id/montoDepositado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dip"
+                android:layout_marginTop="10dip"
+                android:text="xxxxxxx"
+                android:textColor="@color/azul_2" />
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <TextView
                 android:id="@+id/textVwTransaccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
                 android:layout_marginTop="20dip"
-                android:text="Monto a Depositar"
+                android:text="Ingrese monto depositado"
                 android:textColor="@color/azul_2"
                 android:textStyle="bold" />
-
+
             <EditText
-                android:id="@+id/editTxtTransaccion"
+                android:id="@+id/montoDeposito"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
                 android:layout_marginTop="10dip"
                 android:ems="10"
                 android:inputType="number" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -204,19 +233,19 @@ android:layout_width="match_parent"
                 android:text="N° de transacción"
                 android:textColor="@color/azul_2"
                 android:textStyle="bold" />
-
+
             <EditText
-                android:id="@+id/EditText01"
+                android:id="@+id/numTransaccion"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
                 android:layout_marginTop="10dip"
                 android:ems="10"
                 android:inputType="number" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/bottom_control_bar"
+        </LinearLayout>
+
+        <LinearLayout            
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/blanco"
@@ -226,9 +255,9 @@ android:layout_width="match_parent"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/blanco" >
-
+
                 <Button
-                    android:id="@+id/btnCobrar"
+                    android:id="@+id/btnDeposito"
                     style="@drawable/estilo_botones"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
