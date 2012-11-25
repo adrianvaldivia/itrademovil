@@ -11,6 +11,7 @@ public class Cliente {
     private Integer IdCliente;
     private String Nombre;
     private String ApePaterno;
+    private String Telefono;
     private String ApeMaterno;
     /** Not-null value. */
     private String Razon_Social;
@@ -30,12 +31,13 @@ public class Cliente {
         this.id = id;
     }
 
-    public Cliente(Long id, Integer IdPersona, Integer IdCliente, String Nombre, String ApePaterno, String ApeMaterno, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo, Double MontoActual) {
+    public Cliente(Long id, Integer IdPersona, Integer IdCliente, String Nombre, String ApePaterno, String Telefono, String ApeMaterno, String Razon_Social, String RUC, Double Latitud, Double Longitud, String Direccion, Integer IdCobrador, Integer IdUsuario, String Activo, Double MontoActual) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.IdCliente = IdCliente;
         this.Nombre = Nombre;
         this.ApePaterno = ApePaterno;
+        this.Telefono = Telefono;
         this.ApeMaterno = ApeMaterno;
         this.Razon_Social = Razon_Social;
         this.RUC = RUC;
@@ -86,6 +88,14 @@ public class Cliente {
 
     public void setApePaterno(String ApePaterno) {
         this.ApePaterno = ApePaterno;
+    }
+
+    public String getTelefono() {
+        return Telefono;
+    }
+
+    public void setTelefono(String Telefono) {
+        this.Telefono = Telefono;
     }
 
     public String getApeMaterno() {

@@ -35,10 +35,11 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
         public final static Property IdPersona = new Property(9, Integer.class, "IdPersona", false, "ID_PERSONA");
         public final static Property Activo = new Property(10, String.class, "Activo", false, "ACTIVO");
         public final static Property IdJerarquia = new Property(11, Integer.class, "IdJerarquia", false, "ID_JERARQUIA");
-        public final static Property IdZona = new Property(12, Integer.class, "IdZona", false, "ID_ZONA");
-        public final static Property IdDistrito = new Property(13, Integer.class, "IdDistrito", false, "ID_DISTRITO");
-        public final static Property IdCiudad = new Property(14, Integer.class, "IdCiudad", false, "ID_CIUDAD");
-        public final static Property IdPais = new Property(15, Integer.class, "IdPais", false, "ID_PAIS");
+        public final static Property IdUbigeo = new Property(12, Integer.class, "IdUbigeo", false, "ID_UBIGEO");
+        public final static Property IdZona = new Property(13, Integer.class, "IdZona", false, "ID_ZONA");
+        public final static Property IdDistrito = new Property(14, Integer.class, "IdDistrito", false, "ID_DISTRITO");
+        public final static Property IdCiudad = new Property(15, Integer.class, "IdCiudad", false, "ID_CIUDAD");
+        public final static Property IdPais = new Property(16, Integer.class, "IdPais", false, "ID_PAIS");
     };
 
 
@@ -66,10 +67,11 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
                 "'ID_PERSONA' INTEGER," + // 9: IdPersona
                 "'ACTIVO' TEXT," + // 10: Activo
                 "'ID_JERARQUIA' INTEGER," + // 11: IdJerarquia
-                "'ID_ZONA' INTEGER," + // 12: IdZona
-                "'ID_DISTRITO' INTEGER," + // 13: IdDistrito
-                "'ID_CIUDAD' INTEGER," + // 14: IdCiudad
-                "'ID_PAIS' INTEGER);"); // 15: IdPais
+                "'ID_UBIGEO' INTEGER," + // 12: IdUbigeo
+                "'ID_ZONA' INTEGER," + // 13: IdZona
+                "'ID_DISTRITO' INTEGER," + // 14: IdDistrito
+                "'ID_CIUDAD' INTEGER," + // 15: IdCiudad
+                "'ID_PAIS' INTEGER);"); // 16: IdPais
     }
 
     /** Drops the underlying database table. */
@@ -135,24 +137,29 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
             stmt.bindLong(12, IdJerarquia);
         }
  
+        Integer IdUbigeo = entity.getIdUbigeo();
+        if (IdUbigeo != null) {
+            stmt.bindLong(13, IdUbigeo);
+        }
+ 
         Integer IdZona = entity.getIdZona();
         if (IdZona != null) {
-            stmt.bindLong(13, IdZona);
+            stmt.bindLong(14, IdZona);
         }
  
         Integer IdDistrito = entity.getIdDistrito();
         if (IdDistrito != null) {
-            stmt.bindLong(14, IdDistrito);
+            stmt.bindLong(15, IdDistrito);
         }
  
         Integer IdCiudad = entity.getIdCiudad();
         if (IdCiudad != null) {
-            stmt.bindLong(15, IdCiudad);
+            stmt.bindLong(16, IdCiudad);
         }
  
         Integer IdPais = entity.getIdPais();
         if (IdPais != null) {
-            stmt.bindLong(16, IdPais);
+            stmt.bindLong(17, IdPais);
         }
     }
 
@@ -178,10 +185,11 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
             cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // IdPersona
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // Activo
             cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // IdJerarquia
-            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // IdZona
-            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // IdDistrito
-            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // IdCiudad
-            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15) // IdPais
+            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // IdUbigeo
+            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // IdZona
+            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // IdDistrito
+            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // IdCiudad
+            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16) // IdPais
         );
         return entity;
     }
@@ -201,10 +209,11 @@ public class UsuarioDao extends AbstractDao<Usuario, Long> {
         entity.setIdPersona(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
         entity.setActivo(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setIdJerarquia(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
-        entity.setIdZona(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
-        entity.setIdDistrito(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
-        entity.setIdCiudad(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
-        entity.setIdPais(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
+        entity.setIdUbigeo(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
+        entity.setIdZona(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
+        entity.setIdDistrito(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
+        entity.setIdCiudad(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
+        entity.setIdPais(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
      }
     
     /** @inheritdoc */
