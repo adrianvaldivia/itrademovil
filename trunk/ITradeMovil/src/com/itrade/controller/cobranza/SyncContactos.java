@@ -90,29 +90,30 @@ public class SyncContactos {
 
 	public Integer cargarContactos(String idubigeo) {
 		// TODO Auto-generated method stub				
-		List<Contacto> listaContactTemp=contactoDao.loadAll();		
-		if (listaContactTemp.isEmpty() || listaContactTemp.size()==0){							
-			ArrayList<Contacto> linContactoList = getWebServiceList(idubigeo);				
-			if (linContactoList.size()>0){
-				contactoDao.deleteAll();
-				for(Contacto contacto: linContactoList){				
-					contactoDao.insert(contacto);
-				}			
-			}else{
-				Log.d("cargarContactos", "No hay datos");
-			}		
-		}
-		else{
-			Log.d("ACTUALIZAR CONTACTOS", "Ya se encuentra en la bd");
-			ArrayList<Contacto> linContactoList = getWebServiceList(idubigeo);
-			if (listaContactTemp.size()!=linContactoList.size()){
-				contactoDao.deleteAll();
-				for(Contacto contacto: linContactoList){				
-					contactoDao.insert(contacto);
-				}
+		List<Contacto> listaContactTemp=contactoDao.loadAll();
+		if (networkAvailable()){
+			if (listaContactTemp.isEmpty() || listaContactTemp.size()==0){							
+				ArrayList<Contacto> linContactoList = getWebServiceList(idubigeo);				
+				if (linContactoList.size()>0){
+					contactoDao.deleteAll();
+					for(Contacto contacto: linContactoList){				
+						contactoDao.insert(contacto);
+					}			
+				}else{
+					Log.d("cargarContactos", "No hay datos");
+				}		
 			}
-		}
-		
+			else{
+				Log.d("ACTUALIZAR CONTACTOS", "Ya se encuentra en la bd");
+				ArrayList<Contacto> linContactoList = getWebServiceList(idubigeo);
+				if (listaContactTemp.size()!=linContactoList.size()){
+					contactoDao.deleteAll();
+					for(Contacto contacto: linContactoList){				
+						contactoDao.insert(contacto);
+					}
+				}
+			}		
+		}		
 		return contactoDao.loadAll().size();
 	}
 

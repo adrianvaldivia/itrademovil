@@ -87,8 +87,7 @@ public class SyncDeposito {
 		}
 		else{
 			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
-		}
-		
+		}		
 		return registros;
 	}
 	/*
