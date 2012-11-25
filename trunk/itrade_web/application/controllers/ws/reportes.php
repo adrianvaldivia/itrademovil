@@ -684,5 +684,45 @@ class Reportes extends CI_Controller {
 		}
 	}
 	
+	
+	
+	public function cumple_resumido_sinc($mes_w="",$idjerarquia_w="",$idubigeo_w=""){		
+		//2012-05-10
+		$mes=$this->input->post('mes');
+		$idubigeo=$this->input->post('idubigeo');
+		$idjerarquia=$this->input->post('idjerarquia');	
+		/*SOLO PARA WEB*/		
+		if (isset($mes_w)&& $mes_w!= "" && isset($idubigeo_w)&& $idubigeo_w!="" && isset($idjerarquia_w)&& $idjerarquia_w!=""){				
+			/*$obj_id=$result=$this->Reporte_model->objetoPais($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$idpais=$res->nombre;
+			}	
+			$obj_id=$result=$this->Reporte_model->objetoDepartamento($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$iddepartamento=$res->nombre;
+			}	
+			$obj_id=$result=$this->Reporte_model->objetoDistrito($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$iddistrito=$res->nombre;
+			}	
+			$obj_id=$result=$this->Reporte_model->objetoZona($idubigeo_w,$idjerarquia_w);			
+			foreach($result as $res){
+				$idzona=$res->nombre;
+			}	*/
+			$result=$this->Reporte_model->cumple_resumido_sinc($mes_w,$idjerarquia_w,$idubigeo_w);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}
+		/*SOLO PARA ANDROID*/		
+		if (isset($mes)&& $mes!= "" && isset($idjerarquia)&& $idjerarquia!="" && isset($idubigeo)&& $idubigeo!=""){				
+			/*$obj_id=$result=$this->Reporte_model->objetoUbigeo($idubigeo,$idjerarquia);			
+			foreach($result as $res){
+				$id=$res->nombre;
+			}	*/
+			
+			
+			$result=$this->Reporte_model->cumple_resumido_sinc($mes,$idjerarquia,$idubigeo);				
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));								
+		}			
+	}
 }
 
