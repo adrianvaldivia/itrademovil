@@ -40,6 +40,7 @@ class Cliente_model extends CI_Model {
 		$this->db->where($this->table_cliente.".IdCobrador", $idvendedor);					
 		//Restriccion de pedidos en estado pendiente
 		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);		
+		$this->db->or_where($this->table_pedido.".IdEstadoPedido", 4);
 		$this->db->group_by($this->table_cliente.".IdCliente");	
 		$query = $this->db->get();
 		//echo $this->db->last_query();
