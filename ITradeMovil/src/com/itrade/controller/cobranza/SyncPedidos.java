@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -448,5 +449,41 @@ public class SyncPedidos {
 		Pedido ped=pedTemp.get(0);
 		return ped;
 	}
+	
+	public Double getMontoTotalCobrado(String idusuario){
+		List<Cliente> listTemp;
+		Double sumaTotal=0.0;
+		List<Pedido> pedTemp=null;
+		listTemp = clienteDao.queryBuilder()
+				.where(com.itrade.model.ClienteDao.Properties.IdCobrador.eq (idusuario))
+				.list();    
+		
+		String today = getFechaActual();
+		Log.d("FECHAAA", "VALOR="+today);				
+		for (Cliente cliente : listTemp)  {
+					pedTemp=pedidoDao.queryBuilder()
+					.where(Properties.FechaCobranza.eq(today))
+					.where(Properties.IdCliente.eq(cliente.getIdCliente()))
+					.whereOr(Properties.IdEstadoPedido.eq("2"), Properties.IdEstadoPedido.eq("4"))																					
+					.list();															
+					Log.d("PEDIDOS", "cantidad"+pedTemp.size());
+					if (pedTemp.size()>0){
+						for (Pedido pedido : pedTemp)  {
+							Log.d("PRECIO", "MONTOOO="+pedido.getMontoTotalPedido().toString());
+							sumaTotal+=pedido.getMontoTotalPedido();
+						}
+					}					
+		}									
+		return Math.round(sumaTotal*100.0)/100.0;
+	}
+	
+
+    private String getFechaActual() {    	
+    	SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());		
+		String today = form.format(calendar.getTime());	
+		return today;
+	} 
     
 }
