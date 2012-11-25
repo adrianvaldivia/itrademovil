@@ -142,6 +142,19 @@ public class SyncPedidos {
 							  // TODO Auto-generated catch block
 							e.printStackTrace();
 						}	    	  
+					}else if(pedidin.getIdEstadoPedido()==4){
+						parameters = new ArrayList<NameValuePair>();	
+						//String numVoucher= editNumVoucher.getText().toString();
+						param.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
+						
+						String route2="/ws/pedido/entregar_pedido/";
+						sync.conexion(param,route2);
+						try {
+							sync.getHilo().join();			
+						} catch (InterruptedException e) {
+							  // TODO Auto-generated catch block
+							e.printStackTrace();
+						}	  
 					}
 				}
 				//SI sale lo de arriba esto seria x las weee
