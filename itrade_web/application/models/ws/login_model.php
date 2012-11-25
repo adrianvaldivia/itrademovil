@@ -30,6 +30,7 @@ class Login_model extends CI_Model {
 		$this->db->join($this->table_usuario,$this->table_usuario.".IdPersona =".$this->table_persona.".IdPersona");
 		/*hace el match con los parametros*/
 		$this->db->where($this->table_usuario.".Nombre", $username);
+		$this->db->where($this->table_usuario.".Activo",1);
 		$this->db->where($this->table_usuario.".Password", do_hash(xss_clean($password)));		
 		$query = $this->db->get();
 		//echo $this->db->last_query();        
