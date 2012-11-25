@@ -212,7 +212,7 @@ public class ClientesListTask extends Activity {
 				intent.putExtra("idcliente", pedido.getIdCliente().toString());
 				intent.putExtra("idempleado", idusuario);	
 				//intent.putExtra("usuario", usuario);					
-				startActivity(intent);									
+				startActivity(intent);		       							
                 //Toast.makeText(getBaseContext(), "PEDIDO = "+ pedido.getIdPedido().toString(), Toast.LENGTH_LONG).show();
 				//finish();
                 return true;
