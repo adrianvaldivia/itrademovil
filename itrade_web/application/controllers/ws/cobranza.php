@@ -112,7 +112,7 @@ class Cobranza extends CI_Controller {
 			$numvoucher=$numvoucher_w;
 		}
 		$result=$this->Payment_model->registro_deposito($idusuario,$monto, $fecha, $numvoucher);		
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));				
+		$this->output->set_content_type('application/json')->set_output($result);				
 	}
 }
 
