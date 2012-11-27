@@ -24,6 +24,7 @@ import com.itrade.model.Usuario;
 import com.itrade.pedidos.BuscarClientesGreenDao;
 import com.itrade.pedidos.Login;
 import com.itrade.pedidos.MenuLista;
+import com.itrade.pedidos.PreferencePedidos;
 import com.itrade.pedidos.RegistrarProspecto;
 
 import android.app.Activity;
@@ -31,11 +32,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,6 +51,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import com.itrade.jsonParser.AsTaskSubirDatos;
+import android.view.inputmethod.InputMethodManager;
+import com.itrade.model.UsuarioDao;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.app.Service;
 
 public class ClientesListTask extends Activity {
 	/**
@@ -75,6 +85,15 @@ public class ClientesListTask extends Activity {
 	private SyncUsuarios sincUsuario;
 	private SyncNotifications sincNotifications;
 	private SyncDeposito sincDepositos;
+	
+	/*Inicio agregado*/
+
+	AsTaskSubirDatos taskSubir;	
+	public long idUsuario;	
+	InputMethodManager imm;	
+	private UsuarioDao usuarioDao;
+	
+	/*Fin agregado*/
 	
     /** Called when the activity is first created. */
     @Override
@@ -110,48 +129,47 @@ public class ClientesListTask extends Activity {
 		btnMail.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String titulo="Notificar"; 
-				String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
-				alertDialogBuilder.setTitle(titulo);		 			
-				alertDialogBuilder
-						.setMessage(mensaje)
-						.setCancelable(true)
-						.setNegativeButton("Cancelar", null)
-						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {														
-								dialog.cancel();
-								//verificar si tiene internet o no <--------------------------
-								
-								if (networkAvailable()){
-									if (!sincNotifications.sendNotification(idusuario)){
-										Syncronizar sync = new Syncronizar(ClientesListTask.this);
-										List<NameValuePair> param = new ArrayList<NameValuePair>();
-										param.add(new BasicNameValuePair("idcobrador", idusuario));
-										String route2="/ws/cobranza/send_notifications/";
-										sync.conexion(param,route2);
-										try {
-											sync.getHilo().join();
-										} catch (InterruptedException e) {
-											  // TODO Auto-generated catch block
-											e.printStackTrace();
-										}									
-										sincNotifications.saveNotification(idusuario);
-										Toast.makeText(ClientesListTask.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+				if (!sincNotifications.sendNotification(idusuario)){
+					String titulo="Notificar"; 
+					String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+					alertDialogBuilder.setTitle(titulo);		 			
+					alertDialogBuilder
+							.setMessage(mensaje)
+							.setCancelable(true)
+							.setNegativeButton("Cancelar", null)
+							.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {														
+									dialog.cancel();
+									//verificar si tiene internet o no <--------------------------									
+									if (networkAvailable()){										
+											Syncronizar sync = new Syncronizar(ClientesListTask.this);
+											List<NameValuePair> param = new ArrayList<NameValuePair>();
+											param.add(new BasicNameValuePair("idcobrador", idusuario));
+											String route2="/ws/cobranza/send_notifications/";
+											sync.conexion(param,route2);
+											try {
+												sync.getHilo().join();
+											} catch (InterruptedException e) {
+												  // TODO Auto-generated catch block
+												e.printStackTrace();
+											}									
+											sincNotifications.saveNotification(idusuario);
+											Toast.makeText(ClientesListTask.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+											Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
+											intent.putExtra("idempleado", idusuario);
+											startActivity(intent);
+																												
 									}else{
-										Toast.makeText(ClientesListTask.this, "Usted ya envió notifaciones el dia de hoy.", Toast.LENGTH_SHORT).show();
-									}																		
-								}else{
-									Toast.makeText(ClientesListTask.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
-								}																														
-								Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
-								intent.putExtra("idempleado", idusuario);
-								startActivity(intent);
-							}
-				});		
-				AlertDialog alertDialog = alertDialogBuilder.create();		 
-				alertDialog.show();	
-				
+										Toast.makeText(ClientesListTask.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+									}																																						
+								}
+					});		
+					AlertDialog alertDialog = alertDialogBuilder.create();		 
+					alertDialog.show();
+				}else{
+					Toast.makeText(ClientesListTask.this, "Usted ya envió notifaciones el dia de hoy.", Toast.LENGTH_SHORT).show();
+				}			
 			}
 		});
 		/*btn buscar clientes*/
@@ -416,5 +434,66 @@ public class ClientesListTask extends Activity {
      	}
      	return false;
      }
+     @Override
+ 	public boolean onCreateOptionsMenu(Menu menu) {
+ 	    MenuInflater inflater = getMenuInflater();
+ 	    inflater.inflate(R.menu.menucobranza, menu);
+ 	    return true;
+ 	}
+ 	
+ 	@Override
+ 	public boolean onOptionsItemSelected(MenuItem item) {
+ 	    switch (item.getItemId()) {
+ 	        case R.id.opcion3Cobranza: {
+ 	        	cerrarSesion();                
+ 	        }	
+ 	        break;
+
+ 	    }
+ 	    return true;
+ 	}
+ 	 
+ 	  private void cerrarSesion() {
+ 	      SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+ 	      final boolean boolBorrarDatos = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_SYNC_CONN, false);
+ 	      //fin preferencias
+ 		    new AlertDialog.Builder(this)
+ 	        .setTitle("Cerrar Sesion")
+ 	        .setMessage(" Realmente desea cerrar la Sesion?")
+ 	        .setNegativeButton("No", null)
+ 	        .setNeutralButton("Minimizar", new AlertDialog.OnClickListener() {
+ 	            public void onClick(DialogInterface arg0, int arg1) {
+ 	        			Minimizar();	        		        	            
+ 	            }
+
+ 				public void onClick(View arg0) {
+ 				}  
+ 	        })
+ 	        .setPositiveButton("Si", new AlertDialog.OnClickListener() {
+
+ 	            public void onClick(DialogInterface arg0, int arg1) {
+ 	            		if (boolBorrarDatos)           			
+
+ 	            		usuarioDao.deleteAll();            			              	  	
+ 	            		ClientesListTask.super.onBackPressed();
+ 	            }
+
+ 				public void onClick(View arg0) {
+ 					
+ 				}
+ 	        }).create().show();	
+ 			
+ 		}
+ 	
+ 		private void Minimizar() {			
+ 			this.moveTaskToBack(true);				
+ 		}
+ 	  
+ 		
+ 		@Override
+ 		protected void onRestart() {
+ 			super.onRestart();    
+ 			imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);	
+ 		}
 }
 
