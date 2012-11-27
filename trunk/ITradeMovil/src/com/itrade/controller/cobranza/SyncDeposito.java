@@ -74,6 +74,17 @@ public class SyncDeposito {
     	}
     	return false;
     }
+    
+    
+    public Integer cargarRegPrueba(){
+    	Deposito dep1 = new Deposito(null, null, 2, 11.1, "2012-11-11", "123456");
+    	Deposito dep2 = new Deposito(null, null, 2, 11.1, "2012-11-05", "654321");
+    	Deposito dep3 = new Deposito(null, null, 2, 110.1, "2012-11-26", "ASDHAKJ");
+    	depositoDao.insert(dep1);
+    	depositoDao.insert(dep2);
+    	depositoDao.insert(dep3);
+    	return 1;
+    }
 
 	public Integer syncBDToSqlite(String idusuario) {
 		// TODO Auto-generated method stub
@@ -81,7 +92,19 @@ public class SyncDeposito {
 		if (networkAvailable()){
 			//Obtener todos los depositos del usuario
 			List<Deposito> depositosPendientes=depositosByUser(idusuario);
-			Log.d("Depositos pendientes", "CANTIDAD="+depositosPendientes.size());			
+			for (Deposito dep :depositosPendientes){
+				Log.d("IDDEPOSITO", "DEPO="+dep.getId().toString()+"=======");
+				Long id=dep.getId();
+				Integer a= registrarDeposito(dep.getIdUsuario().toString(), dep.getMonto(), dep.getFecha(), dep.getNumVoucher());
+				Log.d("AHHHHHHHREGISTRAA", "REGISTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+a);				
+				List<Deposito> depTemp=depositoDao.queryBuilder()
+						.where(Properties.IdDeposito.eq(0))
+						.list();
+				Deposito depo=depTemp.get(0);
+				depo.setIdDeposito(a);
+				depositoDao.update(depo);
+				registros++;
+			}				
 			//Llamar al webservice
 			//obtener el iddeposito y updatear
 		}
@@ -90,22 +113,41 @@ public class SyncDeposito {
 		}		
 		return registros;
 	}
-	/*
-	public Integer registrarDeposito(){
-		
+	
+	
+	
+	public Integer registrarDeposito(String idusuario, Double monto, String fecha, String numvoucher){
+			
+		List<NameValuePair> param = new ArrayList<NameValuePair>();								
+		param.add(new BasicNameValuePair("idusuario", idusuario));
+		param.add(new BasicNameValuePair("monto", monto.toString()));	
+		param.add(new BasicNameValuePair("fecha", fecha));	
+		param.add(new BasicNameValuePair("numvoucher", numvoucher));	
+		sync.conexion(param,"/ws/cobranza/registro_deposito/");
+		try {
+			sync.getHilo().join();
+		} catch (InterruptedException e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}					
+		//Log.d("Pedido", sync.getResponse());
+		String iddeposito=sync.getResponse();
+		//Log.d("IDDEPOSITO", "DEPOSITO"+iddeposito);
+		//bORRAR TODOS LOS PEDIDOS
+		return Integer.parseInt(iddeposito);
 	}
-*/
+
 	public List<Deposito> depositosByUser(String idusuario){		
 		List<Deposito> depTemp = depositoDao.queryBuilder()
 				.where(Properties.IdUsuario.eq(Integer.parseInt(idusuario)))	
-				.where(Properties.IdDeposito.isNull())
+				.where(Properties.IdDeposito.eq(0))		
 				.list();			
 		return depTemp;
 	}
 		
 	public Integer cargarDeposito(String idusuario,String monto, String numVoucher ) {
 		
-		Deposito deposito = new Deposito(null, null, Integer.parseInt(idusuario), Double.parseDouble(monto), getFechaActual(), numVoucher);
+		Deposito deposito = new Deposito(null, 0, Integer.parseInt(idusuario), Double.parseDouble(monto), getFechaActual(), numVoucher);
 		depositoDao.insert(deposito);		
 		return 1;
 	}
