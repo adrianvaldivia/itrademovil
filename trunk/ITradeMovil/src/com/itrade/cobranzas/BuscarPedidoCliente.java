@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.itrade.R;
 import com.itrade.controller.cobranza.SyncPedidos;
 import com.itrade.controller.cobranza.Syncronizar;
+import com.itrade.model.Cliente;
 import com.itrade.model.Pedido;
 
 import android.app.Activity;
@@ -31,16 +32,29 @@ public class BuscarPedidoCliente extends Activity {
 	 */
 	
 	private String idcliente;
+	private String idempleado;
+	private String idusuario;
 	private ListView list_pedidos;
 	private Gson gson;
 	private Syncronizar sync;
-	private SyncPedidos sincPedidos;
+	private SyncPedidos syncPedidos;
 	private List<Pedido> pedList = new ArrayList<Pedido>();
 	private List<String> pedListS = new ArrayList<String>();
-	private ArrayAdapter<String> adapter;
+	//private ArrayAdapter<String> adapter;
 	private TextView txtcliente;
 	private List<Pedido> pedListSQL = new ArrayList<Pedido>();
+	private String idPedidoActual;
+	private Cliente clienteActual;
+	private List<com.itrade.model.Pedido> pedidos = new ArrayList<com.itrade.model.Pedido>();
+	PedidoAdapter adapter;
 	
+	
+	public PedidoAdapter getPedidosAdapter() {
+		return adapter;
+	}
+	public void setAdapter(PedidoAdapter adapter) {
+		this.adapter = adapter;
+	}
 	
 	
 	@Override
@@ -49,48 +63,33 @@ public class BuscarPedidoCliente extends Activity {
 		this.setContentView(R.layout.c_pedidos_cliente);
 		getParamsIntent();
 		
-		list_pedidos = (ListView) findViewById(R.id.listDetalle);
+		
 
 		txtcliente = (TextView) findViewById(R.id.txtCliente);
-		txtcliente.setText(idcliente);
 		
-//		gson = new Gson(); 
+		//buscarPedido(idpedido);
+		syncPedidos= new SyncPedidos(BuscarPedidoCliente.this);
 		
-		sincPedidos= new SyncPedidos(BuscarPedidoCliente.this); 
-		pedListSQL = sincPedidos.getPedidosSemana(idcliente);
+		clienteActual = syncPedidos.buscarCliente(idcliente);
 		
-						//webservice
-				//		sync= new Syncronizar(this);
-				//		List<NameValuePair> param = new ArrayList<NameValuePair>();
-				//		
-				//		
-				//		param.add(new BasicNameValuePair("idcliente",idcliente));
-				//		
-				//		sync.conexion(param,"/ws/pedido/get_proximos_pedidos/");
-				//		
-				//		try {
-				//			sync.getHilo().join();			
-				//		} catch (InterruptedException e) {
-				//			//TODO Auto-generated catch block
-				//			e.printStackTrace();
-				//		}
-				//		
-				//		//ws/pedido/get_proximos_pedidos/2001
-				//		this.pedList	=	gson.fromJson(sync.getResponse(), new TypeToken<List<Pedido>>(){}.getType());
-				//		
-						
-						//webservice
+		txtcliente.setText(clienteActual.getNombre() + " " + clienteActual.getApePaterno() + " " + clienteActual.getApeMaterno());
 		
-		
-		for (int i=0; i< pedListSQL.size();i++){
-			pedListS.add(Long.toString(pedListSQL.get(i).getIdPedido()));
+		pedListSQL = syncPedidos.getPedidosSemana(idcliente);
+		for(int i=0; i< pedListSQL.size();i++){
+			
+			pedidos.add(pedListSQL.get(i));
+			
 		}
-		
-		adapter =new ArrayAdapter<String>(BuscarPedidoCliente.this, R.layout.itemsimplelinea, pedListS);
-    	list_pedidos.setAdapter(adapter);
-    	
-    	
-    	
+					    	
+		list_pedidos = (ListView) findViewById(R.id.listPedido);
+        adapter = new PedidoAdapter(this,R.layout.c_pedido_row,pedidos);
+        
+        System.out.println("Antes de Setear PedidoAdapter");
+        
+        list_pedidos.setAdapter(adapter);
+        System.out.println("Despues de Setear PedidoAdapter");
+        
+        syncPedidos.closeDB();
     	list_pedidos.setOnItemClickListener(new AdapterView.OnItemClickListener() 
 		{
 		 public void onItemSelected(AdapterView parentView, View childView, int position, long id) 
@@ -104,25 +103,35 @@ public class BuscarPedidoCliente extends Activity {
 		 String idCliente = " ";
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 					
-			String razon =(String) (list_pedidos.getItemAtPosition(arg2));
-			System.out.println("cliente:"+ razon);
+			Pedido pedSel = (Pedido)list_pedidos.getItemAtPosition(arg2);
+			idPedidoActual  = (Long.toBinaryString(pedSel.getIdPedido()));
+			System.out.println("idpedidoActual="+idPedidoActual);			
 			
-			for (int i=0;i<pedListSQL.size();i++){
-				if (Long.toString(pedListSQL.get(i).getIdPedido()).compareTo(razon) ==0){
-					idCliente = Long.toString(pedListSQL.get(i).getIdCliente());
-					break;
-				}
-				
-			}
-						
-			Intent intent = new Intent(BuscarPedidoCliente.this, BuscarPedidoCliente.class); 																				
-			intent.putExtra("idcliente", idCliente);
-			startActivity(intent);
+//			for (int i=0;i<pedidos.size();i++){
+//				if (Long.toString(pedidos.get(i).getIdPedido()).compareTo(idPedidoActual) ==0){
+//					idPedidoActual = Long.toString(pedidos.get(i).getIdPedido());
+//					break;
+//				}
+//				
+//			}
 			
 			
+			
+			Intent intent = new Intent(BuscarPedidoCliente.this, RequestDetailTask.class);		                
+			intent.putExtra("idpedido", pedSel.getIdPedido().toString());
+			intent.putExtra("idcliente", pedSel.getIdCliente().toString());
+			intent.putExtra("idempleado", idempleado);	
+			intent.putExtra("idusuario", idusuario);					
+				startActivity(intent);
+//			
+//			Intent intent = new Intent(BuscarPedidoCliente.this, BuscarPedidoCliente.class); 																				
+////			intent.putExtra("idcliente", idCliente);
+//			startActivity(intent);
+//			
+//			
 		}
-		
-		
+//		
+//		
 		});
     	
     	
@@ -136,8 +145,7 @@ public class BuscarPedidoCliente extends Activity {
 		
    //     this.idpedido = (String)i.getSerializableExtra("idpedido");
         this.idcliente = (String)i.getSerializableExtra("idcliente");
-   //     this.idusuario = (String)i.getSerializableExtra("idempleado");
-		
- 
+        this.idempleado=(String)i.getSerializableExtra("idempleado");
+        this.idusuario=(String)i.getSerializableExtra("idusuario");
 	}
 }

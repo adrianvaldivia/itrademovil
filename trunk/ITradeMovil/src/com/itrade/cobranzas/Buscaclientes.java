@@ -66,7 +66,8 @@ public class Buscaclientes extends Activity {
 		private Meta mimeta;
 		String idusuario;
 		String razonSocial;			
-		ArrayList<String> lclientes=new ArrayList<String>();;
+		ArrayList<String> lclientes = new ArrayList<String>();
+		ArrayList<String> lclientesAux = new ArrayList<String>();
 		ArrayList<Cliente> lclientes2;
 		ArrayList<String> lpedidos;
 		ArrayList<String> lclientesA;
@@ -77,6 +78,7 @@ public class Buscaclientes extends Activity {
 		
 		private List<Cliente> cliListSQL;
 		private SyncPedidos sincPedidos;
+		private String idempleado;
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
@@ -151,7 +153,7 @@ public class Buscaclientes extends Activity {
  //   		detalleCliente.add(cliListSQL.get(i));
 
     		lclientes.add(cliListSQL.get(i).getRazon_Social());
-    		
+    		lclientesAux.add(cliListSQL.get(i).getRazon_Social());
     	}
     	
 
@@ -160,24 +162,43 @@ public class Buscaclientes extends Activity {
     	list_clientes.setAdapter(adapter);
     	   	
 		button_buscar.setOnClickListener(new OnClickListener() {
+			int n=0;
 		    public void onClick(View v) {
 		    	String tvrazon="";
 		    	tvrazon = textView_razonSocial.getText().toString();
 		    	String cad;
-		    	
-			    for(int i=0;i<cliListSQL.size();i++){	
-			    	
-	
-			    	if (cliListSQL.get(i).getRazon_Social().regionMatches(0,tvrazon ,0, tvrazon.length())){
-	 		
-		    			cliActual = cliListSQL.get(i);
-		    			refrescarLista(cliActual);
-		    			break;
-		    			
+		    	if (tvrazon.length() == 0){
+		    		lclientes.clear();
+		    		for(int j=0;j<lclientesAux.size();j++){
+		    			lclientes.add(lclientesAux.get(j));
+		    		}
+		    		adapter.notifyDataSetChanged();
+			    	list_clientes.setAdapter(adapter);
+		    	}
+		    	else{
+		    		
+				    for(int i=0;i<cliListSQL.size();i++){	
+				    	
+		
+				    	if (cliListSQL.get(i).getRazon_Social().regionMatches(0,tvrazon ,0, tvrazon.length())){
+		 		
+			    			cliActual = cliListSQL.get(i);
+			    			refrescarLista(cliActual);
+			    			
+			    			break;
+			    			
+				    	}
+				    	n = i;
+				    }
+
+			    	if(n==cliListSQL.size()-1){ //no lo encontro
+			    		lclientes.clear();
+						adapter.notifyDataSetChanged();
+				    	list_clientes.setAdapter(adapter);
 			    	}
-			    
 			    	
-			    }
+				    
+		    	}
 		    	
 		    }
 
@@ -221,6 +242,8 @@ public class Buscaclientes extends Activity {
 						
 			Intent intent = new Intent(Buscaclientes.this, BuscarPedidoCliente.class); 																				
 			intent.putExtra("idcliente", idCliente);
+			intent.putExtra("idempleado", idempleado);
+			intent.putExtra("idusuario", idusuario);
 			startActivity(intent);
 			
 			
@@ -240,6 +263,7 @@ public class Buscaclientes extends Activity {
    //     this.idpedido = (String)i.getSerializableExtra("idpedido");
    //     this.idcliente = (String)i.getSerializableExtra("idcliente");
         this.idusuario = (String)i.getSerializableExtra("idusuario");
+        this.idempleado = (String)i.getSerializableExtra("idusuario");
  
 	}
 	
