@@ -55,18 +55,6 @@ class Eventos extends CI_Controller {
 		//list($year, $month, $day) = explode("-", $fecha);
 		$result=$this->Evento_model->get_eventos_por_dia($idusuario,$fecha);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
-	}
-	
-	public function get_eventos_por_dia($idusuario_w='',$fecha_w=''){
-		$idusuario=$this->input->post('idusuario');
-		$fecha=$this->input->post('fecha');	
-		if (isset($idusuario_w)&& $idusuario_w!="" && isset($fecha_w)&& $fecha_w!=""  ){
-			$idusuario=$idusuario_w;
-			$fecha=$fecha_w;			
-		}
-		//list($year, $month, $day) = explode("-", $fecha);
-		$result=$this->Evento_model->get_eventos_por_dia($idusuario,$fecha);
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 	}	
 }
 
