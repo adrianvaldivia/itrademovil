@@ -87,7 +87,7 @@ public class SyncPedidos {
 		//quitar el getPedidosHoy, buscar todos los pedidos, comparar el estado y modificar arriba,
 		//si todo esta ok no hacer nada si esta pagado modificar arriba (esta en payment task) do it!
 		//si esta elimnado... bueno ya esta esa parte...
-		List<Pedido> pedList2= this.getPedidosHoyTotal();
+		List<Pedido> pedList2= this.getListaPedido();
 		
 		if (!pedList2.isEmpty()){
 //			Pedido ped=pedList2.get(0);
@@ -112,49 +112,51 @@ public class SyncPedidos {
 //				}
 				List<NameValuePair> parameters;
 				for (Pedido pedidin:pedList2){
-					if (pedidin.getIdEstadoPedido()==3){
-						parameters= new ArrayList<NameValuePair>();
-						parameters.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
-						String route2="/ws/pedido/cancelar_pedido/";
-						sync.conexion(parameters,route2);
-						try {
-							sync.getHilo().join();
-						} catch (InterruptedException e) {
-							  // TODO Auto-generated catch block
-							e.printStackTrace();
+					if (pedidin.getIdEstadoPedido()!=1){
+						if (pedidin.getIdEstadoPedido()==3){
+							parameters= new ArrayList<NameValuePair>();
+							parameters.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
+							String route2="/ws/pedido/cancelar_pedido/";
+							sync.conexion(parameters,route2);
+							try {
+								sync.getHilo().join();
+							} catch (InterruptedException e) {
+								  // TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
-					}
-					else if (pedidin.getIdEstadoPedido()==2){
-						parameters = new ArrayList<NameValuePair>();	
-						//String numVoucher= editNumVoucher.getText().toString();
-						param.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
-						param.add(new BasicNameValuePair("montocobrado", pedidin.getMontoTotalPedido().toString()));			
-						if (pedidin.getNumVoucher()!=null){
-							param.add(new BasicNameValuePair("numVoucher", pedidin.getNumVoucher()));
-						}else{
-							param.add(new BasicNameValuePair("numVoucher", ""));
+						else if (pedidin.getIdEstadoPedido()==2){
+							parameters = new ArrayList<NameValuePair>();	
+							//String numVoucher= editNumVoucher.getText().toString();
+							param.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
+							param.add(new BasicNameValuePair("montocobrado", pedidin.getMontoTotalPedido().toString()));			
+							if (pedidin.getNumVoucher()!=null){
+								param.add(new BasicNameValuePair("numVoucher", pedidin.getNumVoucher()));
+							}else{
+								param.add(new BasicNameValuePair("numVoucher", ""));
+							}
+							String route2="/ws/pedido/pagar_pedido/";
+							sync.conexion(param,route2);
+							try {
+								sync.getHilo().join();			
+							} catch (InterruptedException e) {
+								  // TODO Auto-generated catch block
+								e.printStackTrace();
+							}	    	  
+						}else if(pedidin.getIdEstadoPedido()==4){
+							parameters = new ArrayList<NameValuePair>();	
+							//String numVoucher= editNumVoucher.getText().toString();
+							param.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
+							
+							String route2="/ws/pedido/entregar_pedido/";
+							sync.conexion(param,route2);
+							try {
+								sync.getHilo().join();			
+							} catch (InterruptedException e) {
+								  // TODO Auto-generated catch block
+								e.printStackTrace();
+							}	  
 						}
-						String route2="/ws/pedido/pagar_pedido/";
-						sync.conexion(param,route2);
-						try {
-							sync.getHilo().join();			
-						} catch (InterruptedException e) {
-							  // TODO Auto-generated catch block
-							e.printStackTrace();
-						}	    	  
-					}else if(pedidin.getIdEstadoPedido()==4){
-						parameters = new ArrayList<NameValuePair>();	
-						//String numVoucher= editNumVoucher.getText().toString();
-						param.add(new BasicNameValuePair("idpedido", pedidin.getIdPedido().toString()));
-						
-						String route2="/ws/pedido/entregar_pedido/";
-						sync.conexion(param,route2);
-						try {
-							sync.getHilo().join();			
-						} catch (InterruptedException e) {
-							  // TODO Auto-generated catch block
-							e.printStackTrace();
-						}	  
 					}
 				}
 				//SI sale lo de arriba esto seria x las weee

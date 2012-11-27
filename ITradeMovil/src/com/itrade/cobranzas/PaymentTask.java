@@ -172,7 +172,10 @@ public class PaymentTask extends Activity {
 //								intent.putExtra("idpedido", idpedido);
 //								intent.putExtra("idcliente", idcliente);	
 								intent.putExtra("idempleado", idempleado);
-								startActivity(intent);
+								//intent.putExtra("idempleado", idempleado);
+								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);								
 							}
 				});		
 				AlertDialog alertDialog = alertDialogBuilder.create();		 
@@ -189,6 +192,7 @@ public class PaymentTask extends Activity {
 				intent.putExtra("idcliente", idcliente);
 				intent.putExtra("idempleado", idempleado);
 				startActivity(intent);
+				finish();
 			}
 		});
       //btnMapa

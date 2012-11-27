@@ -329,9 +329,9 @@ public class ClientesListTask extends Activity {
 		sincUsuario.closeDB();
 		sincNotifications.closeDB();
     }
+        
     
-
-  private void CargarLista() {	 		  	 	  	
+    private void CargarLista() {	 		  	 	  	
 	  //CONSULTAR WEBSERVICE Y LLENAR ARREGLO DE PEDIDOS
 	  /*Antes de
 	  Syncronizar sync2 = new Syncronizar(ClientesListTask.this);
