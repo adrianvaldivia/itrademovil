@@ -16,7 +16,7 @@ class Evento_model extends CI_Model {
 		if ($id!=0){
 			//registro invitados
 			$res=$this->registrar_invitados($id,$invitados);
-			echo "REGISTRADOS=".$res."<BR>";
+			//echo "REGISTRADOS=".$res."<BR>";
 			return $id;
 		}else{
 			return  0;
@@ -26,12 +26,14 @@ class Evento_model extends CI_Model {
 	public function registrar_invitados($id,$invitados){
 		$this->db->flush_cache();
 		if ($invitados!=0){
-			$idsusuarios==explode("-", $invitados);
+			//echo "INTIVADOS=".$invitados."<br>";
+			$idsusuarios=explode("-", $invitados);
+			//var_dump($idsusuarios);
 			$count=0;
-			foreach($idsusuarios as $idusuario){
+			for($i=0;$i<count($idsusuarios);$i++){
 				$this->db->flush_cache();
-				$data=array("IdEvento"=>$id,"IdPersona"=>$idusuario,"Asistir"=>1);
-				$this->db->insert($this->PersonaXEvento, $data);
+				$data=array("IdEvento"=>$id,"IdPersona"=>$idsusuarios[$i],"Asistir"=>1);
+				$this->db->insert($this->table_evento_persona, $data);
 				$count++;
 			}
 			return $count;
