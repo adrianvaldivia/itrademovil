@@ -3,6 +3,7 @@ package com.itrade.cobranzas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,20 +40,24 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MapaClientes  extends Activity implements LocationListener {
+public class MapaClientes  extends Activity implements LocationListener, OnClickListener, OnInitListener {
 
     // ===========================================================
     // Constants
@@ -101,7 +106,10 @@ public class MapaClientes  extends Activity implements LocationListener {
     boolean boolHayGPS=true;
     private ClienteMapa client; 
     int contadorErrores=0;
-
+    /*Inicio agregado*/
+    private TextToSpeech myTTS;
+    private int MY_DATA_CHECK_CODE = 0;
+	/*Fin agregado*/
         
     // ===========================================================
     // Constructors
@@ -111,7 +119,12 @@ public class MapaClientes  extends Activity implements LocationListener {
     public void onCreate(final Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState); 
     	setContentView(R.layout.c_mapa);        
-    	Intent i = getIntent();  			
+    	Intent i = getIntent();
+    	/*Inicio agregado*/
+    	Intent checkTTSIntent = new Intent();
+    	checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+	    startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
+	    /*Fin agregado*/
 			
 //			idruta = bundle.getInt("idruta");
 
@@ -165,6 +178,7 @@ public class MapaClientes  extends Activity implements LocationListener {
                                                     Toast.makeText(
                                                                     MapaClientes.this,
                                                                     item.mTitle , Toast.LENGTH_LONG).show();
+                                                    speakWords(item.mTitle);
                                                     return true; 
                                             }
 
@@ -565,5 +579,56 @@ private void obtenerUbicacion() {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	public void onInit(int initStatus) {
+		// TODO Auto-generated method stub
+		if (initStatus == TextToSpeech.SUCCESS) {
+			if(myTTS.isLanguageAvailable(Locale.US)==TextToSpeech.LANG_AVAILABLE)
+				myTTS.setLanguage(Locale.US);
+		}
+		else if (initStatus == TextToSpeech.ERROR) {
+			Toast.makeText(this, "Sorry! Text To Speech failed...", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		if (requestCode == MY_DATA_CHECK_CODE) {
+			if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+				//the user has the necessary data - create the TTS
+			myTTS = new TextToSpeech(this, this);
+			}
+			else {
+					//no data - install it now
+				Intent installTTSIntent = new Intent();
+				installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+				startActivity(installTTSIntent);
+			}
+		}
+	}
+/*
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		EditText enteredText = (EditText)findViewById(R.id.enter2);
+    	String words = enteredText.getText().toString();	    		    
+    	speakWords(words);
+		
+	}
+	*/
+	private void speakWords(String speech) {
+
+		//speak straight away
+    	myTTS.speak(speech, TextToSpeech.QUEUE_FLUSH, null);
+}
+
+
+
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

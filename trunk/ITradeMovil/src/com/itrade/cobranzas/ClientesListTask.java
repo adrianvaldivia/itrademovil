@@ -270,7 +270,7 @@ public class ClientesListTask extends Activity {
 											e.printStackTrace();
 										}
 									}	
-									sincPedidos.closeDB();
+									//sincPedidos.closeDB();
 									Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
 									intent.putExtra("idempleado", idusuario);
 									startActivity(intent);
@@ -323,11 +323,13 @@ public class ClientesListTask extends Activity {
         // Set this blank adapter to the list view
         listView.setAdapter(adapter); 
         //No olvidar de esto en todos los activities
+        /*
         sincPedidos.closeDB();
         sincDetallePedido.closeDB();
         sincContacto.closeDB();               
 		sincUsuario.closeDB();
 		sincNotifications.closeDB();
+		*/
     }
         
     
