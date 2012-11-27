@@ -114,5 +114,16 @@ class Cobranza extends CI_Controller {
 		$result=$this->Payment_model->registro_deposito($idusuario,$monto, $fecha, $numvoucher);		
 		$this->output->set_content_type('application/json')->set_output($result);				
 	}
+	public function get_deposito_by_user($idusuario_w='',$fecha_w=''){
+		$idusuario=$this->input->post('idusuario');	
+		$fecha=$this->input->post('fecha');
+		if ($idusuario_w!='' && $fecha_w!=''){
+			$idusuario=$idusuario_w;
+			$fecha=$fecha_w;		
+		}
+		$result=$this->Payment_model->get_deposito_by_user($idusuario,$fecha);		
+		$this->output->set_content_type('application/json')->set_output($result);	
+		
+	}
 }
 
