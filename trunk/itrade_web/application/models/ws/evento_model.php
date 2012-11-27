@@ -7,13 +7,36 @@ class Evento_model extends CI_Model {
 		$this->table_evento = 'Evento';		
 		$this->table_evento_persona = 'PersonaXEvento';	
     }		
-	public function registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin){
+	public function registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar,$invitados){
 		$this->db->flush_cache();
 		//$idpersona=$this->get_last_idPersona();
 		$data=array("IdCreador"=>$idcreador,"Descripcion"=>$descripcion,"Fecha"=>$fecha,"HoraInicio"=>$horaini,"HoraFin"=>$horafin);
 		$this->db->insert($this->table_evento, $data);	
-		return $this->get_last_idEvento();
-		//return $this->db->insert_id($this->table_persona, $data);
+		$id=$this->get_last_idEvento();
+		if ($id!=0){
+			//registro invitados
+			$res=$this->registrar_invitados($id,$invitados);
+			echo "REGISTRADOS=".$res."<BR>";
+			return $id;
+		}else{
+			return  0;
+		}	
+	}
+	
+	public function registrar_invitados($id,$invitados){
+		$this->db->flush_cache();
+		if ($invitados!=0){
+			$invitados==explode("-", $invitados);
+			$count=0;
+			foreach($invitados as $idusuario){
+				$this->db->flush_cache();
+				$data=array("IdEvento"=>$id,"IdPersona"=>$idusuario,"Asistir"=>1);
+				$this->db->insert($this->PersonaXEvento, $data);
+				$count++;
+			}
+			return $count;
+		}
+		return 0;				
 	}
 	
 	public function get_last_idEvento(){
