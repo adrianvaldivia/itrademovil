@@ -60,8 +60,7 @@ public class Amortizacion extends Activity {
 //		Log.d("RESULTADOS","numeros ="+numreg.toString());	
 		
 	}
-	public void setValues(){
-		Log.d("tag", "LLEGO1");
+	public void setValues(){		
 		editMontoDeposito = (EditText) findViewById(R.id.montoDeposito);//Monto a depositar		
 		nroTransaccion = (EditText) findViewById(R.id.numTransaccion);	//NRo transaccion
 		btnDeposito = (Button) findViewById(R.id.btnDeposito);						
