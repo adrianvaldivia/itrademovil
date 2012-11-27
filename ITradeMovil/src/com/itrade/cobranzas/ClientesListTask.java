@@ -378,6 +378,8 @@ public class ClientesListTask extends Activity {
 		sincUsuario = new SyncUsuarios(ClientesListTask.this);
 		sincNotifications = new SyncNotifications(ClientesListTask.this);
 		sincDepositos= new SyncDeposito(ClientesListTask.this);
+		//Integer a =sincDepositos.cargarRegPrueba();
+		//Log.d("NUMEEEEEEEEROOOOOO", "regs"+a);
 		//Integer numePed = sincPedidos.cargarClientes(idusuario);
 		//Integer numeCli = sincPedidos.cargarPedidos(idusuario);
 		Integer numreg = sincPedidos.syncBDToSqlite(idusuario);
