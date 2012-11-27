@@ -122,7 +122,7 @@ class Cobranza extends CI_Controller {
 			$fecha=$fecha_w;		
 		}
 		$result=$this->Payment_model->get_deposito_by_user($idusuario,$fecha);		
-		$this->output->set_content_type('application/json')->set_output($result);	
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));	
 		
 	}
 }
