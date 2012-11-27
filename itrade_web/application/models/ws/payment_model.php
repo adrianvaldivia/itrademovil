@@ -376,5 +376,11 @@ class Payment_model extends CI_Model {
         $query = $this->db->get($this->table_deposito);
         return $query->row(0)->IdDeposito;
     }
+	public function get_deposito_by_user($idusuario,$fecha){	
+		$this->db->where('IdPersona', $idusuario);
+		$this->db->where('Fecha', $fecha);		
+		$query = $this->db->get($this->table_deposito);
+		return $query->result();
+	}
 }
 ?>
