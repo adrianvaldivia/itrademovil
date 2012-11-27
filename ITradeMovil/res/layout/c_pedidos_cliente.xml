@@ -203,7 +203,7 @@
 
 
             <ListView
-                android:id="@+id/listDetalle"
+                android:id="@+id/listPedido"
                 android:layout_width="fill_parent"
                 android:layout_height="282dp"
                 android:layout_weight="49.67"
