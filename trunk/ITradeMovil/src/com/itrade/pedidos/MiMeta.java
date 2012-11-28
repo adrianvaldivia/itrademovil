@@ -11,7 +11,10 @@ import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.MetaDao.Properties;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -246,12 +249,35 @@ public class MiMeta extends Activity {
 	    inflater.inflate(R.menu.menuagenda, menu);
 	    return true;
 	}
+    
+    private boolean haveNetworkConnection() {
+	    boolean haveConnectedWifi = false;
+	    boolean haveConnectedMobile = false;
+
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+	    for (NetworkInfo ni : netInfo) {
+	        if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+	            if (ni.isConnected())
+	                haveConnectedWifi = true;
+	        if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+	            if (ni.isConnected())
+	                haveConnectedMobile = true;
+	    }
+	    return haveConnectedWifi || haveConnectedMobile;
+	}
+    
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
+	        	if (haveNetworkConnection()){
 	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_LONG).show();
-	        	cargarBaseLocal();	        	
+	        	cargarBaseLocal();	
+	        	}
+	        	else
+	        		Toast.makeText(this, "No hay conexion a Internet!", Toast.LENGTH_SHORT).show();	        	
 
 	        }
             break;
