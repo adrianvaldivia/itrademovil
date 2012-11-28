@@ -169,7 +169,7 @@ public class BuscarPedidoCliente extends Activity {
 	private void Botones() {
 	
 		
-		btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
+		btnClientes= (ImageView)findViewById(R.id.c_ped_btnListaClientes);
 		btnClientes.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -180,7 +180,7 @@ public class BuscarPedidoCliente extends Activity {
 		});
 		
 		/*BTN clientes*/
-		btnDepositar= (ImageView)findViewById(R.id.btnDepositarBanco);
+		btnDepositar= (ImageView)findViewById(R.id.c_ped_btnDepositarBanco);
 		btnDepositar.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -190,7 +190,7 @@ public class BuscarPedidoCliente extends Activity {
 			}
 		});
 		/*BTN Mensaje masivo*/
-		btnMail= (ImageView)findViewById(R.id.btnMailMasivo);
+		btnMail= (ImageView)findViewById(R.id.c_ped_btnMailMasivo);
 		btnMail.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -239,7 +239,7 @@ public class BuscarPedidoCliente extends Activity {
 			}
 		});
 		/*btn buscar clientes*/
-		btnBuscar= (ImageView)findViewById(R.id.btnBuscarCliente);
+		btnBuscar= (ImageView)findViewById(R.id.c_ped_btnBuscarCliente);
 		btnBuscar.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -250,7 +250,7 @@ public class BuscarPedidoCliente extends Activity {
 			}
 		});
 		/**/
-		btnCalendario= (ImageView)findViewById(R.id.btnCalendario);
+		btnCalendario= (ImageView)findViewById(R.id.c_ped_btnCalendario);
 		btnCalendario.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -259,7 +259,7 @@ public class BuscarPedidoCliente extends Activity {
 				startActivity(intent);
 			}
 		});	
-		btnDirectorio= (ImageView)findViewById(R.id.btnDirectorio);
+		btnDirectorio= (ImageView)findViewById(R.id.c_ped_btnDirectorio);
 		btnDirectorio.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -269,7 +269,7 @@ public class BuscarPedidoCliente extends Activity {
 			}
 		});	
 		/*btn Mapa Clientes*/
-		btnMapaTotal= (ImageView)findViewById(R.id.btnMapa);
+		btnMapaTotal= (ImageView)findViewById(R.id.c_ped_btnMapa);
 		btnMapaTotal.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
