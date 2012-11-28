@@ -267,6 +267,8 @@ public class MiMeta extends Activity {
 		Log.d("IDUSU META", idusuario);
 		Meta metaAux	=	daometa.buscarMetaxVendedor(idusuario);
 		metaDao.insert(metaAux);
+		obtenerMetaVendedor();
+		imprimirMeta();
 	}
 	
 	@Override
