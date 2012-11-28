@@ -77,7 +77,7 @@ class Cobranza extends CI_Controller {
                                 ");
 */
 		$this->email->message("Estimado(a) ".$cliente->Nombre." ".$cliente->ApePaterno." ".$cliente->ApeMaterno."<br>
-								Con razon social".$cliente->Razon_Social."<br>
+								Con razon social ".$cliente->Razon_Social."<br>
 								Durante el transcurso del dia se aproximara nuestro cobrador a la direccion:<br>
 								".$cliente->Direccion.".<br> 
 								<br>
