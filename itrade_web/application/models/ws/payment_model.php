@@ -104,6 +104,9 @@ class Payment_model extends CI_Model {
 		$this->db->where($this->table_cliente.".IdCobrador", $idcobrador);	
 		$this->db->where($this->table_pedido.".IdEstadoPedido", 1);//Pendiente de pago
 		$this->db->or_where($this->table_pedido.".IdEstadoPedido", 4);
+		//Inicio linea que puede no ser necesaria
+		$this->db->or_where($this->table_pedido.".IdEstadoPedido", 2);
+		//FIN linea que puede no ser necesaria
 //		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)=7)";
 		$dates="(DATEDIFF( CURDATE(), ".$this->table_pedido.".FechaPedido)<=7)";
 		$this->db->where($dates);
