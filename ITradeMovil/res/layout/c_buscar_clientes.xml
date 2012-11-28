@@ -53,7 +53,7 @@
                         
                         
                         <ImageButton
-                            android:id="@+id/btnMapa"
+                            android:id="@+id/c_bus_btnMapa"
                             android:layout_width="58dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
@@ -86,15 +86,15 @@
                         android:background="@color/azul_2" >
 
                       <ImageButton
-                            android:id="@+id/btnListaClientes"                           
+                            android:id="@+id/c_bus_btnListaClientes"                           
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_default"                    
+                            android:background="@drawable/estilo_botones"                    
                             android:src="@drawable/user_customer" />
 
 
                         <ImageButton
-                            android:id="@+id/btnMailMasivo"
+                            android:id="@+id/c_bus_btnMailMasivo"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
@@ -102,15 +102,15 @@
 
 
                         <ImageButton
-                            android:id="@+id/btnBuscarCliente"
+                            android:id="@+id/c_bus_btnBuscarCliente"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
+                            android:background="@drawable/estilo_default"
                             android:src="@drawable/users_search" />
 
 
                         <ImageButton
-                            android:id="@+id/btnDepositarBanco"
+                            android:id="@+id/c_bus_btnDepositarBanco"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
@@ -118,7 +118,7 @@
 
 
                         <ImageButton
-                            android:id="@+id/btnDirectorio"
+                            android:id="@+id/c_bus_btnDirectorio"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
@@ -126,7 +126,7 @@
 
 
                         <ImageButton
-                            android:id="@+id/btnCalendario"
+                            android:id="@+id/c_bus_btnCalendario"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
