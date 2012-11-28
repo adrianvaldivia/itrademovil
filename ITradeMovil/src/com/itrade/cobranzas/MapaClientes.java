@@ -263,7 +263,7 @@ public class MapaClientes  extends Activity implements LocationListener, OnClick
 			        Log.d("entra", "NULL 1 1");					
 				}
 				else {			//((listaCliente.get(i).getCheckIN()==null) || (listaCliente.get(i).getCheckIN()==0) )	
-					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno()+" Direccion="+listaCliente.get(i).getDireccion(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
 			        Drawable newMarker = this.getResources().getDrawable(R.drawable.pinkmarker4); //rojo
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
