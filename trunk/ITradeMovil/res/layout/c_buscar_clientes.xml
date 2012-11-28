@@ -50,8 +50,10 @@
                             android:textColor="@color/grisClaro"
                             android:textSize="20dip" />
 
+                        
+                        
                         <ImageButton
-                            android:id="@+id/btnExplorar"
+                            android:id="@+id/btnMapa"
                             android:layout_width="58dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
@@ -83,34 +85,37 @@
                         android:layout_height="48dp"
                         android:background="@color/azul_2" >
 
-                        <ImageButton
-                            android:id="@+id/btnPedidos"
-                            style="@drawable/estilo_botones"
+                      <ImageButton
+                            android:id="@+id/btnListaClientes"                           
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
+                            android:background="@drawable/estilo_default"                    
                             android:src="@drawable/user_customer" />
 
+
                         <ImageButton
-                            android:id="@+id/btnNotificar"
+                            android:id="@+id/btnMailMasivo"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/e_mail" />
 
+
                         <ImageButton
-                            android:id="@+id/btnBuscarClientes"
+                            android:id="@+id/btnBuscarCliente"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/users_search" />
 
+
                         <ImageButton
-                            android:id="@+id/btnCalcularMonto"
+                            android:id="@+id/btnDepositarBanco"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/emblem_money" />
+
 
                         <ImageButton
                             android:id="@+id/btnDirectorio"
@@ -119,12 +124,16 @@
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/directorio" />
 
+
                         <ImageButton
                             android:id="@+id/btnCalendario"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/calendar" />
+                        
+                        
+                        
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
