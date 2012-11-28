@@ -198,17 +198,22 @@ public class Amortizacion extends Activity {
 		btnDeposito.setOnClickListener(new OnClickListener() {
 	    	public void onClick(View v) {	    		
 	    		String monto = editMontoDeposito.getText().toString();
-	    		if(Integer.parseInt(monto)>montoMaximoDeposito){
-	    			Toast.makeText(Amortizacion.this, "No puede registrar mas del monto cobrado", Toast.LENGTH_SHORT).show();
+	    		if (monto.trim().equals("")){
+	    			Toast.makeText(Amortizacion.this, "Debe ingresar un monto", Toast.LENGTH_SHORT).show();
 	    		}else{
-	    			String numVoucher = nroTransaccion.getText().toString();
-		    		syncDeposito.cargarDeposito(idusuario, monto, numVoucher);	
-		    		syncDeposito.closeDB();
-		    		Toast.makeText(Amortizacion.this, "Se registro el Depósito", Toast.LENGTH_SHORT).show();
-		    		Intent intent = new Intent(Amortizacion.this, Amortizacion.class); 																				
-					intent.putExtra("idusuario", idusuario);
-					startActivity(intent);
-	    		}	    		
+	    			if(Integer.parseInt(monto)>montoMaximoDeposito){
+		    			Toast.makeText(Amortizacion.this, "No puede registrar mas del monto cobrado", Toast.LENGTH_SHORT).show();
+		    		}else{
+		    			String numVoucher = nroTransaccion.getText().toString();
+			    		syncDeposito.cargarDeposito(idusuario, monto, numVoucher);	
+			    		syncDeposito.closeDB();
+			    		Toast.makeText(Amortizacion.this, "Se registro el Depósito", Toast.LENGTH_SHORT).show();			    	
+			    		Intent intent = new Intent(Amortizacion.this, Amortizacion.class); 																				
+						intent.putExtra("idusuario", idusuario);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
+		    		}	
+	    		}	    		    	
 			}
 	 	});
         
