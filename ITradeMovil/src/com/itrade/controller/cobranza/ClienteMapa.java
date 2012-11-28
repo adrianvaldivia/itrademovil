@@ -12,9 +12,10 @@ public class ClienteMapa {
 	private Double Latitud;
 	private Double Longitud;
 	private Integer CheckIn;
-	
+	private String Direccion;
 	public ClienteMapa(Integer idCliente, String nombre, String apePaterno,
-			String apeMaterno, Double latitud, Double longitud, Integer checkIn) {
+			String apeMaterno, Double latitud, Double longitud,
+			Integer checkIn, String direccion) {
 		super();
 		IdCliente = idCliente;
 		Nombre = nombre;
@@ -23,8 +24,8 @@ public class ClienteMapa {
 		Latitud = latitud;
 		Longitud = longitud;
 		CheckIn = checkIn;
+		Direccion = direccion;
 	}
-	
 	public Integer getIdCliente() {
 		return IdCliente;
 	}
@@ -67,4 +68,10 @@ public class ClienteMapa {
 	public void setCheckIn(Integer checkIn) {
 		CheckIn = checkIn;
 	}
+	public String getDireccion() {
+		return Direccion;
+	}
+	public void setDireccion(String direccion) {
+		Direccion = direccion;
+	}	
 }
