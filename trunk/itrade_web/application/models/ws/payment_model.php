@@ -332,7 +332,7 @@ class Payment_model extends CI_Model {
 		
 		$this->db->flush_cache();	
 		$query = $this->db->query("					
-			SELECT P.IdPersona, Usu.IdUsuario, P.Nombre, P.ApePaterno, P.ApeMaterno, P.Activo, P.Telefono, P.Email 
+			SELECT P.IdPersona, Usu.IdUsuario, P.Nombre, P.ApePaterno, P.ApeMaterno, P.Activo, P.Telefono, P.Email, Usu.IdJerarquia
 			FROM Usuario Usu
 			INNER JOIN Ubigeo U ON Usu.IdUbigeo = U.IdUbigeo
 			INNER JOIN Persona P ON Usu.IdPersona = P.IdPersona
