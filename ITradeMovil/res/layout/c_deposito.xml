@@ -107,14 +107,14 @@ android:layout_width="match_parent"
                             android:id="@+id/btnDepositarBanco"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
+                            android:background="@drawable/estilo_default"   
                             android:src="@drawable/emblem_money" />
 
                         <ImageButton
                             android:id="@+id/btnDirectorio"
                             android:layout_width="53dp"
-                            android:layout_height="match_parent"                            
-                            android:background="@drawable/estilo_default"   
+                            android:layout_height="match_parent"                                                        
+                            android:background="@drawable/estilo_botones"
                             android:src="@drawable/directorio" />
 
                         <ImageButton
