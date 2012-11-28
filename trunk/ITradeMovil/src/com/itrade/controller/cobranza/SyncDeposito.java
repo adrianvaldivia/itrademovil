@@ -26,6 +26,7 @@ import com.itrade.model.DaoSession;
 import com.itrade.model.Deposito;
 import com.itrade.model.DepositoDao;
 import com.itrade.model.Pedido;
+import com.itrade.model.PedidoLinea;
 import com.itrade.model.DepositoDao.Properties;
 import com.itrade.model.Evento;
 import com.itrade.model.EventoDao;
@@ -91,22 +92,33 @@ public class SyncDeposito {
 		Integer registros=0;		
 		if (networkAvailable()){
 			//Obtener todos los depositos del usuario
+			//Registra los pendientes
 			List<Deposito> depositosPendientes=depositosByUser(idusuario);
-			for (Deposito dep :depositosPendientes){
-				Log.d("IDDEPOSITO", "DEPO="+dep.getId().toString()+"=======");
-				Long id=dep.getId();
-				Integer a= registrarDeposito(dep.getIdUsuario().toString(), dep.getMonto(), dep.getFecha(), dep.getNumVoucher());
-				Log.d("AHHHHHHHREGISTRAA", "REGISTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+a);				
-				List<Deposito> depTemp=depositoDao.queryBuilder()
-						.where(Properties.IdDeposito.eq(0))
-						.list();
-				Deposito depo=depTemp.get(0);
-				depo.setIdDeposito(a);
-				depositoDao.update(depo);
-				registros++;
-			}				
-			//Llamar al webservice
-			//obtener el iddeposito y updatear
+			if (depositosPendientes.size()>0){
+				for (Deposito dep :depositosPendientes){
+					Log.d("IDDEPOSITO", "DEPO="+dep.getId().toString()+"=======");
+					Long id=dep.getId();
+					Integer a= registrarDeposito(dep.getIdUsuario().toString(), dep.getMonto(), dep.getFecha(), dep.getNumVoucher());
+					Log.d("AHHHHHHHREGISTRAA", "REGISTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+a);				
+					List<Deposito> depTemp=depositoDao.queryBuilder()
+							.where(Properties.IdDeposito.eq(0))
+							.list();
+					Deposito depo=depTemp.get(0);
+					depo.setIdDeposito(a);
+					depositoDao.update(depo);
+					registros++;
+				}	
+			}
+			//Obten los pedidos del servidor
+			ArrayList<Deposito> listDepsWeb = consultarDepositos(idusuario,getFechaActual());
+			if (listDepsWeb.size()>0){
+				for(Deposito dep:listDepsWeb){
+					if (!estaEnLocal(dep.getIdDeposito())){
+						//Registrar en la BD local
+						depositoDao.insert(dep);
+					}
+				}
+			}					
 		}
 		else{
 			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
@@ -115,6 +127,33 @@ public class SyncDeposito {
 	}
 	
 	
+	public boolean estaEnLocal(Integer iddeposito){
+		List<Deposito> depTemp=depositoDao.queryBuilder()
+				.where(Properties.IdDeposito.eq(iddeposito))
+				.list();
+		if (depTemp.size()>0){
+			return true;
+		}
+		return false;
+	}
+	
+	public ArrayList<Deposito> consultarDepositos(String idusuario, String fecha){
+		
+		List<NameValuePair> param = new ArrayList<NameValuePair>();								
+		param.add(new BasicNameValuePair("idusuario", idusuario));		
+		param.add(new BasicNameValuePair("fecha", fecha));		
+		sync.conexion(param,"/ws/cobranza/get_deposito_by_user/");
+		try {
+			sync.getHilo().join();
+		} catch (InterruptedException e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}					
+		//Log.d("Pedido", sync.getResponse());
+		ArrayList<Deposito> listDep = new ArrayList<Deposito>();
+		listDep=gson.fromJson(sync.getResponse(), new TypeToken<List<Deposito>>(){}.getType());		
+		return listDep;		
+	}
 	
 	public Integer registrarDeposito(String idusuario, Double monto, String fecha, String numvoucher){
 			
