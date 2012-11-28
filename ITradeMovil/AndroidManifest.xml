@@ -87,13 +87,13 @@
             android:launchMode="singleTop"
             android:name=".pedidos.RegistrarProspecto" android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".ListaClientes"/>
-        <activity android:launchMode="singleTask"
+        <activity android:launchMode="standard"
             android:name=".cobranzas.ClientesListTask"
             android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:launchMode="singleTask"
+        <activity android:launchMode="standard"
             android:name=".cobranzas.RequestDetailTask"
             android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:launchMode="singleTask"
+        <activity android:launchMode="standard"
             android:name=".cobranzas.PaymentTask"
             android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:launchMode="singleTask"
@@ -117,11 +117,13 @@
         <activity android:launchMode="singleTask"
             android:name="com.itrade.cobranzas.ContactoDetalle"
             android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:launchMode="singleTask"
+        <activity android:launchMode="standard"
             android:name="com.itrade.cobranzas.Amortizacion"
             android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.itrade.cobranzas.Buscaclientes"/>
-        <activity android:name="com.itrade.cobranzas.BuscarPedidoCliente"/>
+        <activity android:name="com.itrade.cobranzas.Buscaclientes"
+            android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.itrade.cobranzas.BuscarPedidoCliente"
+            android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"/>
     </application>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 </manifest>
