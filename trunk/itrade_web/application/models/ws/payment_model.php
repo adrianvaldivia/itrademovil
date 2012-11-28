@@ -320,7 +320,7 @@ class Payment_model extends CI_Model {
 	
 	public function get_clientes_checkin($idcobrador) {	
 		$query = $this->db->query("					
-			SELECT C.IdCliente, Pe.Nombre, Pe.ApePaterno, Pe.ApeMaterno, C.Latitud, C.Longitud, P.CheckIn
+			SELECT C.IdCliente, Pe.Nombre, Pe.ApePaterno, Pe.ApeMaterno, C.Latitud, C.Longitud, P.CheckIn, C.Direccion
 			FROM Persona Pe, Pedido P, Cliente C
 			WHERE C.IdCliente = P.IdCliente
 			AND C.IdCobrador ='".$idcobrador."'
