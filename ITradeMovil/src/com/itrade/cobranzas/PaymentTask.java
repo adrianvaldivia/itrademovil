@@ -191,6 +191,7 @@ public class PaymentTask extends Activity {
 				intent.putExtra("idpedido", idpedido);
 				intent.putExtra("idcliente", idcliente);
 				intent.putExtra("idempleado", idempleado);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				finish();
 			}
