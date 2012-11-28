@@ -1,6 +1,7 @@
 package com.itrade.controller.cobranza;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -132,6 +133,7 @@ public class SyncDetallePedido {
 		}
     	List<NameValuePair> parameters;
     	parameters= new ArrayList<NameValuePair>();
+    	Log.d("IDPEDIDOS", pedidosws);
 		parameters.add(new BasicNameValuePair("idspedidos", pedidosws));
 		String route2="/ws/pedido/get_pedidos_detail/";
 		sync.conexion(parameters,route2);
@@ -147,7 +149,8 @@ public class SyncDetallePedido {
 			
 		for(PedidoLinea linea: listDetallePedidos ){
 			List<PedidoLinea> peds=pedidoLineaDao.queryBuilder()
-					.where(PedidoLineaDao.Properties.IdPedidoLinea.eq(linea.getIdPedidoLinea()))
+					.where(PedidoLineaDao.Properties.IdPedido.eq(linea.getIdPedido()))
+					.where(PedidoLineaDao.Properties.IdProducto.eq(linea.getIdProducto()))
 					.list();
 			if (peds.isEmpty()){
 				pedidoLineaDao.insert(linea);
