@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import com.itrade.cobranzas.ClientesListTask;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.db.DAOCliente;
+import com.itrade.db.DAOContacto;
 import com.itrade.db.DAOEvento;
 import com.itrade.db.DAOMeta;
 import com.itrade.db.DAOPedido;
@@ -67,6 +68,7 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 	DAOCliente daoCliente =null;
 	DAOPedido daoPedido =null;
 	DAOEvento daoEvento =null;
+	DAOContacto daoContacto =null;
 	DAOProducto daoProducto =null;
 	DAOProspecto daoProspecto =null;
 	//modif ela
@@ -138,7 +140,8 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 		String str="Hola";
 		////////////////////////////////////
 		// TODO Auto-generated method stub
-					long idUsuario=usuario.getIdUsuario();
+					long idUsuario = usuario.getIdUsuario();
+					long idUbigeo  = usuario.getIdUbigeo();
 					usuario.setNombreReal("BDLOCAL");
 					////////////////////////////////////////////////////////////Sincronizacion de Usuarios
 					usuarioDao.deleteAll();
@@ -266,7 +269,19 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 						prospecto2.setActivo("A");//util para la sincronizacion de prospectos
 				        prospectoDao.insert(prospecto2);	        	        
 					}
+					
+					
 					//sincronizacion de contactos
+					
+					contactoDao.deleteAll();
+					daoContacto = new DAOContacto(activity);
+
+					List<Contacto> listaContacto = daoContacto.getAllContacto(idUbigeo);        
+					for(int i=0;i<listaContacto.size();i++){						
+						Contacto contacto = new Contacto(null, listaContacto.get(i).getIdPersona() , listaContacto.get(i).getIdUsuario() , listaContacto.get(i).getNombre(), listaContacto.get(i).getApePaterno(), listaContacto.get(i).getApeMaterno(), listaContacto.get(i).getActivo(), listaContacto.get(i).getTelefono(),listaContacto.get(i).getEmail(), listaContacto.get(i).getIdJerarquia());
+						contactoDao.insert(contacto);				        
+					}	
+					
 					//contactoDao.deleteAll();
 					/*
 					long temp=0;
