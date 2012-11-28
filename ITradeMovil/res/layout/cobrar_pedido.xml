@@ -47,14 +47,15 @@
                             android:text="iTrade"
                             android:textColor="@color/grisClaro"
                             android:textSize="20dip" />
-
+
                         <ImageButton
-                            android:id="@+id/btnMapa"
+                            android:id="@+id/cob_btnMapa"
                             android:layout_width="58dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:background="@color/azul_2"
                             android:src="@drawable/maps" />
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -80,49 +81,50 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@color/azul_2" >
-
+
                         <ImageButton
-                            android:id="@+id/btnListaClientes"
+                            android:id="@+id/cob_btnListaClientes"
                             style="@drawable/estilo_botones"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/user_customer" />
-
+
                         <ImageButton
-                            android:id="@+id/btnMailMasivo"
+                            android:id="@+id/cob_btnMailMasivo"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/e_mail" />
-
+
                         <ImageButton
-                            android:id="@+id/btnBuscarCliente"
+                            android:id="@+id/cob_btnBuscarCliente"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/users_search" />
-
+
                         <ImageButton
-                            android:id="@+id/btnDepositarBanco"
+                            android:id="@+id/cob_btnDepositarBanco"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/emblem_money" />
-
+
                         <ImageButton
-                            android:id="@+id/btnDirectorio"
+                            android:id="@+id/cob_btnDirectorio"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/directorio" />
-
+
                         <ImageButton
-                            android:id="@+id/btnCalendario"
+                            android:id="@+id/cob_btnCalendario"
                             android:layout_width="53dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/estilo_botones"
                             android:src="@drawable/calendar" />
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
