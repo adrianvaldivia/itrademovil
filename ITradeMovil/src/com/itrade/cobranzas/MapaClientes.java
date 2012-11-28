@@ -178,7 +178,7 @@ public class MapaClientes  extends Activity implements LocationListener, OnClick
                                                     Toast.makeText(
                                                                     MapaClientes.this,
                                                                     item.mTitle , Toast.LENGTH_LONG).show();
-                                                    //speakWords(item.mTitle);
+                                                    speakWords(item.mTitle);
                                                     return true; 
                                             }
 
