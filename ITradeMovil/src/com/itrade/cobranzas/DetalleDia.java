@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -90,17 +91,12 @@ public class DetalleDia extends ListActivity{
 
 	@Override
 	    protected void onListItemClick(ListView l, View v, int position, long id) {
-	     // TODO Auto-generated method stub
-	     //super.onListItemClick(l, v, position, id);
-//		 String selection="";
-//	     selection = l.getItemAtPosition(position).toString();
-	     
-	    //Toast.makeText(this, "Hola", Toast.LENGTH_LONG).show();
+	     	 
 		 this.encuentraEvento(id);//encuentra evento
 	     Intent intent = new Intent(DetalleDia.this, DetalleEvento.class); 
 	     	     	    
-	     //intent.putExtra("IdEvento", evento.getIdEvento());
-	     intent.putExtra("idevento",evento.getIdEvento()); //hardcode
+	     
+	     intent.putExtra("idevento",evento.getIdEvento().toString()); //hardcode
 	     startActivity(intent);	
 	     
 	    }    
