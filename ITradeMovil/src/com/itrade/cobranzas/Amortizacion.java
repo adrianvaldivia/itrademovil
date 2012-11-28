@@ -72,7 +72,7 @@ public class Amortizacion extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(Amortizacion.this, ClientesListTask.class); 																				
-				intent.putExtra("idempleado", idusuario);
+				intent.putExtra("idusuario", idusuario);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
@@ -85,6 +85,7 @@ public class Amortizacion extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(Amortizacion.this, Amortizacion.class); 																				
 				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -120,8 +121,9 @@ public class Amortizacion extends Activity {
 											}									
 											sincNotifications.saveNotification(idusuario);
 											Toast.makeText(Amortizacion.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
-											Intent intent = new Intent(Amortizacion.this, ClientesListTask.class); 													
-											intent.putExtra("idempleado", idusuario);
+											Intent intent = new Intent(Amortizacion.this, Amortizacion.class); 
+											intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+											intent.putExtra("idusuario", idusuario);
 											startActivity(intent);
 																												
 									}else{
@@ -144,6 +146,7 @@ public class Amortizacion extends Activity {
 				Intent intent = new Intent(Amortizacion.this, Buscaclientes.class);		
 				intent.putExtra("idusuario", idusuario);
 				intent.putExtra("boolVer", 1);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -153,7 +156,8 @@ public class Amortizacion extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(Amortizacion.this, Calendario.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -162,7 +166,8 @@ public class Amortizacion extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(Amortizacion.this, Directorio.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -173,7 +178,7 @@ public class Amortizacion extends Activity {
 				// TODO Auto-generated method stub
 				if (networkAvailable()){
 					Intent intent = new Intent(Amortizacion.this, MapaClientes.class);		
-					intent.putExtra("idempleado", idusuario);				
+					intent.putExtra("idusuario", idusuario);				
 					startActivity(intent);
 				}else{
 					Toast.makeText(Amortizacion.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
@@ -227,7 +232,7 @@ public class Amortizacion extends Activity {
 		Intent i = getIntent(); 		
 		idusuario = (String)i.getSerializableExtra("idusuario");
 		//idcliente=(String)i.getSerializableExtra("idcliente");
-		//idempleado=(String)i.getSerializableExtra("idempleado");
+		//idusuario=(String)i.getSerializableExtra("idusuario");
 	}
 	public void fillValues(){
 		//Get Cliente

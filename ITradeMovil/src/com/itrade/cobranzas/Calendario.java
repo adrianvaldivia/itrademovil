@@ -66,7 +66,7 @@ public class Calendario extends Activity implements OnClickListener
 		private int month, year;
 		private final DateFormat dateFormatter = new DateFormat();
 		private static final String dateTemplate = "MMMM yyyy";
-		private String idUsuario;
+		private String idusuario;
 		//green dao	    
 	    private SyncEventos sincEventos;
 	    //Botones
@@ -76,9 +76,9 @@ public class Calendario extends Activity implements OnClickListener
 		private ImageView btnDepositar;
 		private ImageView btnDirectorio;
 		private ImageView btnCalendario;
-		private ImageView btnMapa;
 		private ImageView btnMapaTotal;
-	    ///fin green dao	    
+		//Context
+		
 
 
 		/** Called when the activity is first created. */
@@ -98,7 +98,7 @@ public class Calendario extends Activity implements OnClickListener
 		       
 		        //Fin greenDAO	
 		        Intent i = getIntent();                       
-				idUsuario=(String)i.getSerializableExtra("idusuario");
+				idusuario=(String)i.getSerializableExtra("idusuario");				
 				
 				/*BOTONERA INICIO*/
 				/*BTN clientes*/
@@ -107,7 +107,8 @@ public class Calendario extends Activity implements OnClickListener
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						Intent intent = new Intent(Calendario.this, ClientesListTask.class); 																				
-						intent.putExtra("idempleado", idUsuario);
+						intent.putExtra("idusuario", idusuario);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 					}
 				});
@@ -132,7 +133,7 @@ public class Calendario extends Activity implements OnClickListener
 										if (networkAvailable()){
 											Syncronizar sync = new Syncronizar(Calendario.this);
 											List<NameValuePair> param = new ArrayList<NameValuePair>();
-											param.add(new BasicNameValuePair("idcobrador", idUsuario));
+											param.add(new BasicNameValuePair("idcobrador", idusuario));
 											String route2="/ws/cobranza/send_notifications/";
 											sync.conexion(param,route2);
 											try {
@@ -145,8 +146,9 @@ public class Calendario extends Activity implements OnClickListener
 										}else{
 											Toast.makeText(Calendario.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
 										}																														
-										Intent intent = new Intent(Calendario.this, ClientesListTask.class); 													
-										intent.putExtra("idempleado", idUsuario);
+										Intent intent = new Intent(Calendario.this, Calendario.class); 													
+										intent.putExtra("idusuario", idusuario);
+										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 										startActivity(intent);
 									}
 						});		
@@ -160,12 +162,11 @@ public class Calendario extends Activity implements OnClickListener
 				btnBuscar.setOnClickListener(new OnClickListener() {			
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						/*
-						Intent intent = new Intent(Calendario.this, BuscarClientesGreenDao.class);		
-						intent.putExtra("idusuario", idUsuario);
+						Intent intent = new Intent(Calendario.this, Buscaclientes.class);		
+						intent.putExtra("idusuario", idusuario);
 						intent.putExtra("boolVer", 1);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
-						*/
 					}
 				});
 				/**/
@@ -174,7 +175,8 @@ public class Calendario extends Activity implements OnClickListener
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						Intent intent = new Intent(Calendario.this, Calendario.class);
-						intent.putExtra("idusuario", idUsuario);				
+						intent.putExtra("idusuario", idusuario);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 					}
 				});	
@@ -183,10 +185,21 @@ public class Calendario extends Activity implements OnClickListener
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						Intent intent = new Intent(Calendario.this, Directorio.class);
-						intent.putExtra("idusuario", idUsuario);				
+						intent.putExtra("idusuario", idusuario);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 					}
 				});	
+				btnDepositar= (ImageView)findViewById(R.id.c_calBtnCalcularMonto);
+				btnDepositar.setOnClickListener(new OnClickListener() {			
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(Calendario.this, Amortizacion.class); 																				
+						intent.putExtra("idusuario", idusuario);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
+					}
+				});
 				/*btn Mapa Clientes*/
 				btnMapaTotal= (ImageView)findViewById(R.id.c_btnExplorar);
 				btnMapaTotal.setOnClickListener(new OnClickListener() {			
@@ -194,7 +207,7 @@ public class Calendario extends Activity implements OnClickListener
 						// TODO Auto-generated method stub
 						if (networkAvailable()){
 							Intent intent = new Intent(Calendario.this, MapaClientes.class);		
-							intent.putExtra("idempleado", idUsuario);				
+							intent.putExtra("idusuario", idusuario);				
 							startActivity(intent);
 						}else{
 							Toast.makeText(Calendario.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
@@ -568,7 +581,7 @@ public class Calendario extends Activity implements OnClickListener
 						//
 						Intent intent = new Intent(Calendario.this, DetalleDia.class); 
 						intent.putExtra("fecha", date_month_year);
-						intent.putExtra("usuario", idUsuario );
+						intent.putExtra("usuario", idusuario );
 				    	startActivity(intent);	
 						//
 						try
@@ -677,16 +690,10 @@ public class Calendario extends Activity implements OnClickListener
 			if (themonth.compareTo("December")==0)
 				resul="Diciembre"+anhio;
 			return resul;
-		}
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-		    MenuInflater inflater = getMenuInflater();
-		    inflater.inflate(R.menu.menuagenda, menu);
-		    return true;
-		}
+		}		
 		public void sqlite(){
 			String fechaEvento=getFechaActual();		        		
-    		sincEventos.syncBDToSqlite(idUsuario,fechaEvento);			
+    		sincEventos.syncBDToSqlite(idusuario,fechaEvento);			
 		}
 /*
 		private void cargarBaseLocal() {

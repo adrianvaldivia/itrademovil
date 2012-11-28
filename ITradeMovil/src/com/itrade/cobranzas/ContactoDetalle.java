@@ -72,8 +72,7 @@ public class ContactoDetalle extends ListActivity{
   		private ImageView btnBuscar;
   		private ImageView btnDepositar;
   		private ImageView btnDirectorio;
-  		private ImageView btnCalendario;
-  		private ImageView btnMapa;
+  		private ImageView btnCalendario;  	
   		private ImageView btnMapaTotal;
   		//fin Botones
 //    private Cursor cursor;
@@ -97,7 +96,8 @@ public class ContactoDetalle extends ListActivity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ContactoDetalle.this, ClientesListTask.class); 																				
-				intent.putExtra("idempleado", idusuario);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -135,8 +135,9 @@ public class ContactoDetalle extends ListActivity{
 								}else{
 									Toast.makeText(ContactoDetalle.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
 								}																														
-								Intent intent = new Intent(ContactoDetalle.this, ClientesListTask.class); 													
-								intent.putExtra("idempleado", idusuario);
+								Intent intent = new Intent(ContactoDetalle.this, ContactoDetalle.class); 													
+								intent.putExtra("idusuario", idusuario);
+								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(intent);
 							}
 				});		
@@ -148,14 +149,22 @@ public class ContactoDetalle extends ListActivity{
 		/*btn buscar clientes*/
 		btnBuscar= (ImageView)findViewById(R.id.c_con_btnBuscarClientes);
 		btnBuscar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {				
+				Intent intent = new Intent(ContactoDetalle.this, Buscaclientes.class);		
+				intent.putExtra("idusuario", idusuario);
+				intent.putExtra("boolVer", 1);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);				
+			}
+		});
+		btnDepositar= (ImageView)findViewById(R.id.c_con_btnCalcularMonto);
+		btnDepositar.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				/*
-				Intent intent = new Intent(Calendario.this, BuscarClientesGreenDao.class);		
-				intent.putExtra("idusuario", idUsuario);
-				intent.putExtra("boolVer", 1);
+				Intent intent = new Intent(ContactoDetalle.this, Amortizacion.class); 																				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				*/
 			}
 		});
 		/**/
@@ -164,7 +173,8 @@ public class ContactoDetalle extends ListActivity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ContactoDetalle.this, Calendario.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -173,7 +183,8 @@ public class ContactoDetalle extends ListActivity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ContactoDetalle.this, Directorio.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -184,7 +195,7 @@ public class ContactoDetalle extends ListActivity{
 				// TODO Auto-generated method stub
 				if (networkAvailable()){
 					Intent intent = new Intent(ContactoDetalle.this, MapaClientes.class);		
-					intent.putExtra("idempleado", idusuario);				
+					intent.putExtra("idusuario", idusuario);				
 					startActivity(intent);
 				}else{
 					Toast.makeText(ContactoDetalle.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
