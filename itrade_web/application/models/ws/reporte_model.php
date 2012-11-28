@@ -1600,6 +1600,7 @@ class Reporte_model extends CI_Model {
 		
 		SELECT 
 		Visita.FechaVisita, 
+		YEAR(`Visita`.`FechaVisita`) as Anho ,
 		MONTH(`Visita`.`FechaVisita`) as Mes , 
 		`Usuario`.`Nombre` as NombreUsuario,
 		`Persona`.`Nombre`, 
@@ -1625,7 +1626,8 @@ class Reporte_model extends CI_Model {
 		
 		$query = $this->db->query("
 		SELECT 
-		Visita.FechaVisita, 
+		Visita.FechaVisita,
+		YEAR(`Visita`.`FechaVisita`) as Anho ,
 		MONTH(`Visita`.`FechaVisita`) as Mes , 
 		`Usuario`.`Nombre` as NombreUsuario,
 		`Persona`.`Nombre`, 
@@ -1651,6 +1653,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		SELECT 
 		Visita.FechaVisita,
+		YEAR(`Visita`.`FechaVisita`) as Anho ,
 		MONTH(`Visita`.`FechaVisita`) as Mes , 
 		`Usuario`.`Nombre` as NombreUsuario,
 		`Persona`.`Nombre`, 
@@ -1675,6 +1678,7 @@ class Reporte_model extends CI_Model {
 		$query = $this->db->query("
 		SELECT 
 		Visita.FechaVisita,
+		YEAR(`Visita`.`FechaVisita`) as Anho ,
 		MONTH(`Visita`.`FechaVisita`) as Mes , 
 		`Usuario`.`Nombre` as NombreUsuario,
 		`Persona`.`Nombre`, 
