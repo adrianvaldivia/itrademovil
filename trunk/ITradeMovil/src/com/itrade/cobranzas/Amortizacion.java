@@ -192,7 +192,8 @@ public class Amortizacion extends Activity {
 		
 	}
 	public void setValues(){		
-		editMontoDeposito = (EditText) findViewById(R.id.montoDeposito);//Monto a depositar		
+		editMontoDeposito = (EditText) findViewById(R.id.montoDeposito);//Monto a depositar	
+		editMontoDeposito.setText(this.montoMaximoDeposito.toString());
 		nroTransaccion = (EditText) findViewById(R.id.numTransaccion);	//NRo transaccion
 		btnDeposito = (Button) findViewById(R.id.btnDeposito);						
 		btnDeposito.setOnClickListener(new OnClickListener() {
@@ -201,17 +202,21 @@ public class Amortizacion extends Activity {
 	    		if (monto.trim().equals("")){
 	    			Toast.makeText(Amortizacion.this, "Debe ingresar un monto", Toast.LENGTH_SHORT).show();
 	    		}else{
-	    			if(Integer.parseInt(monto)>montoMaximoDeposito){
-		    			Toast.makeText(Amortizacion.this, "No puede registrar mas del monto cobrado", Toast.LENGTH_SHORT).show();
-		    		}else{
-		    			String numVoucher = nroTransaccion.getText().toString();
-			    		syncDeposito.cargarDeposito(idusuario, monto, numVoucher);	
-			    		syncDeposito.closeDB();
-			    		Toast.makeText(Amortizacion.this, "Se registro el Depósito", Toast.LENGTH_SHORT).show();			    	
-			    		Intent intent = new Intent(Amortizacion.this, Amortizacion.class); 																				
-						intent.putExtra("idusuario", idusuario);
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(intent);
+	    			if(Double.parseDouble(monto)>montoMaximoDeposito){
+		    			Toast.makeText(Amortizacion.this, "No puede registrar mas del monto cobrado", Toast.LENGTH_SHORT).show();		    		
+	    			}else{
+	    				if(Double.parseDouble(monto)>0){
+	    					String numVoucher = nroTransaccion.getText().toString();
+				    		syncDeposito.cargarDeposito(idusuario, monto, numVoucher);	
+				    		syncDeposito.closeDB();
+				    		Toast.makeText(Amortizacion.this, "Se registro el Depósito", Toast.LENGTH_SHORT).show();			    	
+				    		Intent intent = new Intent(Amortizacion.this, Amortizacion.class); 																				
+							intent.putExtra("idusuario", idusuario);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
+	    				}else{
+	    					Toast.makeText(Amortizacion.this, "Debe registrar una cantidad mayor a 0", Toast.LENGTH_SHORT).show();
+	    				}		    			
 		    		}	
 	    		}	    		    	
 			}
