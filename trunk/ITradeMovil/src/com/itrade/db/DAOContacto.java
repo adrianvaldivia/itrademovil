@@ -48,7 +48,7 @@ public class DAOContacto {
 		
 		String strIdUbigeo =String.valueOf(idUbigeo);	
 		
-		param.add(new BasicNameValuePair("idusuario", strIdUbigeo));
+		param.add(new BasicNameValuePair("idubigeo", strIdUbigeo));
 				
 	    sync.conexion(param,route);
 	    try {
