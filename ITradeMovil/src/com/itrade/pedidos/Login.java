@@ -185,13 +185,13 @@ public class Login extends Activity {
 		        }
 		        else{//cuando hay un usuario anterior
 		        	ultimoUsuario=usuarioDao.loadByRowId(1);//
-		        	usuarioLocal=confirmarLoginLocal(nombreUsuario,password);//intento logearme localmente		        	
+		        	usuarioLocal=confirmarLoginLocal(nombreUsuario,password);//intento logearme localmente			        	
 		        }
 																
 				
 				if (usuarioLocal!=null) {//cuando se logeo localmente de manera correcta
 					usuarioDao.deleteAll();
-					usuarioDao.insert(usuarioLocal);
+					usuarioDao.insert(usuarioLocal);										
 	    			lanzarActivitys(usuarioLocal);													    				   
 				}
 				else{//intentara logearse en la nube
@@ -255,7 +255,7 @@ public class Login extends Activity {
     			Intent intent = new Intent(Login.this, ClientesListTask.class);					
     		    String nombre= usuario.getNombre();
     			String apellidos=usuario.getApePaterno()+" "+usuario.getApeMaterno();							
-    			intent.putExtra("idempleado", usuario.getIdUsuario().toString());
+    			intent.putExtra("idusuario", usuario.getIdUsuario().toString());    			
     			intent.putExtra("nombre", nombre);
     			intent.putExtra("apellidos", apellidos);
     			//intent.putExtra("usuario", usuario);					
