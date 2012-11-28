@@ -322,7 +322,7 @@ public void fillValues(){
 private void Botones() {
 	
 	
-	btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
+	btnClientes= (ImageView)findViewById(R.id.c_bus_btnListaClientes);
 	btnClientes.setOnClickListener(new OnClickListener() {			
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -333,7 +333,7 @@ private void Botones() {
 	});
 	
 	/*BTN clientes*/
-	btnDepositar= (ImageView)findViewById(R.id.btnDepositarBanco);
+	btnDepositar= (ImageView)findViewById(R.id.c_bus_btnDepositarBanco);
 	btnDepositar.setOnClickListener(new OnClickListener() {			
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -343,7 +343,7 @@ private void Botones() {
 		}
 	});
 	/*BTN Mensaje masivo*/
-	btnMail= (ImageView)findViewById(R.id.btnMailMasivo);
+	btnMail= (ImageView)findViewById(R.id.c_bus_btnMailMasivo);
 	btnMail.setOnClickListener(new OnClickListener() {			
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -392,7 +392,7 @@ private void Botones() {
 		}
 	});
 	/*btn buscar clientes*/
-	btnBuscar= (ImageView)findViewById(R.id.btnBuscarCliente);
+	btnBuscar= (ImageView)findViewById(R.id.c_bus_btnBuscarCliente);
 	btnBuscar.setOnClickListener(new OnClickListener() {			
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -403,7 +403,7 @@ private void Botones() {
 		}
 	});
 	/**/
-	btnCalendario= (ImageView)findViewById(R.id.btnCalendario);
+	btnCalendario= (ImageView)findViewById(R.id.c_bus_btnCalendario);
 	btnCalendario.setOnClickListener(new OnClickListener() {			
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -412,7 +412,7 @@ private void Botones() {
 			startActivity(intent);
 		}
 	});	
-	btnDirectorio= (ImageView)findViewById(R.id.btnDirectorio);
+	btnDirectorio= (ImageView)findViewById(R.id.c_bus_btnDirectorio);
 	btnDirectorio.setOnClickListener(new OnClickListener() {			
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -422,7 +422,7 @@ private void Botones() {
 		}
 	});	
 	/*btn Mapa Clientes*/
-	btnMapaTotal= (ImageView)findViewById(R.id.btnMapa);
+	btnMapaTotal= (ImageView)findViewById(R.id.c_bus_btnMapa);
 	btnMapaTotal.setOnClickListener(new OnClickListener() {			
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
