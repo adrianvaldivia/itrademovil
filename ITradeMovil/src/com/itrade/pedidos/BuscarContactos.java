@@ -31,15 +31,20 @@ import android.widget.TextView.OnEditorActionListener;
 
 
 
+import com.itrade.db.DAOContacto;
 import com.itrade.model.Contacto;
 import com.itrade.model.ContactoDao;
 import com.itrade.model.DaoMaster;
 import com.itrade.model.DaoSession;
 import com.itrade.model.ElementoLista;
 import com.itrade.model.ElementoListaDao;
+import com.itrade.model.Usuario;
+import com.itrade.model.UsuarioDao;
 import com.itrade.R;
 import com.itrade.model.DaoMaster.DevOpenHelper;
 import com.itrade.model.ContactoDao.Properties;
+
+import de.greenrobot.dao.Query;
 
 public class BuscarContactos extends ListActivity{
 	InputMethodManager imm;
@@ -49,6 +54,7 @@ public class BuscarContactos extends ListActivity{
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private ContactoDao contactoDao;
+    private UsuarioDao usuarioDao;
     private ElementoListaDao elementoListaDao;
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
@@ -65,6 +71,7 @@ public class BuscarContactos extends ListActivity{
 	
 	public long idusuario;
 	List<Contacto> listaContactoOriginal;
+	DAOContacto daoContacto =null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,7 @@ public class BuscarContactos extends ListActivity{
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         contactoDao = daoSession.getContactoDao();
+        usuarioDao= daoSession.getUsuarioDao();
         elementoListaDao = daoSession.getElementoListaDao();
         
         //Inicio green Dao Elementos Lista
@@ -205,40 +213,42 @@ public class BuscarContactos extends ListActivity{
 	    return true;
 	}
     private void cargarBaseLocal() {
-//    	daoProspecto = new DAOProspecto(this);
-//    	listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idusuario,"");
-//        //listaClienteOriginal = daoCliente.getAllClientes(this.idUsuario); //obtiene los clientes
-//        Double x;
-//		Double y;
-//		prospectoDao.deleteAll();
-//		elementoListaDao.deleteAll();
-//        
-//		for(int i=0;i<listaProspecto.size();i++){
-//			x=listaProspecto.get(i).getLatitud();
-//			y=listaProspecto.get(i).getLongitud();
-//			Prospecto prospecto2 = new Prospecto(null,listaProspecto.get(i).getIdPersona(),listaProspecto.get(i).getIdProspecto(),
-//					listaProspecto.get(i).getNombre(),listaProspecto.get(i).getApePaterno(),
-//					listaProspecto.get(i).getRazon_Social(),listaProspecto.get(i).getRazon_Social(),
-//					listaProspecto.get(i).getRUC(),x,y,listaProspecto.get(i).getDireccion(),
-//					listaProspecto.get(i).getIdCobrador(),listaProspecto.get(i).getIdUsuario(),
-//					listaProspecto.get(i).getActivo(),listaProspecto.get(i).getMontoActual(),
-//					listaProspecto.get(i).getDNI(),listaProspecto.get(i).getFechNac(),
-//					listaProspecto.get(i).getTelefono(),listaProspecto.get(i).getEmail()
-//					);
-//			prospecto2.setActivo("A");//util para el checkin del mapa
-//	        prospectoDao.insert(prospecto2);
-//	        long temp=0;
-////	        temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
-//	        temp=temp+i+1;//aca tambien habia error
-//			ElementoLista elemento = new ElementoLista(null,listaProspecto.get(i).getRazon_Social(),"RUC: "+listaProspecto.get(i).getRUC(),null,temp);
-//			elementoListaDao.insert(elemento);
-//	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-//		}
-//        cursorElementoLista.requery();		
-//        guardaListaOriginal();
+		contactoDao.deleteAll();
+		elementoListaDao.deleteAll();
+		daoContacto = new DAOContacto(BuscarContactos.this);
+		Usuario usu = encuentraUsuario();
+		long idUbigeo  = usu.getIdUbigeo();
+		List<Contacto> listaContactoTemp = daoContacto.getAllContacto(idUbigeo);        
+		for(int i=0;i<listaContactoTemp.size();i++){						
+			Contacto contacto = new Contacto(null, listaContactoTemp.get(i).getIdPersona() , listaContactoTemp.get(i).getIdUsuario() , listaContactoTemp.get(i).getNombre(), listaContactoTemp.get(i).getApePaterno(), listaContactoTemp.get(i).getApeMaterno(), listaContactoTemp.get(i).getActivo(), listaContactoTemp.get(i).getTelefono(),listaContactoTemp.get(i).getEmail(), listaContactoTemp.get(i).getIdJerarquia());
+			contactoDao.insert(contacto);
+	        long temp=0;
+//        	temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
+	        temp=temp+i+1;//aca tambien habia error
+	        ElementoLista elemento = new ElementoLista(null,listaContactoTemp.get(i).getNombre(),"Telefono: "+listaContactoTemp.get(i).getTelefono(),null,temp);
+	        elementoListaDao.insert(elemento);
+		}
+
+        cursorElementoLista.requery();		
+        guardaListaOriginal();
 //		
 	}
-    private void guardaListaOriginal() {
+    private Usuario encuentraUsuario() {
+		// TODO Auto-generated method stub
+    	
+    	String strIdUsu=""+this.idusuario;
+    	
+    	List <Usuario> listaUsuarioAux = usuarioDao.queryBuilder()
+				.where(com.itrade.model.UsuarioDao.Properties.IdUsuario.eq(strIdUsu))
+				.orderAsc(com.itrade.model.UsuarioDao.Properties.Id).list();
+		if (listaUsuarioAux.size()>=1){
+			return listaUsuarioAux.get(0);
+		}
+		else
+			return null;    
+	}
+
+	private void guardaListaOriginal() {
 		// TODO Auto-generated method stub
     	this.listaContactoOriginal=contactoDao.loadAll();
 		
