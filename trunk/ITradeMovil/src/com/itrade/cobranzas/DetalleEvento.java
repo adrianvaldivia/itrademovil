@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -49,10 +51,10 @@ public class DetalleEvento extends Activity{
 	 txt_Hora = (TextView) findViewById(R.id.c_txtHora);
 	 editTextDesc = (EditText) findViewById(R.id.c_txtDesc);
 	 editTextLugar = (EditText) findViewById(R.id.c_txtLugar);
-	 Bundle bundle=getIntent().getExtras();
-	 idEvento=bundle.getInt("idevento");
-	 
-	 
+	 Intent i = getIntent();  
+	 String str=(String)i.getSerializableExtra("idevento");	 
+	 idEvento=Integer.parseInt(str);
+	 /*Cmbio*/
 	 DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
      db = helper.getWritableDatabase();
      daoMaster = new DaoMaster(db);
@@ -83,11 +85,13 @@ public class DetalleEvento extends Activity{
 	private void encontrarEvento() {
 		// TODO Auto-generated method stub
 		String strIdEvento =String.valueOf(idEvento);
+		Log.d("IDEVENTO===", "idevento"+strIdEvento);
 		List<Evento> eventos=eventoDao.queryBuilder()
 	             .where(Properties.IdEvento.eq(strIdEvento))
 	        	 .orderAsc(Properties.Id).list();
-		if (eventos.size()>0)
-			evento=eventos.get(0);
+		if (eventos.size()>0){			
+			evento=eventos.get(0);			
+		}
 		else
 			evento.setDescripcion("ERROR");
 	}
