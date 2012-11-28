@@ -84,7 +84,7 @@ public class Buscaclientes extends Activity {
 		private List<Cliente> listaClientes;
 		//private ArrayList<Meta> listameta;
 		private Meta mimeta;
-		String idusuario;
+		
 		String razonSocial;			
 		ArrayList<String> lclientes = new ArrayList<String>();
 		ArrayList<String> lclientesAux = new ArrayList<String>();
@@ -98,7 +98,7 @@ public class Buscaclientes extends Activity {
 		
 		private List<Cliente> cliListSQL;
 		private SyncPedidos sincPedidos;
-		private String idempleado;
+		private String idusuario;
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
 	 */
@@ -261,8 +261,7 @@ public class Buscaclientes extends Activity {
 			}
 						
 			Intent intent = new Intent(Buscaclientes.this, BuscarPedidoCliente.class); 																				
-			intent.putExtra("idcliente", idCliente);
-			intent.putExtra("idempleado", idempleado);
+			intent.putExtra("idcliente", idCliente);			
 			intent.putExtra("idusuario", idusuario);
 			startActivity(intent);
 			
@@ -282,8 +281,7 @@ public class Buscaclientes extends Activity {
 		
    //     this.idpedido = (String)i.getSerializableExtra("idpedido");
    //     this.idcliente = (String)i.getSerializableExtra("idcliente");
-        this.idusuario = (String)i.getSerializableExtra("idusuario");
-        this.idempleado = (String)i.getSerializableExtra("idusuario");
+        this.idusuario = (String)i.getSerializableExtra("idusuario");        
  
 	}
 	
@@ -327,7 +325,8 @@ private void Botones() {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(Buscaclientes.this, ClientesListTask.class); 																				
-			intent.putExtra("idempleado", idusuario);
+			intent.putExtra("idusuario", idusuario);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 	});
@@ -339,6 +338,7 @@ private void Botones() {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(Buscaclientes.this, Amortizacion.class); 																				
 			intent.putExtra("idusuario", idusuario);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 	});
@@ -381,8 +381,9 @@ private void Botones() {
 							}else{
 								Toast.makeText(Buscaclientes.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
 							}																														
-							Intent intent = new Intent(Buscaclientes.this, ClientesListTask.class); 													
-							intent.putExtra("idempleado", idusuario);
+							Intent intent = new Intent(Buscaclientes.this, Buscaclientes.class); 													
+							intent.putExtra("idusuario", idusuario);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
 						}
 			});		
@@ -399,6 +400,7 @@ private void Botones() {
 			Intent intent = new Intent(Buscaclientes.this, Buscaclientes.class);		
 			intent.putExtra("idusuario", idusuario);
 			intent.putExtra("boolVer", 1);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 	});
@@ -408,7 +410,8 @@ private void Botones() {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(Buscaclientes.this, Calendario.class);
-			intent.putExtra("idusuario", idusuario);				
+			intent.putExtra("idusuario", idusuario);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 	});	
@@ -417,7 +420,8 @@ private void Botones() {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(Buscaclientes.this, Directorio.class);
-			intent.putExtra("idusuario", idusuario);				
+			intent.putExtra("idusuario", idusuario);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 	});	
@@ -428,7 +432,7 @@ private void Botones() {
 			// TODO Auto-generated method stub
 			if (networkAvailable()){
 				Intent intent = new Intent(Buscaclientes.this, MapaClientes.class);		
-				intent.putExtra("idempleado", idusuario);				
+				intent.putExtra("idusuario", idusuario);				
 				startActivity(intent);
 			}else{
 				Toast.makeText(Buscaclientes.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();

@@ -3,15 +3,24 @@ package com.itrade.cobranzas;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +32,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -31,6 +41,8 @@ import android.widget.TextView.OnEditorActionListener;
 
 
 
+import com.itrade.controller.cobranza.SyncNotifications;
+import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Contacto;
 import com.itrade.model.ContactoDao;
 import com.itrade.model.DaoMaster;
@@ -66,6 +78,18 @@ public class Directorio extends ListActivity{
 	public String idusuario;
 	List<Contacto> listaContactoOriginal;
 	
+	//Botones
+  	private ImageView btnClientes;
+  	private ImageView btnMail;
+  	private ImageView btnBuscar;
+  	private ImageView btnDepositar;
+  	private ImageView btnDirectorio;
+  	private ImageView btnCalendario;  	
+  	private ImageView btnMapaTotal;
+  	//Context
+  	final Context context = this;
+  	private SyncNotifications sincNotifications;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +99,123 @@ public class Directorio extends ListActivity{
         Bundle bundle=getIntent().getExtras();
         idusuario = bundle.getString("idusuario");
         setTitle("I Trade - Contactos");
+        /*BOTONERA INICIO*/
+		/*BTN clientes*/
+		btnClientes= (ImageView)findViewById(R.id.c_dir_btnPedidos);
+		btnClientes.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Directorio.this, ClientesListTask.class); 																				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		/*BTN Mensaje masivo*/
+		btnMail= (ImageView)findViewById(R.id.c_dir_btnNotificar);
+		btnMail.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String titulo="Notificar"; 
+				String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+				alertDialogBuilder.setTitle(titulo);		 			
+				alertDialogBuilder
+						.setMessage(mensaje)
+						.setCancelable(true)
+						.setNegativeButton("Cancelar", null)
+						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {														
+								dialog.cancel();
+								//verificar si tiene internet o no <--------------------------
+								
+								if (networkAvailable()){
+									Syncronizar sync = new Syncronizar(Directorio.this);
+									List<NameValuePair> param = new ArrayList<NameValuePair>();
+									param.add(new BasicNameValuePair("idcobrador", idusuario));
+									String route2="/ws/cobranza/send_notifications/";
+									sync.conexion(param,route2);
+									try {
+										sync.getHilo().join();
+									} catch (InterruptedException e) {
+										  // TODO Auto-generated catch block
+										e.printStackTrace();
+									}									
+									Toast.makeText(Directorio.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+								}else{
+									Toast.makeText(Directorio.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+								}																														
+								Intent intent = new Intent(Directorio.this, Directorio.class); 													
+								intent.putExtra("idusuario", idusuario);
+								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(intent);
+							}
+				});		
+				AlertDialog alertDialog = alertDialogBuilder.create();		 
+				alertDialog.show();	
+				
+			}
+		});
+		/*btn buscar clientes*/
+		btnBuscar= (ImageView)findViewById(R.id.c_dir_btnBuscarClientes);
+		btnBuscar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Directorio.this, Buscaclientes.class);		
+				intent.putExtra("idusuario", idusuario);
+				intent.putExtra("boolVer", 1);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		/**/
+		btnCalendario= (ImageView)findViewById(R.id.c_dir_btnCalendario);
+		btnCalendario.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Directorio.this, Calendario.class);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});	
+		btnDirectorio= (ImageView)findViewById(R.id.c_dir_btnDirectorio);
+		btnDirectorio.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Directorio.this, Directorio.class);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		btnDepositar= (ImageView)findViewById(R.id.c_dir_btnCalcularMonto);
+		btnDepositar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Directorio.this, Amortizacion.class); 																				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		/*btn Mapa Clientes*/
+		btnMapaTotal= (ImageView)findViewById(R.id.c_dir_btnExplorar);
+		btnMapaTotal.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (networkAvailable()){
+					Intent intent = new Intent(Directorio.this, MapaClientes.class);		
+					intent.putExtra("idusuario", idusuario);				
+					startActivity(intent);
+				}else{
+					Toast.makeText(Directorio.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+				}				
+			}
+		});
+		/*BOTONERA FIN*/
+		
+        
         
         //inicio green Dao
         DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
@@ -112,6 +253,15 @@ public class Directorio extends ListActivity{
 	    addUiListeners();
     }
     
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+	     ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
+		 contacto=contactoDao.loadByRowId(elementoAux.getIdElemento());
+	     Intent intent = new Intent(Directorio.this, ContactoDetalle.class);
+	     intent.putExtra("idusuario", idusuario);
+	     intent.putExtra("idpersona", contacto.getIdPersona());
+	     startActivity(intent);	     
+    }  
     protected void addUiListeners() {
         editText.setOnEditorActionListener(new OnEditorActionListener() {
 
@@ -170,40 +320,8 @@ public class Directorio extends ListActivity{
 		}
         cursorElementoLista.requery();	                
     }
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-     // TODO Auto-generated method stub
-     //super.onListItemClick(l, v, position, id);
-     //inicio cambios chichan
-     ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
-	 contacto=contactoDao.loadByRowId(elementoAux.getIdElemento());
-     Intent intent = new Intent(Directorio.this, ContactoDetalle.class);
-     intent.putExtra("idusuario", idusuario);
-     intent.putExtra("idpersona", contacto.getIdPersona());
-     startActivity(intent);
      
-    }    
     
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menuagenda, menu);
-	    return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_SHORT).show();
-	        	cargarBaseLocal();	        	
-	        
-	        }
-            break;
-	    }
-	    return true;
-	}
     private void cargarBaseLocal() {
 //    	daoProspecto = new DAOProspecto(this);
 //    	listaProspecto = daoProspecto.buscarProspectosxVendedor(""+idusuario,"");
@@ -271,6 +389,22 @@ public class Directorio extends ListActivity{
 		recuperarOriginal();
 		super.onRestart();
 	}
-
+	public boolean networkAvailable() {    	
+     	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+     	if (connectMgr != null) {
+     		NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
+     		if (netInfo != null) {
+     			for (NetworkInfo net : netInfo) {
+     				if (net.getState() == NetworkInfo.State.CONNECTED) {
+     					return true;
+     				}
+     			}
+     		}
+     	} 
+     	else {
+     		Log.d("NETWORK", "No network available");
+     	}
+     	return false;
+     }
 
 }

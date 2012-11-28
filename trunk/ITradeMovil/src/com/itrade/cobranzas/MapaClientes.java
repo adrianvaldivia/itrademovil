@@ -133,7 +133,7 @@ public class MapaClientes  extends Activity implements LocationListener, OnClick
 			//inicio de green Dao
 	        //inicio green Dao 
 			 
-			String IdCobrador=(String)i.getSerializableExtra("idempleado") ; 
+			String IdCobrador=(String)i.getSerializableExtra("idusuario") ; 
 			  Syncronizar sync = new Syncronizar(MapaClientes.this);
 				List<NameValuePair> param = new ArrayList<NameValuePair>();								
 				param.add(new BasicNameValuePair("idcobrador", IdCobrador));	
@@ -483,7 +483,7 @@ private void obtenerUbicacion() {
 	private void actualizaIconoCliente(String idCliente2) {
 	//	http://200.16.7.111/dp2/itrade/ws/cobranza/checkin/
 		//aqui actualizasa con el ws  
-		String IdCliente=idCliente2;//(String)i.getSerializableExtra("idempleado"); 
+		String IdCliente=idCliente2;//(String)i.getSerializableExtra("idusuario"); 
 		  Syncronizar sync = new Syncronizar(MapaClientes.this);
 			List<NameValuePair> param = new ArrayList<NameValuePair>();								
 			param.add(new BasicNameValuePair("idcliente", IdCliente));	

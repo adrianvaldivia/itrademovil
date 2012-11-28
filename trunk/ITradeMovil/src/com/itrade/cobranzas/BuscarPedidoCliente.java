@@ -52,8 +52,7 @@ public class BuscarPedidoCliente extends Activity {
 	
 	
 	
-	private String idcliente;
-	private String idempleado;
+	private String idcliente;	
 	private String idusuario;
 	private ListView list_pedidos;
 	private Gson gson;
@@ -145,8 +144,7 @@ public class BuscarPedidoCliente extends Activity {
 			
 			Intent intent = new Intent(BuscarPedidoCliente.this, RequestDetailTask.class);		                
 			intent.putExtra("idpedido", pedSel.getIdPedido().toString());
-			intent.putExtra("idcliente", pedSel.getIdCliente().toString());
-			intent.putExtra("idempleado", idempleado);	
+			intent.putExtra("idcliente", pedSel.getIdCliente().toString());			
 			intent.putExtra("idusuario", idusuario);					
 				startActivity(intent);
 //			
@@ -174,7 +172,8 @@ public class BuscarPedidoCliente extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(BuscarPedidoCliente.this, ClientesListTask.class); 																				
-				intent.putExtra("idempleado", idusuario);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -186,6 +185,7 @@ public class BuscarPedidoCliente extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(BuscarPedidoCliente.this, Amortizacion.class); 																				
 				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -229,7 +229,7 @@ public class BuscarPedidoCliente extends Activity {
 									Toast.makeText(BuscarPedidoCliente.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
 								}																														
 								Intent intent = new Intent(BuscarPedidoCliente.this, ClientesListTask.class); 													
-								intent.putExtra("idempleado", idusuario);
+								intent.putExtra("idusuario", idusuario);
 								startActivity(intent);
 							}
 				});		
@@ -246,6 +246,7 @@ public class BuscarPedidoCliente extends Activity {
 				Intent intent = new Intent(BuscarPedidoCliente.this, Buscaclientes.class);		
 				intent.putExtra("idusuario", idusuario);
 				intent.putExtra("boolVer", 1);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -255,7 +256,8 @@ public class BuscarPedidoCliente extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(BuscarPedidoCliente.this, Calendario.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -264,7 +266,8 @@ public class BuscarPedidoCliente extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(BuscarPedidoCliente.this, Directorio.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -275,7 +278,7 @@ public class BuscarPedidoCliente extends Activity {
 				// TODO Auto-generated method stub
 				if (networkAvailable()){
 					Intent intent = new Intent(BuscarPedidoCliente.this, MapaClientes.class);		
-					intent.putExtra("idempleado", idusuario);				
+					intent.putExtra("idusuario", idusuario);				
 					startActivity(intent);
 				}else{
 					Toast.makeText(BuscarPedidoCliente.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
@@ -292,8 +295,7 @@ public class BuscarPedidoCliente extends Activity {
 		Intent i = getIntent();   		
 		
    //     this.idpedido = (String)i.getSerializableExtra("idpedido");
-        this.idcliente = (String)i.getSerializableExtra("idcliente");
-        this.idempleado=(String)i.getSerializableExtra("idempleado");
+        this.idcliente = (String)i.getSerializableExtra("idcliente");        
         this.idusuario=(String)i.getSerializableExtra("idusuario");
 	}
 	

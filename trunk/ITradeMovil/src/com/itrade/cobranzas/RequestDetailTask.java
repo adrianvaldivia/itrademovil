@@ -44,8 +44,8 @@ public class RequestDetailTask extends Activity {
 	 */
 	final Context context = this;
 	private String idpedido;
-	private String idcliente;
-	private String idempleado;
+	private String idcliente;	
+	private String idusuario;
 	private Cliente clienteSelected;
 	private Pedido pedidoSelected;
 	private List<com.itrade.model.PedidoLinea> detallePedido;
@@ -59,7 +59,9 @@ public class RequestDetailTask extends Activity {
 	private ImageView btnDepositar;
 	private ImageView btnDirectorio;
 	private ImageView btnCalendario;
-	private ImageView btnMapa;
+	//Botones  
+
+  	private ImageView btnMapaTotal;
 	private SyncDetallePedido syncDetalle;
 	private SyncPedidos syncPedido;
 	
@@ -158,7 +160,7 @@ public class RequestDetailTask extends Activity {
 									Intent intent = new Intent(RequestDetailTask.this, ClientesListTask.class); 													
 		//							intent.putExtra("idpedido", idpedido);
 		//							intent.putExtra("idcliente", idcliente);	
-									intent.putExtra("idempleado", idempleado);
+									intent.putExtra("idusuario", idusuario);
 									intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 									startActivity(intent);
 								}
@@ -175,7 +177,7 @@ public class RequestDetailTask extends Activity {
 					Intent intent = new Intent(RequestDetailTask.this, PaymentTask.class); 													
 					intent.putExtra("idpedido", idpedido);
 					intent.putExtra("idcliente", idcliente); 	
-					intent.putExtra("idempleado", idempleado);
+					intent.putExtra("idusuario", idusuario);
 					startActivity(intent);									
 				}
 		 	});
@@ -191,7 +193,7 @@ public class RequestDetailTask extends Activity {
 		    		Intent intent = new Intent(RequestDetailTask.this, RutaCliente.class); 													
 					/*intent.putExtra("idpedido", idpedido);
 					intent.putExtra("idcliente", idcliente); 	
-					intent.putExtra("idempleado", idempleado);			*/
+					intent.putExtra("idusuario", idusuario);			*/
 		    		intent.putExtra("idcliente", idcliente); 
 					startActivity(intent);
 		    	}else{
@@ -200,69 +202,21 @@ public class RequestDetailTask extends Activity {
 													
 			}
 	 	});
-        //btnMapa
-        btnMapa= (ImageView)findViewById(R.id.btnExplorar);
-		btnMapa.setOnClickListener(new OnClickListener() {			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (networkAvailable()){
-					Intent intent = new Intent(RequestDetailTask.this, MapaClientes.class);		
-					intent.putExtra("idempleado", idempleado);				
-					startActivity(intent);
-				}else{
-					Toast.makeText(RequestDetailTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
-				}				
-			}
-		});
-        
-        //btnRuta
-        //bUTTON Clientes
-        btnClientes= (ImageView)findViewById(R.id.btnPedidos);
+       
+        /*BOTONERA INICIO*/
+		/*BTN clientes*/
+		btnClientes= (ImageView)findViewById(R.id.c_detped_btnPedidos);
 		btnClientes.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(RequestDetailTask.this, ClientesListTask.class); 																				
-				intent.putExtra("idempleado", idempleado);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
-		/*btn buscar clientes*/
-		/*
-		btnBuscar= (ImageView)findViewById(R.id.c_con_btnBuscarClientes);
-		btnBuscar.setOnClickListener(new OnClickListener() {			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				Intent intent = new Intent(Calendario.this, BuscarClientesGreenDao.class);		
-				intent.putExtra("idusuario", idUsuario);
-				intent.putExtra("boolVer", 1);
-				startActivity(intent);
-				
-			}
-		});
-		*/
-		/**/
-		btnCalendario= (ImageView)findViewById(R.id.btnCalendario);
-		btnCalendario.setOnClickListener(new OnClickListener() {			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(RequestDetailTask.this, Calendario.class);
-				intent.putExtra("idusuario", idempleado);				
-				startActivity(intent);
-			}
-		});	
-		btnDirectorio= (ImageView)findViewById(R.id.btnDirectorio);
-		btnDirectorio.setOnClickListener(new OnClickListener() {			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(RequestDetailTask.this, Directorio.class);
-				intent.putExtra("idusuario", idempleado);				
-				startActivity(intent);
-			}
-		});	
-		
-		//Button mail
-		btnMail= (ImageView)findViewById(R.id.btnNotificar);
+		/*BTN Mensaje masivo*/
+		btnMail= (ImageView)findViewById(R.id.c_detped_btnNotificar);
 		btnMail.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -281,16 +235,77 @@ public class RequestDetailTask extends Activity {
 							}
 				});		
 				AlertDialog alertDialog = alertDialogBuilder.create();		 
-				alertDialog.show();	
-				
+				alertDialog.show();					
 			}
 		});
+		/*btn buscar clientes*/
+		btnBuscar= (ImageView)findViewById(R.id.c_detped_btnBuscarClientes);
+		btnBuscar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RequestDetailTask.this, Buscaclientes.class);		
+				intent.putExtra("idusuario", idusuario);
+				intent.putExtra("boolVer", 1);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		/**/
+		btnDepositar= (ImageView)findViewById(R.id.c_detped_btnCalcularMonto);
+		btnDepositar.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RequestDetailTask.this, Amortizacion.class); 																				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		btnDirectorio= (ImageView)findViewById(R.id.c_detped_btnDirectorio);
+		btnDirectorio.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RequestDetailTask.this, Directorio.class);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		
+		btnCalendario= (ImageView)findViewById(R.id.c_detped_btnCalendario);
+		btnCalendario.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RequestDetailTask.this, Calendario.class);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});	
+		
+		/*btn Mapa Clientes*/
+		btnMapaTotal= (ImageView)findViewById(R.id.c_detped_btnExplorar);
+		btnMapaTotal.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (networkAvailable()){
+					Intent intent = new Intent(RequestDetailTask.this, MapaClientes.class);		
+					intent.putExtra("idusuario", idusuario);				
+					startActivity(intent);
+				}else{
+					Toast.makeText(RequestDetailTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+				}				
+			}
+		});
+		/*BOTONERA FIN*/
+		
+		
 	}
 	public void getParamsIntent(){		
 		Intent i = getIntent();                
 		idpedido=(String)i.getSerializableExtra("idpedido");
-		idcliente=(String)i.getSerializableExtra("idcliente");
-		idempleado=(String)i.getSerializableExtra("idempleado");
+		idcliente=(String)i.getSerializableExtra("idcliente");		
+		idusuario=(String)i.getSerializableExtra("idusuario");
 	}
 	public void fillValues(){
 		//Get Cliente
@@ -365,7 +380,7 @@ public class RequestDetailTask extends Activity {
 		Intent intent = new Intent(RequestDetailTask.this, RequestDetailTask.class); 																					
 		intent.putExtra("idpedido", idpedido);
 		intent.putExtra("idcliente",idcliente);
-		intent.putExtra("idempleado", idempleado);
+		intent.putExtra("idusuario", idusuario);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);                
         SmsManager sms = SmsManager.getDefault();        
         sms.sendTextMessage(this.clienteSelected.getTelefono(), null, "El cobrador de Itrade se estara acercando durante el dia.", pi, null);								

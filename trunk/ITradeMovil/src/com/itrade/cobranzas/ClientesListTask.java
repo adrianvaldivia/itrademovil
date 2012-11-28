@@ -88,10 +88,8 @@ public class ClientesListTask extends Activity {
 	
 	/*Inicio agregado*/
 
-	AsTaskSubirDatos taskSubir;	
-	public long idUsuario;	
-	InputMethodManager imm;	
-	private UsuarioDao usuarioDao;
+	AsTaskSubirDatos taskSubir;		
+	InputMethodManager imm;		
 	
 	/*Fin agregado*/
 	
@@ -101,7 +99,8 @@ public class ClientesListTask extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_lista_clientes);                       
         Intent i = getIntent();                       
-		idusuario=(String)i.getSerializableExtra("idempleado");
+		idusuario=(String)i.getSerializableExtra("idusuario");
+		Log.d("USUARIIO","USUARIIO ="+idusuario);	
 		sqlite();
 		/*BTN clientes*/
 		btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
@@ -109,7 +108,8 @@ public class ClientesListTask extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 																				
-				intent.putExtra("idempleado", idusuario);
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -121,6 +121,7 @@ public class ClientesListTask extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ClientesListTask.this, Amortizacion.class); 																				
 				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -157,7 +158,8 @@ public class ClientesListTask extends Activity {
 											sincNotifications.saveNotification(idusuario);
 											Toast.makeText(ClientesListTask.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
 											Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
-											intent.putExtra("idempleado", idusuario);
+											intent.putExtra("idusuario", idusuario);
+											intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 											startActivity(intent);
 																												
 									}else{
@@ -180,6 +182,7 @@ public class ClientesListTask extends Activity {
 				Intent intent = new Intent(ClientesListTask.this, Buscaclientes.class);		
 				intent.putExtra("idusuario", idusuario);
 				intent.putExtra("boolVer", 1);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -189,7 +192,8 @@ public class ClientesListTask extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ClientesListTask.this, Calendario.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -198,7 +202,8 @@ public class ClientesListTask extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ClientesListTask.this, Directorio.class);
-				intent.putExtra("idusuario", idusuario);				
+				intent.putExtra("idusuario", idusuario);	
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});	
@@ -209,7 +214,7 @@ public class ClientesListTask extends Activity {
 				// TODO Auto-generated method stub
 				if (networkAvailable()){
 					Intent intent = new Intent(ClientesListTask.this, MapaClientes.class);		
-					intent.putExtra("idempleado", idusuario);				
+					intent.putExtra("idusuario", idusuario);						
 					startActivity(intent);
 				}else{
 					Toast.makeText(ClientesListTask.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
@@ -230,7 +235,7 @@ public class ClientesListTask extends Activity {
                 Intent intent = new Intent(ClientesListTask.this, RequestDetailTask.class);		                
 				intent.putExtra("idpedido", pedido.getIdPedido().toString());
 				intent.putExtra("idcliente", pedido.getIdCliente().toString());
-				intent.putExtra("idempleado", idusuario);	
+				intent.putExtra("idusuario", idusuario);	
 				//intent.putExtra("usuario", usuario);					
 				startActivity(intent);		       							
                 //Toast.makeText(getBaseContext(), "PEDIDO = "+ pedido.getIdPedido().toString(), Toast.LENGTH_LONG).show();
@@ -290,7 +295,7 @@ public class ClientesListTask extends Activity {
 									}	
 									//sincPedidos.closeDB();
 									Intent intent = new Intent(ClientesListTask.this, ClientesListTask.class); 													
-									intent.putExtra("idempleado", idusuario);
+									intent.putExtra("idusuario", idusuario);
 									startActivity(intent);
 									finish();
 								}
@@ -402,6 +407,7 @@ public class ClientesListTask extends Activity {
 		//Log.d("NUMEEEEEEEEROOOOOO", "regs"+a);
 		//Integer numePed = sincPedidos.cargarClientes(idusuario);
 		//Integer numeCli = sincPedidos.cargarPedidos(idusuario);
+		
 		Integer numreg = sincPedidos.syncBDToSqlite(idusuario);
 		Integer numDepositos = sincDepositos.syncBDToSqlite(idusuario);
 		Integer numerito = sincDetallePedido.syncBDToSqlite(idusuario);
