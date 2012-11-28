@@ -517,19 +517,19 @@ public class SyncPedidos {
 		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
-		calendar.add(Calendar.DAY_OF_MONTH,-7);
+		calendar.add(Calendar.DAY_OF_MONTH,-6);
 		String previousDate = form.format(calendar.getTime());
 		
 		Calendar calendar2 = Calendar.getInstance();
-		calendar.setTime(new Date());
-		String actualdate = form.format(calendar.getTime());
-		
-		
+		calendar2.setTime(new Date());
+		calendar2.add(Calendar.DAY_OF_MONTH,-1);
+		String yesterday = form.format(calendar2.getTime());
+			
 		
 		List<Pedido> pedTemp=pedidoDao.queryBuilder()
     			.where(Properties.IdCliente.eq(idCliente))
 				.whereOr(Properties.IdEstadoPedido.eq("1"), Properties.IdEstadoPedido.eq("4"))
-				.where(Properties.FechaPedido.between(previousDate,actualdate))
+				.where(Properties.FechaPedido.between(previousDate,yesterday))
 				.list();    
 		return pedTemp;    	
     }
