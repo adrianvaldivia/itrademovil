@@ -144,11 +144,12 @@ public class SyncDetallePedido {
 		ArrayList<PedidoLinea> listDetallePedidos = new ArrayList<PedidoLinea>();
 		listDetallePedidos	=	gson.fromJson(sync.getResponse(), new TypeToken<List<PedidoLinea>>(){}.getType());	 
 		
-		List<PedidoLinea> listaPedTemp=pedidoLineaDao.queryBuilder()
-							.list();
-				
+			
 		for(PedidoLinea linea: listDetallePedidos ){
-			if (!listaPedTemp.contains(linea)){
+			List<PedidoLinea> peds=pedidoLineaDao.queryBuilder()
+					.where(PedidoLineaDao.Properties.IdPedidoLinea.eq(linea.getIdPedidoLinea()))
+					.list();
+			if (peds.isEmpty()){
 				pedidoLineaDao.insert(linea);
 			}
 		}
