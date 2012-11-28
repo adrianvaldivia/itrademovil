@@ -453,11 +453,11 @@ public class ClientesListTask extends Activity {
  	    return true;
  	}
  	 
- 	  private void cerrarSesion() {
- 	      SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
- 	      final boolean boolBorrarDatos = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_SYNC_CONN, false);
- 	      //fin preferencias
- 		    new AlertDialog.Builder(this)
+ 	private void cerrarSesion() {
+ 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+ 	    final boolean boolBorrarDatos = sharedPref.getBoolean(PreferencePedidos.KEY_PREF_SYNC_CONN, false);
+ 	    //fin preferencias
+ 		new AlertDialog.Builder(this)
  	        .setTitle("Cerrar Sesion")
  	        .setMessage(" Realmente desea cerrar la Sesion?")
  	        .setNegativeButton("No", null)
@@ -465,35 +465,30 @@ public class ClientesListTask extends Activity {
  	            public void onClick(DialogInterface arg0, int arg1) {
  	        			Minimizar();	        		        	            
  	            }
-
- 				public void onClick(View arg0) {
- 				}  
+ 
  	        })
  	        .setPositiveButton("Si", new AlertDialog.OnClickListener() {
 
  	            public void onClick(DialogInterface arg0, int arg1) {
- 	            		if (boolBorrarDatos)           			
+ 	            		//if (boolBorrarDatos)           			
 
- 	            		usuarioDao.deleteAll();            			              	  	
+ 	            		//usuarioDao.deleteAll();			              	  	
  	            		ClientesListTask.super.onBackPressed();
  	            }
-
- 				public void onClick(View arg0) {
- 					
- 				}
+ 				
  	        }).create().show();	
  			
- 		}
+ 	}
  	
- 		private void Minimizar() {			
- 			this.moveTaskToBack(true);				
- 		}
+ 	private void Minimizar() {			
+ 		this.moveTaskToBack(true);				
+ 	}
  	  
  		
- 		@Override
- 		protected void onRestart() {
- 			super.onRestart();    
- 			imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);	
- 		}
+ 	@Override
+ 	protected void onRestart() {
+ 		super.onRestart();    
+ 		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);	
+ 	}
 }
 
