@@ -151,7 +151,7 @@ public class MapaClientes  extends Activity implements LocationListener, OnClick
 				    Gson gson = new Gson();
 										
 				    listaCliente	=	gson.fromJson(sync.getResponse(), new TypeToken<List<ClienteMapa>>(){}.getType());		
-				    Log.d("ClienteeeEder", "hhahahhahahhah1"+listaCliente);
+				    
 	        	        
 	        //fin green dao
 	       // listaCliente=
@@ -256,7 +256,7 @@ public class MapaClientes  extends Activity implements LocationListener, OnClick
 		        items.add(olItem);*/
 				  Log.d("LogCHEIN", ""+listaCliente.get(i).getCheckIn()); 
 				if ((listaCliente.get(i).getCheckIn()==1)){ // azul
-					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno(), ""+listaCliente.get(i).getIdCliente(), lista.get(i));
+					OverlayItem olItem = new OverlayItem("CLIENTE: "+listaCliente.get(i).getNombre() +" "+listaCliente.get(i).getApeMaterno()+" Direccion="+listaCliente.get(i).getDireccion() , ""+listaCliente.get(i).getIdCliente(), lista.get(i));
 			        Drawable newMarker = this.getResources().getDrawable(R.drawable.greenmarker3);
 			        olItem.setMarker(newMarker);
 			        items.add(olItem);
