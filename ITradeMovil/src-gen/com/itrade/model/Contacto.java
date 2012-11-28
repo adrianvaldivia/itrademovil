@@ -15,6 +15,7 @@ public class Contacto {
     private String Activo;
     private String Telefono;
     private String Email;
+    private String IdJerarquia;
 
     public Contacto() {
     }
@@ -23,7 +24,7 @@ public class Contacto {
         this.id = id;
     }
 
-    public Contacto(Long id, Long IdPersona, Long IdUsuario, String Nombre, String ApePaterno, String ApeMaterno, String Activo, String Telefono, String Email) {
+    public Contacto(Long id, Long IdPersona, Long IdUsuario, String Nombre, String ApePaterno, String ApeMaterno, String Activo, String Telefono, String Email, String IdJerarquia) {
         this.id = id;
         this.IdPersona = IdPersona;
         this.IdUsuario = IdUsuario;
@@ -33,6 +34,7 @@ public class Contacto {
         this.Activo = Activo;
         this.Telefono = Telefono;
         this.Email = Email;
+        this.IdJerarquia = IdJerarquia;
     }
 
     public Long getId() {
@@ -105,6 +107,14 @@ public class Contacto {
 
     public void setEmail(String Email) {
         this.Email = Email;
+    }
+
+    public String getIdJerarquia() {
+        return IdJerarquia;
+    }
+
+    public void setIdJerarquia(String IdJerarquia) {
+        this.IdJerarquia = IdJerarquia;
     }
 
 }

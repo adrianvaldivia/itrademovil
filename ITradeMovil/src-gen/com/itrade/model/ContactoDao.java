@@ -32,6 +32,7 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
         public final static Property Activo = new Property(6, String.class, "Activo", false, "ACTIVO");
         public final static Property Telefono = new Property(7, String.class, "Telefono", false, "TELEFONO");
         public final static Property Email = new Property(8, String.class, "Email", false, "EMAIL");
+        public final static Property IdJerarquia = new Property(9, String.class, "IdJerarquia", false, "ID_JERARQUIA");
     };
 
 
@@ -55,7 +56,8 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
                 "'APE_MATERNO' TEXT," + // 5: ApeMaterno
                 "'ACTIVO' TEXT," + // 6: Activo
                 "'TELEFONO' TEXT," + // 7: Telefono
-                "'EMAIL' TEXT);"); // 8: Email
+                "'EMAIL' TEXT," + // 8: Email
+                "'ID_JERARQUIA' TEXT);"); // 9: IdJerarquia
     }
 
     /** Drops the underlying database table. */
@@ -113,6 +115,11 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
         if (Email != null) {
             stmt.bindString(9, Email);
         }
+ 
+        String IdJerarquia = entity.getIdJerarquia();
+        if (IdJerarquia != null) {
+            stmt.bindString(10, IdJerarquia);
+        }
     }
 
     /** @inheritdoc */
@@ -133,7 +140,8 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // ApeMaterno
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Activo
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // Telefono
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // Email
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // Email
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // IdJerarquia
         );
         return entity;
     }
@@ -150,6 +158,7 @@ public class ContactoDao extends AbstractDao<Contacto, Long> {
         entity.setActivo(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setTelefono(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setEmail(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setIdJerarquia(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     /** @inheritdoc */
