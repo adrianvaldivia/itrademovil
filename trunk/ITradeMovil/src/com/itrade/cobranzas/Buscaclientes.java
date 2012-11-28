@@ -25,8 +25,13 @@ import com.itrade.model.Usuario;
 import com.itrade.pedidos.BuscarProspectos;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,11 +42,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.TextView;
 
 public class Buscaclientes extends Activity {
+	
+	
+	final Context context = this;
+	private SyncNotifications sincNotifications;
+	private ImageView btnClientes;
+	private ImageView btnMail;
+	private ImageView btnBuscar;
+	private ImageView btnDepositar;
+	private ImageView btnDirectorio;
+	private ImageView btnCalendario;
+	private ImageView btnMapa;
+	private ImageView btnMapaTotal;
+	
 	
 	ArrayAdapter<String> adaptador;
 	private Gson gson;
@@ -94,7 +114,7 @@ public class Buscaclientes extends Activity {
 		sqlite();
         fillValues();
 		
-		
+        Botones();
 		list_clientes = (ListView) findViewById(R.id.list);
 		if (list_clientes == null) { Log.w("", "list_pedidos es NULL"); }
 		
@@ -298,6 +318,147 @@ public void fillValues(){
 		Log.d("sqlite","esta jalando de bd movil");
 	
 	}
+
+private void Botones() {
+	
+	
+	btnClientes= (ImageView)findViewById(R.id.btnListaClientes);
+	btnClientes.setOnClickListener(new OnClickListener() {			
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(Buscaclientes.this, ClientesListTask.class); 																				
+			intent.putExtra("idempleado", idusuario);
+			startActivity(intent);
+		}
+	});
+	
+	/*BTN clientes*/
+	btnDepositar= (ImageView)findViewById(R.id.btnDepositarBanco);
+	btnDepositar.setOnClickListener(new OnClickListener() {			
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(Buscaclientes.this, Amortizacion.class); 																				
+			intent.putExtra("idusuario", idusuario);
+			startActivity(intent);
+		}
+	});
+	/*BTN Mensaje masivo*/
+	btnMail= (ImageView)findViewById(R.id.btnMailMasivo);
+	btnMail.setOnClickListener(new OnClickListener() {			
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			String titulo="Notificar"; 
+			String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+			alertDialogBuilder.setTitle(titulo);		 			
+			alertDialogBuilder
+					.setMessage(mensaje)
+					.setCancelable(true)
+					.setNegativeButton("Cancelar", null)
+					.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,int id) {														
+							dialog.cancel();
+							//verificar si tiene internet o no <--------------------------
+							
+							if (networkAvailable()){
+								if (!sincNotifications.sendNotification(idusuario)){
+									Syncronizar sync = new Syncronizar(Buscaclientes.this);
+									List<NameValuePair> param = new ArrayList<NameValuePair>();
+									param.add(new BasicNameValuePair("idcobrador", idusuario));
+									String route2="/ws/cobranza/send_notifications/";
+									sync.conexion(param,route2);
+									try {
+										sync.getHilo().join();
+									} catch (InterruptedException e) {
+										  // TODO Auto-generated catch block
+										e.printStackTrace();
+									}									
+									sincNotifications.saveNotification(idusuario);
+									Toast.makeText(Buscaclientes.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+								}else{
+									Toast.makeText(Buscaclientes.this, "Usted ya envió notifaciones el dia de hoy.", Toast.LENGTH_SHORT).show();
+								}																		
+							}else{
+								Toast.makeText(Buscaclientes.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+							}																														
+							Intent intent = new Intent(Buscaclientes.this, ClientesListTask.class); 													
+							intent.putExtra("idempleado", idusuario);
+							startActivity(intent);
+						}
+			});		
+			AlertDialog alertDialog = alertDialogBuilder.create();		 
+			alertDialog.show();	
+			
+		}
+	});
+	/*btn buscar clientes*/
+	btnBuscar= (ImageView)findViewById(R.id.btnBuscarCliente);
+	btnBuscar.setOnClickListener(new OnClickListener() {			
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(Buscaclientes.this, Buscaclientes.class);		
+			intent.putExtra("idusuario", idusuario);
+			intent.putExtra("boolVer", 1);
+			startActivity(intent);
+		}
+	});
+	/**/
+	btnCalendario= (ImageView)findViewById(R.id.btnCalendario);
+	btnCalendario.setOnClickListener(new OnClickListener() {			
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(Buscaclientes.this, Calendario.class);
+			intent.putExtra("idusuario", idusuario);				
+			startActivity(intent);
+		}
+	});	
+	btnDirectorio= (ImageView)findViewById(R.id.btnDirectorio);
+	btnDirectorio.setOnClickListener(new OnClickListener() {			
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(Buscaclientes.this, Directorio.class);
+			intent.putExtra("idusuario", idusuario);				
+			startActivity(intent);
+		}
+	});	
+	/*btn Mapa Clientes*/
+	btnMapaTotal= (ImageView)findViewById(R.id.btnMapa);
+	btnMapaTotal.setOnClickListener(new OnClickListener() {			
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if (networkAvailable()){
+				Intent intent = new Intent(Buscaclientes.this, MapaClientes.class);		
+				intent.putExtra("idempleado", idusuario);				
+				startActivity(intent);
+			}else{
+				Toast.makeText(Buscaclientes.this, "Necesita conexion a internet para ver el mapa", Toast.LENGTH_SHORT).show();
+			}				
+		}
+	});	
+	
+	
+	
+}
+	
+
+
+	public boolean networkAvailable() {    	
+	 	ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	 	if (connectMgr != null) {
+	 		NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
+	 		if (netInfo != null) {
+	 			for (NetworkInfo net : netInfo) {
+	 				if (net.getState() == NetworkInfo.State.CONNECTED) {
+	 					return true;
+	 				}
+	 			}
+	 		}
+	 	} 
+	 	else {
+	 		Log.d("NETWORK", "No network available");
+	 	}
+	 	return false;
+	 }
 	
 
 }
