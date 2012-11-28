@@ -1312,6 +1312,25 @@ class Reporte_model extends CI_Model {
 		
 		");
 		break;	
+		
+		case 4:
+		
+		$query = $this->db->query("
+		
+		
+		SELECT `Usuario`.`IdUsuario`, `Usuario`.`Nombre` AS NombreUsuario, `Persona`.`Nombre`, `Persona`.`ApePaterno`, `Persona`.`ApeMaterno`, `Persona`.`DNI` 
+		, `Usuario`.`IdJerarquia` , `Usuario`.`IdUbigeo`,  `Ubigeo`.`Pais`, `Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , `Ubigeo`.`Zona` , `Persona`.`Telefono`, `Persona`.`Email` ,`Persona`.`FechNac`   
+		FROM ( 
+		`Usuario`
+		)
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Usuario`.`IdPersona` 
+		WHERE  `Ubigeo`.`Zona`= '".$id."' and `Usuario`.`IdJerarquia`= 5 and `Usuario`.`Activo`= 1 and `Usuario`.`IdPerfil`= 2 
+		
+		");
+		break;
+		
 		}		
 		//echo $this->db->last_query();
 		return $query->result();
@@ -1651,7 +1670,30 @@ class Reporte_model extends CI_Model {
 		WHERE  `Ubigeo`.`Distrito`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
 		");
 		break;
+		case 4:
 		
+		$query = $this->db->query("
+		SELECT 
+		Visita.FechaVisita,
+		MONTH(`Visita`.`FechaVisita`) as Mes , 
+		`Usuario`.`Nombre` as NombreUsuario,
+		`Persona`.`Nombre`, 
+		`Persona`.`ApePaterno`, 
+		`Ubigeo`.`Pais`, 
+		`Ubigeo`.`Departamento` , 
+		`Ubigeo`.`Distrito` , 
+		`Ubigeo`.`Zona` 
+		
+		FROM (
+		`Visita`
+		)
+		JOIN  `Cliente` ON  `Cliente`.`IdCliente` =  `Visita`.`IdCliente` 
+		JOIN  `Usuario` ON  `Cliente`.`IdVendedor` =  `Usuario`.`IdUsuario` 
+		JOIN  `Ubigeo` ON  `Usuario`.`IdUbigeo` =  `Ubigeo`.`IdUbigeo` 
+		JOIN  `Persona` ON  `Persona`.`IdPersona` =  `Cliente`.`IdPersona` 
+		WHERE  `Ubigeo`.`Zona`= '".$id."' and   YEAR(`Visita`.`FechaVisita`) = ".$anho."
+		");
+		break;
 		
 		}
 		//echo $this->db->last_query();
