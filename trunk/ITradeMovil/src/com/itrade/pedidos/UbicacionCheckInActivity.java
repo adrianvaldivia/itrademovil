@@ -71,7 +71,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     // Fields
     // ===========================================================
 //	private final Double  TOLERANCIA = 0.0004;
-	private final Double  TOLERANCIA = 0.004;
+//	private final Double  TOLERANCIA = 0.004;
+	private final Double  TOLERANCIA = 0.0025;
 	private final Double  FACTOR = 1000000.0;
 	private final int  MAXERRORES = 5;
 	PopupWindow m_pw;
