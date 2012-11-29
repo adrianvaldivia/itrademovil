@@ -261,7 +261,10 @@ public class Login extends Activity {
     			//intent.putExtra("usuario", usuario);					
     			startActivity(intent);					
     			textView_Password.setText("");
-    		}    	    	
+    		} 
+    		if (usuario.getIdPerfil()!=2&&usuario.getIdPerfil()!=3){//Administrador u otros
+    			Toast.makeText(Login.this, usuario.getNombre()+" "+usuario.getApePaterno() +", No tiene los permisos necesarios", Toast.LENGTH_SHORT).show();
+    		}
     }
 		
 	private void lanzarPedidos(Usuario usuario) {

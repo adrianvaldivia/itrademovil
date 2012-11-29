@@ -64,7 +64,7 @@ public class verEvento extends Activity{
      strHoraFi=remueveCerosDerecha(evento.getHoraFin());
      txt_Hora.setText("De:"+strHoraIni+" a "+strHoraFi);
      editTextDesc.append(evento.getDescripcion());
-     editTextLugar.append("Headquarters");
+     editTextLugar.append(evento.getLugar());
 //     Toast.makeText(this, "H: "+evento.getDescripcion(), Toast.LENGTH_LONG).show();
      
      
