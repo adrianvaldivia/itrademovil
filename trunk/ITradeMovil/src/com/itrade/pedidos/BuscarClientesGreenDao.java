@@ -387,7 +387,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 		super.onRestart();
 //		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
 //		guardaListaOriginal();
-		recuperarOriginal();	
+//		recuperarOriginal();	
         imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
 	}
