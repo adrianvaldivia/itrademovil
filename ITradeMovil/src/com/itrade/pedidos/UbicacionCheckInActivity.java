@@ -718,6 +718,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
         		mOsmv,colorRuta,
  				geoPointOrigen, geoPointDestino,numLayersTotales);
         _connectAsyncTask.execute();
+        boolDibujarRuta=false;
 	}
 
 
