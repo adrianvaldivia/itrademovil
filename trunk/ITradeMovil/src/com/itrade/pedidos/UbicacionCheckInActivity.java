@@ -39,6 +39,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -52,6 +53,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +67,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itrade.R;
+import com.itrade.jsonParser.AsTaskSubirDatos;
 import com.itrade.model.Cliente;
 import com.itrade.model.ClienteDao;
 import com.itrade.model.DaoMaster;
@@ -143,6 +147,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     Document doc;
     GeoPoint srcGeoPoint,destGeoPoint;
     List<GeoPoint> _geopoints=null;
+    boolean boolDibujarRuta=false;
         
     // ===========================================================
     // Constructors
@@ -188,7 +193,11 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 //            mapController.setCenter(gPt0);
             mapController.setZoom(13);
             //////////////////////////////////////////////////////LAYER DE RUTA
-            myPath = new PathOverlay(Color.RED, this);
+//            myPath = new PathOverlay(Color.BLUE, this);
+            myPath = new PathOverlay(Color.parseColor(getResources().getString(R.color.Aqua)), this);
+            Paint paintTemp=myPath.getPaint();
+            paintTemp.setStrokeWidth(4.0f);
+            myPath.setPaint(paintTemp);
 //            cargarGeoPointsRuta();      
 //            mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
           ////////////////////////////////////////////////////////////LAYER DE POSICION ACTUAL
@@ -210,10 +219,11 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             	mapController.setCenter(gPt0);
             
             ///ws de la ruta
-            connectAsyncTask _connectAsyncTask = new connectAsyncTask();
-            _connectAsyncTask.execute();
-            srcGeoPoint = new GeoPoint(-12071208,-77077569);//pucp
-            destGeoPoint = listaGeoPoint.get(0);
+//            srcGeoPoint = new GeoPoint(-12071208,-77077569);//pucp
+//            destGeoPoint = listaGeoPoint.get(0);
+//            connectAsyncTask _connectAsyncTask = new connectAsyncTask();
+//            _connectAsyncTask.execute();
+
     }
 
 
@@ -404,6 +414,9 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                                                 Toast.makeText(
                                                                 UbicacionCheckInActivity.this,
                                                                 item.mTitle , Toast.LENGTH_LONG).show();
+                                                if(boolDibujarRuta){
+                                	        		dibujaRuta(posicionActualOverlay.getMyLocation(),item.mGeoPoint);
+                                                }
                                                 encuentraCliente(item.mDescription);
                                                 return true; // We 'handled' this event.
                                         }
@@ -659,7 +672,58 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	public void finish(){
 		super.finish();		
 	}
-    private class connectAsyncTask extends AsyncTask<Void, Void, Void>{
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menumapa, menu);
+	    return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.opcion1:{
+//	        	Toast.makeText(this, "Ir a Ubicacion!", Toast.LENGTH_LONG).show();
+	        	if (hayUbicacion()){
+	        		visualizaUbicacion();
+	        	}
+	        	else
+	        		Toast.makeText(this, "No se capturo la posicion, Intente nuevamente.", Toast.LENGTH_SHORT).show();
+	        }	      
+	        break;
+	        case R.id.opcion2: {
+	        	if (hayUbicacion()){
+		        	boolDibujarRuta=true;
+	        		Toast.makeText(this, "Elija un cliente por favor", Toast.LENGTH_SHORT).show();
+	        		
+	        	}
+	        	else
+	        		Toast.makeText(this, "No se capturo la posicion, Intente nuevamente.", Toast.LENGTH_SHORT).show();	     	         
+	        }	
+	        break;
+	    }
+	    return true;
+	}
+	
+    private void dibujaRuta(GeoPoint geoPointOrigen,GeoPoint geoPointDestino) {
+		// TODO Auto-generated method stub
+        ///ws de la ruta
+        srcGeoPoint = geoPointOrigen;//pucp
+        destGeoPoint = geoPointDestino;
+        myPath.clearPath();
+        connectAsyncTask _connectAsyncTask = new connectAsyncTask();
+        _connectAsyncTask.execute();
+	}
+
+
+
+	private void visualizaUbicacion() {
+		// TODO Auto-generated method stub
+		GeoPoint puntoActual = posicionActualOverlay.getMyLocation();
+		mapController.setCenter(puntoActual);
+		mapController.setZoom(16);		
+	}
+
+	private class connectAsyncTask extends AsyncTask<Void, Void, Void>{
         private ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
