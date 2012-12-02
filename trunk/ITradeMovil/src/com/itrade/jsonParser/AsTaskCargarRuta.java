@@ -42,6 +42,7 @@ public class AsTaskCargarRuta extends AsyncTask<String, Void, String>
     PathOverlay myPath;
     private Activity activity;
     int colorRuta=0;
+    int numAlpha=0;
     private MapView mOsmv;
     int nuevoTamanio;
     int numLayersTotales;
@@ -54,6 +55,7 @@ public class AsTaskCargarRuta extends AsyncTask<String, Void, String>
 	        this.srcGeoPoint=orig;
 	        this.destGeoPoint=destino;
 	        numLayersTotales=numLayersTotale;
+	        this.numAlpha=175;
 	    }
 	 private ProgressDialog progressDialog;
      @Override
@@ -63,7 +65,8 @@ public class AsTaskCargarRuta extends AsyncTask<String, Void, String>
          
          myPath = new PathOverlay(colorRuta, activity);
          Paint paintTemp=myPath.getPaint();
-         paintTemp.setStrokeWidth(4.0f);
+         paintTemp.setStrokeWidth(5.0f);
+         paintTemp.setAlpha(numAlpha);
          myPath.setPaint(paintTemp);
          doc = null;
          

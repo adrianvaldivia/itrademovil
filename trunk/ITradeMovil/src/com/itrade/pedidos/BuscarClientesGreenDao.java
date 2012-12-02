@@ -382,15 +382,15 @@ public class BuscarClientesGreenDao extends ListActivity {
 		
 	}
 	
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-//		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
-//		guardaListaOriginal();
-//		recuperarOriginal();	
-        imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
-	}
+//	@Override
+//	protected void onRestart() {
+//		super.onRestart();
+////		Toast.makeText(BuscarClientesGreenDao.this, "Restarteando", Toast.LENGTH_LONG).show();
+////		guardaListaOriginal();
+////		recuperarOriginal();	
+//        imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
+//	}
 	
 
 	private void Minimizar() {
@@ -500,8 +500,10 @@ public class BuscarClientesGreenDao extends ListActivity {
         setListAdapter(adapterElementoLista);
 //        guardaListaOriginal();
         recuperarOriginal();
-
-		super.onResume();		
+        
+		super.onResume();	
+        imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
 	}
 	@Override
 	public void finish(){     
