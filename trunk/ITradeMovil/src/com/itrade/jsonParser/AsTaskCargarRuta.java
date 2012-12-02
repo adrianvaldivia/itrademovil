@@ -45,16 +45,18 @@ public class AsTaskCargarRuta extends AsyncTask<String, Void, String>
     int numAlpha=0;
     private MapView mOsmv;
     int nuevoTamanio;
-    int numLayersTotales;
+    int numLayersActuales;
+    int numLayersBase;
     
 	 public AsTaskCargarRuta(Activity activ,MapView mOsmvv,int colorRut,
-			 				GeoPoint orig, GeoPoint destino,int numLayersTotale) {		 
+			 				GeoPoint orig, GeoPoint destino,int numLayersBas) {		 
 	        this.activity = activ;		
 	        this.mOsmv=mOsmvv;
 	        this.colorRuta=colorRut;
 	        this.srcGeoPoint=orig;
 	        this.destGeoPoint=destino;
-	        numLayersTotales=numLayersTotale;
+	        this.numLayersActuales=this.mOsmv.getOverlays().size();//
+	        this.numLayersBase=numLayersBas;
 	        this.numAlpha=175;
 	    }
 	 private ProgressDialog progressDialog;
@@ -116,12 +118,12 @@ public class AsTaskCargarRuta extends AsyncTask<String, Void, String>
 //               Overlay ol2 = new MyOverlay(_activity,destGeoPoint,destGeoPoint,3);
 //               mOverlays.add(ol2);
                myPath.clearPath();
-               cargarGeoPointsRuta();      
-               mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
-               nuevoTamanio=this.mOsmv.getOverlays().size();
-               if(nuevoTamanio>numLayersTotales){
-               	this.mOsmv.getOverlays().remove(numLayersTotales-1);
-               }
+               cargarGeoPointsRuta();
+//               nuevoTamanio=this.mOsmv.getOverlays().size();
+               if(numLayersActuales>numLayersBase){
+                  	this.mOsmv.getOverlays().remove(numLayersActuales-1);
+                  }
+               mOsmv.getOverlays().add(myPath);//layer de la ruta comentado               
                mOsmv.invalidate();
                progressDialog.dismiss();
            }else{
