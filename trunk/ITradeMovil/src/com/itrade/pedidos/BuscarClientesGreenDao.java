@@ -336,18 +336,19 @@ public class BuscarClientesGreenDao extends ListActivity {
 //		
 //	}
 	private void recuperarOriginal() {
-		this.listaClienteOriginal=clienteDao.loadAll();
-		elementoListaDao.deleteAll();
-        
-		for(int i=0;i<listaClienteOriginal.size();i++){
-	        long temp=0;
-	        temp=temp+listaClienteOriginal.get(i).getId();
-			ElementoLista elemento = new ElementoLista(null,listaClienteOriginal.get(i).getRazon_Social(),"RUC: "+listaClienteOriginal.get(i).getRUC(),null,temp);
-			elementoListaDao.insert(elemento);
-	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
-		}
-        cursorElementoLista.requery();	
-		
+		if (clienteDao!=null){
+			this.listaClienteOriginal=clienteDao.loadAll();
+			elementoListaDao.deleteAll();
+	        
+			for(int i=0;i<listaClienteOriginal.size();i++){
+		        long temp=0;
+		        temp=temp+listaClienteOriginal.get(i).getId();
+				ElementoLista elemento = new ElementoLista(null,listaClienteOriginal.get(i).getRazon_Social(),"RUC: "+listaClienteOriginal.get(i).getRUC(),null,temp);
+				elementoListaDao.insert(elemento);
+		        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
+			}
+	        cursorElementoLista.requery();
+		}				
 	}
 	
     private void cerrarSesion() {
