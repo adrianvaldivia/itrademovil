@@ -459,7 +459,7 @@ public class BuscarClientesGreenDao extends ListActivity {
 	@Override
 	protected void onDestroy() {
 //		guardaListaOriginal();
-		recuperarOriginal();		
+//		recuperarOriginal();		
 		db.close();
 		cursorElementoLista.close();
 	    super.onDestroy();
@@ -500,10 +500,9 @@ public class BuscarClientesGreenDao extends ListActivity {
         setListAdapter(adapterElementoLista);
 //        guardaListaOriginal();
         recuperarOriginal();
-        
-		super.onResume();	
         imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //oculto el teclado
+		super.onResume();	
 	}
 	@Override
 	public void finish(){     

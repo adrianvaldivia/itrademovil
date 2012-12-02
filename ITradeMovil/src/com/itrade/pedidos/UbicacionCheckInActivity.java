@@ -19,6 +19,7 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.PathOverlay;
 import org.osmdroid.views.overlay.SimpleLocationOverlay;
@@ -92,14 +93,15 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     // Fields
     // ===========================================================
 //	private final Double  TOLERANCIA = 0.0004;
+//	private final Double  TOLERANCIA = 0.0009;
 //	private final Double  TOLERANCIA = 0.004;
-	private final Double  TOLERANCIA = 0.0025;
+	private final Double  TOLERANCIA = 0.0018;
 	private final Double  FACTOR = 1000000.0;
 	private final int  MAXERRORES = 5;
 	PopupWindow m_pw;
 	public int j=0;
     private MapView mOsmv;
-    private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
+    private ItemizedOverlay<OverlayItem> mMyClientsOverlay;
     List<GeoPoint> listaGeoPoint =null;// puntos para la ruta
     List<Cliente> listaCliente =null;
     
@@ -136,19 +138,21 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     private  static final float MIN_GEOGRAPHIC_POOLING_DISTANCE = (float)5.0;
     public LocationManager gpsLocationManager;
     static Context context = null;
-    boolean primeraVez=false;
+    boolean primeraVez=true;
     boolean boolHayGPS=true;
     public long idusuario;
     Cliente cliente= new Cliente();
     private TextView txt_nombre;
-    int numLayersTotales;
+    int numLayersActuales;
+    int numLayersBase;
     int contadorErrores=0;
 
     
 //    Document doc;
-//    GeoPoint srcGeoPoint,destGeoPoint;
+    GeoPoint srcGeoPoint,destGeoPoint;
 //    List<GeoPoint> _geopoints=null;
     boolean boolDibujarRuta=false;
+    boolean boolSeDibujo=false;
     int colorRuta=0;
         
     // ===========================================================
@@ -209,25 +213,15 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             ////////////////////////////////////////////////////////////LAYER DEL PUNTO ELEGIDO
 //            markerOverlay = new ExtendedItemizedIconOverlay<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener);
 //            this.mOsmv.getOverlayManager().add(markerOverlay);
-            //////////////////////////////////////////////////////////FIN LAYER PUNTO ELEGIDO
-            numLayersTotales=this.mOsmv.getOverlays().size();
-//            numLayersTotales++;// sumo dos por el layer de los WayPoints y el de la ruta
-            numLayersTotales=numLayersTotales+2;// sumo dos por el layer de los WayPoints y el de la ruta
-            
+            //////////////////////////////////////////////////////////FIN LAYER PUNTO ELEGIDO            
             ///Punto de ubicacion inicial
             GeoPoint gPt0 = new GeoPoint(-12071208,-77077569);//pucp  
-//          GeoPoint gPt0 = new GeoPoint(49406100,8715140);//Alemania
             if (this.listaGeoPoint!=null)
             	mapController.setCenter(listaGeoPoint.get(0));
             else                	
             	mapController.setCenter(gPt0);
-            
-            ///ws de la ruta
-//            srcGeoPoint = new GeoPoint(-12071208,-77077569);//pucp
-//            destGeoPoint = listaGeoPoint.get(0);
-//            connectAsyncTask _connectAsyncTask = new connectAsyncTask();
-//            _connectAsyncTask.execute();
-
+            this.numLayersBase=this.mOsmv.getOverlays().size();
+            this.numLayersBase++;
     }
 
 
@@ -351,8 +345,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                 	posicionActualOverlay.setLocation(p);
 //                	Toast.makeText(UbicacionCheckInActivity.this,"capture la posicion", Toast.LENGTH_SHORT).show();
                 	if(primeraVez){
-                		mapController.setCenter(p);
                 		mapController.setZoom(16);
+                		mapController.animateTo(p);
                 		primeraVez=false;
                 	}        			
                     //Toast.makeText(MiUbicacionImplActivity.this,"Longitude is  "+longitude + "   Latitude is   "+latitude, Toast.LENGTH_LONG).show();
@@ -400,8 +394,13 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	@Override
 	public void onResume() {
 	    super.onResume();
-	        listaCliente=clienteDao.loadAll();
-	        listaGeoPoint=this.Convierte();
+	    Overlay overlayRuta=null;
+	    
+	    
+        numLayersActuales=this.mOsmv.getOverlays().size();
+        
+	    listaCliente=clienteDao.loadAll();
+	    listaGeoPoint=this.Convierte();
         
         
         ////////////////////////////////////
@@ -411,13 +410,13 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 
 
                 /* OnTapListener for the Markers, shows a simple Toast. */
-                this.mMyLocationOverlay = new ItemizedIconOverlay<OverlayItem>(items,
+                this.mMyClientsOverlay = new ItemizedIconOverlay<OverlayItem>(items,
                                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                           				//single tap
                                         public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                                                 Toast.makeText(
                                                                 UbicacionCheckInActivity.this,
-                                                                item.mTitle , Toast.LENGTH_LONG).show();
+                                                                item.mTitle , Toast.LENGTH_SHORT).show();
                                                 if(boolDibujarRuta){
                                 	        		dibujaRuta(posicionActualOverlay.getMyLocation(),item.mGeoPoint);
                                                 }
@@ -425,31 +424,32 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                                                 return true; // We 'handled' this event.
                                         }
 
-
 										//long pressed
                                         public boolean onItemLongPress(final int index, final OverlayItem item) {
-                                        		
-//                                                Toast.makeText(
-//                                                		UbicacionCheckInActivity.this,
-//                                                                item.mTitle, Toast.LENGTH_LONG).show();
                                                 encuentraCliente(item.mDescription);//mDescription es IdCliente
                                                 HacerCheckIn();//error
                                                 return false;
                                         }
                                 }, mResourceProxy);
-                this.mOsmv.getOverlays().add(this.mMyLocationOverlay);
-                int nuevoTamanio=this.mOsmv.getOverlays().size();
-                if(nuevoTamanio>numLayersTotales){
-                	this.mOsmv.getOverlays().remove(numLayersTotales-1);
+                
+//                int nuevoTamanio=this.mOsmv.getOverlays().size();
+                if(numLayersActuales>1){            		       
+                	if(numLayersActuales>2){
+                		overlayRuta=this.mOsmv.getOverlays().get(numLayersActuales-1);
+                    	this.mOsmv.getOverlays().remove(numLayersActuales-1);
+                	}
+                	this.mOsmv.getOverlays().remove(1);
+                	this.mOsmv.getOverlays().add(this.mMyClientsOverlay);
+                	if(numLayersActuales>2){
+                		this.mOsmv.getOverlays().add(overlayRuta);
+                	}
                 }
-                              
+                else{
+                	this.mOsmv.getOverlays().add(this.mMyClientsOverlay);
+                }                              
                 mOsmv.invalidate();
         }
 
-               
-        /////////////////////////////////////
-                                        
-        
         ///////////////////////////////////////////////////////////////////////timer
 //        if (contadorErrores<=10){
         	mHandler.removeCallbacks(Timer_Tick);
@@ -457,7 +457,6 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 //        }
         
 		//////////////////////////////////////////////////////////// fin timer
-	    primeraVez=true;
 	    if(displayGpsStatus()){
 	        context = this;
 	       
@@ -472,6 +471,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    	Toast.makeText(UbicacionCheckInActivity.this, "GPS no encendido", Toast.LENGTH_LONG).show();
 	    	boolHayGPS=false;
 	    }
+        numLayersActuales=this.mOsmv.getOverlays().size();
 
 	}
     // ===========================================================
@@ -496,7 +496,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	        GeoPoint p = new GeoPoint((int) (lati * 1000000), (int) (longi * 1000000));
 	    	posicionActualOverlay.setLocation(p);
 	    	if (primeraVez){
-	    		mapController.setCenter(p);
+	    		mapController.setZoom(16);
+	    		mapController.animateTo(p);
 	    		primeraVez=false;
 	    	}			
 			Log.e("cambio pos","lat:" +lati+" "+ longi);
@@ -711,13 +712,15 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     private void dibujaRuta(GeoPoint geoPointOrigen,GeoPoint geoPointDestino) {
 		// TODO Auto-generated method stub
         ///ws de la ruta
-//        srcGeoPoint = geoPointOrigen;//pucp
-//        destGeoPoint = geoPointDestino;
+        srcGeoPoint = geoPointOrigen;//pucp
+        destGeoPoint = geoPointDestino;
+        numLayersActuales=this.mOsmv.getOverlays().size();;
 //        myPath.clearPath();    	
         AsTaskCargarRuta _connectAsyncTask = new AsTaskCargarRuta(UbicacionCheckInActivity.this,
         		mOsmv,colorRuta,
- 				geoPointOrigen, geoPointDestino,numLayersTotales);
+ 				geoPointOrigen, geoPointDestino,numLayersBase);
         _connectAsyncTask.execute();
+        boolSeDibujo=true;
         boolDibujarRuta=false;
 	}
 
@@ -726,8 +729,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	private void visualizaUbicacion() {
 		// TODO Auto-generated method stub
 		GeoPoint puntoActual = posicionActualOverlay.getMyLocation();
-		mapController.setCenter(puntoActual);
 		mapController.setZoom(16);		
+		mapController.animateTo(puntoActual);
 	}
 
 //	private class connectAsyncTask extends AsyncTask<Void, Void, Void>{
