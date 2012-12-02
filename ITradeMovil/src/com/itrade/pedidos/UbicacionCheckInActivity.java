@@ -221,7 +221,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             else                	
             	mapController.setCenter(gPt0);
             this.numLayersBase=this.mOsmv.getOverlays().size();
-            this.numLayersBase++;
+            this.numLayersBase++;//agrego uno por el layer de los clientes(waypoints)
     }
 
 
@@ -453,7 +453,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
         ///////////////////////////////////////////////////////////////////////timer
 //        if (contadorErrores<=10){
         	mHandler.removeCallbacks(Timer_Tick);
-    	    mHandler.postDelayed(Timer_Tick, 30000); //cada 30 segundos connsulta a la BD
+    	    mHandler.postDelayed(Timer_Tick, 20000); //cada 30 segundos connsulta a la BD
 //        }
         
 		//////////////////////////////////////////////////////////// fin timer
@@ -525,7 +525,29 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 		
 	}
 
+	public void preguntarDestino() {
+		
+////	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//	    builder.setTitle("Escoja Punto de Destino");
+//	    builder.setItems(R.array.listDisplayDestino, new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//            // The 'which' argument contains the index position
+//            // of the selected item
+//        }
+//	    });
+		
+		
+		new AlertDialog.Builder(this)
+		.setTitle("Escoja Punto de Destino")
+	    .setItems(R.array.listDisplayDestino, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            // The 'which' argument contains the index position
+            // of the selected item
+        }
+	    }).create().show();	
+		Toast.makeText(this, "Elija un cliente por favor", Toast.LENGTH_SHORT).show();
 	
+	}
 	public void HacerCheckIn() {		
 		// TODO Auto-generated method stub
 		
@@ -545,6 +567,9 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
         			    Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
         			    intent.putExtra("idcliente", temp);
         			    intent.putExtra("idusuario", idusuario);
+        			    Toast.makeText(
+        	                     UbicacionCheckInActivity.this,
+        	                            "Check In Exitoso" , Toast.LENGTH_SHORT).show();
         			    startActivity(intent);
         			}
         			else{
@@ -698,7 +723,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	        case R.id.opcion2: {
 	        	if (hayUbicacion()){
 		        	boolDibujarRuta=true;
-	        		Toast.makeText(this, "Elija un cliente por favor", Toast.LENGTH_SHORT).show();
+		        	preguntarDestino();	        		
 	        		
 	        	}
 	        	else
