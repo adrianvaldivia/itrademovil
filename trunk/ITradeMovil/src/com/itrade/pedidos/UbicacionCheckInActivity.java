@@ -116,7 +116,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     private SimpleLocationOverlay posicionActualOverlay;    
     final ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();//puntos del mapa
     
-    private ExtendedItemizedIconOverlay<OverlayItem> markerOverlay;//layer del punto elegido del mapa
+    private ExtendedItemizedIconOverlayRuta<OverlayItem> markerOverlay;//layer del punto elegido del mapa
     final List<OverlayItem> pList = new ArrayList<OverlayItem>();//punto elegido en el mapa
     OnItemGestureListener<OverlayItem> pOnItemGestureListener = new MyItemGestureListener<OverlayItem>();//listener del punto elegido
   
@@ -151,7 +151,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 //    Document doc;
     GeoPoint srcGeoPoint,destGeoPoint;
 //    List<GeoPoint> _geopoints=null;
-    boolean boolDibujarRuta=false;
+    boolean boolDibujarRutaCliente=false;
+    boolean boolDibujarRutaPuntoElegido=false;
     boolean boolSeDibujo=false;
     int colorRuta=0;
         
@@ -417,7 +418,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
                                                 Toast.makeText(
                                                                 UbicacionCheckInActivity.this,
                                                                 item.mTitle , Toast.LENGTH_SHORT).show();
-                                                if(boolDibujarRuta){
+                                                if(boolDibujarRutaCliente){
                                 	        		dibujaRuta(posicionActualOverlay.getMyLocation(),item.mGeoPoint);
                                                 }
                                                 encuentraCliente(item.mDescription);
@@ -526,27 +527,31 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	}
 
 	public void preguntarDestino() {
-		
-////	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//	    builder.setTitle("Escoja Punto de Destino");
-//	    builder.setItems(R.array.listDisplayDestino, new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//            // The 'which' argument contains the index position
-//            // of the selected item
-//        }
-//	    });
-		
-		
+					
 		new AlertDialog.Builder(this)
 		.setTitle("Escoja Punto de Destino")
 	    .setItems(R.array.listDisplayDestino, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             // The 'which' argument contains the index position
+            	if (which==0){
+            		boolDibujarRutaCliente=true;
+            		Toast.makeText(UbicacionCheckInActivity.this, "Elija un cliente por favor ", Toast.LENGTH_SHORT).show();
+            	}
+            	if (which==1){
+            		boolDibujarRutaPuntoElegido=true;
+            		Toast.makeText(UbicacionCheckInActivity.this, "Presione tres segundos el lugar de destino", Toast.LENGTH_SHORT).show();
+            		agregarLayerPosicionActual();            		            		
+            	}            	
             // of the selected item
         }
-	    }).create().show();	
-		Toast.makeText(this, "Elija un cliente por favor", Toast.LENGTH_SHORT).show();
-	
+	    }).create().show();				
+	}
+	private void agregarLayerPosicionActual() {
+		// TODO Auto-generated method stub
+        ////////////////////////////////////////////////////////////LAYER DEL PUNTO ELEGIDO
+        markerOverlay = new ExtendedItemizedIconOverlayRuta<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener,
+        				UbicacionCheckInActivity.this,colorRuta,posicionActualOverlay.getMyLocation(),numLayersBase);
+        this.mOsmv.getOverlayManager().add(markerOverlay);
 	}
 	public void HacerCheckIn() {		
 		// TODO Auto-generated method stub
@@ -585,18 +590,6 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
         		}
             }
         }).create().show();	
-
-		
-//   	  Inicio del popup
-//   	 LayoutInflater inflater = (LayoutInflater)
-//        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//   	 View layout = inflater.inflate(R.layout.mypopupcheckin,
-//   	 (ViewGroup) findViewById(R.id.MyLinearLayoutCheckIn));
-//   	 txt_nombre  = (TextView) layout.findViewById(R.id.txtcheckin);   	 
-//   	 m_pw = new PopupWindow( layout,  350,  250,  true);
-//   	 txt_nombre.setText("Check In con "+cliente.getRazon_Social()+"?");
-//   	 m_pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
-
 		
 	}
     private void encuentraCliente(String strIdCliente) {
@@ -614,34 +607,6 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
         }
 	}
     
-//	public void onButtonInPopup (View target) {
-//		m_pw.dismiss();
-//		if(hayUbicacion()){
-//			if(estaCerca()){				
-//				actualizaIconoCliente();
-//				int temp=cliente.getIdCliente();				
-//			    Intent intent = new Intent(UbicacionCheckInActivity.this, DetalleCliente.class);
-//			    intent.putExtra("idcliente", temp);
-//			    intent.putExtra("idusuario", idusuario);
-//			    startActivity(intent);
-//			}
-//			else{
-//				Toast.makeText(
-//			             UbicacionCheckInActivity.this,
-//			                    "Cliente muy lejos de la Ubicacion actual, elija otro por favor" , Toast.LENGTH_LONG).show();
-//			}
-//		     
-//			
-//		}
-//		else{
-//            Toast.makeText(
-//             UbicacionCheckInActivity.this,
-//                    "No se capturo la posicion, Intente nuevamente." , Toast.LENGTH_LONG).show();
-//		}
-//	    
-//
-//	}
-
 	private boolean hayUbicacion() {
 		boolean resul=false;
 		GeoPoint punto = posicionActualOverlay.getMyLocation();
@@ -722,9 +687,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	        break;
 	        case R.id.opcion2: {
 	        	if (hayUbicacion()){
-		        	boolDibujarRuta=true;
-		        	preguntarDestino();	        		
-	        		
+		        	preguntarDestino();	        			        		
 	        	}
 	        	else
 	        		Toast.makeText(this, "No se capturo la posicion, Intente nuevamente.", Toast.LENGTH_SHORT).show();	     	         
@@ -746,7 +709,8 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
  				geoPointOrigen, geoPointDestino,numLayersBase);
         _connectAsyncTask.execute();
         boolSeDibujo=true;
-        boolDibujarRuta=false;
+        boolDibujarRutaCliente=false;
+        boolDibujarRutaPuntoElegido=false;
 	}
 
 
@@ -758,160 +722,5 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 		mapController.animateTo(puntoActual);
 	}
 
-//	private class connectAsyncTask extends AsyncTask<Void, Void, Void>{
-//        private ProgressDialog progressDialog;
-//        @Override
-//        protected void onPreExecute() {
-//            // TODO Auto-generated method stub
-//            super.onPreExecute();
-//            progressDialog = new ProgressDialog(UbicacionCheckInActivity.this);
-//            progressDialog.setMessage("Obteniendo la Ruta, Espere por favor...");
-//            progressDialog.setIndeterminate(true);
-//            progressDialog.show();
-//        }
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            // TODO Auto-generated method stub
-//            fetchData();
-//            return null;
-//        }
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            // TODO Auto-generated method stub
-//            super.onPostExecute(result);          
-//            if(doc!=null){
-////                Overlay ol = new MyOverlay(_activity,srcGeoPoint,srcGeoPoint,1);
-////                mOverlays.add(ol);
-//                NodeList _nodelist = doc.getElementsByTagName("status");
-//                Node node1 = _nodelist.item(0);
-//                String _status1  = node1.getChildNodes().item(0).getNodeValue();
-//                if(_status1.equalsIgnoreCase("OK")){
-//                    NodeList _nodelist_path = doc.getElementsByTagName("overview_polyline");
-//                    Node node_path = _nodelist_path.item(0);
-//                    Element _status_path = (Element)node_path;
-//                    NodeList _nodelist_destination_path = _status_path.getElementsByTagName("points");
-//                    Node _nodelist_dest = _nodelist_destination_path.item(0);
-//                    String _path  = _nodelist_dest.getChildNodes().item(0).getNodeValue();
-//                    _geopoints = decodePoly(_path);
-//                    GeoPoint gp1;
-//                    GeoPoint gp2;
-//                    gp2 = _geopoints.get(0);
-//                    Log.d("_geopoints","::"+_geopoints.size());
-//                    for(int i=1;i<_geopoints.size();i++) // the last one would be crash
-//                    {
-//
-//                        gp1 = gp2;
-//                        gp2 = _geopoints.get(i);
-////                        Overlay ol1 = new MyOverlay(gp1,gp2,2,Color.BLUE);
-////                        mOverlays.add(ol1);
-//                    }
-////                    Overlay ol2 = new MyOverlay(_activity,destGeoPoint,destGeoPoint,3);
-////                    mOverlays.add(ol2);
-//                    cargarGeoPointsRuta();      
-//                    mOsmv.getOverlays().add(myPath);//layer de la ruta comentado
-//                    mOsmv.invalidate();
-//                    progressDialog.dismiss();
-//                }else{
-//                    showAlert("No se pudo encontrar la ruta");
-//                    progressDialog.dismiss();
-//                }
-//
-////                Overlay ol2 = new MyOverlay(_activity,destGeoPoint,destGeoPoint,3);
-////                mOverlays.add(ol2);
-//                progressDialog.dismiss();
-////                mapView.scrollBy(-1,-1);
-////                mapView.scrollBy(1,1);
-//            }else{
-//                showAlert("No se pudo encontrar la ruta");
-//                progressDialog.dismiss();
-//            }
-//
-//        }
-//
-//    }
-//    private void fetchData()
-//    {
-//        StringBuilder urlString = new StringBuilder();
-//        urlString.append("http://maps.google.com/maps/api/directions/xml?origin=");
-//        urlString.append( Double.toString((double)srcGeoPoint.getLatitudeE6()/1.0E6 ));
-//        urlString.append(",");
-//        urlString.append( Double.toString((double)srcGeoPoint.getLongitudeE6()/1.0E6 ));
-//        urlString.append("&destination=");//to
-//        urlString.append( Double.toString((double)destGeoPoint.getLatitudeE6()/1.0E6 ));
-//        urlString.append(",");
-//        urlString.append( Double.toString((double)destGeoPoint.getLongitudeE6()/1.0E6 ));
-//        urlString.append("&sensor=true&mode=driving");   
-//        Log.d("url","::"+urlString.toString());
-//        HttpURLConnection urlConnection= null;
-//        URL url = null;
-//        try
-//        {
-//            url = new URL(urlString.toString());
-//            urlConnection=(HttpURLConnection)url.openConnection();
-//            urlConnection.setRequestMethod("GET");
-//            urlConnection.setDoOutput(true);
-//            urlConnection.setDoInput(true);
-//            urlConnection.connect();
-//            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//            DocumentBuilder db = dbf.newDocumentBuilder();
-//            doc = (Document) db.parse(urlConnection.getInputStream());//Util.XMLfromString(response);
-//        }catch (MalformedURLException e){
-//            e.printStackTrace();
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }catch (ParserConfigurationException e){
-//            e.printStackTrace();
-//        }
-//        catch (SAXException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//    }
-//    private List<GeoPoint> decodePoly(String encoded) {
-//
-//        List<GeoPoint> poly = new ArrayList<GeoPoint>();
-//        int index = 0, len = encoded.length();
-//        int lat = 0, lng = 0;
-//
-//        while (index < len) {
-//            int b, shift = 0, result = 0;
-//            do {
-//                b = encoded.charAt(index++) - 63;
-//                result |= (b & 0x1f) << shift;
-//                shift += 5;
-//            } while (b >= 0x20);
-//            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-//            lat += dlat;
-//
-//            shift = 0;
-//            result = 0;
-//            do {
-//                b = encoded.charAt(index++) - 63;
-//                result |= (b & 0x1f) << shift;
-//                shift += 5;
-//            } while (b >= 0x20);
-//            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-//            lng += dlng;
-//
-//            GeoPoint p = new GeoPoint((int) (((double) lat / 1E5) * 1E6),
-//                    (int) (((double) lng / 1E5) * 1E6));
-//            poly.add(p);
-//        }
-//
-//        return poly;
-//    }
-//    private void showAlert(String message){
-//        AlertDialog.Builder alert = new AlertDialog.Builder(UbicacionCheckInActivity.this);
-//        alert.setTitle("Error");
-//        alert.setCancelable(false);
-//        alert.setMessage(message);
-//        alert.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//                // TODO Auto-generated method stub
-//
-//            }
-//        });
-//        alert.show();
-//    }
 }
 
