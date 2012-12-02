@@ -3,6 +3,6 @@
         android:title="Mi Ubicacion"
         android:icon="@android:drawable/ic_menu_mylocation"  />
     <item android:id="@+id/opcion2"
-        android:title="Ruta"
+        android:title="Encontrar Ruta"
         android:icon="@android:drawable/ic_menu_directions" />
 </menu>
