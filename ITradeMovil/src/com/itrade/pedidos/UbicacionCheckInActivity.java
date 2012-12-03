@@ -533,11 +533,16 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    .setItems(R.array.listDisplayDestino, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             // The 'which' argument contains the index position
-            	if (which==0){
+            	if (which==0){//EL usuario escojio dibujar ruta de clientes
             		boolDibujarRutaCliente=true;
+                	boolean boolSePuede = ((MyApplication) UbicacionCheckInActivity.this.getApplication()).isBoolSePuede();
+                	if (!boolSePuede){
+                		mOsmv.getOverlays().remove(numLayersBase);
+                		((MyApplication) UbicacionCheckInActivity.this.getApplication()).setBoolSePuede(true);
+                	}
             		Toast.makeText(UbicacionCheckInActivity.this, "Elija un cliente por favor ", Toast.LENGTH_SHORT).show();
             	}
-            	if (which==1){    
+            	if (which==1){    //EL usuario escojio dibujar ruta de punto elegido
             		
             		boolean boolSePuede = ((MyApplication) UbicacionCheckInActivity.this.getApplication()).isBoolSePuede();
             		
@@ -714,11 +719,6 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     private void dibujaRuta(GeoPoint geoPointOrigen,GeoPoint geoPointDestino) {
 		// TODO Auto-generated method stub
         ///ws de la ruta
-    	boolean boolSePuede = ((MyApplication) UbicacionCheckInActivity.this.getApplication()).isBoolSePuede();
-    	if (!boolSePuede){
-    		this.mOsmv.getOverlays().remove(numLayersBase);
-    		((MyApplication) UbicacionCheckInActivity.this.getApplication()).setBoolSePuede(true);
-    	}
     	
         srcGeoPoint = geoPointOrigen;//pucp
         destGeoPoint = geoPointDestino;
