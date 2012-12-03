@@ -57,7 +57,7 @@ public class AsTaskCargarRuta extends AsyncTask<String, Void, String>
 	        this.destGeoPoint=destino;
 	        this.numLayersActuales=this.mOsmv.getOverlays().size();//
 	        this.numLayersBase=numLayersBas;
-	        this.numAlpha=165;
+	        this.numAlpha=170;
 	    }
 	 private ProgressDialog progressDialog;
      @Override
