@@ -152,7 +152,6 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     GeoPoint srcGeoPoint,destGeoPoint;
 //    List<GeoPoint> _geopoints=null;
     boolean boolDibujarRutaCliente=false;
-    boolean boolDibujarRutaPuntoElegido=false;
     boolean boolSeDibujo=false;
     int colorRuta=0;
         
@@ -397,6 +396,7 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
 	    super.onResume();
 	    Overlay overlayRuta=null;
 	    
+	    ((MyApplication) UbicacionCheckInActivity.this.getApplication()).setBoolSePuede(true);
 	    
         numLayersActuales=this.mOsmv.getOverlays().size();
         
@@ -537,16 +537,30 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
             		boolDibujarRutaCliente=true;
             		Toast.makeText(UbicacionCheckInActivity.this, "Elija un cliente por favor ", Toast.LENGTH_SHORT).show();
             	}
-            	if (which==1){
-            		boolDibujarRutaPuntoElegido=true;
+            	if (which==1){    
+            		
+            		boolean boolSePuede = ((MyApplication) UbicacionCheckInActivity.this.getApplication()).isBoolSePuede();
+            		
             		Toast.makeText(UbicacionCheckInActivity.this, "Presione tres segundos el lugar de destino", Toast.LENGTH_SHORT).show();
-            		agregarLayerPosicionActual();            		            		
+            		int tama =mOsmv.getOverlays().size();
+            		if (tama>numLayersBase){//encima de la base esta tambien el punto o la ruta
+            			if (boolSePuede&&tama<numLayersBase+2){
+            				agregarLayerPuntoElegido();
+            				((MyApplication) UbicacionCheckInActivity.this.getApplication()).setBoolSePuede(false);
+            			}
+//            			agregarLayerPosicionActual();
+            		}
+            		else{//primera vez cuando solo hay dos layers
+            			agregarLayerPuntoElegido();
+            			((MyApplication) UbicacionCheckInActivity.this.getApplication()).setBoolSePuede(false);
+            		}   
+            		
             	}            	
             // of the selected item
         }
 	    }).create().show();				
 	}
-	private void agregarLayerPosicionActual() {
+	private void agregarLayerPuntoElegido() {
 		// TODO Auto-generated method stub
         ////////////////////////////////////////////////////////////LAYER DEL PUNTO ELEGIDO
         markerOverlay = new ExtendedItemizedIconOverlayRuta<OverlayItem>(getApplicationContext(), pList, pOnItemGestureListener,
@@ -700,17 +714,22 @@ public class UbicacionCheckInActivity extends Activity implements LocationListen
     private void dibujaRuta(GeoPoint geoPointOrigen,GeoPoint geoPointDestino) {
 		// TODO Auto-generated method stub
         ///ws de la ruta
+    	boolean boolSePuede = ((MyApplication) UbicacionCheckInActivity.this.getApplication()).isBoolSePuede();
+    	if (!boolSePuede){
+    		this.mOsmv.getOverlays().remove(numLayersBase);
+    		((MyApplication) UbicacionCheckInActivity.this.getApplication()).setBoolSePuede(true);
+    	}
+    	
         srcGeoPoint = geoPointOrigen;//pucp
         destGeoPoint = geoPointDestino;
-        numLayersActuales=this.mOsmv.getOverlays().size();;
+        numLayersActuales=this.mOsmv.getOverlays().size();
 //        myPath.clearPath();    	
         AsTaskCargarRuta _connectAsyncTask = new AsTaskCargarRuta(UbicacionCheckInActivity.this,
         		mOsmv,colorRuta,
  				geoPointOrigen, geoPointDestino,numLayersBase);
         _connectAsyncTask.execute();
         boolSeDibujo=true;
-        boolDibujarRutaCliente=false;
-        boolDibujarRutaPuntoElegido=false;
+        boolDibujarRutaCliente=false;       
 	}
 
 

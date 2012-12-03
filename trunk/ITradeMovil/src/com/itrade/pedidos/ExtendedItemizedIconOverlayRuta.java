@@ -131,6 +131,8 @@ public class ExtendedItemizedIconOverlayRuta<Item extends OverlayItem> extends I
 			mapView.invalidate();
 			
 			mapView.getOverlays().remove(numLayersBase);
+			
+			((MyApplication) activity.getApplication()).setBoolSePuede(true);
 						
 	        AsTaskCargarRuta _connectAsyncTask = new AsTaskCargarRuta(activity,
 	        		mapView,colorRuta,
