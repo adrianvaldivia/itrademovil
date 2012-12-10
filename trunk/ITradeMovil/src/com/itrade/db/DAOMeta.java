@@ -71,7 +71,7 @@ public class DAOMeta {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			metav.setMeta(0.0);
-			metav.setNombre("Error");
+			metav.setNombre("Error Web Service");
 			metav.setSuma(0.0);
 			e.printStackTrace();
 		}				    
