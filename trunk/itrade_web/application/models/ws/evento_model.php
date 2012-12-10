@@ -9,10 +9,10 @@ class Evento_model extends CI_Model {
 		$this->table_usuario='Usuario';
 		$this->table_persona='Persona';
     }		
-	public function registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar){
+	public function registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar,$asunto){
 		$this->db->flush_cache();
 		//$idpersona=$this->get_last_idPersona();
-		$data=array("IdCreador"=>$idcreador,"Descripcion"=>$descripcion,"Fecha"=>$fecha,"HoraInicio"=>$horaini,"HoraFin"=>$horafin);
+		$data=array("IdCreador"=>$idcreador,"Descripcion"=>$descripcion,"Fecha"=>$fecha,"HoraInicio"=>$horaini,"HoraFin"=>$horafin,"Lugar"=>$lugar,"Asunto"=>$asunto);
 		$this->db->insert($this->table_evento, $data);	
 		$id=$this->get_last_idEvento();
 		if ($id!=0){			
@@ -66,6 +66,15 @@ class Evento_model extends CI_Model {
 		//echo $this->db->last_query();
 		return $query->result();
 	}
+	public function get_eventos_idcreador($idusuario){
+		$this->db->from($this->table_evento_persona);
+		$this->db->join($this->table_evento,$this->table_evento.".IdEvento =".$this->table_evento_persona.".IdEvento");
+		//$str="( month(".$this->table_evento.".Fecha) = '11' )" ;		
+		$this->db->where($this->table_evento_persona.".IdCreador", $idusuario);			
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		return $query->result();
+	}
 	public function get_eventos_por_dia($idusuario,$fecha){		
 		$this->db->from($this->table_evento);
 		$this->db->where($this->table_evento.".IdCreador", $idusuario);	
@@ -77,7 +86,8 @@ class Evento_model extends CI_Model {
 	
 	public function contactos_por_evento($ideventos){
 		$eventos=explode("-", $ideventos);		
-		//Datos
+		//Datos		
+		$this->db->select($this->table_evento_persona.".IdEvento");
 		$this->db->select($this->table_persona.".IdPersona");
 		$this->db->select($this->table_usuario.".IdUsuario");
 		$this->db->select($this->table_persona.".Nombre");
@@ -92,7 +102,7 @@ class Evento_model extends CI_Model {
 		$this->db->join($this->table_usuario,$this->table_persona.".IdPersona =".$this->table_usuario.".IdPersona");
 		$this->db->join($this->table_evento_persona,$this->table_evento_persona.".IdPersona =".$this->table_usuario.".IdUsuario");							
 		$this->db->where_in($this->table_evento_persona.'.IdEvento', $eventos);		
-		$this->db->group_by($this->table_persona.".IdPersona");				
+		//$this->db->group_by($this->table_persona.".IdPersona");				
 		$query = $this->db->get();   
 		//echo $this->db->last_query();		
 		return $query->result();		
