@@ -16,7 +16,9 @@
     <application android:background="@android:color/transparent"
         android:icon="@drawable/mapa" android:label="@string/app_name" android:name=".pedidos.MyApplication">
         <activity android:label="@string/app_name"
-            android:name=".pedidos.Login" android:screenOrientation="portrait">
+            android:name=".pedidos.Login"
+            android:theme="@android:style/Theme.NoTitleBar" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
