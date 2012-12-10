@@ -31,7 +31,7 @@ class Eventos extends CI_Controller {
 			$lugar=$lugar_w;
 			$asunto=$asunto_w;
 		}
-		$result=$this->Evento_model->registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar,$lugar);
+		$result=$this->Evento_model->registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar,$asunto);
 		$this->output->set_content_type('application/json')->set_output($result);					
 	}
 	
