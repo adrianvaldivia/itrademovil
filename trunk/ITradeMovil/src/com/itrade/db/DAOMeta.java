@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.model.Meta;
@@ -65,7 +66,15 @@ public class DAOMeta {
 	    Gson gson = new Gson();
 							
 		Log.e("log_tag", "se cayo5" );
-		metav	=	gson.fromJson(sync.getResponse(), Meta.class);				    
+		try {
+			metav	=	gson.fromJson(sync.getResponse(), Meta.class);
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			metav.setMeta(0.0);
+			metav.setNombre("Error");
+			metav.setSuma(0.0);
+			e.printStackTrace();
+		}				    
 
 		    /*****************************WEBSERVICE END**********************************/				
 		return metav;
