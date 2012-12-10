@@ -14,22 +14,24 @@ class Eventos extends CI_Controller {
 		echo "Controlador Pedido";			
 	}	
 	
-	public function registrar_evento($idcreador_w='',$descripcion_w='',$fecha_w='',$horaini_w='',$horafin_w='',$lugar_w=''){	
+	public function registrar_evento($idcreador_w='',$descripcion_w='',$fecha_w='',$horaini_w='',$horafin_w='',$lugar_w='',$asunto_w=''){	
 		$idcreador=$this->input->post('idcreador');
 		$descripcion=$this->input->post('descripcion');
 		$fecha=$this->input->post('fecha');
 		$horaini=$this->input->post('horaini');
 		$horafin=$this->input->post('horafin');				
 		$lugar=$this->input->post('lugar');		
+		$asunto=$this->input->post('asunto');
 		if (isset($idcreador_w)&& $idcreador_w!=""  ){
 			$idcreador=$idcreador_w;
 			$descripcion=$descripcion_w;
 			$fecha=$fecha_w;
 			$horaini=$horaini_w;
 			$horafin=$horafin_w;
-			$lugar=$lugar_w;			
+			$lugar=$lugar_w;
+			$asunto=$asunto_w;
 		}
-		$result=$this->Evento_model->registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar);
+		$result=$this->Evento_model->registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar,$lugar);
 		$this->output->set_content_type('application/json')->set_output($result);					
 	}
 	
@@ -74,5 +76,14 @@ class Eventos extends CI_Controller {
 		$result=$this->Evento_model->get_eventos_por_dia($idusuario,$fecha);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
 	}	
+	public function get_eventos_idcreador($idusuario_w=''){
+		$idusuario=$this->input->post('idusuario');	
+		if (isset($idusuario_w)&& $idusuario_w!=""  ){
+			$idusuario=$idusuario_w;				
+		}		
+		$result=$this->Evento_model->get_eventos_idcreador($idusuario);
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));					
+	}
+	
 }
 
