@@ -70,9 +70,8 @@ class Evento_model extends CI_Model {
 		$this->db->from($this->table_evento_persona);
 		$this->db->join($this->table_evento,$this->table_evento.".IdEvento =".$this->table_evento_persona.".IdEvento");
 		//$str="( month(".$this->table_evento.".Fecha) = '11' )" ;		
-		$this->db->where($this->table_evento_persona.".IdCreador", $idusuario);			
-		$query = $this->db->get();
-		//echo $this->db->last_query();
+		$this->db->where($this->table_evento.".IdCreador", $idusuario);			
+		$query = $this->db->get();		
 		return $query->result();
 	}
 	public function get_eventos_por_dia($idusuario,$fecha){		
