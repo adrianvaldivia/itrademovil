@@ -474,7 +474,7 @@ public class Login extends Activity {
   
 	}
 	private Usuario confirmarLoginLocal(String nombreUsuario,String password) {		
-
+		long tam=usuarioDao.count();
 		Query<Usuario> query = usuarioDao.queryBuilder().where(
 				Properties.Username.eq(nombreUsuario), Properties.Password.eq(password))
 				.build();

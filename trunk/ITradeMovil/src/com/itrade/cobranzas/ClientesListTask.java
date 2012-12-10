@@ -489,6 +489,10 @@ public class ClientesListTask extends Activity {
  	private void Minimizar() {			
  		this.moveTaskToBack(true);				
  	}
+	@Override
+	public void onBackPressed() {
+		Minimizar();
+	}
  	  
  		
  	@Override
