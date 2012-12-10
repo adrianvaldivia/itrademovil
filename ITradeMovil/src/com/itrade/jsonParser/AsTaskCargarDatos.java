@@ -327,6 +327,7 @@ public class AsTaskCargarDatos extends AsyncTask<String, Void, String>
 	    		}
 	    		if (usuario.getIdPerfil()!=2&&usuario.getIdPerfil()!=3){//Administrador u otros
 	    			Toast.makeText(activity, usuario.getNombre()+" "+usuario.getApePaterno() +", No tiene los permisos necesarios", Toast.LENGTH_SHORT).show();
+	    			usuarioDao.deleteAll();
 	    		}
 	    }
 	 private void lanzarPedidos(Usuario usuario) {
