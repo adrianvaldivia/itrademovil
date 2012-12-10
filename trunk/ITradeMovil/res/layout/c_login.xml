@@ -18,17 +18,17 @@
 
       <ImageView
           android:id="@+id/imageView1"
-          android:layout_width="121dp"
-          android:layout_height="154dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:layout_gravity="center_vertical|center_horizontal"
-          android:layout_marginTop="30dip"
+          android:layout_marginTop="10dip"
           android:scaleType="centerCrop"
           android:src="@drawable/loguito" />
 
       <TextView
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="50dip"
+          android:layout_marginTop="10dip"
           android:text="Ingrese usuario:"
           android:textColor="#CCCCFF" />
 
