@@ -6,17 +6,16 @@ class Evento_model extends CI_Model {
         parent::__construct();		
 		$this->table_evento = 'Evento';		
 		$this->table_evento_persona = 'PersonaXEvento';	
+		$this->table_usuario='Usuario';
+		$this->table_persona='Persona';
     }		
-	public function registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar,$invitados){
+	public function registrar_evento($idcreador,$descripcion,$fecha,$horaini,$horafin,$lugar){
 		$this->db->flush_cache();
 		//$idpersona=$this->get_last_idPersona();
 		$data=array("IdCreador"=>$idcreador,"Descripcion"=>$descripcion,"Fecha"=>$fecha,"HoraInicio"=>$horaini,"HoraFin"=>$horafin);
 		$this->db->insert($this->table_evento, $data);	
 		$id=$this->get_last_idEvento();
-		if ($id!=0){
-			//registro invitados
-			$res=$this->registrar_invitados($id,$invitados);
-			//echo "REGISTRADOS=".$res."<BR>";
+		if ($id!=0){			
 			return $id;
 		}else{
 			return  0;
@@ -74,6 +73,29 @@ class Evento_model extends CI_Model {
 		$query = $this->db->get();
 		//echo $this->db->last_query();
 		return $query->result();
+	}
+	
+	public function contactos_por_evento($ideventos){
+		$eventos=explode("-", $ideventos);		
+		//Datos
+		$this->db->select($this->table_persona.".IdPersona");
+		$this->db->select($this->table_usuario.".IdUsuario");
+		$this->db->select($this->table_persona.".Nombre");
+		$this->db->select($this->table_persona.".ApePaterno");
+		$this->db->select($this->table_persona.".ApeMaterno");
+		$this->db->select($this->table_persona.".Activo");
+		$this->db->select($this->table_persona.".Telefono");
+		$this->db->select($this->table_persona.".Email");
+		$this->db->select($this->table_usuario.".IdJerarquia");		
+		//Joins
+		$this->db->from($this->table_persona);								
+		$this->db->join($this->table_usuario,$this->table_persona.".IdPersona =".$this->table_usuario.".IdPersona");
+		$this->db->join($this->table_evento_persona,$this->table_evento_persona.".IdPersona =".$this->table_usuario.".IdUsuario");							
+		$this->db->where_in($this->table_evento_persona.'.IdEvento', $eventos);		
+		$this->db->group_by($this->table_persona.".IdPersona");				
+		$query = $this->db->get();   
+		//echo $this->db->last_query();		
+		return $query->result();		
 	}
 }
 ?>
