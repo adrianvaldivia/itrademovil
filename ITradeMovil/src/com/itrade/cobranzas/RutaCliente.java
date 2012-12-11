@@ -23,8 +23,6 @@ import com.itrade.R;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.jsonParser.AsTaskCargarRuta;
 import com.itrade.model.Cliente;
-import com.itrade.pedidos.UbicacionCheckInActivity;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
