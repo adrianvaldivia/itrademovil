@@ -129,7 +129,7 @@
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
-
+
         <TextView
             android:id="@+id/txtVwPedido"
             android:layout_width="wrap_content"
@@ -138,7 +138,7 @@
             android:layout_marginTop="10dip"
             android:text="Pedido: #num_pedido"
             android:textColor="@color/azul_2"
-            android:textSize="25px"
+            android:textSize="16px"
             android:textStyle="bold" />
 
         <LinearLayout

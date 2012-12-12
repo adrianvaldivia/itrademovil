@@ -128,14 +128,21 @@
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
-
-        <ExpandableListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/blanco" >
 
-        </ExpandableListView>
+        <LinearLayout
+            android:id="@+id/linearLista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ExpandableListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/blanco" >
+            </ExpandableListView>
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

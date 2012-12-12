@@ -5,270 +5,274 @@ android:layout_width="match_parent"
         android:layout_height="match_parent"
     android:background="@color/White"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
 
-        <RelativeLayout
-            android:id="@+id/top_control_bar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/blanco" >
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:background="@color/blanco"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/top_control_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blanco" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@color/blanco"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/azul_2"
+                            android:orientation="vertical" >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:background="@color/azul_2" >
+
+                                <TextView
+                                    android:id="@+id/TextView02"
+                                    android:layout_width="246dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="5dip"
+                                    android:background="@color/azul_2"
+                                    android:text="iTrade"
+                                    android:textColor="@color/grisClaro"
+                                    android:textSize="20dip" />
+
+                                <ImageButton
+                                    android:id="@+id/btnMapa"
+                                    android:layout_width="58dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="3"
+                                    android:background="@color/azul_2"
+                                    android:src="@drawable/maps" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="2dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/blanco"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:id="@+id/TextView02"
+                                android:layout_width="2dp"
+                                android:layout_height="2dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/azul_2"
+                            android:orientation="vertical" >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:background="@color/azul_2" >
+
+                                <ImageButton
+                                    android:id="@+id/btnListaClientes"
+                                    style="@drawable/estilo_botones"
+                                    android:layout_width="53dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/estilo_botones"
+                                    android:src="@drawable/user_customer" />
+
+                                <ImageButton
+                                    android:id="@+id/btnMailMasivo"
+                                    android:layout_width="53dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/estilo_botones"
+                                    android:src="@drawable/e_mail" />
+
+                                <ImageButton
+                                    android:id="@+id/btnBuscarCliente"
+                                    android:layout_width="53dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/estilo_botones"
+                                    android:src="@drawable/users_search" />
+
+                                <ImageButton
+                                    android:id="@+id/btnDepositarBanco"
+                                    android:layout_width="53dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/estilo_default"
+                                    android:src="@drawable/emblem_money" />
+
+                                <ImageButton
+                                    android:id="@+id/btnDirectorio"
+                                    android:layout_width="53dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/estilo_botones"
+                                    android:src="@drawable/directorio" />
+
+                                <ImageButton
+                                    android:id="@+id/btnCalendario"
+                                    android:layout_width="53dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/estilo_botones"
+                                    android:src="@drawable/calendar" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/txtVwPedido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dip"
+                    android:text="Monto a depositar"
+                    android:textColor="@color/azul_2"
+                    android:textSize="28px"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/azul_2"
-                    android:orientation="vertical" >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:background="@color/azul_2" >
-
-                        <TextView
-                            android:id="@+id/TextView02"
-                            android:layout_width="246dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="5dip"
-                            android:background="@color/azul_2"
-                            android:text="iTrade"
-                            android:textColor="@color/grisClaro"
-                            android:textSize="20dip" />
-
-                        <ImageButton
-                            android:id="@+id/btnMapa"
-                            android:layout_width="58dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:background="@color/azul_2"
-                            android:src="@drawable/maps" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="2dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blanco"
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/TextView02"
-                        android:layout_width="2dp"
-                        android:layout_height="2dp" />
+                        android:id="@+id/textVwCli"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="20dip"
+                        android:text="Monto cobrado hasta el momento:"
+                        android:textColor="@color/azul_2"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/montoCobrado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dip"
+                        android:layout_marginTop="10dip"
+                        android:text="xxxxxxx"
+                        android:textColor="@color/azul_2" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/azul_2"
                     android:orientation="vertical" >
 
+                    <TextView
+                        android:id="@+id/textVwCli"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="20dip"
+                        android:text="Monto depositado hoy:"
+                        android:textColor="@color/azul_2"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/montoDepositado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dip"
+                        android:layout_marginTop="10dip"
+                        android:text="xxxxxxx"
+                        android:textColor="@color/azul_2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/textVwTransaccion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="20dip"
+                        android:text="Ingrese monto depositado"
+                        android:textColor="@color/azul_2"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/montoDeposito"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="10dip"
+                        android:ems="10"
+                        android:inputType="number" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/TextView01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="20dip"
+                        android:text="N° de transacción"
+                        android:textColor="@color/azul_2"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/numTransaccion"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="10dip"
+                        android:ems="10"
+                        android:inputType="number" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/blanco"
+                    android:gravity="bottom" >
+
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@color/azul_2" >
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blanco" >
 
-                        <ImageButton
-                            android:id="@+id/btnListaClientes"
+                        <Button
+                            android:id="@+id/btnDeposito"
                             style="@drawable/estilo_botones"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.10"
                             android:background="@drawable/estilo_botones"
-                            android:src="@drawable/user_customer" />
-
-                        <ImageButton
-                            android:id="@+id/btnMailMasivo"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/e_mail" />
-
-                        <ImageButton
-                            android:id="@+id/btnBuscarCliente"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/users_search" />
-
-                        <ImageButton
-                            android:id="@+id/btnDepositarBanco"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_default"   
-                            android:src="@drawable/emblem_money" />
-
-                        <ImageButton
-                            android:id="@+id/btnDirectorio"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"                                                        
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/directorio" />
-
-                        <ImageButton
-                            android:id="@+id/btnCalendario"
-                            android:layout_width="53dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/estilo_botones"
-                            android:src="@drawable/calendar" />
+                            android:text="Registrar depósito"
+                            android:textColor="@color/grisClaro" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/txtVwPedido"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dip"
-            android:text="Monto a depositar"
-            android:textColor="@color/azul_2"
-            android:textSize="28px"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textVwCli"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dip"
-                android:layout_marginTop="20dip"
-                android:text="Monto cobrado hasta el momento:"
-                android:textColor="@color/azul_2"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/montoCobrado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dip"
-                android:layout_marginTop="10dip"
-                android:text="xxxxxxx"
-                android:textColor="@color/azul_2" />
-
         </LinearLayout>
-		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-
-            <TextView
-                android:id="@+id/textVwCli"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dip"
-                android:layout_marginTop="20dip"
-                android:text="Monto depositado hoy:"
-                android:textColor="@color/azul_2"
-                android:textStyle="bold" />
-
-
-
-
-            <TextView
-                android:id="@+id/montoDepositado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dip"
-                android:layout_marginTop="10dip"
-                android:text="xxxxxxx"
-                android:textColor="@color/azul_2" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textVwTransaccion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dip"
-                android:layout_marginTop="20dip"
-                android:text="Ingrese monto depositado"
-                android:textColor="@color/azul_2"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/montoDeposito"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dip"
-                android:layout_marginTop="10dip"
-                android:ems="10"
-                android:inputType="number" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dip"
-                android:layout_marginTop="20dip"
-                android:text="N° de transacción"
-                android:textColor="@color/azul_2"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/numTransaccion"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dip"
-                android:layout_marginTop="10dip"
-                android:ems="10"
-                android:inputType="number" />
-
-        </LinearLayout>
-
-        <LinearLayout            
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/blanco"
-            android:gravity="bottom" >
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/blanco" >
-
-                <Button
-                    android:id="@+id/btnDeposito"
-                    style="@drawable/estilo_botones"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.10"
-                    android:background="@drawable/estilo_botones"
-                    android:text="Registrar depósito"
-                    android:textColor="@color/grisClaro" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
