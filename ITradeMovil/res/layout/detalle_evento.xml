@@ -96,30 +96,23 @@
 >
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/bottom_control_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+    	<LinearLayout
+	    android:id="@+id/bottom_control_bar"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@color/azul_2"
+	    android:layout_alignParentBottom="true" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_weight="0.10" >
-
-            <Button
-                android:id="@+id/buttonvermapa"
-                style="@drawable/estilo_botones"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.10"
-                android:background="@drawable/estilo_botones"
-                android:text="@string/aceptar"
-                android:textColor="@color/blanco" />
-
-        </LinearLayout>
-    </LinearLayout>
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="0dp"
+		    android:layout_weight="0.10" >
+			<TextView android:id="@+id/nada" android:layout_width="match_parent"
+			    android:layout_marginLeft="10dp"
+				android:layout_height="wrap_content" android:text="i - Trade" />
+		</LinearLayout>
+	</LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
             android:text="@string/hora_eveto"
             android:textColor="@color/OrangeRed"
             android:textSize="17dp" />
@@ -143,7 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:text="Asunto"
             android:textColor="@color/azul_2"
             android:textSize="17dp" />
@@ -154,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:ems="10" />
@@ -165,9 +158,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:text="@string/lugar"
             android:textColor="@color/azul_2"
+            android:layout_marginTop="3dp"
             android:textSize="17dp" />
 
         <EditText
@@ -176,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:ems="10" />
@@ -186,7 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
             android:text="@string/descripcion"
             android:textColor="@color/azul_2"
             android:textSize="17dp" />
@@ -198,7 +191,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
             android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="false"
