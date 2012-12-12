@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,6 +66,8 @@ public class SyncPedidos {
 	public void closeDB(){
 		db.close();
 	}
+	
+	
 	public int cargarPedidos(String idusuario){
 		//Consulta al Webservice		
 		List<NameValuePair> param = new ArrayList<NameValuePair>();								
@@ -83,6 +86,12 @@ public class SyncPedidos {
 		if (pedList.isEmpty()){
 			Log.d("Pedido", "No hay datos de arriba");
 			return 0;
+		}else{
+			for(Pedido pedido: pedList){	
+				if (buscarPedido(pedido.getIdPedido().toString())==null){
+					pedidoDao.insert(pedido);				
+				}			
+			}
 		}
 		//quitar el getPedidosHoy, buscar todos los pedidos, comparar el estado y modificar arriba,
 		//si todo esta ok no hacer nada si esta pagado modificar arriba (esta en payment task) do it!
@@ -167,15 +176,17 @@ public class SyncPedidos {
 //					pedidoDao.insert(pedido);
 //				}
 //			}
-		}else{
-			//pedidoDao.deleteAll();
+		}
+		/* Antes de
+		else{
+
 			for(Pedido pedido: pedList){				
-				//adapter.addItem(ped);
-				//iNSERT EN LA bd
 				pedidoDao.insert(pedido);
-				//Log.d("fecha",""+pedido.getFechaPedido().toString());
+				
 			}
 		}
+		*/
+		
 		Toast.makeText(context, "Syncronizado correctamente", Toast.LENGTH_LONG).show();
 		return pedList.size();
 	}
@@ -232,7 +243,7 @@ public class SyncPedidos {
 			}
 		}else{
     		//Obtener los clientes del vendedor 
-			List<Pedido> aux=this.getPedidosHoy();
+			List<Pedido> aux=this.getPedidosHoy(idusuario);
 			int cont=aux.size();
 			Log.d("SqlLite","No hay internet");
 			Toast.makeText(context, "No Hay Conexion a Internet", Toast.LENGTH_LONG).show();
@@ -268,7 +279,7 @@ public class SyncPedidos {
 	
     private Integer cargarDetallePedido(String idusuario) {
 		// TODO Auto-generated method stub
-    	List<Pedido> pedidos=this.getPedidosHoy();
+    	List<Pedido> pedidos=this.getPedidosHoy(idusuario);
     	String pedidosws = "";
     	for(Pedido pedido: pedidos){				
 			//adapter.addItem(ped);
@@ -305,7 +316,7 @@ public class SyncPedidos {
 	public List<Pedido> getListaPedido() {    	
     	return pedidoDao.loadAll();
 	}
-    
+    /*fIX Eder
     public List<Pedido> getPedidosHoy(){
     	SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
 		Calendar calendar = Calendar.getInstance();
@@ -318,6 +329,44 @@ public class SyncPedidos {
 				.where(Properties.FechaPedido.eq(previousDate))
 				.list();    
 		return pedTemp;    	
+    }
+    */
+    public List<Pedido> getPedidosHoy(String idusuario){
+    	Log.d("IDUSUARIO","USUARIO="+idusuario);
+    	SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH,-7);
+		String previousDate = form.format(calendar.getTime());		
+		List<Cliente> listTemp;
+		listTemp = clienteDao.queryBuilder()
+				.where(com.itrade.model.ClienteDao.Properties.IdCobrador.eq (Integer.parseInt(idusuario)))
+				.list(); 
+		Log.d("LISTACLIENTES","SIZE="+listTemp.size());
+		Log.d("Nombrecliente","cliente="+listTemp.get(0).getNombre());
+		Log.d("IDCLIENTE","ID="+listTemp.get(0).getIdCliente());
+		ArrayList<Pedido> pedTempAux = new ArrayList<Pedido>();
+		for(Cliente cliente:listTemp){			
+			List<Pedido> pedTemp=pedidoDao.queryBuilder()
+					//.where(Properties.IdEstadoPedido.eq("1"))				
+					.whereOr(Properties.IdEstadoPedido.eq("1"), Properties.IdEstadoPedido.eq("4"))
+					.where(Properties.FechaPedido.eq(previousDate))
+					.where(Properties.IdCliente.eq(cliente.getIdCliente()))	
+					.list();
+			Log.d("PEDTEMP","Size="+pedTemp.size());
+			if (!pedTemp.isEmpty()){
+				pedTempAux.addAll(pedTemp);
+			}
+    	}
+		/*
+		List<Pedido> pedTemp=pedidoDao.queryBuilder()
+				//.where(Properties.IdEstadoPedido.eq("1"))				
+				.whereOr(Properties.IdEstadoPedido.eq("1"), Properties.IdEstadoPedido.eq("4"))
+				.where(Properties.FechaPedido.eq(previousDate))
+				.where(Properties.IdCliente.eq(cliente.getIdCliente()))	
+				.list();*/    
+		Log.d("SizePEDIDOS", "sizeeee="+pedTempAux.size());
+		return pedTempAux;    	
     }
     
     public List<Pedido> getPedidosHoyTotal(){
@@ -462,8 +511,13 @@ public class SyncPedidos {
 		List<Pedido> pedTemp=pedidoDao.queryBuilder()
 				.where(Properties.IdPedido.eq(idpedido))
 				.list();
-		Pedido ped=pedTemp.get(0);
-		return ped;
+		if (!pedTemp.isEmpty()){
+			Pedido ped=pedTemp.get(0);
+			return ped;
+		}else{
+			return null;
+		}
+		
 	}
 	
 	public Double getMontoTotalCobrado(String idusuario){
