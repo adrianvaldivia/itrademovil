@@ -36,6 +36,7 @@ public class verEvento extends Activity{
  private TextView txt_Hora;
  private EditText editTextDesc;
  private EditText editTextLugar;
+ private EditText editTextAsunto;
 
 
  
@@ -46,6 +47,7 @@ public class verEvento extends Activity{
 	 txt_Hora = (TextView) findViewById(R.id.txtHora);
 	 editTextDesc = (EditText) findViewById(R.id.txtDesc);
 	 editTextLugar = (EditText) findViewById(R.id.txtLugar);
+	 editTextAsunto = (EditText) findViewById(R.id.txtAsunto);
 	 Bundle bundle=getIntent().getExtras();
 	 idEvento=bundle.getLong("idevento");
 	 
@@ -65,6 +67,7 @@ public class verEvento extends Activity{
      txt_Hora.setText("De: "+strHoraIni+" a "+strHoraFi);
      editTextDesc.append(evento.getDescripcion());
      editTextLugar.append(evento.getLugar());
+     editTextAsunto.append(evento.getAsunto());
 //     Toast.makeText(this, "H: "+evento.getDescripcion(), Toast.LENGTH_LONG).show();
      
      
