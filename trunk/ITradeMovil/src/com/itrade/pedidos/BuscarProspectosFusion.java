@@ -269,24 +269,25 @@ public class BuscarProspectosFusion extends ListActivity{
 		}
 		return lista;
 	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menuagenda, menu);
-	    return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.opcion1:{
-	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_SHORT).show();
-	        	cargarBaseLocal();	        	
-	        
-	        }
-            break;
-	    }
-	    return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//	    MenuInflater inflater = getMenuInflater();
+//	    inflater.inflate(R.menu.menuagenda, menu);
+//	    return true;
+//	}
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//	    switch (item.getItemId()) {
+//	        case R.id.opcion1:{
+//	        	Toast.makeText(this, "Sincronizando!", Toast.LENGTH_SHORT).show();
+//	        	cargarBaseLocal();	        	
+//	        
+//	        }
+//            break;
+//	    }
+//	    return true;
+//	}
+	
     private void cargarBaseLocal() {
     	sincronizarBaseSubida();
     	daoProspecto = new DAOProspecto(this);
