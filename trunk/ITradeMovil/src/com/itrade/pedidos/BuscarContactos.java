@@ -96,8 +96,8 @@ public class BuscarContactos extends ListActivity{
         String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
         String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
-        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName };
-        int[] toElementoLista = { R.id.text1, R.id.text2 };
+        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName,ElementoListaDao.Properties.Terciario.columnName };
+        int[] toElementoLista = { R.id.text1, R.id.text2,R.id.text3 };
         adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);    
         //fin green Day de Elementos Lista
@@ -162,6 +162,7 @@ public class BuscarContactos extends ListActivity{
     
 	private void buscarContacto() {
         String texto = editText.getText().toString();
+        
 //        editText.setText("");
         List<Contacto> contactosAux = contactoDao.queryBuilder()
         		.where(Properties.Nombre.like("%"+texto+"%"))
@@ -171,14 +172,23 @@ public class BuscarContactos extends ListActivity{
 //		clienteDao.deleteAll();
 		elementoListaDao.deleteAll();
         
-		for(int i=0;i<contactosAux.size();i++){
-			ElementoLista elemento = new ElementoLista(null,contactosAux.get(i).getNombre(),"Telefono: "+contactosAux.get(i).getTelefono(),null,contactosAux.get(i).getId());
+		for(int i=0;i<contactosAux.size();i++){					
+			ElementoLista elemento = new ElementoLista(null,contactosAux.get(i).getNombre(),"Telefono: "+contactosAux.get(i).getTelefono(),obtenerJerarquia(contactosAux.get(i).getIdJerarquia()),contactosAux.get(i).getId());
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
         cursorElementoLista.requery();	                
     }
-    @Override
+    private String obtenerJerarquia(String idJerarquia) {
+		// TODO Auto-generated method stub
+    	String jerarquia = "";
+		if (idJerarquia.equals("5")) jerarquia = "Empleado";
+		if (idJerarquia.equals("4")) jerarquia = "Jefe de Zona";
+		if (idJerarquia.equals("3")) jerarquia = "Jefe de Distrito";
+		return jerarquia;
+	}
+
+	@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
      // TODO Auto-generated method stub
      //super.onListItemClick(l, v, position, id);
@@ -225,7 +235,7 @@ public class BuscarContactos extends ListActivity{
 	        long temp=0;
 //        	temp=temp+listaCliente.get(i).getIdCliente();//aqui estaba el error
 	        temp=temp+i+1;//aca tambien habia error
-	        ElementoLista elemento = new ElementoLista(null,listaContactoTemp.get(i).getNombre(),"Telefono: "+listaContactoTemp.get(i).getTelefono(),null,temp);
+	        ElementoLista elemento = new ElementoLista(null,listaContactoTemp.get(i).getNombre(),"Telefono: "+listaContactoTemp.get(i).getTelefono(),obtenerJerarquia( listaContactoTemp.get(i).getIdJerarquia()) ,temp);
 	        elementoListaDao.insert(elemento);
 		}
 
@@ -259,7 +269,7 @@ public class BuscarContactos extends ListActivity{
 		for(int i=0;i<listaContactoOriginal.size();i++){
 	        long temp=0;
 	        temp=temp+listaContactoOriginal.get(i).getId();
-			ElementoLista elemento = new ElementoLista(null,listaContactoOriginal.get(i).getNombre(),"Telefono: "+listaContactoOriginal.get(i).getTelefono(),null,temp);
+			ElementoLista elemento = new ElementoLista(null,listaContactoOriginal.get(i).getNombre(),"Telefono: "+listaContactoOriginal.get(i).getTelefono(),obtenerJerarquia(listaContactoOriginal.get(i).getIdJerarquia()),temp);
 			elementoListaDao.insert(elemento);
 	        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
 		}
