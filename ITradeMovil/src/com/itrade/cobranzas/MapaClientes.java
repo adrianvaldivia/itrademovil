@@ -78,7 +78,7 @@ public class MapaClientes  extends Activity implements LocationListener, OnClick
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
     List<GeoPoint> listaGeoPoint =null;//ruta
     List<ClienteMapa> listaCliente =null;
-	private final Double  TOLERANCIA = 0.0004;
+    private final Double  TOLERANCIA = 0.0018;	
 	private OverlayItem itemActual;
 	private final int  MAXERRORES = 5;
     private ResourceProxy mResourceProxy;
