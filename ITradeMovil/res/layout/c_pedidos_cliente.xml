@@ -173,15 +173,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@color/blanco" >
-   <TextView
-                        android:id="@+id/txtpedido"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.03"
-                        android:text="Pedidos hasta: X días"
-                        android:textColor="@color/azul_2"
-                        android:textSize="10dip" />
 
                 </LinearLayout>
             </LinearLayout>
