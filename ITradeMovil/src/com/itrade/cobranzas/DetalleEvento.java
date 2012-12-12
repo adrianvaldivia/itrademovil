@@ -79,6 +79,7 @@ public class DetalleEvento extends Activity{
 	 String str=(String)i.getSerializableExtra("idevento");
 	 idusuario=(String)i.getSerializableExtra("idusuario");
 	 idEvento=Integer.parseInt(str);
+	 sincNotifications= new SyncNotifications(DetalleEvento.this);
 	 /*Cmbio*/
 	 DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "itrade-db", null);
      db = helper.getWritableDatabase();

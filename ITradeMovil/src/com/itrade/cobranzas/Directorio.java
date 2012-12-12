@@ -99,6 +99,7 @@ public class Directorio extends ListActivity{
         Bundle bundle=getIntent().getExtras();
         idusuario = bundle.getString("idusuario");
         setTitle("I Trade - Contactos");
+        sincNotifications = new SyncNotifications(Directorio.this);
         /*BOTONERA INICIO*/
 		/*BTN clientes*/
 		btnClientes= (ImageView)findViewById(R.id.c_dir_btnPedidos);
@@ -116,44 +117,45 @@ public class Directorio extends ListActivity{
 		btnMail.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String titulo="Notificar"; 
-				String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
-				alertDialogBuilder.setTitle(titulo);		 			
-				alertDialogBuilder
-						.setMessage(mensaje)
-						.setCancelable(true)
-						.setNegativeButton("Cancelar", null)
-						.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {														
-								dialog.cancel();
-								//verificar si tiene internet o no <--------------------------
-								
-								if (networkAvailable()){
-									Syncronizar sync = new Syncronizar(Directorio.this);
-									List<NameValuePair> param = new ArrayList<NameValuePair>();
-									param.add(new BasicNameValuePair("idcobrador", idusuario));
-									String route2="/ws/cobranza/send_notifications/";
-									sync.conexion(param,route2);
-									try {
-										sync.getHilo().join();
-									} catch (InterruptedException e) {
-										  // TODO Auto-generated catch block
-										e.printStackTrace();
-									}									
-									Toast.makeText(Directorio.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
-								}else{
-									Toast.makeText(Directorio.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
-								}																														
-								Intent intent = new Intent(Directorio.this, Directorio.class); 													
-								intent.putExtra("idusuario", idusuario);
-								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(intent);
-							}
-				});		
-				AlertDialog alertDialog = alertDialogBuilder.create();		 
-				alertDialog.show();	
-				
+				if (!sincNotifications.sendNotification(idusuario)){
+					String titulo="Notificar"; 
+					String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+					alertDialogBuilder.setTitle(titulo);		 			
+					alertDialogBuilder
+							.setMessage(mensaje)
+							.setCancelable(true)
+							.setNegativeButton("Cancelar", null)
+							.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {														
+									dialog.cancel();
+									//verificar si tiene internet o no <--------------------------
+									
+									if (networkAvailable()){
+										Syncronizar sync = new Syncronizar(Directorio.this);
+										List<NameValuePair> param = new ArrayList<NameValuePair>();
+										param.add(new BasicNameValuePair("idcobrador", idusuario));
+										String route2="/ws/cobranza/send_notifications/";
+										sync.conexion(param,route2);
+										try {
+											sync.getHilo().join();
+										} catch (InterruptedException e) {
+											  // TODO Auto-generated catch block
+											e.printStackTrace();
+										}									
+										Toast.makeText(Directorio.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+									}else{
+										Toast.makeText(Directorio.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+									}																														
+									Intent intent = new Intent(Directorio.this, Directorio.class); 													
+									intent.putExtra("idusuario", idusuario);
+									intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									startActivity(intent);
+								}
+					});		
+					AlertDialog alertDialog = alertDialogBuilder.create();		 
+					alertDialog.show();
+				}							
 			}
 		});
 		/*btn buscar clientes*/

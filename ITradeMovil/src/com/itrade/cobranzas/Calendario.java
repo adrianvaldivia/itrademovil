@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.itrade.R;
 import com.itrade.controller.cobranza.SyncEventos;
+import com.itrade.controller.cobranza.SyncNotifications;
 import com.itrade.controller.cobranza.Syncronizar;
 import com.itrade.db.DAOEvento;
 import com.itrade.model.DaoMaster;
@@ -78,7 +79,7 @@ public class Calendario extends Activity implements OnClickListener
 		private ImageView btnCalendario;
 		private ImageView btnMapaTotal;
 		//Context
-		
+		private SyncNotifications sincNotifications;
 
 
 		/** Called when the activity is first created. */
@@ -99,7 +100,7 @@ public class Calendario extends Activity implements OnClickListener
 		        //Fin greenDAO	
 		        Intent i = getIntent();                       
 				idusuario=(String)i.getSerializableExtra("idusuario");				
-				
+				sincNotifications = new SyncNotifications(Calendario.this);
 				/*BOTONERA INICIO*/
 				/*BTN clientes*/
 				btnClientes= (ImageView)findViewById(R.id.c_calBtnPedidos);
@@ -117,44 +118,45 @@ public class Calendario extends Activity implements OnClickListener
 				btnMail.setOnClickListener(new OnClickListener() {			
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						String titulo="Notificar"; 
-						String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
-						alertDialogBuilder.setTitle(titulo);		 			
-						alertDialogBuilder
-								.setMessage(mensaje)
-								.setCancelable(true)
-								.setNegativeButton("Cancelar", null)
-								.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,int id) {														
-										dialog.cancel();
-										//verificar si tiene internet o no <--------------------------
-										
-										if (networkAvailable()){
-											Syncronizar sync = new Syncronizar(Calendario.this);
-											List<NameValuePair> param = new ArrayList<NameValuePair>();
-											param.add(new BasicNameValuePair("idcobrador", idusuario));
-											String route2="/ws/cobranza/send_notifications/";
-											sync.conexion(param,route2);
-											try {
-												sync.getHilo().join();
-											} catch (InterruptedException e) {
-												  // TODO Auto-generated catch block
-												e.printStackTrace();
-											}									
-											Toast.makeText(Calendario.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
-										}else{
-											Toast.makeText(Calendario.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
-										}																														
-										Intent intent = new Intent(Calendario.this, Calendario.class); 													
-										intent.putExtra("idusuario", idusuario);
-										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-										startActivity(intent);
-									}
-						});		
-						AlertDialog alertDialog = alertDialogBuilder.create();		 
-						alertDialog.show();	
-						
+						if (!sincNotifications.sendNotification(idusuario)){
+							String titulo="Notificar"; 
+							String mensaje="¿Deseas Notificar ahora a todos tus clientes ?"; 				
+							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 				
+							alertDialogBuilder.setTitle(titulo);		 			
+							alertDialogBuilder
+									.setMessage(mensaje)
+									.setCancelable(true)
+									.setNegativeButton("Cancelar", null)
+									.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {														
+											dialog.cancel();
+											//verificar si tiene internet o no <--------------------------
+											
+											if (networkAvailable()){
+												Syncronizar sync = new Syncronizar(Calendario.this);
+												List<NameValuePair> param = new ArrayList<NameValuePair>();
+												param.add(new BasicNameValuePair("idcobrador", idusuario));
+												String route2="/ws/cobranza/send_notifications/";
+												sync.conexion(param,route2);
+												try {
+													sync.getHilo().join();
+												} catch (InterruptedException e) {
+													  // TODO Auto-generated catch block
+													e.printStackTrace();
+												}									
+												Toast.makeText(Calendario.this, "Se notificó exitosamente a los clientes.", Toast.LENGTH_SHORT).show();
+											}else{
+												Toast.makeText(Calendario.this, "Necesita conexión a internet para nofiticar", Toast.LENGTH_SHORT).show();
+											}																														
+											Intent intent = new Intent(Calendario.this, Calendario.class); 													
+											intent.putExtra("idusuario", idusuario);
+											intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+											startActivity(intent);
+										}
+							});		
+							AlertDialog alertDialog = alertDialogBuilder.create();		 
+							alertDialog.show();
+						}												
 					}
 				});
 				/*btn buscar clientes*/
