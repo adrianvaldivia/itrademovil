@@ -137,7 +137,7 @@ android:layout_width="match_parent"
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
-
+
                 <TextView
                     android:id="@+id/txtVwPedido"
                     android:layout_width="wrap_content"
@@ -146,7 +146,7 @@ android:layout_width="match_parent"
                     android:layout_marginTop="10dip"
                     android:text="Monto a depositar"
                     android:textColor="@color/azul_2"
-                    android:textSize="28px"
+                    android:textSize="16px"
                     android:textStyle="bold" />
 
                 <LinearLayout
