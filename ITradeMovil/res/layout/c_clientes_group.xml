@@ -40,19 +40,6 @@
              android:textColor="@color/azul_2"
              android:textSize="20dip"
              android:textStyle="bold" />
-
-         <Button
-             android:id="@+id/botonCheckIn"
-             android:layout_width="98dp"
-             android:layout_height="wrap_content"
-             android:layout_marginRight="10dip"
-             android:background="@drawable/estilo_botones"
-             android:focusable="false"
-             android:focusableInTouchMode="false"
-             android:text="Check in"
-             android:textColor="@color/blanco"
-             android:textSize="16dp"
-             android:textStyle="bold" />
      </LinearLayout>
         
 </LinearLayout>
