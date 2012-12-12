@@ -216,7 +216,7 @@ public class VerDia extends ListActivity{
 			for(int i=0;i<eventos.size();i++){
 		        long temp=0;
 		        temp=temp+eventos.get(i).getId();
-				ElementoLista elemento = new ElementoLista(null,eventos.get(i).getDescripcion(),"Inicio: "
+				ElementoLista elemento = new ElementoLista(null,eventos.get(i).getAsunto(),"Inicio: "
 						+remueveCerosDerecha(eventos.get(i).getHoraInicio()),"Fin: "+remueveCerosDerecha(eventos.get(i).getHoraFin()),temp);
 				elementoListaDao.insert(elemento);
 		        //Log.d("DaoExample", "Inserted new note, ID: " + cliente.getId());
