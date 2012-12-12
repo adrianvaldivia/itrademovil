@@ -93,10 +93,12 @@ public class BuscarContactos extends ListActivity{
         elementoListaDao = daoSession.getElementoListaDao();
         
         //Inicio green Dao Elementos Lista
-        String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
-        String orderByElementoLista = textColumnElementoLista + " COLLATE LOCALIZED ASC";
+//        String textColumnElementoLista = ElementoListaDao.Properties.Principal.columnName;
+        String textColumnElementoLista2 = ElementoListaDao.Properties.Terciario.columnName;
+        
+        String orderByElementoLista = textColumnElementoLista2 + " COLLATE LOCALIZED DESC";
         cursorElementoLista = db.query(elementoListaDao.getTablename(), elementoListaDao.getAllColumns(), null, null, null, null, orderByElementoLista);
-        String[] fromElementoLista = { textColumnElementoLista, ElementoListaDao.Properties.Secundario.columnName,ElementoListaDao.Properties.Terciario.columnName };
+        String[] fromElementoLista = { textColumnElementoLista2, ElementoListaDao.Properties.Secundario.columnName,ElementoListaDao.Properties.Terciario.columnName };
         int[] toElementoLista = { R.id.text1, R.id.text2,R.id.text3 };
         adapterElementoLista = new SimpleCursorAdapter(this, R.layout.itemdoblelinea, cursorElementoLista, fromElementoLista,
         		toElementoLista);    
