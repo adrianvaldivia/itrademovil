@@ -340,7 +340,7 @@ class Payment_model extends CI_Model {
 			INNER JOIN Ubigeo U ON Usu.IdUbigeo = U.IdUbigeo
 			INNER JOIN Persona P ON Usu.IdPersona = P.IdPersona
 			WHERE U.Distrito =  '".$distrito_str."' AND Usu.Activo=1 AND P.Activo=1
-			AND ( Usu.IdJerarquia =5 or Usu.IdJerarquia =3)
+			AND ( Usu.IdJerarquia =5 or Usu.IdJerarquia =3 or Usu.IdJerarquia =4)
 		");	
 		/*
 		SELECT P.IdPersona, Usu.IdUsuario, P.Nombre, P.ApePaterno, P.ApeMaterno, P.Activo, P.Telefono, P.Email 
