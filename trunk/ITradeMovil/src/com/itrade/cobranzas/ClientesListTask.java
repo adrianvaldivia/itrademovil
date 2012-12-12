@@ -381,13 +381,14 @@ public class ClientesListTask extends Activity {
 	  */
 	  //Esta jalando los pedidos de Hoy
 	  
-	  List<Pedido> pedList= sincPedidos.getPedidosHoy();	  
+	  List<Pedido> pedList= sincPedidos.getPedidosHoy(idusuario);	  
 	  if (pedList.size()==0){
 		  LinearLayout myLinearLayout =  (LinearLayout)findViewById(R.id.linearLista);
 		  TextView rowTextView = new TextView(this);
 		  rowTextView.setText("No hay Pedidos pendientes por cobrar hoy");
 		  myLinearLayout.addView(rowTextView);
 	  }
+	  Log.d("Size","cantidadPEDIDOS!!!="+pedList.size());
 	  for(Pedido ped: pedList ){
 		  adapter.addItem(ped);
 	  }
