@@ -48,6 +48,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
@@ -380,6 +382,12 @@ public class ClientesListTask extends Activity {
 	  //Esta jalando los pedidos de Hoy
 	  
 	  List<Pedido> pedList= sincPedidos.getPedidosHoy();	  
+	  if (pedList.size()==0){
+		  LinearLayout myLinearLayout =  (LinearLayout)findViewById(R.id.linearLista);
+		  TextView rowTextView = new TextView(this);
+		  rowTextView.setText("No hay Pedidos pendientes por cobrar hoy");
+		  myLinearLayout.addView(rowTextView);
+	  }
 	  for(Pedido ped: pedList ){
 		  adapter.addItem(ped);
 	  }
