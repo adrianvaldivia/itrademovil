@@ -20,8 +20,8 @@ public final class R {
         public static final int apepaterno=0x7f060004;
         public static final int bottom_control_bar=0x7f060001;
         public static final int button1=0x7f060002;
-        public static final int button2=0x7f060007;
-        public static final int button3=0x7f060008;
+        public static final int buttonadelante=0x7f060008;
+        public static final int buttonatras=0x7f060007;
         public static final int nombres=0x7f060003;
         public static final int opcion1=0x7f06000a;
         public static final int opcion2=0x7f06000b;
@@ -35,6 +35,7 @@ public final class R {
         public static final int alumnos=0x7f030001;
         public static final int main=0x7f030002;
         public static final int problemas=0x7f030003;
+        public static final int problemasfusion=0x7f030004;
     }
     public static final class menu {
         public static final int menu=0x7f050000;

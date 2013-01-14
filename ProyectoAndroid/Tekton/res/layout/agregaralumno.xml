@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content"
+	android:orientation="vertical">
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/top_control_bar">
+		<TextView  
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content" 
+    		android:text="@string/hello"
+    	/>
+	</RelativeLayout>
+
+
+	<LinearLayout
+	    android:id="@+id/bottom_control_bar"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true" >
+
+		<Button
+		    android:id="@+id/button1"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="Guardar" />
+
+	</LinearLayout>
+	
+	<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" 
+            android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar">
+
+            <EditText
+                android:id="@+id/nombres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese Nombres"
+                android:layout_marginTop="5dp"
+                android:inputType="textNoSuggestions"
+                android:ems="10" />
+            <EditText
+                android:id="@+id/apepaterno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese Apellido Paterno"
+                android:layout_marginTop="5dp"
+                android:inputType="textNoSuggestions"
+                android:ems="10" />
+            <EditText
+                android:id="@+id/apematerno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese Apellido Materno"
+                android:layout_marginTop="5dp"
+                android:inputType="textNoSuggestions"
+                android:ems="10" />
+
+	</LinearLayout>	
+</RelativeLayout>
