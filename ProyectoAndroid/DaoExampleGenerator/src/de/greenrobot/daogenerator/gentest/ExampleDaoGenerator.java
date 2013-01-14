@@ -36,7 +36,7 @@ public class ExampleDaoGenerator {
 		addElementoLista(schema);
 		addAlumno(schema);
 		addPregunta(schema);
-		addPreguntaxAlumno(schema);
+//		addPreguntaxAlumno(schema);
 
 		new DaoGenerator().generateAll(schema, "../Tekton/src-gen");
 	}
@@ -65,12 +65,12 @@ public class ExampleDaoGenerator {
 		pregunta.addStringProperty("Formula");				
 	}
 
-	private static void addPreguntaxAlumno(Schema schema) {
-		Entity preguntaxalumno = schema.addEntity("PreguntaxAlumno");
-		preguntaxalumno.addIdProperty();
-		preguntaxalumno.addLongProperty("IdAlumno");
-		preguntaxalumno.addLongProperty("IdPregunta");
-		preguntaxalumno.addIntProperty("Activo");		
-	}
+//	private static void addPreguntaxAlumno(Schema schema) {
+//		Entity preguntaxalumno = schema.addEntity("PreguntaxAlumno");
+//		preguntaxalumno.addIdProperty();
+//		preguntaxalumno.addLongProperty("IdAlumno");
+//		preguntaxalumno.addLongProperty("IdPregunta");
+//		preguntaxalumno.addIntProperty("Activo");		
+//	}
 
 }
