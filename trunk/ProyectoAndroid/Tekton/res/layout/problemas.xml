@@ -11,19 +11,20 @@
 		android:layout_weight="0"		
 		android:textSize="20dp"
 		android:text="Problemas"/>
+	
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_weight="0"	
 		android:orientation="horizontal" >
 		<Button
-			android:id="@+id/button2"
+			android:id="@+id/buttonatras"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="  Atras  "/>
 
 		<Button
-		    android:id="@+id/button3"
+		    android:id="@+id/buttonadelante"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:text="Adelante" />
