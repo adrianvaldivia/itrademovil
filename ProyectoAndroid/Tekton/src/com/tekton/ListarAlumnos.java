@@ -72,4 +72,11 @@ public class ListarAlumnos extends ListActivity {
 		cursorElementoLista.close();
 	    super.onDestroy();
 	}
+	@Override
+	public void onBackPressed() 
+	{
+	    this.finish();
+	    ListarAlumnos.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	    super.onBackPressed();
+	}
 }

@@ -32,19 +32,22 @@ public class MainActivity extends Activity {
 	    switch (item.getItemId()) {
 	        case R.id.opcion1:{
 	        	if (true){
-		        	Intent i= new Intent(getBaseContext(), AgregarAlumno.class);
-		            startActivity(i);	         
+		        	Intent i= new Intent(MainActivity.this, AgregarAlumno.class);
+		        	MainActivity.this.startActivity(i);
+		        	MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);		           
 	        	}	        		        		                  
 	        }	      
 	        break;
 	        case R.id.opcion2:{
-	        	Intent i= new Intent(getBaseContext(), ListarAlumnos.class);
-	            startActivity(i);	                  
+	        	Intent i= new Intent(MainActivity.this, ListarAlumnos.class);
+	        	MainActivity.this.startActivity(i);
+	        	MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
 	        }	      
 	        break;
 	        case R.id.opcion3:{
-	        	Intent i= new Intent(getBaseContext(), VisualizarProblemas.class);
-	            startActivity(i);	                  
+	        	Intent i= new Intent(MainActivity.this, VisualizarProblemas.class);
+	        	MainActivity.this.startActivity(i);
+	        	MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
 	        }	      
 	        break;
 	        case R.id.opcion4:{
@@ -84,5 +87,12 @@ public class MainActivity extends Activity {
 	    }
 
 	    return dir.delete();
+	}
+	@Override
+	public void onBackPressed() 
+	{
+	    this.finish();
+	    MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	    return;
 	}
 }

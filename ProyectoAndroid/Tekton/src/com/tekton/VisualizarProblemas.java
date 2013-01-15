@@ -65,5 +65,12 @@ implements View.OnClickListener
 		b.setOnClickListener(this);	
 		
 	}
+	@Override
+	public void onBackPressed() 
+	{
+	    this.finish();
+	    VisualizarProblemas.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	    super.onBackPressed();
+	}
 }
 
