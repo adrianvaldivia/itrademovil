@@ -51,4 +51,12 @@ public class AgregarAlumno extends Activity {
 	protected void onDestroy() {
 	    super.onDestroy();
 	}
+	
+	@Override
+	public void onBackPressed() 
+	{
+	    this.finish();
+	    AgregarAlumno.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	    super.onBackPressed();
+	}
 }
