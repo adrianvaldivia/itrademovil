@@ -32,7 +32,8 @@ public class AgregarAlumno extends Activity {
 			public void onClick(View v) {				
 				guardarAlumno();
 				Toast.makeText(AgregarAlumno.this, "Alumno Registrado Exitosamente", Toast.LENGTH_SHORT).show();
-				AgregarAlumno.this.finish();	
+				AgregarAlumno.this.finish();
+				AgregarAlumno.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
 			}
 	 	});
 
