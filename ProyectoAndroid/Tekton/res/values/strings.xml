@@ -3,4 +3,12 @@
     <string name="hello">Hello World</string>
     <string name="app_name">Tekton Alumnos</string>
     <string name="listavacia">Lista Vacia</string>
+    <string name="botonguardar">Guardar</string>
+    <string name="botonatras">Atras</string>
+    <string name="botonadelante">Adelante</string>
+    <string name="editnombres">Ingrese Nombres</string>
+    <string name="editapepaterno">Ingrese Apellido Paterno</string>
+    <string name="editapematerno">Ingrese Apellido Materno</string>
+    <string name="problemas">Problemas</string>
+    <string name="alumnos">Lista de Alumnos</string>
 </resources>
