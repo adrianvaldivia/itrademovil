@@ -12,7 +12,7 @@ implements View.OnClickListener
 //	public String formula="f(z_0)= \\frac1{2\\pi i}\\oint_\\gamma \\frac{f(z)}{z-z_0} dz";
 	public String formula3="\\int_{-\\infty}^{\\infty} e^{-x^2}\\, dx = \\sqrt{\\pi}";
 	public String formula2="`(((x + y)^2)/(x^4 - 45 sqrt 5))-((4 * 5y)/(4/5))`";
-	public String formula="(((x + y)^2)/(x^5 - 45 sqrt 5))-((4 * 5y)/(4/5))";
+	public String formula="`(((x + y)^2)/(x^5 - 45 sqrt 5))-((4 * 5y)/(4/5))`";
 	
 	
 	

@@ -22,7 +22,7 @@
 		    android:id="@+id/buttonguardar"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="Guardar" />
+		    android:text="@string/botonguardar" />
 
 	</LinearLayout>
 	
@@ -36,7 +36,7 @@
                 android:id="@+id/nombres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingrese Nombres"
+                android:hint="@string/editnombres"
                 android:layout_marginTop="5dp"
                 android:inputType="textNoSuggestions"
                 android:ems="10" />
@@ -44,7 +44,7 @@
                 android:id="@+id/apepaterno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingrese Apellido Paterno"
+                android:hint="@string/editapepaterno"
                 android:layout_marginTop="5dp"
                 android:inputType="textNoSuggestions"
                 android:ems="10" />
@@ -52,7 +52,7 @@
                 android:id="@+id/apematerno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingrese Apellido Materno"
+                android:hint="@string/editapematerno"
                 android:layout_marginTop="5dp"
                 android:inputType="textNoSuggestions"
                 android:ems="10" />
