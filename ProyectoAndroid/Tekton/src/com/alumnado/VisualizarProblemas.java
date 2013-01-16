@@ -1,5 +1,12 @@
-package com.tekton;
+package com.alumnado;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.alumnado.R;
+
+
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.os.*;
 import android.view.*;
@@ -11,14 +18,18 @@ implements View.OnClickListener
 {	
 //	public String formula="f(z_0)= \\frac1{2\\pi i}\\oint_\\gamma \\frac{f(z)}{z-z_0} dz";
 //	public String formula3="\\int_{-\\infty}^{\\infty} e^{-x^2}\\, dx = \\sqrt{\\pi}";
-	public String formula3="`int_0^1 x^2 dx`";	
+	public String  formula1="`(((x + y)^3)/(x^2 - 45 sqrt 5))/((4 * 8y)/(4/5))`";	
 	public String formula2="`(((x + y)^2)/(x^4 - 45 sqrt 5))-((4 * 5y)/(4/5))`";
-	public String  formula="`(((x + y)^3)/(x^2 - 45 sqrt 5))/((4 * 8y)/(4/5))`";
+	public String formula3="`int_0^1 x^2 dx`";
+	public String formula4="`f(x)=sum_(n=0)^oo(f^((n))(a))/(n!)(x-a)^n`";
+	public String formula5="`[[a,b],[c,d]]((n),(k))`";
+	public List<String> listaFormulas = new ArrayList<String>();	
+	public int indiceFormula=0;	
 	
 	
 	
 	
-	private String doubleEscapeTeX(String s) {//solo para TeX
+	private String doubleEscapeTeX(String s) {//necesario cuando se usa TeX
 		String t="";
 		for (int i=0; i < s.length(); i++) {
 			if (s.charAt(i) == '\'') t += '\\';
@@ -31,26 +42,22 @@ implements View.OnClickListener
 
 	public void onClick(View v) {
 		if (v == findViewById(R.id.buttonatras)) {
-			WebView w = (WebView) findViewById(R.id.webview);
-			w.loadUrl("javascript:document.getElementById('math').innerHTML='"
-					  +"\\\\"
-			          +doubleEscapeTeX(formula)
-					  +"\\\\"
-			          +"';");
-			w.loadUrl("javascript:MathJax.Hub.Queue(['Typeset',MathJax.Hub]);");		}
+			indiceFormula--;
+			if (indiceFormula==-1)
+				indiceFormula=listaFormulas.size()-1;
+			verFormula();		
+			}
 		else if (v == findViewById(R.id.buttonadelante)) {
-			WebView w = (WebView) findViewById(R.id.webview);
-			w.loadUrl("javascript:document.getElementById('math').innerHTML='"
-					  +"\\\\"
-			          +doubleEscapeTeX(formula3)
-					  +"\\\\"
-			          +"';");
-			w.loadUrl("javascript:MathJax.Hub.Queue(['Typeset',MathJax.Hub]);");
+			indiceFormula++;
+			if (indiceFormula==listaFormulas.size())
+				indiceFormula=0;
+			verFormula();
 		}
 	}
 
     /** Called when the activity is first created. */
-    @Override
+    @SuppressLint("SetJavaScriptEnabled")
+	@Override
     public void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
@@ -72,7 +79,27 @@ implements View.OnClickListener
 		b = (Button) findViewById(R.id.buttonadelante);
 		b.setOnClickListener(this);	
 		
+		listaFormulas.add(formula1);
+		listaFormulas.add(formula2);
+		listaFormulas.add(formula3);
+		listaFormulas.add(formula4);
+		listaFormulas.add(formula5);
+		
+		verFormula();
+		
 	}
+    
+	public void verFormula() 
+	{
+		WebView wbb = (WebView) findViewById(R.id.webview);
+		wbb.loadUrl("javascript:document.getElementById('math').innerHTML='"
+				  +"\\\\"
+		          +doubleEscapeTeX(listaFormulas.get(indiceFormula))
+				  +"\\\\"
+		          +"';");
+		wbb.loadUrl("javascript:MathJax.Hub.Queue(['Typeset',MathJax.Hub]);");
+	}
+	
 	@Override
 	public void onBackPressed() 
 	{
@@ -80,5 +107,8 @@ implements View.OnClickListener
 	    VisualizarProblemas.this.overridePendingTransition(R.anim.alpha_enter, R.anim.alpha_exit);
 	    super.onBackPressed();
 	}
+	
+	
+	
 }
 

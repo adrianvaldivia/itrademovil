@@ -1,7 +1,9 @@
-package com.tekton;
+package com.alumnado;
 
 
 import java.io.File;
+
+import com.alumnado.R;
 
 
 import android.app.Activity;
@@ -14,7 +16,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-    /** Called when the activity is first created. */
+    private AsTaskBajarDatos taskBajarDatos;
+	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +37,14 @@ public class MainActivity extends Activity {
 	        	if (true){
 		        	Intent i= new Intent(MainActivity.this, AgregarAlumno.class);
 		        	MainActivity.this.startActivity(i);
-		        	MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);		           
+		        	MainActivity.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);		           
 	        	}	        		        		                  
 	        }	      
 	        break;
 	        case R.id.opcion2:{
 	        	Intent i= new Intent(MainActivity.this, ListarAlumnos.class);
 	        	MainActivity.this.startActivity(i);
-	        	MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	        	MainActivity.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
 	        }	      
 	        break;
 	        case R.id.opcion3:{
@@ -73,6 +76,8 @@ public class MainActivity extends Activity {
     	    }
     	 MyApplication mApplication = (MyApplication)getApplicationContext();
     	 mApplication.inicializarBdLocal();
+		 taskBajarDatos= new AsTaskBajarDatos(MainActivity.this);
+		 taskBajarDatos.execute();
 	}
 	
     public static boolean deleteDir(File dir) {
@@ -92,7 +97,7 @@ public class MainActivity extends Activity {
 	public void onBackPressed() 
 	{
 	    this.finish();
-	    MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+//	    MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
 	    return;
 	}
 }

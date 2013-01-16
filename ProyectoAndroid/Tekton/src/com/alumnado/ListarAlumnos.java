@@ -1,17 +1,21 @@
-package com.tekton;
+package com.alumnado;
 
 
 import java.util.List;
 
-import com.tekton.model.Alumno;
-import com.tekton.model.AlumnoDao;
-import com.tekton.model.ElementoLista;
-import com.tekton.model.ElementoListaDao;
+import com.alumnado.R;
+import com.alumnado.model.Alumno;
+import com.alumnado.model.AlumnoDao;
+import com.alumnado.model.ElementoLista;
+import com.alumnado.model.ElementoListaDao;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class ListarAlumnos extends ListActivity {
@@ -49,6 +53,14 @@ public class ListarAlumnos extends ListActivity {
         leerDatos();
         mostrarDatos();
     }
+	@Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+		ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
+    	Intent i= new Intent(ListarAlumnos.this, DetalleAlumno.class);
+    	i.putExtra("idAlumno", elementoAux.getIdElemento());
+    	ListarAlumnos.this.startActivity(i);
+    	ListarAlumnos.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
+	}
     
 	private void leerDatos() {
 		// TODO Auto-generated method stub
@@ -76,7 +88,7 @@ public class ListarAlumnos extends ListActivity {
 	public void onBackPressed() 
 	{
 	    this.finish();
-	    ListarAlumnos.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	    ListarAlumnos.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
 	    super.onBackPressed();
 	}
 }
