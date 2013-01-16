@@ -10,7 +10,6 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.alumnado.model.Alumno;
-import com.alumnado.model.AlumnoDao;
 import com.alumnado.model.DaoMaster;
 import com.alumnado.model.DaoSession;
 
@@ -23,7 +22,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class AsTaskBajarDatos extends AsyncTask<String, Void, String>
+public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 {		
 
     //green Dao
@@ -31,7 +30,6 @@ public class AsTaskBajarDatos extends AsyncTask<String, Void, String>
 
     private DaoMaster daoMaster;
     private DaoSession daoSession;
-    private AlumnoDao alumnoDao;
     //fin green dao
 //    private Cursor cursorElementoLista;       
     
@@ -39,7 +37,7 @@ public class AsTaskBajarDatos extends AsyncTask<String, Void, String>
 	private Activity activity;
 	private String response;
 	
-	public AsTaskBajarDatos(Activity activ) {		 
+	public AsTaskSubirDatos(Activity activ) {		 
 	        this.activity = activ;		
 //	        this.cursorElementoLista=cursorElementoLis;
 	        this.dialog = new ProgressDialog(activity);
@@ -88,7 +86,6 @@ public class AsTaskBajarDatos extends AsyncTask<String, Void, String>
 			String route="/alumnos/";
 			try{		       
 				WBhelper helper = new WBhelper("http://10.0.2.2/webservicestekton/");
-//				WBhelper helper = new WBhelper("http://192.168.0.2/webservicestekton/");
 				
 				String responseBody=helper.obtainResponse(route,param);			
 				
@@ -115,12 +112,6 @@ public class AsTaskBajarDatos extends AsyncTask<String, Void, String>
 		
 		Log.e("log_tag", "se cayo5" );
 		listaAlumno	=	gson.fromJson(getResponse(), new TypeToken<List<Alumno>>(){}.getType());
-        MyApplication mApplication = (MyApplication)activity.getApplicationContext();
-        alumnoDao=mApplication.getAlumnoDao();
-        alumnoDao.deleteAll();
-		for(int i=0;i<listaAlumno.size();i++){
-			alumnoDao.insert(listaAlumno.get(i));
-		}
 	}
 	 
 	private void sincronizarBaseSubida() {
