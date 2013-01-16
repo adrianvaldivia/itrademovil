@@ -10,9 +10,11 @@ public class VisualizarProblemas extends Activity
 implements View.OnClickListener
 {	
 //	public String formula="f(z_0)= \\frac1{2\\pi i}\\oint_\\gamma \\frac{f(z)}{z-z_0} dz";
-	public String formula3="\\int_{-\\infty}^{\\infty} e^{-x^2}\\, dx = \\sqrt{\\pi}";
+//	public String formula3="\\int_{-\\infty}^{\\infty} e^{-x^2}\\, dx = \\sqrt{\\pi}";
+	public String formula3="`int_0^1 x^2 dx`";	
 	public String formula2="`(((x + y)^2)/(x^4 - 45 sqrt 5))-((4 * 5y)/(4/5))`";
 	public String  formula="`(((x + y)^3)/(x^2 - 45 sqrt 5))/((4 * 8y)/(4/5))`";
+	
 	
 	
 	
@@ -30,15 +32,19 @@ implements View.OnClickListener
 	public void onClick(View v) {
 		if (v == findViewById(R.id.buttonatras)) {
 			WebView w = (WebView) findViewById(R.id.webview);
-			w.loadUrl("javascript:document.getElementById('math').innerHTML='\\\\["
-			          +formula
-					  +"\\\\]';");
+			w.loadUrl("javascript:document.getElementById('math').innerHTML='"
+					  +"\\\\"
+			          +doubleEscapeTeX(formula)
+					  +"\\\\"
+			          +"';");
 			w.loadUrl("javascript:MathJax.Hub.Queue(['Typeset',MathJax.Hub]);");		}
 		else if (v == findViewById(R.id.buttonadelante)) {
 			WebView w = (WebView) findViewById(R.id.webview);
-			w.loadUrl("javascript:document.getElementById('math').innerHTML='\\\\["
-			          +formula2
-					  +"\\\\]';");
+			w.loadUrl("javascript:document.getElementById('math').innerHTML='"
+					  +"\\\\"
+			          +doubleEscapeTeX(formula3)
+					  +"\\\\"
+			          +"';");
 			w.loadUrl("javascript:MathJax.Hub.Queue(['Typeset',MathJax.Hub]);");
 		}
 	}
@@ -71,7 +77,7 @@ implements View.OnClickListener
 	public void onBackPressed() 
 	{
 	    this.finish();
-	    VisualizarProblemas.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	    VisualizarProblemas.this.overridePendingTransition(R.anim.alpha_enter, R.anim.alpha_exit);
 	    super.onBackPressed();
 	}
 }

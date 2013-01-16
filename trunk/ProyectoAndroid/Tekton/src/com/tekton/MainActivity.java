@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
 	        case R.id.opcion3:{
 	        	Intent i= new Intent(MainActivity.this, VisualizarProblemas.class);
 	        	MainActivity.this.startActivity(i);
-	        	MainActivity.this.overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+	        	MainActivity.this.overridePendingTransition(R.anim.alpha_enter, R.anim.alpha_exit);
 	        }	      
 	        break;
 	        case R.id.opcion4:{
