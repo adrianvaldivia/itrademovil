@@ -1,11 +1,11 @@
-package com.tekton;
+package com.alumnado;
 
-import com.tekton.model.AlumnoDao;
-import com.tekton.model.DaoMaster.DevOpenHelper;
-import com.tekton.model.DaoMaster;
-import com.tekton.model.DaoSession;
-import com.tekton.model.ElementoListaDao;
-import com.tekton.model.PreguntaDao;
+import com.alumnado.model.AlumnoDao;
+import com.alumnado.model.DaoMaster.DevOpenHelper;
+import com.alumnado.model.DaoMaster;
+import com.alumnado.model.DaoSession;
+import com.alumnado.model.ElementoListaDao;
+import com.alumnado.model.PreguntaDao;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;

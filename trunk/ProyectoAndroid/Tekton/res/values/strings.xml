@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="hello">Hello World</string>
-    <string name="app_name">Tekton Alumnos</string>
+    <string name="hello">Alumnos</string>
+    <string name="app_name">Alumnado Matematico</string>
     <string name="listavacia">Lista Vacia</string>
     <string name="botonguardar">Guardar</string>
     <string name="botonatras">Atras</string>
