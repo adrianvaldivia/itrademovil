@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class ExampleDaoGenerator {
 
 	public static void main(String[] args) throws Exception {
-		Schema schema = new Schema(3, "com.tekton.model");
+		Schema schema = new Schema(3, "com.alumnado.model");
 
 		addElementoLista(schema);
 		addAlumno(schema);
