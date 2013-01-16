@@ -5,14 +5,14 @@
  * should not be modified by hand.
  */
 
-package com.tekton;
+package com.alumnado;
 
 public final class R {
     public static final class anim {
         public static final int alpha_enter=0x7f040000;
         public static final int alpha_exit=0x7f040001;
-        public static final int zoom_enter=0x7f040002;
-        public static final int zoom_exit=0x7f040003;
+        public static final int slide_enter=0x7f040002;
+        public static final int slide_exit=0x7f040003;
     }
     public static final class attr {
     }
@@ -197,9 +197,10 @@ public final class R {
     public static final class layout {
         public static final int agregaralumno=0x7f030000;
         public static final int alumnos=0x7f030001;
-        public static final int itemdoblelinea=0x7f030002;
-        public static final int main=0x7f030003;
-        public static final int problemas=0x7f030004;
+        public static final int detallealumno=0x7f030002;
+        public static final int itemdoblelinea=0x7f030003;
+        public static final int main=0x7f030004;
+        public static final int problemas=0x7f030005;
     }
     public static final class menu {
         public static final int menu=0x7f070000;

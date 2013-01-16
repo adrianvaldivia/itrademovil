@@ -1,5 +1,5 @@
 /** Automatically generated file. DO NOT MODIFY */
-package com.tekton;
+package com.alumnado;
 
 public final class BuildConfig {
     public final static boolean DEBUG = true;
