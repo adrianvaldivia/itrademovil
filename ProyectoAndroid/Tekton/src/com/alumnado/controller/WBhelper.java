@@ -1,4 +1,4 @@
-package com.alumnado;
+package com.alumnado.controller;
 
 import java.io.IOException;
 import java.util.List;

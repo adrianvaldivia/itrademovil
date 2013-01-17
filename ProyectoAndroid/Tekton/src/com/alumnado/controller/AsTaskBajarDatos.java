@@ -1,4 +1,4 @@
-package com.alumnado;
+package com.alumnado.controller;
 
 
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.alumnado.MyApplication;
 import com.alumnado.model.Alumno;
 import com.alumnado.model.AlumnoDao;
 import com.alumnado.model.Pregunta;

@@ -1,4 +1,4 @@
-package com.alumnado;
+package com.alumnado.controller;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
