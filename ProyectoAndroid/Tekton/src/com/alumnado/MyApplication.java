@@ -76,7 +76,7 @@ public class MyApplication extends Application {
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         alumnoDao= daoSession.getAlumnoDao();
-        preguntaDao= daoSession.getPreguntaDao();
-        setElementoListaDao(daoSession.getElementoListaDao());
+        preguntaDao=daoSession.getPreguntaDao();
+        elementoListaDao=daoSession.getElementoListaDao();
 	}
 }

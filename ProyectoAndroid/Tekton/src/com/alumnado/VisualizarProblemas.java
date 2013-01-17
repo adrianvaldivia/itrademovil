@@ -1,13 +1,13 @@
 package com.alumnado;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alumnado.R;
+import com.alumnado.model.Pregunta;
+import com.alumnado.model.PreguntaDao;
 
 
 import android.annotation.SuppressLint;
 import android.app.*;
+import android.content.Intent;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -16,42 +16,45 @@ import android.webkit.*;
 public class VisualizarProblemas extends Activity
 implements View.OnClickListener
 {	
-//	public String formula="f(z_0)= \\frac1{2\\pi i}\\oint_\\gamma \\frac{f(z)}{z-z_0} dz";
-//	public String formula3="\\int_{-\\infty}^{\\infty} e^{-x^2}\\, dx = \\sqrt{\\pi}";
-	public String  formula1="`(((x + y)^3)/(x^2 - 45 sqrt 5))/((4 * 8y)/(4/5))`";	
-	public String formula2="`(((x + y)^2)/(x^4 - 45 sqrt 5))-((4 * 5y)/(4/5))`";
-	public String formula3="`int_0^1 x^2 dx`";
-	public String formula4="`f(x)=sum_(n=0)^oo(f^((n))(a))/(n!)(x-a)^n`";
-	public String formula5="`[[a,b],[c,d]]((n),(k))`";
-	public List<String> listaFormulas = new ArrayList<String>();	
-	public int indiceFormula=0;	
-	
-	
-	
-	
-	private String doubleEscapeTeX(String s) {//necesario cuando se usa TeX
-		String t="";
-		for (int i=0; i < s.length(); i++) {
-			if (s.charAt(i) == '\'') t += '\\';
-			if (s.charAt(i) != '\n') t += s.charAt(i);
-			if (s.charAt(i) == '\\') t += "\\";
-		}
-		return t;
-	}
+//	public String  formula="<p>The largest common divisor of <script type=\"math/asciimath\">27</script> and <script type=\"math/asciimath\">x</script> is <script type=\"math/asciimath\">9</script>, and the largest common divisor of <script type=\"math/asciimath\">40</script> and <script type=\"math/asciimath\">x</script> is <script type=\"math/asciimath\">10</script>.&nbsp; Which of these is <script type=\"math/asciimath\">(((x + y)^2)/(x^5 - 45 sqrt 5))-((4 * 5y)/(4/5))</script>?</p>";
+//	public String  formula1="<script type=\"math/asciimath\">(((x + y)^2)/(x^4 - 45 sqrt 5))-((4 * 5y)/(4/5))</script>";	
+//	public String formula2="`(((x + y)^2)/(x^4 - 45 sqrt 5))-((4 * 5y)/(4/5))`";
+//	public String formula3="`int_0^1 x^2 dx`";
+//	public String formula4="`f(x)=sum_(n=0)^oo(f^((n))(a))/(n!)(x-a)^n`";
+	private Bundle bundle;
+	private long idPregunta;
+	private PreguntaDao preguntaDao;
+	private WebView webVie;
+	private AsTaskRenderFormula taskRenderFormula;
+				
+//	private String doubleEscapeTeX(String s) {//necesario cuando se usa TeX
+//		String t="";
+//		for (int i=0; i < s.length(); i++) {
+//			if (s.charAt(i) == '\'') t += '\\';
+//			if (s.charAt(i) != '\n') t += s.charAt(i);
+//			if (s.charAt(i) == '\\') t += "\\";
+//		}
+//		return t;
+//	}
 	
 
 	public void onClick(View v) {
 		if (v == findViewById(R.id.buttonatras)) {
-			indiceFormula--;
-			if (indiceFormula==-1)
-				indiceFormula=listaFormulas.size()-1;
-			verFormula();		
+			idPregunta--;
+			if (idPregunta==0)
+				idPregunta=preguntaDao.count();
+			Pregunta pregTmp= preguntaDao.loadByRowId(idPregunta);
+			verFormula(pregTmp.getFormula());		
 			}
 		else if (v == findViewById(R.id.buttonadelante)) {
-			indiceFormula++;
-			if (indiceFormula==listaFormulas.size())
-				indiceFormula=0;
-			verFormula();
+			idPregunta++;
+			if (idPregunta==preguntaDao.count()+1)
+				idPregunta=1;
+        	Intent i= new Intent(VisualizarProblemas.this, VisualizarProblemas.class);
+        	i.putExtra("idPregunta", idPregunta);
+        	VisualizarProblemas.this.startActivity(i);
+        	VisualizarProblemas.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);			
+			//verFormula();
 		}
 	}
 
@@ -62,10 +65,19 @@ implements View.OnClickListener
 	{
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.problemas);
-		WebView w = (WebView) findViewById(R.id.webview);
-		w.getSettings().setJavaScriptEnabled(true);
-		w.getSettings().setBuiltInZoomControls(true);
-		w.loadDataWithBaseURL("http://bar", "<script type='text/x-mathjax-config'>"
+		
+	    bundle = getIntent().getExtras();	
+		idPregunta = bundle.getLong("idPregunta");
+		
+        MyApplication mApplication = (MyApplication)getApplicationContext();       
+        preguntaDao=mApplication.getPreguntaDao();
+        Pregunta preguntaTemp=preguntaDao.loadByRowId(idPregunta);
+        String formula=preguntaTemp.getFormula();
+        
+        webVie = (WebView) findViewById(R.id.webview);
+        webVie.getSettings().setJavaScriptEnabled(true);
+        webVie.getSettings().setBuiltInZoomControls(true);
+        webVie.loadDataWithBaseURL("http://bar", "<script type='text/x-mathjax-config'>"
 		                      +"MathJax.Hub.Config({ " 
 							  	+"showMathMenu: false, "
 							  	+"jax: ['input/AsciiMath','output/HTML-CSS'], "
@@ -77,34 +89,32 @@ implements View.OnClickListener
 		Button b = (Button) findViewById(R.id.buttonatras);
 		b.setOnClickListener(this);
 		b = (Button) findViewById(R.id.buttonadelante);
-		b.setOnClickListener(this);	
+		b.setOnClickListener(this);			
 		
-		listaFormulas.add(formula1);
-		listaFormulas.add(formula2);
-		listaFormulas.add(formula3);
-		listaFormulas.add(formula4);
-		listaFormulas.add(formula5);
-		
-		verFormula();
+		verFormulaConAsTask(formula);
 		
 	}
     
-	public void verFormula() 
-	{
-		WebView wbb = (WebView) findViewById(R.id.webview);
-		wbb.loadUrl("javascript:document.getElementById('math').innerHTML='"
-				  +"\\\\"
-		          +doubleEscapeTeX(listaFormulas.get(indiceFormula))
-				  +"\\\\"
+	public void verFormulaConAsTask(String cadena) 	
+	{        
+		taskRenderFormula= new AsTaskRenderFormula(VisualizarProblemas.this,webVie,cadena);
+		taskRenderFormula.execute();
+	}
+	public void verFormula(String cadena) 	//utilizado cuando hago click atras
+	{        
+		webVie.loadUrl("javascript:document.getElementById('math').innerHTML='"
+				  +""
+		          +cadena
+				  +""
 		          +"';");
-		wbb.loadUrl("javascript:MathJax.Hub.Queue(['Typeset',MathJax.Hub]);");
+		webVie.loadUrl("javascript:MathJax.Hub.Queue(['Typeset',MathJax.Hub]);");
 	}
 	
 	@Override
 	public void onBackPressed() 
 	{
 	    this.finish();
-	    VisualizarProblemas.this.overridePendingTransition(R.anim.alpha_enter, R.anim.alpha_exit);
+	    VisualizarProblemas.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
 	    super.onBackPressed();
 	}
 	

@@ -49,6 +49,8 @@ public class MainActivity extends Activity {
 	        break;
 	        case R.id.opcion3:{
 	        	Intent i= new Intent(MainActivity.this, VisualizarProblemas.class);
+	        	long longTemp=1;
+	        	i.putExtra("idPregunta",longTemp );
 	        	MainActivity.this.startActivity(i);
 	        	MainActivity.this.overridePendingTransition(R.anim.alpha_enter, R.anim.alpha_exit);
 	        }	      

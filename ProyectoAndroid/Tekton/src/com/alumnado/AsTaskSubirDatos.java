@@ -10,15 +10,12 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.alumnado.model.Alumno;
-import com.alumnado.model.DaoMaster;
-import com.alumnado.model.DaoSession;
+import com.alumnado.model.AlumnoDao;
 
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -26,47 +23,48 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 {		
 
     //green Dao
-    private SQLiteDatabase db;
-
-    private DaoMaster daoMaster;
-    private DaoSession daoSession;
+    private AlumnoDao alumnoDao;	
     //fin green dao
 //    private Cursor cursorElementoLista;       
     
-	private ProgressDialog dialog;
+//	private ProgressDialog dialog;
 	private Activity activity;
 	private String response;
+	private Alumno alumno;
+
+	private int idAlumno;
 	
-	public AsTaskSubirDatos(Activity activ) {		 
-	        this.activity = activ;		
+	public AsTaskSubirDatos(Activity activ,Alumno alu) {		 
+	        this.activity = activ;
+	        this.alumno = alu;
 //	        this.cursorElementoLista=cursorElementoLis;
-	        this.dialog = new ProgressDialog(activity);
+//	        this.dialog = new ProgressDialog(activity);
 	}
 
 	@Override
 	protected void onPreExecute() {
 	    		Log.d("TAG","LLEGA TERCERO AKI");
-	            this.dialog.setMessage("Conectando");
-	            this.dialog.show();		    	
+//	            this.dialog.setMessage("Conectando");
+//	            this.dialog.show();		    	
 	}
 	
 	@Override
 	protected String doInBackground(String... params) {
 		String str="Exito";
-		cargarBaseLocal();
+		subirDatosAlumno();
 	    return str;
 	}
 	
 	@Override
 	protected void onPostExecute(String result) {
-	     if (this.dialog.isShowing()) {
-	    	    try {
-	    	    	this.dialog.dismiss();
-	    	        dialog = null;
-	    	    } catch (Exception e) {
-	    	        // nothing
-	    	    }	    	 	           
-	     }
+//	     if (this.dialog.isShowing()) {
+//	    	    try {
+//	    	    	this.dialog.dismiss();
+//	    	        dialog = null;
+//	    	    } catch (Exception e) {
+//	    	        // nothing
+//	    	    }	    	 	           
+//	     }
 	     if (getResponse().compareTo("error")!=0){
 		     leerDatos();
 		     actualizarUI();
@@ -77,12 +75,14 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 //		 cursorElementoLista.requery();		
 	}
 	 
-	private void cargarBaseLocal() {
-			sincronizarBaseSubida();			               				
+	private void subirDatosAlumno() {			               				
 			
 			/*****ws****/
 			List<NameValuePair> param = new ArrayList<NameValuePair>();	
-			param.add(new BasicNameValuePair("tag", "getAllAlumnos"));
+			param.add(new BasicNameValuePair("tag", "registraralumno"));
+			param.add(new BasicNameValuePair("nombres", alumno.getNombres()));
+			param.add(new BasicNameValuePair("apepaterno", alumno.getApePaterno()));
+			param.add(new BasicNameValuePair("apematerno", alumno.getApeMaterno()));
 			String route="/alumnos/";
 			try{		       
 				WBhelper helper = new WBhelper("http://10.0.2.2/webservicestekton/");
@@ -107,15 +107,11 @@ public class AsTaskSubirDatos extends AsyncTask<String, Void, String>
 	}
 	private void leerDatos() {
 		// TODO Auto-generated method stub
-		List<Alumno> listaAlumno = new ArrayList<Alumno>();
 		Gson gson = new Gson();
 		
-		Log.e("log_tag", "se cayo5" );
-		listaAlumno	=	gson.fromJson(getResponse(), new TypeToken<List<Alumno>>(){}.getType());
-	}
-	 
-	private void sincronizarBaseSubida() {
-		}
+//		idAlumno	=	gson.fromJson(getResponse(), new TypeToken<Integer>(){}.getType());
+		Log.e("log_tag", "no se cayo5" );
+	}	
 
 	private String getResponse() {
 		return response;
