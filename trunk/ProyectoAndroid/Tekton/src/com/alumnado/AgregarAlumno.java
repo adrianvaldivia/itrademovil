@@ -17,6 +17,7 @@ public class AgregarAlumno extends Activity {
 	private EditText txt_nombres;
 	private EditText txt_apepaterno;
 	private EditText txt_apematerno;
+	private AsTaskSubirDatos taskSubirDatos;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,8 @@ public class AgregarAlumno extends Activity {
 		apemate=txt_apematerno.getText().toString();
         Alumno alu =new Alumno(null,null,nomb,apepate,apemate);
         alumnoDao.insert(alu);		
+		taskSubirDatos= new AsTaskSubirDatos(AgregarAlumno.this,alu);
+		taskSubirDatos.execute();
 	}
 	@Override
 	protected void onDestroy() {
