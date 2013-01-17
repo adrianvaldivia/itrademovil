@@ -1,6 +1,7 @@
 package com.alumnado;
 
 import com.alumnado.R;
+import com.alumnado.controller.AsTaskRenderFormula;
 import com.alumnado.model.Pregunta;
 import com.alumnado.model.PreguntaDao;
 

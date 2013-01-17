@@ -1,4 +1,4 @@
-package com.alumnado;
+package com.alumnado.controller;
 
 
 import java.util.ArrayList;
