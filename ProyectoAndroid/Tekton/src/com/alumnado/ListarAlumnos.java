@@ -4,13 +4,13 @@ package com.alumnado;
 import java.util.List;
 
 import com.alumnado.R;
+import com.alumnado.controller.AsTaskBajarCuestionario;
 import com.alumnado.model.Alumno;
 import com.alumnado.model.AlumnoDao;
 import com.alumnado.model.ElementoLista;
 import com.alumnado.model.ElementoListaDao;
 
 import android.app.ListActivity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -26,6 +26,7 @@ public class ListarAlumnos extends ListActivity {
     private Cursor cursorElementoLista;
     SimpleCursorAdapter adapterElementoLista;
 	private List<Alumno> listaAlumnos;
+	private AsTaskBajarCuestionario taskBajarCuestionario;
     
     /** Called when the activity is first created. */
     @Override
@@ -56,10 +57,13 @@ public class ListarAlumnos extends ListActivity {
 	@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
 		ElementoLista elementoAux=  elementoListaDao.loadByRowId(id);
-    	Intent i= new Intent(ListarAlumnos.this, DetalleAlumno.class);
-    	i.putExtra("idAlumno", elementoAux.getIdElemento());
-    	ListarAlumnos.this.startActivity(i);
-    	ListarAlumnos.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
+		taskBajarCuestionario= new AsTaskBajarCuestionario(ListarAlumnos.this,elementoAux.getIdElemento());
+		taskBajarCuestionario.execute();
+//    	Intent i= new Intent(ListarAlumnos.this, VisualizarProblemas.class);
+//    	long longTemp=1;
+//    	i.putExtra("idPregunta",longTemp );
+//    	ListarAlumnos.this.startActivity(i);
+//    	ListarAlumnos.this.overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
 	}
     
 	private void leerDatos() {
