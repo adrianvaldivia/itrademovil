@@ -1,6 +1,7 @@
 package com.alumnado;
 
 import com.alumnado.model.AlumnoDao;
+import com.alumnado.model.CuestionarioDao;
 import com.alumnado.model.DaoMaster.DevOpenHelper;
 import com.alumnado.model.DaoMaster;
 import com.alumnado.model.DaoSession;
@@ -20,6 +21,7 @@ public class MyApplication extends Application {
     private AlumnoDao alumnoDao;
     private PreguntaDao preguntaDao;
     private ElementoListaDao elementoListaDao;
+    private CuestionarioDao cuestionarioDao;
     //fin green dao
     
 	@Override
@@ -68,6 +70,14 @@ public class MyApplication extends Application {
 		this.db = db;
 	}
 	
+	public CuestionarioDao getCuestionarioDao() {
+		return cuestionarioDao;
+	}
+
+	public void setCuestionarioDao(CuestionarioDao cuestionarioDao) {
+		this.cuestionarioDao = cuestionarioDao;
+	}
+	
 	public void inicializarBdLocal() {
         if (db!=null)
     		db.close();
@@ -78,5 +88,6 @@ public class MyApplication extends Application {
         alumnoDao= daoSession.getAlumnoDao();
         preguntaDao=daoSession.getPreguntaDao();
         elementoListaDao=daoSession.getElementoListaDao();
+        cuestionarioDao=daoSession.getCuestionarioDao();
 	}
 }

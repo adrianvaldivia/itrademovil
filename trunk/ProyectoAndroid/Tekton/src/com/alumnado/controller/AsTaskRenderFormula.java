@@ -34,17 +34,6 @@ public class AsTaskRenderFormula extends AsyncTask<String, Void, String>
 	@Override
 	protected String doInBackground(String... params) {
 		String str="Exito";
-//        this.webV.getSettings().setJavaScriptEnabled(true);
-//        this.webV.getSettings().setBuiltInZoomControls(true);
-//        this.webV.loadDataWithBaseURL("http://bar", "<script type='text/x-mathjax-config'>"
-//                +"MathJax.Hub.Config({ " 
-//				  	+"showMathMenu: false, "
-//				  	+"jax: ['input/AsciiMath','output/HTML-CSS'], "
-//				  	+"extensions: ['asciimath2jax.js'] " 
-//				  +"});</script>"
-//                +"<script type='text/javascript' "
-//				  +"src='file:///android_asset/MathJax/MathJax.js'"
-//				  +"></script><span id='math'></span>","text/html","utf-8","");
         try {
             Thread.sleep(1500);         
         } catch (InterruptedException e) {
