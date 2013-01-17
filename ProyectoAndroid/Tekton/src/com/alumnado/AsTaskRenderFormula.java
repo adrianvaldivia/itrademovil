@@ -46,7 +46,7 @@ public class AsTaskRenderFormula extends AsyncTask<String, Void, String>
 //				  +"src='file:///android_asset/MathJax/MathJax.js'"
 //				  +"></script><span id='math'></span>","text/html","utf-8","");
         try {
-            Thread.sleep(1000);         
+            Thread.sleep(1500);         
         } catch (InterruptedException e) {
            e.printStackTrace();
         }
